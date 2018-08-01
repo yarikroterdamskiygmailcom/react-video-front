@@ -1,0 +1,12 @@
+input {
+    background: none;
+    border: none;
+    border-bottom: solid 2px grey;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}

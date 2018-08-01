@@ -1,0 +1,18 @@
+.container {
+    .segment {
+        padding: 10px 0;
+        .segmentTitle {
+            font-weight: bold;
+            color: teal;
+        }
+        .setting {
+            padding: 10px 0;
+            .settingName {
+                font-weight: bold;
+            }
+            .settingDescription {
+                color: gray;
+            }
+        }
+    }
+}
