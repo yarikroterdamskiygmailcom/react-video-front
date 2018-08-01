@@ -11,8 +11,10 @@ class Login extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.inner}>
-          <Input fieldName="Email"/>
-          <Input fieldName="Password" type="password"/>
+          <div className={styles.fields}>
+            <Input fieldName="Email"/>
+            <Input fieldName="Password" type="password"/>
+          </div>
           <div className={styles.remember}>
           Remember login?
             <Toggle/>

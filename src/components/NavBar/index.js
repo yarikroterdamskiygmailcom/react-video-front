@@ -4,7 +4,6 @@ import {NavLink} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
-import {navBarRoutes} from '../../constants/routes';
 import styles from './styles.scss';
 
 @withRouter
@@ -21,7 +20,7 @@ export default class NavBar extends Component {
     render() {
       return (
         <div className={styles.container}>
-          {navBarRoutes.map(this.renderRoute)}
+          {this.props.navBarRoutes.map(this.renderRoute)}
         </div>
       );
     }
