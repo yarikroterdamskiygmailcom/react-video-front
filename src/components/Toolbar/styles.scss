@@ -1,0 +1,56 @@
+.container { 
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    bottom: 0;
+    width: 100%;
+    
+    .left,
+    .right {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: black;
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        background: white;
+        font-size: 25px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        transition: color 0.2s;
+
+        &:hover {
+            color: teal;
+        }
+    }
+}
+
+.menu {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    bottom: 50px;
+    left: 0;
+    width: max-content;
+    height: fit-content;
+    border-radius: 2px;
+    background: white;
+    transition: visibility 0.2s, opacity 0.2s;
+
+    &.open {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.action {
+    margin: 0 10px;
+    color: black;
+    transition: color 0.1s;
+
+    &:hover {
+        color: teal;
+    }
+}

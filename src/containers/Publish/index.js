@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import styles from './styles.scss';
+import styles from './styles';
 
-export default class Home extends Component {
+export default class Publish extends Component {
 
   render() {
     return (

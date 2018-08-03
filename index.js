@@ -2,24 +2,36 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import {Provider} from 'mobx-react';
-import {RouterStore, syncHistoryWithStore} from 'mobx-react-router';
 import {Router} from 'react-router';
-import {App} from './src/components';
+import {AddVlogStore, SessionStore, ProfileStore, VideosStore} from './src/stores';
+import App from './src/containers/App';
 
-const browserHistory = createBrowserHistory();
-const routingStore = new RouterStore();
+export const history = createBrowserHistory();
+
+const addVlogStore = new AddVlogStore();
+const profileStore = new ProfileStore();
+const sessionStore = new SessionStore();
+const videosStore = new VideosStore();
+
+sessionStore.initialize();
 
 const stores = {
-  routing: routingStore,
+  addVlog: addVlogStore,
+  profile: profileStore,
+  session: sessionStore,
+  videos: videosStore
 };
 
-const history = syncHistoryWithStore(browserHistory, routingStore);
+const renderApp = () =>
+  ReactDOM.render(
+    <Provider {...stores}>
+      <Router history={history}>
+        <App />
+      </Router>
+    </Provider>,
+    document.getElementById('app')
+  );
 
-ReactDOM.render(
-  <Provider {...stores}>
-    <Router history={history}>
-      <App />
-    </Router>
-  </Provider>,
-  document.getElementById('app')
-);
+renderApp();
+
+module.hot.accept(renderApp);

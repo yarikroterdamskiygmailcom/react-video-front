@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+.content {
+    width: 100%;
+    flex-grow: 1;
+    background: #EFEFEF;
+    padding: 50px 0;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+}

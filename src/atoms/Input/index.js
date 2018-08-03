@@ -19,14 +19,14 @@ export default class Input extends Component {
     toggleLegible = () => this.setState({legible: !this.state.legible})
 
     render() {
-      const {fieldName, nameTop, type} = this.props;
+      const {fieldName, nameTop, type, value, onChange} = this.props;
       return (
         <div className={styles.container}>
           {nameTop
             ? <div className={styles.fieldName}>{fieldName}</div>
             : null}
           <div className={styles.row}>
-            <input type={this.getType()} {...!nameTop && {placeholder: fieldName}}/>
+            <input value={value} onChange={onChange} type={this.getType()} {...!nameTop && {placeholder: fieldName}}/>
             {type === 'password' && <FontAwesome name="eye" onClick={this.toggleLegible}/>}
           </div>
         </div>

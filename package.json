@@ -10,18 +10,22 @@
   },
   "dependencies": {
     "autoprefixer": "^9.0.0",
+    "axios": "^0.18.0",
     "babel-preset-react-app": "^3.1.0",
     "classnames": "^2.2.6",
+    "js-sha512": "^0.7.1",
     "mobx": "^3.0.0 || ^4.0.0",
     "mobx-react": "^5.2.3",
     "mobx-react-router": "^4.0.4",
+    "object-to-formdata": "^1.5.2",
     "parcel-bundler": "latest",
     "postcss-modules": "^1.1.0",
     "react": ">=15",
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",
     "react-router": "4.x",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "react-swipeable": "^4.3.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Toggle} from '..';
+import {Toggle} from '../../atoms';
 import settings from '../../constants/settings';
 import styles from './styles.scss';
 
