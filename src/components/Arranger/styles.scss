@@ -1,25 +1,8 @@
-.item {
-    width: 100%;
+.ktem {
+    display: flex;
+    flex-direction: row;
+}
 
-    .thumb {
-
-    }
-
-    .info {
-
-        .title {
-
-        }
-    
-        .runtime {
-            
-        }
-
-    }
-
-    .handle {
-        
-    }
-
-
+.handle {
+    color: teal;
 }

@@ -6,15 +6,31 @@ import {Toolbar, Arranger} from '../../components';
 @inject('addVlog')
 @observer
 export default class AddVlog extends Component {
-  constructor(props) {
-    super(props);
-  }
+
+  actions = [
+    {
+      label: 'Video',
+      fn:
+    },
+    {
+      label: 'Crossfade',
+    },
+    {
+      label: 'Title',
+    },
+    {
+      label: 'Music',
+    },
+    {
+      label: 'Branding element'
+    }
+  ];
 
   render() {
     return (
       <div className={styles.container}>
-        <Arranger items={this.props.addVlog.media}/>
-        <Toolbar actions={this.props.addVlog.actions}/>
+        <Arranger items={this.props.addVlog.media} onSortEnd={this.props.addVlog.onSortEnd}/>
+        <Toolbar actions={actions}/>
       </div>
     );
   }

@@ -1,28 +1,15 @@
+import React from 'react';
 import {observable} from 'mobx';
+import {arrayMove} from 'react-sortable-hoc';
 
 export class AddVlogStore {
-    @observable media = ['a'];
+    @observable media = ['a', 'b', 'c', 'd', 'e'];
+
+    fileUpload = React.createRef();
 
     addMedia = media => this.media.push(media)
 
-    actions = [
-      {
-        label: 'Video',
-        fn: () => console.log('cheese')
-      },
-      {
-        label: 'Crossfade',
-      },
-      {
-        label: 'Title',
-      },
-      {
-        label: 'Music',
-      },
-      {
-        label: 'Branding element'
-      }
-    ]
+    onSortEnd = ({oldIndex, newIndex}) => this.media = arrayMove(this.media, oldIndex, newIndex);
 }
 
 export default AddVlogStore;
