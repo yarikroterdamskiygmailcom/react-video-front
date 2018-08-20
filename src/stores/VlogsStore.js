@@ -2,12 +2,12 @@ import {observable} from 'mobx';
 import {php} from '.';
 import encode from 'object-to-formdata';
 
-export class VideosStore {
+export class VlogsStore {
 
     @observable list = [];
     @observable currentVlog = null;
 
-      loadVideos = sessionId => {
+      loadVlogs = sessionId => {
         php.post('handleoverview.php', encode({
           react: true,
           action: 'load',
@@ -19,4 +19,4 @@ export class VideosStore {
       }
 }
 
-export default VideosStore;
+export default VlogsStore;

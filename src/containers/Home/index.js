@@ -6,12 +6,12 @@ import {observer, inject} from 'mobx-react';
 
 @withRouter
 @inject('session')
-@inject('videos')
+@inject('vlogs')
 @observer
 export default class Home extends Component {
 
   componentWillMount() {
-    this.props.videos.loadVideos(this.props.session.sessionId);
+    this.props.vlogs.loadVlogs(this.props.session.sessionId);
   }
 
   openProject = () => this.props.history.push('/edit-vlog')
@@ -19,7 +19,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className={styles.container}>
-        <Carousel title="Saved Vlogs" items={this.props.videos.list} onClick={this.openProject}/>
+        <Carousel title="Saved Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
       </div>
     );
   }

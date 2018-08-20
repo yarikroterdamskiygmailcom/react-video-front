@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import {Provider} from 'mobx-react';
 import {Router} from 'react-router';
-import {AddVlogStore, SessionStore, ProfileStore, VideosStore} from './src/stores';
+import {AddVlogStore, SessionStore, ProfileStore, VlogsStore} from './src/stores';
 import App from './src/containers/App';
 
 export const history = createBrowserHistory();
@@ -11,7 +11,7 @@ export const history = createBrowserHistory();
 const addVlogStore = new AddVlogStore();
 const profileStore = new ProfileStore();
 const sessionStore = new SessionStore();
-const videosStore = new VideosStore();
+const vlogsStore = new VlogsStore();
 
 sessionStore.initialize();
 
@@ -19,7 +19,7 @@ const stores = {
   addVlog: addVlogStore,
   profile: profileStore,
   session: sessionStore,
-  videos: videosStore
+  vlogs: vlogsStore
 };
 
 const renderApp = () =>
