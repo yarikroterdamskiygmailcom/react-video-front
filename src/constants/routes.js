@@ -30,7 +30,9 @@ const addVlog = {
   icon: 'film',
   path: '/add-vlog',
   component: AddVlog,
-  header: true,
+  header: {
+    left: backButton
+  }
 };
 
 const publish = {

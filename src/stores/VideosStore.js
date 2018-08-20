@@ -5,6 +5,7 @@ import encode from 'object-to-formdata';
 export class VideosStore {
 
     @observable list = [];
+    @observable currentVlog = null;
 
       loadVideos = sessionId => {
         php.post('handleoverview.php', encode({
