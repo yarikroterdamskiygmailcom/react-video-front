@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
-import {Home, AddVlog, Publish, Login, Profile, Settings} from '../containers';
+import {Assets, Home, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog} from '../containers';
 
 const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</NavLink>;
 
@@ -25,11 +25,20 @@ const home = {
   navBar: true
 };
 
+const assets = {
+  name: 'Assets',
+  path: '/assets',
+  component: Assets,
+  header: {
+    left: backButton
+  }
+};
+
 const addVlog = {
   name: 'Add Vlog',
   icon: 'film',
-  path: '/add-vlog',
-  component: AddVlog,
+  path: '/edit-vlog',
+  component: VlogEditor,
   header: {
     left: backButton
   }
@@ -64,8 +73,38 @@ const profile = {
   }
 };
 
+const vlogEditor = {
+  name: 'Edit Vlog',
+  icon: null,
+  path: '/edit-vlog',
+  component: VlogEditor,
+  header: {
+    left: backButton
+  }
+};
+
+const configureVlog = {
+  name: 'Configure Vlog',
+  icon: null,
+  path: '/configure-vlog',
+  component: ConfigureVlog,
+  header: {
+    left: <NavLink to={vlogEditor.path}><FontAwesome name="angle-left"/> Back</NavLink>
+  }
+};
+
+const renderVlog = {
+  name: 'Render Vlog',
+  icon: null,
+  path: '/render-vlog',
+  component: RenderVlog,
+  header: {
+    left: <NavLink to={configureVlog.path}><FontAwesome name="angle-left"/> Back</NavLink>
+  }
+};
+
 export const navBarRoutes = [home, addVlog, publish];
 
-const allRoutes = [login, home, addVlog, settings, profile, publish];
+const allRoutes = [login, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog];
 
 export default allRoutes;

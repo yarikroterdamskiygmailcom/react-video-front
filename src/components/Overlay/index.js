@@ -5,7 +5,10 @@ export default class Overlay extends Component {
 
   render() {
     return (
-      <div className={styles.container} onClick={this.props.onClose}>
+      this.props.active && <div className={styles.container}>
+        <div className={styles.header}>
+          <div className={styles.close} onClick={this.props.onClose}>X</div>
+        </div>
         <div className={styles.content}>
           {this.props.content}
         </div>

@@ -1,0 +1,19 @@
+.asset {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0;
+}
+
+.thumb {
+    width: 160px;
+    height: 90px;
+}
+
+.assetData {
+    display: flex;
+    flex-direction: column;
+}
+
+.selected {
+    border: 2px solid teal;
+}

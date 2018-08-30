@@ -5,4 +5,8 @@
     padding: 5px 0;
     text-align: center;
     background: #D6D6D6;
+
+    &.active {
+        background: teal;
+    }
 }

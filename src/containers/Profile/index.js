@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {NavLink} from 'react-router-dom';
 import styles from './styles.scss';
 import {Input, Button} from '../../atoms';
 import {observer, inject} from 'mobx-react';
@@ -14,6 +15,7 @@ export default class Profile extends Component {
       <div className={styles.container}>
         <Input fieldName="First Name" nameTop value={firstName} onChange={changeFirstName}/>
         <Input fieldName="Last Name" nameTop value={lastName} onChange={changeLastName}/>
+        <NavLink to="/assets">My Assets</NavLink>
         <Button text={'LOGOUT'} fn={this.props.session.logout}/>
       </div>
     );

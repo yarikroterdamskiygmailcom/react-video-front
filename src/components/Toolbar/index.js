@@ -35,7 +35,7 @@ class Toolbar extends Component {
           <FontAwesome name="plus"/>
           {this.renderMenu()}
         </div>
-        <div className={styles.right} onClick={this.next}>
+        <div className={styles.right} onClick={this.props.next}>
           <FontAwesome name="angle-right" />
         </div>
       </div>

@@ -1,0 +1,149 @@
+import React from 'react';
+import {Trimmer, AddTitle, AddBrandingElement, Preview} from '../components';
+import {observable, values} from 'mobx';
+import {arrayMove} from 'react-sortable-hoc';
+
+export class VlogEditorStore {
+    @observable media = null
+    @observable projectId = null
+    @observable overlayActive = false
+    @observable overlayContent = null
+    @observable currentVideo = null
+
+    //Add Title stuff
+
+    @observable title = {
+      text: '',
+      textColor: '#000000',
+      backgroundColor: '#FFFFFF'
+    }
+
+    openAddTitle = () => {
+      this.overlayActive = true;
+      this.overlayContent = <AddTitle/>;
+    }
+
+    setText = e => this.title = {
+      ...this.title,
+      text: e.target.value
+    }
+
+    setTextColor = e => {
+      this.title = {
+        ...this.title,
+        textColor: e.target.value
+      };
+    }
+
+    setBackgroundColor = e => this.title = {
+      ...this.title,
+      backgroundColor: e.target.value
+    }
+
+    addTitle = () => {
+      this.addMedia({
+        type: 'title',
+        ...this.title
+      });
+      this.closeOverlay();
+    }
+
+    //Trimmer stuff
+
+    @observable trimmer = {
+      startTime: 0,
+      endTime: 0,
+      duration: 0
+    }
+
+    openTrimmer = i => {
+      this.currentVideo = this.media[i];
+      this.overlayActive = true;
+      this.overlayContent = <Trimmer/>;
+    }
+
+    initEndTime = duration => {
+      this.trimmer = {
+        ...this.trimmer,
+        endTime: duration,
+        duration: duration
+      };
+    }
+
+    setStartTime = e => {
+      if (e.target.value < this.trimmer.endTime) {
+        this.trimmer = {...this.trimmer, startTime: e.target.value};
+      }
+    }
+
+    setEndTime = e => {
+      if(e.target.value > this.trimmer.startTime) {
+        this.trimmer = {...this.trimmer, endTime: e.target.value};
+      }
+    }
+
+    trimVideo = () => {
+      this.currentVideo.inpoint = parseInt(this.trimmer.startTime * this.currentVideo.framerate, 10);
+      this.currentVideo.outpoint = parseInt(this.trimmer.endTime * this.currentVideo.framerate, 10);
+      this.overlayActive = false;
+      this.overlayContent = null;
+    }
+
+    //Add Branding Element stuff
+
+    openAddBrandingElement = () => {
+      this.overlayActive = true;
+      this.overlayContent = <AddBrandingElement/>;
+    }
+
+    AddBrandingElement = asset => {
+      this.addMedia({
+        ...asset,
+        type: 'brandingElement'
+      });
+      this.closeOverlay();
+    }
+
+    //Preview stuff
+
+    openPreview = i => {
+      this.currentVideo = this.media[i];
+      this.overlayActive = true;
+      this.overlayContent = <Preview src={this.currentVideo}/>;
+    }
+
+    //Yabba
+
+    initBlankVlog = () => {
+      this.media = [];
+      this.projectId = 'dud';
+    }
+
+    setVlog = vlog => {
+      this.media = vlog.video;
+      this.media = this.media.map(media => ({
+        ...media,
+        type: media.videotype,
+        src: media.videourl
+      }));
+      this.projectId = vlog.project_id;
+    }
+
+    deleteMedia = i => {
+      this.media = this.media.filter((value, index) => index !== i);
+    }
+
+    addMedia = mediaObj => this.media = [...this.media, mediaObj]
+
+    addCrossfade = () => this.addMedia({type: 'crossfade'})
+
+    closeOverlay = () => {
+      this.overlayActive = false;
+      this.overlayContent = null;
+    }
+
+    onSortEnd = ({oldIndex, newIndex}) => this.media = arrayMove(this.media, oldIndex, newIndex);
+
+}
+
+export default VlogEditorStore;

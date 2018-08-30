@@ -1,0 +1,23 @@
+.asset {
+
+}
+
+.header {
+    color: teal;
+    font-size: 24px;
+}
+
+.asset {
+    display: flex;
+    flex-direction: row;
+}
+
+.thumb {
+    width: 160px;
+    height: 90px;
+}
+
+.assetData {
+    display: flex;
+    flex-direction: column;
+}

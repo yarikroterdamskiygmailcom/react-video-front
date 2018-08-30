@@ -21,16 +21,20 @@
     "object-to-formdata": "^1.5.2",
     "parcel-bundler": "latest",
     "postcss-modules": "^1.1.0",
+    "rc-slider": "^8.6.1",
     "react": "16.4.2",
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",
+    "react-multi-slider": "^0.0.3",
     "react-plupload": "^0.0.21",
     "react-resumable-js": "^1.1.24",
     "react-router": "4.x",
     "react-router-dom": "^4.3.1",
+    "react-slider": "^0.11.2",
     "react-sortable-hoc": "^0.8.3",
     "react-swipe-to-reveal-options": "^0.3.6",
-    "react-swipeable": "^4.3.0"
+    "react-swipeable": "^4.3.0",
+    "style-loader": "^0.22.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",

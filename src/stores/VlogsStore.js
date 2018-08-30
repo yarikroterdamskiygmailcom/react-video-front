@@ -13,7 +13,6 @@ export class VlogsStore {
           action: 'load',
           SessionID: sessionId
         })).then(res => {
-          console.log(res);
           this.list = res.data.project;
         });
       }

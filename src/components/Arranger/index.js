@@ -16,38 +16,48 @@ export default class Arranger extends Component {
   }
 
   actions = {
-    left: [
-      {
-        label: 'Trim',
-        icon: 'cut',
-        func: () => null
-      },
-      {
-        label: 'Lower Third',
-        icon: 'tag',
-        func: () => null
-      },
-    ],
-    right: [
-      {
-        label: 'Delete',
-        icon: 'trash',
-        func: this.props.onDelete
-      }
-    ]
-  };
+    trim: {
+      label: 'Trim',
+      icon: 'cut',
+      func: this.props.openTrimmer
+    },
+    lowerThird: {
+      label: 'Lower Third',
+      icon: 'tag',
+      func: () => null
+    },
+    delete: {
+      label: 'Delete',
+      icon: 'trash',
+      func: this.props.onDelete
+    }
+  }
 
-  itemBody = ({thumb, file, duration}, index) => (
+  mediaActionsMap = {
+    video: [this.actions.trim, this.actions.lowerThird],
+    crossfade: [],
+    title: [],
+    brandingElement: []
+  }
+
+  generateActions = media => this.mediaActionsMap[media.type]
+
+  getMediaLabel = type => ({
+    crossfade: <div><FontAwesome name="random" />Crossfade</div>,
+    title: <div><FontAwesome name="font" />Title</div>,
+    brandingElement: <div><FontAwesome name="fire" />Branding Element</div>
+  }[type])
+  itemBody = ({thumb, file, duration, type}, index) => (
     <div className={styles.itemBody}>
-      <div className={styles.thumb} onClick={() => this.props.onThumbClick(index)} style={{background: `url(${thumb})`}}/>
+      <div className={styles.thumb} onClick={() => this.props.onThumbClick(index)} style={{background: `url(${thumb})`}} />
       <div className={styles.stack}>
-        <div className={styles.fileName}>{file}</div>
+        <div className={styles.fileName}>{file || this.getMediaLabel(type)}</div>
         <div className={styles.fileDuration}>{duration}</div>
       </div>
     </div>
   )
 
-  DragHandle = SortableHandle(() => <FontAwesome className={styles.handle} name="bars"/>);
+  DragHandle = SortableHandle(() => <FontAwesome className={styles.handle} name="bars" />);
 
   SortableItem = SortableElement(({value, revealIndex}) => (
     <div className={styles.item}>
@@ -63,29 +73,29 @@ export default class Arranger extends Component {
     </div>
   ));
 
-    SortableList = SortableContainer(({items}) => (
-      <div className={styles.list}>
-        {items.map((value, index) => (
-          <div className={styles.itemContainer}>
-            <div className={classNames(styles.leftActions,
-              this.state.revealIndex === index
-              && this.state.revealSide === 'right'
-              && styles.active)}
-            >{this.actions.left.map(this.renderAction)}</div>
-            <this.SortableItem
-              key={`item-${index}`}
-              index={index}
-              revealIndex={index}
-              value={value}/>
-            <div className={classNames(styles.rightActions,
-              this.state.revealIndex === index
-              && this.state.revealSide === 'left'
-              && styles.active)}
-            >{this.actions.right.map(this.renderAction)}</div>
-          </div>
-        ))}
-      </div>
-    ));
+  SortableList = SortableContainer(({items}) => (
+    <div className={styles.list}>
+      {items.map((value, index) => (
+        <div className={styles.itemContainer}>
+          <div className={classNames(styles.leftActions,
+            this.state.revealIndex === index
+            && this.state.revealSide === 'right'
+            && styles.active)}
+          >{this.generateActions(value).map(this.renderAction)}</div>
+          <this.SortableItem
+            key={`item-${index}`}
+            index={index}
+            revealIndex={index}
+            value={value} />
+          <div className={classNames(styles.rightActions,
+            this.state.revealIndex === index
+            && this.state.revealSide === 'left'
+            && styles.active)}
+          >{this.renderAction(this.actions.delete, index)}</div>
+        </div>
+      ))}
+    </div>
+  ));
 
   setReveal = (index, side) => {
     this.resetReveal();
@@ -102,13 +112,11 @@ export default class Arranger extends Component {
     });
   }
 
-  renderAction = (action, i) => {
-    console.log(action);
-    return <div className={styles.action} onClick={() => action.func(i)}>
-      <FontAwesome name={action.icon}/>
+  renderAction = (action, i) =>
+    <div className={styles.action} onClick={() => { action.func(i); this.resetReveal(); }}>
+      <FontAwesome name={action.icon} />
       <div>{action.label}</div>
-    </div>;
-  }
+    </div>
 
   render() {
     return (
