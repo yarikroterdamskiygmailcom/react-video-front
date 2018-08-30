@@ -76,7 +76,7 @@ export default class Arranger extends Component {
   SortableList = SortableContainer(({items}) => (
     <div className={styles.list}>
       {items.map((value, index) => (
-        <div className={styles.itemContainer}>
+        <div key={index} className={styles.itemContainer}>
           <div className={classNames(styles.leftActions,
             this.state.revealIndex === index
             && this.state.revealSide === 'right'
@@ -113,7 +113,7 @@ export default class Arranger extends Component {
   }
 
   renderAction = (action, i) =>
-    <div className={styles.action} onClick={() => { action.func(i); this.resetReveal(); }}>
+    <div key={i} className={styles.action} onClick={() => { action.func(i); this.resetReveal(); }}>
       <FontAwesome name={action.icon} />
       <div>{action.label}</div>
     </div>
