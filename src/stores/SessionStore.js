@@ -17,7 +17,7 @@ export class SessionStore {
 
   initialize = () => {
     this.sessionId = sessionStorage.getItem('token') || localStorage.getItem('token') || null;
-    // this.sessionId && history.push('/home');
+    this.sessionId && history.push('/home');
   }
 
   login = () => php.post('login.php', encode({
