@@ -150,7 +150,7 @@ export class VlogEditorStore {
     AddBrandingElement = asset => {
       this.addMedia({
         ...asset,
-        type: 'brandingElement'
+        type: 'asset'
       });
       this.closeOverlay();
     }

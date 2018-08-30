@@ -5,9 +5,15 @@ import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 import {inject, observer} from 'mobx-react';
 
+@inject('session')
+@inject('vlogEditor')
 @inject('vlogRender')
 @observer
 export default class RenderVlog extends Component {
+
+  componentWillMount() {
+    this.props.vlogRender.setSessionId = this.props.session.sessionId;
+  }
 
   renderEmailToggle = () => {
     const {emailMe, toggleEmailMe} = this.props.vlogRender;
@@ -20,6 +26,11 @@ export default class RenderVlog extends Component {
         <Toggle value={emailMe} onChange={toggleEmailMe}/>
       </div>
     );
+  }
+
+  saveVlog = () => {
+    const {projectId, media} = this.props.vlogEditor;
+    this.props.vlogRender.saveVlog({projectId, media});
   }
 
   render() {
@@ -35,7 +46,7 @@ export default class RenderVlog extends Component {
           <Button highlight={aspectRatio === '16by9'} onClick={toggleAspectRatio} text={<div><FontAwesome name="film"/>Landscape (16:9)</div>}/>
           <Button highlight={aspectRatio === '9by16'} onClick={toggleAspectRatio} text={<div><FontAwesome name="film"/>Portrait (9:16)</div>}/>
         </div>
-        <Button text="Create Vlog"/>
+        <Button text="Create Vlog" onClick={this.saveVlog}/>
       </div>
     );
   }

@@ -37,7 +37,7 @@ export default class Arranger extends Component {
     video: [this.actions.trim, this.actions.lowerThird],
     crossfade: [],
     title: [],
-    brandingElement: []
+    asset: []
   }
 
   generateActions = media => this.mediaActionsMap[media.type]
@@ -45,8 +45,9 @@ export default class Arranger extends Component {
   getMediaLabel = type => ({
     crossfade: <div><FontAwesome name="random" />Crossfade</div>,
     title: <div><FontAwesome name="font" />Title</div>,
-    brandingElement: <div><FontAwesome name="fire" />Branding Element</div>
+    asset: <div><FontAwesome name="fire" />Branding Element</div>
   }[type])
+
   itemBody = ({thumb, file, duration, type}, index) => (
     <div className={styles.itemBody}>
       <div className={styles.thumb} onClick={() => this.props.onThumbClick(index)} style={{background: `url(${thumb})`}} />
