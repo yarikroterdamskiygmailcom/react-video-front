@@ -1,9 +1,17 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
-import {Assets, Home, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog} from '../containers';
+import {Assets, Home, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound} from '../containers';
 
 const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</NavLink>;
+
+const notFound = {
+  name: 'Not Found',
+  icon: null,
+  path: '/not-found',
+  component: NotFound,
+  header: true
+};
 
 const login = {
   name: 'Login',
@@ -105,6 +113,6 @@ const renderVlog = {
 
 export const navBarRoutes = [home, addVlog, publish];
 
-const allRoutes = [login, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog];
+const allRoutes = [notFound, login, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog];
 
 export default allRoutes;

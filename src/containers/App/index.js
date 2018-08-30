@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Switch, Route, Redirect, withRouter} from 'react-router';
 import {Header, NavBar, Toolbar} from '../../components';
-import routes, {navBarRoutes, login} from '../../constants/routes';
+import routes, {navBarRoutes} from '../../constants/routes';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 
@@ -15,11 +15,12 @@ class App extends Component {
   renderAllRoutes = () =>
     <Switch>
       {routes.map(this.renderRoute)}
+      <Redirect to={'/not-found'}/>
     </Switch>
 
   render() {
     const authenticated = this.props.session.sessionId;
-    const currentRouteObj = routes.find(routeObj => routeObj.path === this.props.location.pathname);
+    const currentRouteObj = routes.find(routeObj => routeObj.path === this.props.location.pathname) || {};
     return (
       <div className={styles.container}>
         {currentRouteObj.header && <Header routeObj={currentRouteObj} />}
