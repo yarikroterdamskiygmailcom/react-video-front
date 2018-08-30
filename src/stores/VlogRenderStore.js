@@ -1,24 +1,22 @@
 import {observable, toJS} from 'mobx';
 import {php} from '.';
 import encode from 'object-to-formdata';
+import {sessionStore} from '../../index';
 
 export class VlogRenderStore {
 
-    @observable sessionId = null
     @observable emailMe = true
     @observable aspectRatio = '16by9'
     @observable previewReady = false;
     @observable previewPending = false;
     @observable preview = null;
 
-    setSessionId = sessionId => this.sessionId = sessionId;
-
     saveVlog = ({projectId, media}) => {
       php.post('handleproject.php', encode({
         debug: true,
         react: true,
         action: 'save',
-        SessionID: toJS(this.sessionId),
+        SessionID: sessionStore.sessionId,
         project_id: toJS(projectId),
         media: JSON.stringify(toJS(media))
       })).then(res => {

@@ -5,12 +5,10 @@ import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 
 @inject('assets')
-@inject('session')
 @observer
 export default class Assets extends Component {
 
   componentWillMount() {
-    this.props.assets.setSessionId(this.props.session.sessionId);
     this.props.assets.loadAssets();
   }
 

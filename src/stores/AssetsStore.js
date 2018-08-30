@@ -2,20 +2,18 @@ import {observable} from 'mobx';
 import {php} from '.';
 import Resumable from 'resumablejs';
 import encode from 'object-to-formdata';
+import {sessionStore} from '../../index';
 
 export class AssetsStore {
 
-    @observable sessionId = null
     @observable assetList = []
     @observable uploading = false;
-
-    setSessionId = sessionId => this.sessionId = sessionId;
 
     loadAssets = () => {
       php.post('handleproject.php', encode({
         react: true,
         action: 'loadassets',
-        SessionID: this.sessionId
+        SessionID: sessionStore.sessionId
       })).then(res => {
         this.assetList = res.data.asset;
       });
@@ -25,7 +23,7 @@ export class AssetsStore {
       this.resumable = new Resumable({
         target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
         query: {
-          SessionID: this.sessionId,
+          SessionID: sessionStore.sessionId,
           action: 'uploadasset',
           type: 'video'
         }

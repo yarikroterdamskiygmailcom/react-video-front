@@ -5,14 +5,13 @@ import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
 
 @withRouter
-@inject('session')
 @inject('vlogs')
 @inject('vlogEditor')
 @observer
 export default class Home extends Component {
 
   componentWillMount() {
-    this.props.vlogs.loadVlogs(this.props.session.sessionId);
+    this.props.vlogs.loadVlogs();
   }
 
   openProject = vlog => {

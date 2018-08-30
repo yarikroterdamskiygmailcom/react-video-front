@@ -7,7 +7,6 @@ import {observer, inject} from 'mobx-react';
 
 @inject('vlogEditor')
 @inject('assets')
-@inject('session')
 @observer
 export default class AddBrandingElement extends Component {
 
@@ -16,10 +15,6 @@ export default class AddBrandingElement extends Component {
     this.state = {
       currentAsset: null
     };
-  }
-
-  componentWillMount() {
-    this.props.assets.loadAssets(this.props.session.sessionId);
   }
 
   componentDidMount() {

@@ -3,6 +3,7 @@ import {Trimmer, AddTitle, AddBrandingElement, Preview} from '../components';
 import Resumable from 'resumablejs';
 import {observable, values} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
+import {sessionStore} from '../../index';
 
 export class VlogEditorStore {
     @observable media = null
@@ -29,11 +30,11 @@ export class VlogEditorStore {
 
     //Upload stuff
 
-    initResumable = sessionId => {
+    initResumable = () => {
       this.resumable = new Resumable({
         target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
         query: {
-          SessionID: sessionId,
+          SessionID: sessionStore.sessionId,
           action: 'uploadvideo',
           project_id: 4
         }

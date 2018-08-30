@@ -5,15 +5,10 @@ import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 import {inject, observer} from 'mobx-react';
 
-@inject('session')
 @inject('vlogEditor')
 @inject('vlogRender')
 @observer
 export default class RenderVlog extends Component {
-
-  componentWillMount() {
-    this.props.vlogRender.setSessionId(this.props.session.sessionId);
-  }
 
   renderEmailToggle = () => {
     const {emailMe, toggleEmailMe} = this.props.vlogRender;

@@ -1,17 +1,18 @@
 import {observable} from 'mobx';
 import {php} from '.';
 import encode from 'object-to-formdata';
+import {sessionStore} from '../../index';
 
 export class VlogsStore {
 
     @observable list = [];
     @observable currentVlog = null;
 
-      loadVlogs = sessionId => {
+      loadVlogs = () => {
         php.post('handleoverview.php', encode({
           react: true,
           action: 'load',
-          SessionID: sessionId
+          SessionID: sessionStore.sessionId
         })).then(res => {
           this.list = res.data.project;
         });

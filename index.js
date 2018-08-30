@@ -8,9 +8,9 @@ import App from './src/containers/App';
 
 export const history = createBrowserHistory();
 
+export const sessionStore = new SessionStore();
 const assetsStore = new AssetsStore();
 const profileStore = new ProfileStore();
-const sessionStore = new SessionStore();
 const vlogConfigStore = new VlogConfigStore();
 const vlogEditorStore = new VlogEditorStore();
 const vlogRenderStore = new VlogRenderStore();
