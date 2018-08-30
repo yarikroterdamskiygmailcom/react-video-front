@@ -28,8 +28,7 @@ class Login extends Component {
           Remember login?
             <Toggle value={rememberMe} onChange={setRememberMe}/>
           </div>
-          <NavLink to="/signup">Don't have an account yet? Sign up</NavLink>
-          <NavLink to="/forgotpassword">Forgot password?</NavLink>
+          <NavLink to="/forgot-password">Forgot password?</NavLink>
           <Button onClick={login} text="Sign In"/>
           {error && <div>{error}</div>}
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
-import {Assets, Home, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound} from '../containers';
+import {Assets, Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound} from '../containers';
 
 const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</NavLink>;
 
@@ -19,6 +19,16 @@ const login = {
   path: '/',
   component: Login,
   header: true,
+};
+
+const forgotPassword = {
+  name: 'Forgot Password',
+  icon: null,
+  path: '/forgot-password',
+  component: ForgotPassword,
+  header: {
+    left: <NavLink to={login.path}><FontAwesome name="angle-left"/> Back</NavLink>
+  }
 };
 
 const home = {
@@ -113,6 +123,6 @@ const renderVlog = {
 
 export const navBarRoutes = [home, addVlog, publish];
 
-const allRoutes = [notFound, login, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog];
+const allRoutes = [notFound, login, forgotPassword, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog];
 
 export default allRoutes;
