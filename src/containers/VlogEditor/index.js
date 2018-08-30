@@ -41,9 +41,10 @@ export default class VlogEditor extends Component {
   nextStep = () => this.props.history.push('/configure-vlog')
 
   render() {
-    const {media, deleteMedia, openTrimmer, openPreview, onSortEnd, overlayActive, overlayContent, closeOverlay} = this.props.vlogEditor;
+    const {uploading, media, deleteMedia, openTrimmer, openPreview, onSortEnd, overlayActive, overlayContent, closeOverlay} = this.props.vlogEditor;
     return (
       <div className={styles.container}>
+        {uploading && <div className={styles.uploadingIndicator}>Uploading your video...</div>}
         <Arranger
           items={media}
           onSortEnd={onSortEnd}

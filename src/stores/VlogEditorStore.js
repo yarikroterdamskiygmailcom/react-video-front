@@ -10,6 +10,22 @@ export class VlogEditorStore {
     @observable overlayActive = false
     @observable overlayContent = null
     @observable currentVideo = null
+    @observable uploading = false
+
+    //Editor stuff
+
+    addMedia = mediaObj => this.media = [...this.media, mediaObj]
+
+    deleteMedia = i => {
+      this.media = this.media.filter((value, index) => index !== i);
+    }
+
+    closeOverlay = () => {
+      this.overlayActive = false;
+      this.overlayContent = null;
+    }
+
+    onSortEnd = ({oldIndex, newIndex}) => this.media = arrayMove(this.media, oldIndex, newIndex);
 
     //Upload stuff
 
@@ -25,18 +41,25 @@ export class VlogEditorStore {
       this.resumable.assignBrowse(document.getElementById('input'));
       this.resumable.on('fileAdded', () => {
         this.resumable.upload();
+        this.uploading = true;
       });
       this.resumable.on('fileSuccess', (resumableFile, response) => {
         this.addVideo(resumableFile.file, response);
+        this.uploading = false;
         this.resumable.cancel();
       });
     }
 
     addVideo = (localFile, response) => this.addMedia({
       ...JSON.parse(response),
+      type: 'video',
       localFileObj: localFile,
-      localFileObjURL: URL.createObjectURL(localFile)
+      src: URL.createObjectURL(localFile)
     });
+
+    //Crossfade stuff
+
+    addCrossfade = () => this.addMedia({type: 'crossfade'})
 
     //Add Title stuff
 
@@ -137,10 +160,10 @@ export class VlogEditorStore {
     openPreview = i => {
       this.currentVideo = this.media[i];
       this.overlayActive = true;
-      this.overlayContent = <Preview src={this.currentVideo}/>;
+      this.overlayContent = <Preview src={this.currentVideo.src}/>;
     }
 
-    //Yabba
+    //When initializing the editor
 
     initBlankVlog = () => {
       this.media = [];
@@ -156,21 +179,6 @@ export class VlogEditorStore {
       }));
       this.projectId = vlog.project_id;
     }
-
-    deleteMedia = i => {
-      this.media = this.media.filter((value, index) => index !== i);
-    }
-
-    addMedia = mediaObj => this.media = [...this.media, mediaObj]
-
-    addCrossfade = () => this.addMedia({type: 'crossfade'})
-
-    closeOverlay = () => {
-      this.overlayActive = false;
-      this.overlayContent = null;
-    }
-
-    onSortEnd = ({oldIndex, newIndex}) => this.media = arrayMove(this.media, oldIndex, newIndex);
 
 }
 
