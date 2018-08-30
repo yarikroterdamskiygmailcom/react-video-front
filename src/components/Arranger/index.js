@@ -40,19 +40,19 @@ export default class Arranger extends Component {
     asset: []
   }
 
-  generateActions = media => this.mediaActionsMap[media.type]
+  generateActions = media => this.mediaActionsMap[media.mediatype]
 
-  getMediaLabel = type => ({
+  getMediaLabel = mediatype => ({
     crossfade: <div><FontAwesome name="random" />Crossfade</div>,
     title: <div><FontAwesome name="font" />Title</div>,
     asset: <div><FontAwesome name="fire" />Branding Element</div>
-  }[type])
+  }[mediatype])
 
-  itemBody = ({thumb, file, duration, type}, index) => (
+  itemBody = ({thumb, file, duration, mediatype}, index) => (
     <div className={styles.itemBody}>
       <div className={styles.thumb} onClick={() => this.props.onThumbClick(index)} style={{background: `url(${thumb})`}} />
       <div className={styles.stack}>
-        <div className={styles.fileName}>{file || this.getMediaLabel(type)}</div>
+        <div className={styles.fileName}>{file || this.getMediaLabel(mediatype)}</div>
         <div className={styles.fileDuration}>{duration}</div>
       </div>
     </div>

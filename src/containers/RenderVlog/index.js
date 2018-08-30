@@ -12,7 +12,7 @@ import {inject, observer} from 'mobx-react';
 export default class RenderVlog extends Component {
 
   componentWillMount() {
-    this.props.vlogRender.setSessionId = this.props.session.sessionId;
+    this.props.vlogRender.setSessionId(this.props.session.sessionId);
   }
 
   renderEmailToggle = () => {

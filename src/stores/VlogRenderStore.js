@@ -1,4 +1,4 @@
-import {observable} from 'mobx';
+import {observable, toJS} from 'mobx';
 import {php} from '.';
 import encode from 'object-to-formdata';
 
@@ -15,13 +15,14 @@ export class VlogRenderStore {
 
     saveVlog = ({projectId, media}) => {
       php.post('handleproject.php', encode({
+        debug: true,
         react: true,
         action: 'save',
-        SessionID: this.sessionId,
-        project_id: projectId,
-        media
+        SessionID: toJS(this.sessionId),
+        project_id: toJS(projectId),
+        media: JSON.stringify(toJS(media))
       })).then(res => {
-        this.assetList = res.data.asset;
+        console.log(projectId, res, toJS(media));
       });
     }
 

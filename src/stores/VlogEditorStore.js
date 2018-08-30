@@ -52,14 +52,14 @@ export class VlogEditorStore {
 
     addVideo = (localFile, response) => this.addMedia({
       ...JSON.parse(response),
-      type: 'video',
+      mediatype: 'video',
       localFileObj: localFile,
       src: URL.createObjectURL(localFile)
     });
 
     //Crossfade stuff
 
-    addCrossfade = () => this.addMedia({type: 'crossfade'})
+    addCrossfade = () => this.addMedia({mediatype: 'crossfade'})
 
     //Add Title stuff
 
@@ -93,7 +93,7 @@ export class VlogEditorStore {
 
     addTitle = () => {
       this.addMedia({
-        type: 'title',
+        mediatype: 'title',
         ...this.title
       });
       this.closeOverlay();
@@ -150,7 +150,7 @@ export class VlogEditorStore {
     AddBrandingElement = asset => {
       this.addMedia({
         ...asset,
-        type: 'asset'
+        mediatype: 'asset'
       });
       this.closeOverlay();
     }
@@ -172,11 +172,6 @@ export class VlogEditorStore {
 
     setVlog = vlog => {
       this.media = vlog.video;
-      this.media = this.media.map(media => ({
-        ...media,
-        type: media.videotype,
-        src: media.videourl
-      }));
       this.projectId = vlog.project_id;
     }
 
