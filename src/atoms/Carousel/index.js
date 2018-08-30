@@ -3,6 +3,13 @@ import styles from './styles.scss';
 
 export default class Carousel extends Component {
 
+  constructor(props) {
+    super(props);
+    this.carouselRef = React.createRef();
+  }
+
+  onScroll = e => this.carouselRef.current.scrollLeft += (e.deltaY * 3)
+
     renderItem = item =>
       <div key={item.thumb} className={styles.item} onClick={() => this.props.onClick(item)}>
         <div className={styles.thumb} style={{background: `url(${item.thumb})`}}/>
@@ -14,8 +21,8 @@ export default class Carousel extends Component {
       return (
         <div className={styles.container}>
           <div className={styles.header}>{this.props.title}</div>
-          <div className={styles.items}>
-            {this.props.items.map(this.renderItem)}
+          <div ref={this.carouselRef} className={styles.items} onWheel={this.onScroll}>
+            {this.props.items.reverse().map(this.renderItem)}
           </div>
         </div>
       );
