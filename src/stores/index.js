@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-export {AddVlogStore} from './AddVlogStore';
 export {AssetsStore} from './AssetsStore';
 export {ProfileStore} from './ProfileStore';
 export {SessionStore} from './SessionStore';

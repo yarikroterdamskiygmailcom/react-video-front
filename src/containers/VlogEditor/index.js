@@ -5,6 +5,7 @@ import {Arranger, Overlay, Toolbar} from '../../components';
 import styles from './styles.scss';
 
 @withRouter
+@inject('session')
 @inject('vlogEditor')
 @observer
 export default class VlogEditor extends Component {
@@ -12,6 +13,11 @@ export default class VlogEditor extends Component {
   constructor(props) {
     super(props);
     !props.vlogEditor.projectId && props.vlogEditor.initBlankVlog();
+  }
+
+  componentDidMount() {
+    const {session, vlogEditor} = this.props;
+    vlogEditor.initResumable(session.sessionId);
   }
 
   getActions = () => [

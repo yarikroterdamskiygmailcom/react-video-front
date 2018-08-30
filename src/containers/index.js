@@ -1,4 +1,3 @@
-export {default as AddVlog} from './AddVlog';
 export {default as App} from './App';
 export {default as Assets} from './Assets';
 export {default as ConfigureVlog} from './ConfigureVlog';

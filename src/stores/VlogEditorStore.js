@@ -1,5 +1,6 @@
 import React from 'react';
 import {Trimmer, AddTitle, AddBrandingElement, Preview} from '../components';
+import Resumable from 'resumablejs';
 import {observable, values} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
 
@@ -9,6 +10,33 @@ export class VlogEditorStore {
     @observable overlayActive = false
     @observable overlayContent = null
     @observable currentVideo = null
+
+    //Upload stuff
+
+    initResumable = sessionId => {
+      this.resumable = new Resumable({
+        target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
+        query: {
+          SessionID: sessionId,
+          action: 'upload',
+          project_id: 4
+        }
+      });
+      this.resumable.assignBrowse(document.getElementById('input'));
+      this.resumable.on('fileAdded', () => {
+        this.resumable.upload();
+      });
+      this.resumable.on('fileSuccess', (resumableFile, response) => {
+        this.addVideo(resumableFile.file, response);
+        this.resumable.cancel();
+      });
+    }
+
+    addVideo = (localFile, response) => this.addMedia({
+      ...JSON.parse(response),
+      localFileObj: localFile,
+      localFileObjURL: URL.createObjectURL(localFile)
+    });
 
     //Add Title stuff
 
