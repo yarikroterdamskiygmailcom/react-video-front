@@ -7,6 +7,7 @@ import {sessionStore} from '../../index';
 
 export class VlogEditorStore {
     @observable media = null
+    @observable title = null
     @observable projectId = null
     @observable overlayActive = false
     @observable overlayContent = null
@@ -174,6 +175,7 @@ export class VlogEditorStore {
     setVlog = vlog => {
       this.media = vlog.video;
       this.projectId = vlog.project_id;
+      this.title = vlog.title;
     }
 
 }

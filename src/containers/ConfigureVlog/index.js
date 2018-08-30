@@ -10,6 +10,10 @@ import {withRouter} from 'react-router';
 @observer
 export default class ConfigureVlog extends Component {
 
+  componentWillMount() {
+    this.props.vlogConfig.init();
+  }
+
   toggleRows = () => {
     const {logoOverlay, subtitles, edit, setLogoOverlay, setSubtitles, setEdit} = this.props.vlogConfig;
     return [

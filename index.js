@@ -12,7 +12,7 @@ export const sessionStore = new SessionStore();
 const assetsStore = new AssetsStore();
 const profileStore = new ProfileStore();
 const vlogConfigStore = new VlogConfigStore();
-const vlogEditorStore = new VlogEditorStore();
+export const vlogEditorStore = new VlogEditorStore();
 const vlogRenderStore = new VlogRenderStore();
 const vlogsStore = new VlogsStore();
 
