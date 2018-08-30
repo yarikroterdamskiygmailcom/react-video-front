@@ -34,7 +34,7 @@ export class VlogEditorStore {
         target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
         query: {
           SessionID: sessionId,
-          action: 'upload',
+          action: 'uploadvideo',
           project_id: 4
         }
       });

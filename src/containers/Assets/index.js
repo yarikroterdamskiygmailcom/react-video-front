@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Button} from '../../atoms';
 import {isEmpty} from 'lodash-es';
+import classNames from 'classnames';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 
@@ -10,7 +10,12 @@ import {observer, inject} from 'mobx-react';
 export default class Assets extends Component {
 
   componentWillMount() {
-    this.loadAssets();
+    this.props.assets.setSessionId(this.props.session.sessionId);
+    this.props.assets.loadAssets();
+  }
+
+  componentDidMount() {
+    this.props.assets.initResumable();
   }
 
     renderAsset = ({id, thumb, title, type}) => (
@@ -23,13 +28,12 @@ export default class Assets extends Component {
       </div>
     )
 
-    loadAssets = () => this.props.assets.loadAssets(this.props.session.sessionId)
-
     render() {
-      const {assetList} = this.props.assets;
+      const {uploading, assetList} = this.props.assets;
       return (
         <div className={styles.container}>
-          <Button text="Add asset..."onClick={this.addAsset}/>
+          {uploading && <div>UPLOADING</div>}
+          <div className={classNames(styles.input, uploading && styles.invisible)} id="addAsset">Add asset...</div>
           <div className={styles.header}>My Assets</div>
           {!isEmpty(assetList) ? assetList.map(this.renderAsset) : 'You havent added any assets yet'}
         </div>
