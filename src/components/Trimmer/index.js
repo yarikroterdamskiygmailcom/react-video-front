@@ -27,10 +27,10 @@ export default class Trimmer extends Component {
     return (
       <div className={styles.container}>
         <video className={styles.video} ref={this.videoRef} src={currentVideo.src} autoPlay onLoadedMetadata={this.initEndTime}/>
-        <Button text="Preview" fn={this.preview}/>
+        <Button text="Preview" onClick={this.preview}/>
         <Slider value={startTime} onChange={setStartTime} min={0} max={duration} step={0.001} label="Start point"/>
         <Slider value={endTime} onChange={setEndTime} min={0} max={duration} step={0.001} label="End point"/>
-        <Button text="Save" fn={trimVideo}/>
+        <Button text="Save" onClick={trimVideo}/>
       </div>
     );
   }

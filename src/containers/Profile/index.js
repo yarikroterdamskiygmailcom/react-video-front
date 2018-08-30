@@ -16,7 +16,7 @@ export default class Profile extends Component {
         <Input fieldName="First Name" nameTop value={firstName} onChange={changeFirstName}/>
         <Input fieldName="Last Name" nameTop value={lastName} onChange={changeLastName}/>
         <NavLink to="/assets">My Assets</NavLink>
-        <Button text={'LOGOUT'} fn={this.props.session.logout}/>
+        <Button text={'LOGOUT'} onClick={this.props.session.logout}/>
       </div>
     );
   }

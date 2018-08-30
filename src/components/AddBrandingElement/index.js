@@ -49,8 +49,8 @@ export default class AddBrandingElement extends Component {
       <div className={styles.container}>
         {assetList.map(this.renderAsset)}
         <div className={styles.actions}>
-          <Button text="Cancel" fn={closeOverlay} />
-          <Button text="Confirm" fn={this.addAsset} />
+          <Button text="Cancel" onClick={closeOverlay} />
+          <Button text="Confirm" onClick={this.addAsset} />
         </div>
       </div>
     );

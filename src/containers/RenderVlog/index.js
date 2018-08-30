@@ -29,11 +29,11 @@ export default class RenderVlog extends Component {
       <div className={styles.container}>
         <div className={styles.title}>Preview</div>
         {preview && <Preview src={preview}/>}
-        <Button fn={getPreview} text={previewPending ? 'Getting preview...' : 'Preview now'} disabled={previewPending || preview}/>
+        <Button onClick={getPreview} text={previewPending ? 'Getting preview...' : 'Preview now'} disabled={previewPending || preview}/>
         {this.renderEmailToggle()}
         <div className={styles.row}>
-          <Button highlight={aspectRatio === '16by9'} fn={toggleAspectRatio} text={<div><FontAwesome name="film"/>Landscape (16:9)</div>}/>
-          <Button highlight={aspectRatio === '9by16'} fn={toggleAspectRatio} text={<div><FontAwesome name="film"/>Portrait (9:16)</div>}/>
+          <Button highlight={aspectRatio === '16by9'} onClick={toggleAspectRatio} text={<div><FontAwesome name="film"/>Landscape (16:9)</div>}/>
+          <Button highlight={aspectRatio === '9by16'} onClick={toggleAspectRatio} text={<div><FontAwesome name="film"/>Portrait (9:16)</div>}/>
         </div>
         <Button text="Create Vlog"/>
       </div>

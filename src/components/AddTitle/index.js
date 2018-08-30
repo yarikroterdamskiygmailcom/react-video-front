@@ -32,8 +32,8 @@ export default class AddTitle extends Component {
         <div className={styles.header}>Background color</div>
         <input type="color" value={backgroundColor} onChange={setBackgroundColor} />
         <div className={styles.actions}>
-          <Button text="Place" fn={addTitle}/>
-          <Button text="Cancel" fn={closeOverlay}/>
+          <Button text="Place" onClick={addTitle}/>
+          <Button text="Cancel" onClick={closeOverlay}/>
         </div>
       </div>
     );

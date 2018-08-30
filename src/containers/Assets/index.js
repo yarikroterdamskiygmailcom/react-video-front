@@ -29,7 +29,7 @@ export default class Assets extends Component {
       const {assetList} = this.props.assets;
       return (
         <div className={styles.container}>
-          <Button text="Add asset..."fn={this.addAsset}/>
+          <Button text="Add asset..."onClick={this.addAsset}/>
           <div className={styles.header}>My Assets</div>
           {!isEmpty(assetList) ? assetList.map(this.renderAsset) : 'You havent added any assets yet'}
         </div>

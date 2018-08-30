@@ -30,7 +30,7 @@ class Login extends Component {
           </div>
           <NavLink to="/signup">Don't have an account yet? Sign up</NavLink>
           <NavLink to="/forgotpassword">Forgot password?</NavLink>
-          <Button fn={login} text="Sign In"/>
+          <Button onClick={login} text="Sign In"/>
           {error && <div>{error}</div>}
         </div>
       </div>
