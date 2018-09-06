@@ -9,7 +9,7 @@ export default class Button extends Component {
     const {onClick, text, highlight, disabled} = this.props;
     return (
       <div className={classNames(styles.container, highlight && styles.active)} onClick={disabled ? noop : onClick}>
-        {text}
+        <div className={styles.text}>{text}</div>
       </div>
     );
   }

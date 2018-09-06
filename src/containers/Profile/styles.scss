@@ -1,0 +1,77 @@
+
+.persona {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #F7F8F8;
+}
+.avatar {
+    width: 150px;
+    height: 150px;
+    margin: 24px 0;
+    border-radius: 75px;
+    background: black;
+}
+
+.fields {
+    background: #FFFFFF;
+    margin: 0 -48px;
+}
+
+.field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px 48px;
+    border-top: 2px #ECEBED solid;
+
+    .fieldRight {
+        color: #CCCCCC;
+    }
+}
+
+.assets {
+    display: flex;
+    flex-direction: column;
+    border-top: 2px #ECEBED solid;
+
+}
+
+.assetsHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 0;
+    color: #BFBFBF;
+    .upload {
+        background: #F3E3EF;
+        color: #CE6CB1;
+        padding: 8px;
+        border-radius: 4px;
+    }
+}
+
+.asset {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 12px;
+}
+
+.thumb {
+    width: 150px;
+    height: 150px;
+    border-radius: 6px;
+}
+
+.assetTitle {
+    position: absolute;
+    color: #FFFFFF;
+}
+
+.assetList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

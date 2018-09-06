@@ -16,13 +16,10 @@ export default class Assets extends Component {
     this.props.assets.initResumable();
   }
 
-    renderAsset = ({id, thumb, title, type}) => (
+    renderAsset = ({id, thumb, title}) => (
       <div key={id} className={styles.asset}>
         <div className={styles.thumb} style={{background: `url(${thumb})`}}/>
-        <div className={styles.assetData}>
-          <div className={styles.assetTitle}>{title}</div>
-          <div className={styles.assetType}>{type}</div>
-        </div>
+        <div className={styles.assetTitle}>{title}</div>
       </div>
     )
 

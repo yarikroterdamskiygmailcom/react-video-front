@@ -7,13 +7,11 @@ import {history} from '../../';
 export class SessionStore {
   @observable email = ''
   @observable password = ''
-  @observable rememberMe = false
   @observable error = null
   @observable sessionId = null
 
   changeEmail = e => this.email = e.target.value
   changePassword = e => this.password = e.target.value
-  setRememberMe = value => this.rememberMe = value
 
   initialize = () => {
     this.sessionId = sessionStorage.getItem('token') || localStorage.getItem('token') || null;
@@ -36,15 +34,13 @@ export class SessionStore {
     } else {
       this.error = null;
       this.sessionId = SessionID;
-      const storage = this.rememberMe ? localStorage : sessionStorage;
-      storage.setItem('token', SessionID);
+      localStorage.setItem('token', SessionID);
       history.push('/home');
     }
   });
 
   logout = () => {
     this.sessionId = null;
-    sessionStorage.removeItem('token', null);
     localStorage.removeItem('token', null);
     history.push('/');
   }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
+import classNames from 'classnames';
 import styles from './styles.scss';
 
 export default class Input extends Component {
@@ -19,9 +20,9 @@ export default class Input extends Component {
     toggleLegible = () => this.setState({legible: !this.state.legible})
 
     render() {
-      const {fieldName, nameTop, type, value, onChange} = this.props;
+      const {fieldName, nameTop, type, value, onChange, className} = this.props;
       return (
-        <div className={styles.container}>
+        <div className={classNames(styles.container, className)}>
           {nameTop
             ? <div className={styles.fieldName}>{fieldName}</div>
             : null}

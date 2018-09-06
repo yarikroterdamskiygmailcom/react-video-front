@@ -1,12 +1,16 @@
 .container {
+    color: #C14C9F;
     font-weight: bold;
     cursor: pointer;
     width: 100%;
-    padding: 5px 0;
+    padding: 20px 0;
     text-align: center;
-    background: #D6D6D6;
+    background: rgba(193, 76, 159, 0.15);
+    border: 2px solid rgba(193, 76, 159, 0.093014);
+    border-radius: 8px;
 
     &.active {
-        background: teal;
+        background: #C04C9F;
     }
 }
+

@@ -12,26 +12,18 @@ class Login extends Component {
 
   render() {
     const {
-      email, password, rememberMe,
-      changeEmail, changePassword, setRememberMe,
+      email, password,
+      changeEmail, changePassword,
       error, login
     } = this.props.session;
     return (
       <div className={styles.container}>
-        <div className={styles.inner}>
-          <div className={styles.logo}/>
-          <div className={styles.fields}>
-            <Input fieldName="Email" value={email} onChange={changeEmail}/>
-            <Input fieldName="Password" type="password" value={password} onChange={changePassword}/>
-          </div>
-          <div className={styles.remember}>
-          Remember login?
-            <Toggle value={rememberMe} onChange={setRememberMe}/>
-          </div>
-          <NavLink to="/forgot-password">Forgot password?</NavLink>
-          <Button onClick={login} text="Sign In"/>
-          {error && <div>{error}</div>}
-        </div>
+        <div className={styles.logo}/>
+        <Input className={styles.input} nameTop fieldName="Email" value={email} onChange={changeEmail}/>
+        <Input className={styles.input} nameTop fieldName="Password" type="password" value={password} onChange={changePassword}/>
+        <Button onClick={login} text="Login"/>
+        {error && <div>{error}</div>}
+        <NavLink className={styles.link} to="/forgot-password">Forgot your password?</NavLink>
       </div>
     );
   }

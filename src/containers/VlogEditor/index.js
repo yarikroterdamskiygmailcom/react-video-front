@@ -50,7 +50,7 @@ export default class VlogEditor extends Component {
           onDelete={deleteMedia}
           openTrimmer={openTrimmer}
         />
-        <Toolbar actions={this.getActions()} next={this.nextStep}/>
+        <Toolbar className={styles.toolbar} actions={this.getActions()} next={this.nextStep}/>
         <Overlay className={styles.overlay} active={overlayActive} content={overlayContent} onClose={closeOverlay}/>
       </div>
     );

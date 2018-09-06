@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
-import {Assets, Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound} from '../containers';
+import {Assets, Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout} from '../containers';
 
 const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</NavLink>;
 
@@ -18,7 +18,12 @@ const login = {
   icon: 'sign-in-alt',
   path: '/',
   component: Login,
-  header: true,
+};
+
+const logout = {
+  name: 'Logout',
+  path: '/logout',
+  component: Logout
 };
 
 const forgotPassword = {
@@ -36,10 +41,7 @@ const home = {
   icon: 'home',
   path: '/home',
   component: Home,
-  header: {
-    left: <NavLink to="/profile"><FontAwesome name="user"/></NavLink>,
-    right: <NavLink to="/settings"><FontAwesome name="cog"/></NavLink>
-  },
+  header: true,
   navBar: true
 };
 
@@ -87,8 +89,10 @@ const profile = {
   path: '/profile',
   component: Profile,
   header: {
-    left: backButton
-  }
+    left: <NavLink to="/settings"><FontAwesome name="cog"/></NavLink>,
+    right: <NavLink to="/logout">Log Out</NavLink>
+  },
+  navBar: true
 };
 
 const vlogEditor = {
@@ -121,8 +125,8 @@ const renderVlog = {
   }
 };
 
-export const navBarRoutes = [home, addVlog, publish];
+export const navBarRoutes = [home, addVlog, profile];
 
-const allRoutes = [notFound, login, forgotPassword, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog];
+const allRoutes = [notFound, login, logout, forgotPassword, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog];
 
 export default allRoutes;

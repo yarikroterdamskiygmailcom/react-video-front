@@ -4,26 +4,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #EFEFEF;
-    .inner {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 500px;
-        .remember {
-            display: flex;
-            flex-direction: row;
-        }
-    }
-}
-
-.fields > * {
-    width: 500px;
+    background: #F7F8F8;
 }
 
 .logo {
-    width: 100px;
-    height: 100px;
-    background: url('./vlogahead_applogo.png');
+    width: 80%;
+    height: 35%;
+    background: url('./logo-transparent.png');
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.input {
+    width: 100%;
+}
+
+.link {
+    color: #C6CBD4;
+    text-decoration: none;
 }

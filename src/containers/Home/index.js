@@ -23,6 +23,7 @@ export default class Home extends Component {
     return (
       <div className={styles.container}>
         <Carousel title="Saved Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
+        <Carousel title="Shared Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
       </div>
     );
   }

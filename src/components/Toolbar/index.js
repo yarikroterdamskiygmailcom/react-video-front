@@ -29,8 +29,9 @@ class Toolbar extends Component {
     </div>
 
   render() {
+    const {className} = this.props;
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         <div className={styles.left} onClick={this.openMenu}>
           <FontAwesome name="plus"/>
           {this.renderMenu()}
