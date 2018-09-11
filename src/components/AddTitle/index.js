@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
-import {Input, Button} from '../../atoms';
+import {Input, Button, ColorPicker} from '../../atoms';
 import {observer, inject} from 'mobx-react';
 
 @inject('vlogEditor')
@@ -23,17 +23,13 @@ export default class AddTitle extends Component {
     const {setText, setTextColor, setBackgroundColor, addTitle, closeOverlay} = this.props.vlogEditor;
     return (
       <div className={styles.container}>
-        <div className={styles.header}>Add Title</div>
         {this.renderExample(text, textColor, backgroundColor)}
-        <Input nameTop fieldName="Text" value={text} onChange={setText} />
-        <div className={styles.header}>Style</div>
-        <div className={styles.header}>Text color</div>
-        <input type="color" value={textColor} onChange={setTextColor} />
-        <div className={styles.header}>Background color</div>
-        <input type="color" value={backgroundColor} onChange={setBackgroundColor} />
+        <Input className={styles.input} nameTop fieldName="Text" value={text} onChange={setText} />
+        <ColorPicker value={textColor} options={['#FFFFFF', '#000000']} onChange={setTextColor}/>
+        <ColorPicker value={backgroundColor} options={['#FFFFFF', '#000000']} onChange={setBackgroundColor}/>
         <div className={styles.actions}>
-          <Button text="Place" onClick={addTitle}/>
-          <Button text="Cancel" onClick={closeOverlay}/>
+          <div className={styles.action} onClick={closeOverlay}>Cancel</div>
+          <div className={styles.action} onClick={addTitle}>Place</div>
         </div>
       </div>
     );

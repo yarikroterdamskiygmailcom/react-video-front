@@ -10,6 +10,7 @@
       "node": true
     },
     "rules": {
-      "no-sync": 0
+      "no-sync": 0,
+      "linebreak-style": 0
     }
   }

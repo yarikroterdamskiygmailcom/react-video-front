@@ -43,9 +43,9 @@ export default class Arranger extends Component {
   generateActions = media => this.mediaActionsMap[media.mediatype]
 
   getMediaLabel = mediatype => ({
-    crossfade: <div><FontAwesome name="random" />Crossfade</div>,
-    title: <div><FontAwesome name="font" />Title</div>,
-    asset: <div><FontAwesome name="fire" />Branding Element</div>
+    crossfade: <div><FontAwesome name="random" /> Crossfade</div>,
+    title: <div><FontAwesome name="font" /> Title</div>,
+    asset: <div><FontAwesome name="fire" /> Branding Element</div>
   }[mediatype])
 
   itemBody = ({thumb, file, duration, mediatype}, index) => (
@@ -66,7 +66,7 @@ export default class Arranger extends Component {
         trackMouse
         className={styles.itemInner}
         onSwipedLeft={() => this.setReveal(revealIndex, 'left')}
-        onSwipedRight={() => this.setReveal(revealIndex, 'right')}
+        onSwipedRight={() => value.mediatype === 'video' && this.setReveal(revealIndex, 'right')}
       >
         {this.itemBody(value, revealIndex)}
       </Swipeable>

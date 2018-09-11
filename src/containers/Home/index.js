@@ -19,11 +19,19 @@ export default class Home extends Component {
     this.props.history.push('/edit-vlog');
   }
 
+  renderHighlight = () =>
+    <div className={styles.highlight}>
+
+    </div>
+
   render() {
     return (
       <div className={styles.container}>
-        <Carousel title="Saved Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
-        <Carousel title="Shared Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
+        {this.renderHighlight()}
+        <div className={styles.carousels}>
+          <Carousel title="Saved Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
+          <Carousel title="Shared Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
+        </div>
       </div>
     );
   }

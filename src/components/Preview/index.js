@@ -10,7 +10,7 @@ export default class Preview extends Component {
     const {src} = this.props;
     return (
       <div className={styles.container}>
-        <video src={src} autoPlay loop controls/>
+        <video className={styles.video} src={src} autoPlay loop controls/>
       </div>
     );
   }

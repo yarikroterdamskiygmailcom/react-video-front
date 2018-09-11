@@ -16,22 +16,28 @@ class Toolbar extends Component {
     document.addEventListener('click', this.closeMenu, {once: true});
   }
 
-  closeMenu = () => this.setState({isOpen: false})
+  closeMenu = () => this.setState({isOpen: false});
 
   renderAction = (action, i) =>
     <div key={`action-${i}`} className={styles.action} onClick={action.fn}>
+      <FontAwesome className={styles.actionIcon} name={action.icon}/>
       {action.render}
     </div>
 
   renderMenu = () =>
     <div className={classNames(styles.menu, this.state.isOpen && styles.open)}>
-      {this.props.actions.map(this.renderAction)}
+      <div className={styles.menuInner}>
+        <div className={styles.menuHeader}>Add</div>
+        {this.props.actions.map(this.renderAction)}
+      </div>
+      <div className={styles.menuClose} onClick={this.closeMenu}>Cancel</div>
     </div>
 
   render() {
     const {className} = this.props;
     return (
       <div className={classNames(styles.container, className)}>
+        <div className={classNames(styles.overlay, this.state.isOpen && styles.active)}/>
         <div className={styles.left} onClick={this.openMenu}>
           <FontAwesome name="plus"/>
           {this.renderMenu()}

@@ -2,6 +2,7 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 import {Assets, Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout} from '../containers';
+import styles from './styles.scss';
 
 const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</NavLink>;
 
@@ -41,7 +42,9 @@ const home = {
   icon: 'home',
   path: '/home',
   component: Home,
-  header: true,
+  header: {
+    center: <div className={styles.homeHeader}></div>
+  },
   navBar: true
 };
 

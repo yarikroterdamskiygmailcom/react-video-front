@@ -20,17 +20,21 @@ export default class VlogEditor extends Component {
 
   getActions = () => [
     {
+      icon: 'camera',
       render: <span id="input">Video</span>
     },
     {
+      icon: 'random',
       render: <div>Crossfade</div>,
       fn: this.props.vlogEditor.addCrossfade
     },
     {
+      icon: 'font',
       render: <div>Title</div>,
       fn: this.props.vlogEditor.openAddTitle
     },
     {
+      icon: 'fire',
       render: <div>Branding element</div>,
       fn: this.props.vlogEditor.openAddBrandingElement
     }
@@ -43,6 +47,7 @@ export default class VlogEditor extends Component {
     return (
       <div className={styles.container}>
         {uploading && <div className={styles.uploadingIndicator}>Uploading your video...</div>}
+        <div className={styles.header}>Videos & Media</div>
         <Arranger
           items={media}
           onSortEnd={onSortEnd}

@@ -2,9 +2,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     width: 100%;
-    height: 30px;
+    height: fit-content;
     background: #FFFFFF;
     color: #443C43;
+    border-bottom: #D9D8DB solid 1px;
+    padding: 10px 0;
 }
 
 .left {
@@ -13,15 +15,17 @@
 
 .title {
     justify-self: center;
+    text-align: center;
+    font-weight: bold;
 }
 
 .right {
     justify-self: flex-end;
 }
 
-.left,
-.title,
-.right {
-    display: flex;
-    align-items: center;
+
+.title {
+    width: 100%;
+    height: 100%;
 }
+

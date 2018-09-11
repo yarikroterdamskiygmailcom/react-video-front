@@ -11,7 +11,7 @@ export default class Header extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.left}>{routeObj.header.left}</div>
-        <div className={styles.title}>{routeObj.name}</div>
+        <div className={styles.title}>{routeObj.header.center || routeObj.name}</div>
         <div className={styles.right}>{routeObj.header.right}</div>
       </div>
     );

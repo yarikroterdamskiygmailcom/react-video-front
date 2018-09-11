@@ -81,16 +81,16 @@ export class VlogEditorStore {
       text: e.target.value
     }
 
-    setTextColor = e => {
+    setTextColor = color => {
       this.title = {
         ...this.title,
-        textColor: e.target.value
+        textColor: color
       };
     }
 
-    setBackgroundColor = e => this.title = {
+    setBackgroundColor = color => this.title = {
       ...this.title,
-      backgroundColor: e.target.value
+      backgroundColor: color
     }
 
     addTitle = () => {
