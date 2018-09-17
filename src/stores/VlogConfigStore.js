@@ -1,5 +1,5 @@
 import {observable} from 'mobx';
-import {vlogEditorStore as editor} from '../../';
+import {vlogEditorStore as editor} from '../';
 
 export class VlogConfigStore {
 

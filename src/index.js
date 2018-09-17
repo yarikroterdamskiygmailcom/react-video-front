@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import {Provider} from 'mobx-react';
 import {Router} from 'react-router';
-import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, VlogConfigStore, VlogRenderStore} from './src/stores';
-import App from './src/containers/App';
+import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, VlogConfigStore, VlogRenderStore} from './stores';
+import App from './containers/App';
 
 export const history = createBrowserHistory();
 

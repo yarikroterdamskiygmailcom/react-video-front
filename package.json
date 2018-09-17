@@ -5,7 +5,7 @@
   "repository": "git@gitlab.com:Gedos/video-frontend.git",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env NODE_ENV=development parcel index.html",
+    "start": "webpacker serve",
     "build": "cross-env NODE_ENV=production parcel build index.html --no-minify --public-url /"
   },
   "dependencies": {
@@ -50,6 +50,7 @@
     "eslint-plugin-jest": "^21.15.1",
     "eslint-plugin-react": "^7.7.0",
     "node-sass": "^4.9.2",
-    "parcel-plugin-url-loader": "^1.2.5"
+    "parcel-plugin-url-loader": "^1.2.5",
+    "webpacker": "^3.1.2"
   }
 }

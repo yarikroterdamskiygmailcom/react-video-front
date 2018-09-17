@@ -2,7 +2,7 @@ import {observable} from 'mobx';
 import {php} from '.';
 import Resumable from 'resumablejs';
 import encode from 'object-to-formdata';
-import {sessionStore} from '../../index';
+import {sessionStore} from '../';
 
 export class AssetsStore {
 

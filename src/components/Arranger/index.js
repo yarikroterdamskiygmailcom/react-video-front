@@ -3,7 +3,7 @@ import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import Swipeable from 'react-swipeable';
-import styles from './styles';
+import styles from './styles.scss';
 
 export default class Arranger extends Component {
 

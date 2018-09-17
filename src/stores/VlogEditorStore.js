@@ -3,7 +3,7 @@ import {Trimmer, AddTitle, AddBrandingElement, LowerThird, Preview} from '../com
 import Resumable from 'resumablejs';
 import {observable, values} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
-import {sessionStore} from '../../index';
+import {sessionStore} from '../';
 
 export class VlogEditorStore {
     @observable media = null

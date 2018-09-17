@@ -1,7 +1,7 @@
 import {observable, toJS} from 'mobx';
 import {php} from '.';
 import encode from 'object-to-formdata';
-import {sessionStore} from '../../index';
+import {sessionStore} from '../';
 
 export class VlogRenderStore {
 
