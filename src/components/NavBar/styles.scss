@@ -5,20 +5,20 @@
     justify-content: space-around;
     width: 100%;
     bottom: 0;
-    background: white;
+    background: $white;
     padding-top: 5px;
     .route {
         display: flex;
         flex-direction: column;
         align-items: center;
         flex-grow: 1;
-        color: #5A5A5A;
+        color: $text-grey;
         text-decoration: none;
         transition: color 0.2s, border-bottom 0.2s;
-        border-bottom: white solid 3px;
+        border-bottom: $white solid 3px;
         &.active {
-            color: #C04C9F;
-            border-bottom: #C04C9F solid 3px;
+            color: $purple;
+            border-bottom: $purple solid 3px;
         }
 
         .icon {

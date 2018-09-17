@@ -3,9 +3,9 @@
     grid-template-columns: 1fr 1fr 1fr;
     width: 100%;
     height: fit-content;
-    background: #FFFFFF;
-    color: #443C43;
-    border-bottom: #D9D8DB solid 1px;
+    background: $white;
+    color: $text;
+    border-bottom: $grey solid 1px;
     padding: 10px 0;
 }
 

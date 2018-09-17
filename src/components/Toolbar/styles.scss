@@ -18,18 +18,18 @@
         transition: color 0.2s;
 
         &:hover {
-            color: #C04C9F;
+            color: $purple;
         }
     }
 
     .left {
-        background: #F3E3EF;
-        color: #CE6CB1;
+        background: $pink;
+        color: $purple;
     }
 
     .right {
-        background: #CE6CB1;
-        color: #FFFFFF;
+        background: $purple;
+        color: $white;
     }
 }
 
@@ -63,7 +63,7 @@
         width: calc(100vw - 10px);
         background: #F0F0F0;
         padding: 15px 0;
-        color: black;
+        color: $text;
         text-align: center;
         border-radius: 15px;
     }
@@ -71,14 +71,14 @@
 
 .menuInner {
     width: calc(100vw - 10px);
-    background: white;
+    background: $white;
     border-radius: 15px;
     margin-bottom: 10px;
 }
 
 .action {
     position: relative;
-    color: black;
+    color: $text;
     padding: 15px 0;
     transition: color 0.1s;
     border-bottom: #D1D1DF solid 1px;

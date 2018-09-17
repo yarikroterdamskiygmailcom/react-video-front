@@ -5,7 +5,7 @@
     height: fit-content;
 
     .header {
-        color: #C4C4C4;
+        color: $text-grey;
         margin-bottom: 10px;
     }
 }
@@ -48,7 +48,7 @@
             top: 10px;
             left: 10px;
             position: absolute;
-            color: white;
+            color: $white;
         }
 
         .duration {
@@ -61,9 +61,9 @@
             top: 10px;
             right: 10px;
             position: absolute;
-            color: white;
+            color: $white;
             border-radius: 20px;
-            background: #DDDDDD99;
+            background: #FFFFFF4D;
         }
     }
 }

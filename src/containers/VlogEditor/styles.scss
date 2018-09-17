@@ -9,7 +9,7 @@
     width: 100%;
     height: 50px;
     background: turquoise;
-    color: black;
+    color: $text;
 }
 
 .toolbar {
@@ -19,6 +19,6 @@
 }
 
 .header {
-    color: #C4C4C4;
+    color: $text-grey;
     margin: 20px;
 }

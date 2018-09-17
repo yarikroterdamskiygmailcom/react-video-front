@@ -5,6 +5,7 @@ import {Provider} from 'mobx-react';
 import {Router} from 'react-router';
 import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, VlogConfigStore, VlogRenderStore} from './stores';
 import App from './containers/App';
+import './scss/main.scss';
 
 export const history = createBrowserHistory();
 

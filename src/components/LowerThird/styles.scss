@@ -6,7 +6,7 @@
     width: 80%;
     height: 60%;
     padding: 20px 20px 0;
-    background: #E0E0E0;
+    background: $background-modal;
     border-radius: 20px;
 }
 
@@ -26,10 +26,10 @@
     justify-content: center;
     width: 50%;
     height: 50px;
-    color: #C565B2;
+    color: $purple;
 
     &:first-of-type {
-        border-right: #C9C9C9 solid 1px;
+        border-right: $grey solid 1px;
     }
 }
 

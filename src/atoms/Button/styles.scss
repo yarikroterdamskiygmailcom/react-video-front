@@ -1,17 +1,17 @@
 .container {
-    color: #C14C9F;
+    color: $purple;
     font-weight: bold;
     cursor: pointer;
     width: 100%;
     padding: 20px 0;
     text-align: center;
-    background: rgba(193, 76, 159, 0.15);
-    border: 2px solid rgba(193, 76, 159, 0.093014);
+    background: $pink;
+    border: 2px solid $pink;
     border-radius: 8px;
 
     &.active {
-        background: #80848F;
-        color: #CECDD2;
+        background: $grey;
+        color: $text-grey;
     }
 }
 
