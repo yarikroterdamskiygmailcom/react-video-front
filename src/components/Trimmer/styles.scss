@@ -12,3 +12,21 @@
     width: 100%;
     height: 56.25%;
 }
+
+.timestamps {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dot {
+    background: white;
+}
+
+.track {
+    background: $purple;
+}
+
+.rail {
+    background: $grey;
+}

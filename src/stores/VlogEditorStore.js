@@ -135,6 +135,14 @@ export class VlogEditorStore {
       }
     }
 
+    setTrim = values => {
+      this.trimmer = {
+        ...this.trimmer,
+        startTime: values[0],
+        endTime: values[1]
+      };
+    }
+
     trimVideo = () => {
       this.currentVideo.inpoint = parseInt(this.trimmer.startTime * this.currentVideo.framerate, 10);
       this.currentVideo.outpoint = parseInt(this.trimmer.endTime * this.currentVideo.framerate, 10);
