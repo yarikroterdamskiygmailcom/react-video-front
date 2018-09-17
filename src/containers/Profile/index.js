@@ -31,8 +31,8 @@ export default class Profile extends Component {
     return (
       <div className={styles.persona}>
         <div className={styles.avatar}/>
-        <div className={styles.fullName}>{fullName}</div>
-        <div className={styles.companyName}>{companyName}</div>
+        <div className={styles.fullName}>{fullName || 'Kees Kaas'}</div>
+        <div className={styles.companyName}>{companyName || 'Het grote bedrijf'}</div>
       </div>
     );
   }

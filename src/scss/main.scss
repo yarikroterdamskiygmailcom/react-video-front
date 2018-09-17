@@ -13,4 +13,9 @@
         user-select: none;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Lucida Grande";
     }
+
+    a {
+        color: $text-grey;
+        text-decoration: none;
+    }
 }

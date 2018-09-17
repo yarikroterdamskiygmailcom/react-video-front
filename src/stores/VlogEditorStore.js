@@ -1,7 +1,7 @@
 import React from 'react';
 import {Trimmer, AddTitle, AddBrandingElement, LowerThird, Preview} from '../components';
 import Resumable from 'resumablejs';
-import {observable, values} from 'mobx';
+import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
 import {sessionStore} from '../';
 
@@ -16,7 +16,9 @@ export class VlogEditorStore {
 
     //Editor stuff
 
-    addMedia = mediaObj => this.media = [...this.media, mediaObj]
+    @action addMedia = mediaObj => {
+      this.media = [...this.media.toJS(), mediaObj];
+    }
 
     deleteMedia = i => {
       this.media = this.media.filter((value, index) => index !== i);
