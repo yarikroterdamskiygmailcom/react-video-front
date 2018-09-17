@@ -58,7 +58,7 @@ const assets = {
 };
 
 const addVlog = {
-  name: 'Add Vlog',
+  name: 'Edit Vlog',
   icon: 'camera',
   path: '/edit-vlog',
   component: VlogEditor,

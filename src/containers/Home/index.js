@@ -15,11 +15,6 @@ export default class Home extends Component {
     this.props.vlogs.loadVlogs();
   }
 
-  openProject = vlog => {
-    this.props.vlogEditor.setVlog(vlog);
-    this.props.history.push('/edit-vlog');
-  }
-
   viewDetails = vlog => {
     this.props.vlogDetails.setVlog(vlog);
     this.props.history.push('/vlog-details');

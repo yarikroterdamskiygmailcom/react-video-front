@@ -7,7 +7,6 @@ export default class Segment extends Component {
 
     render() {
       const {title, children} = this.props;
-      console.log(children);
       return (
         <div className={styles.container}>
           <div className={styles.title}>{title}</div>
