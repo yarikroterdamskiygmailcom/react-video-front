@@ -1,5 +1,5 @@
 import React from 'react';
-import {Trimmer, AddTitle, AddBrandingElement, Preview} from '../components';
+import {Trimmer, AddTitle, AddBrandingElement, LowerThird, Preview} from '../components';
 import Resumable from 'resumablejs';
 import {observable, values} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
@@ -156,6 +156,19 @@ export class VlogEditorStore {
       });
       this.closeOverlay();
     }
+
+    //Lower third stuff
+
+    @observable lowerThirdSide = 'left';
+
+    openLowerThird = () => {
+      this.overlayActive = true;
+      this.overlayContent = <LowerThird/>;
+    }
+
+      toggleLowerThirdSide = () => {
+        this.lowerThirdSide = this.lowerThirdSide === 'left' ? 'right' : 'left';
+      };
 
     //Preview stuff
 

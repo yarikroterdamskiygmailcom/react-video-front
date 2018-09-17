@@ -24,7 +24,7 @@ export default class Arranger extends Component {
     lowerThird: {
       label: 'Lower Third',
       icon: 'tag',
-      func: () => null
+      func: this.props.onLowerThird
     },
     delete: {
       label: 'Delete',

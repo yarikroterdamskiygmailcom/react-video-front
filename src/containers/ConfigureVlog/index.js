@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {Input, Toggle} from '../../atoms';
+import classNames from 'classnames';
+import {Input, Toggle, Segment, Carousel, ButtonGroup} from '../../atoms';
+import {Preview} from '../../components';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import FontAwesome from 'react-fontawesome';
@@ -62,18 +64,98 @@ export default class ConfigureVlog extends Component {
 
   next = () => this.props.history.push('/render-vlog')
 
+  // render() {
+  //   const {
+  //     title, desc,
+  //     setTitle, setDesc,
+  //   } = this.props.vlogConfig;
+  //   return (
+  //     <div className={styles.container}>
+  //       <Input fieldName="Title" nameTop value={title} onChange={setTitle}/>
+  //       <Input fieldName="Description" nameTop value={desc} onChange={setDesc}/>
+  //       {this.renderColorFilter()}
+  //       {this.toggleRows().map(this.renderToggleRow)}
+  //       <FontAwesome className={styles.next} name="angle-right" onClick={this.next}/>
+  //     </div>
+  //   );
+  // }
+
+  orientationOptions = [
+    {
+      icon: 'mobile',
+      option: 'Portrait Mode',
+      desc: '16:9',
+      value: '16:9'
+    },
+    {
+      icon: 'mobile',
+      option: 'Landscape Mode',
+      desc: '9:16',
+      value: '9:16'
+    }
+  ].map(({icon, option, desc, value}) => ({
+    render: (
+      <div className={styles.option}>
+        <FontAwesome className={classNames(styles.icon, value === '9:16' && styles.rotate)} name={icon}/>
+        <div className={styles.optionBody}>
+          <div className={styles.optionName}>{option}</div>
+          <div className={styles.optionDesc}>{desc}</div>
+        </div>
+      </div>
+    ),
+    value
+  })
+  );
+
+  filters = ['#777777', '#333333']
+
+  renderFilter = filter => (
+    <div className={styles.filter} style={{background: filter}}>
+
+    </div>
+  )
+
+  renderInput = (label, value, onChange) => (
+    <div className={styles.spacedRow}>
+      <div className={styles.label}>{label}</div>
+      <input type="text" value={value} onChange={onChange}/>
+    </div>
+  )
+
+  renderPaymentInfo = () => (
+    <div className={styles.spacedRow}>
+      <div>Payment Info</div>
+      <FontAwesome name="chevron-right" style={{color: '#D1D1D6'}}/>
+    </div>
+  )
+
   render() {
-    const {
-      title, desc,
-      setTitle, setDesc,
-    } = this.props.vlogConfig;
+    const orientation = '16:9';
+    const vlogTitle = 'kaas';
+    const vlogDescription = 'kaas';
+    const changeVlogTitle = () => null;
+    const changeVlogDescription = () => null;
     return (
       <div className={styles.container}>
-        <Input fieldName="Title" nameTop value={title} onChange={setTitle}/>
-        <Input fieldName="Description" nameTop value={desc} onChange={setDesc}/>
-        {this.renderColorFilter()}
-        {this.toggleRows().map(this.renderToggleRow)}
-        <FontAwesome className={styles.next} name="angle-right" onClick={this.next}/>
+        <Segment title="Info">
+          {this.renderInput('Title', vlogTitle, changeVlogTitle)}
+          {this.renderInput('Description', vlogDescription, changeVlogDescription)}
+          {this.renderPaymentInfo()}
+        </Segment>
+        <Segment title="Styling">
+          {this.filters.map(this.renderFilter)}
+          <Toggle label="Logo Overlay"/>
+        </Segment>
+        <Segment title="Orientation">
+          <ButtonGroup options={this.orientationOptions} value={orientation} onChange={() => null}/>
+        </Segment>
+        <Segment title="Options">
+          <Toggle label="Custom Subtitles"/>
+          <Toggle label="Custom Edit"/>
+        </Segment>
+        <Segment title="Preview">
+          <Preview/>
+        </Segment>
       </div>
     );
   }
