@@ -59,7 +59,7 @@ const assets = {
 
 const addVlog = {
   name: 'Add Vlog',
-  icon: 'film',
+  icon: 'camera',
   path: '/edit-vlog',
   component: VlogEditor,
   header: {
