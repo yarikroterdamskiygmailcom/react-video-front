@@ -1,9 +1,14 @@
 .container {
     display: flex;
     flex-direction: column;
+    width: 70%;
+    height: 40%;
+    background: $background-modal;
+    padding: 15px;
+    border-radius: 15px;
 }
 
 .video {
-    width: 800px;
-    height: 450px;
+    width: 100%;
+    height: 56.25%;
 }
