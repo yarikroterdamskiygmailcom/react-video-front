@@ -107,7 +107,7 @@ export default class ConfigureVlog extends Component {
   })
   );
 
-  filters = ['#777777', '#333333']
+  filters = ['#777777', '#333333', '#777777', '#333333', '#777777', '#333333', '#777777', '#333333', '#777777', '#333333']
 
   renderFilter = filter => (
     <div className={styles.filter} style={{background: filter}}>
@@ -143,7 +143,7 @@ export default class ConfigureVlog extends Component {
           {this.renderPaymentInfo()}
         </Segment>
         <Segment title="Styling">
-          {this.filters.map(this.renderFilter)}
+          <Carousel title="Filters" items={this.filters} renderFunction={this.renderFilter}/>
           <Toggle label="Logo Overlay"/>
         </Segment>
         <Segment title="Orientation">
