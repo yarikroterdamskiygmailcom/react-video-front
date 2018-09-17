@@ -49,3 +49,22 @@ input {
     border: none;
     text-align: right;
 }
+
+.renderSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.renderButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: $purple;
+    color: $white;
+    width: 80px;
+    margin: 30px 20px;
+    padding: 15px;
+    border-radius: 3px;
+}

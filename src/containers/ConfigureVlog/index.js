@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {Input, Toggle, Segment, Carousel, ButtonGroup} from '../../atoms';
+import {Input, Toggle, Segment, Carousel, RadioButton} from '../../atoms';
 import {Preview} from '../../components';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
@@ -109,11 +109,7 @@ export default class ConfigureVlog extends Component {
 
   filters = ['#777777', '#333333', '#777777', '#333333', '#777777', '#333333', '#777777', '#333333', '#777777', '#333333']
 
-  renderFilter = filter => (
-    <div className={styles.filter} style={{background: filter}}>
-
-    </div>
-  )
+  renderFilter = filter => <div className={styles.filter} style={{background: filter}}/>
 
   renderInput = (label, value, onChange) => (
     <div className={styles.spacedRow}>
@@ -130,11 +126,11 @@ export default class ConfigureVlog extends Component {
   )
 
   render() {
-    const orientation = '16:9';
     const vlogTitle = 'kaas';
     const vlogDescription = 'kaas';
     const changeVlogTitle = () => null;
     const changeVlogDescription = () => null;
+    const {orientation, toggleOrientation} = this.props.vlogConfig;
     return (
       <div className={styles.container}>
         <Segment title="Info">
@@ -147,7 +143,7 @@ export default class ConfigureVlog extends Component {
           <Toggle label="Logo Overlay"/>
         </Segment>
         <Segment title="Orientation">
-          <ButtonGroup options={this.orientationOptions} value={orientation} onChange={() => null}/>
+          {this.orientationOptions.map(({render, value}) => <RadioButton render={render} active={value === orientation} onChange={toggleOrientation}/>)}
         </Segment>
         <Segment title="Options">
           <Toggle label="Custom Subtitles"/>
@@ -156,6 +152,9 @@ export default class ConfigureVlog extends Component {
         <Segment title="Preview">
           <Preview/>
         </Segment>
+        <div className={styles.renderSection}>
+          <div className={styles.renderButton}><div>Render</div><FontAwesome name="chevron-right"/></div>
+        </div>
       </div>
     );
   }

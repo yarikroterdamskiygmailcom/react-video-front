@@ -3,25 +3,14 @@ import {vlogEditorStore as editor} from '../';
 
 export class VlogConfigStore {
 
-    @observable title = null
-    @observable desc = ''
-    @observable useColorFilter = false
-    @observable colorFilter = '#edd789'
-    @observable logoOverlay = true
-    @observable subtitles = false
-    @observable edit = false
+  @observable orientation = '16:9'
 
     init = () => {
       this.title = editor.title || 'Untitled';
     }
 
-    setTitle = e => this.title = e.target.value
-    setDesc = e => this.desc = e.target.value
-    setUseColorFilter = val => this.useColorFilter = val
-    setColorFilter = e => this.colorFilter = e.target.value
-    setLogoOverlay = val => this.logoOverlay = val
-    setSubtitles = val => this.subtitles = val
-    setEdit = val => this.edit = val
+    toggleOrientation = () => this.orientation = this.orientation === '16:9' ? '9:16' : '16:9'
+
 }
 
 export default VlogConfigStore;
