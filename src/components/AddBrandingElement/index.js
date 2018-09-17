@@ -17,6 +17,10 @@ export default class AddBrandingElement extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.assets.loadAssets();
+  }
+
   componentDidMount() {
     !isEmpty(this.props.assets.assetList) && this.selectAsset(0);
   }
