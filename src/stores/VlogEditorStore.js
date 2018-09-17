@@ -169,16 +169,32 @@ export class VlogEditorStore {
 
     //Lower third stuff
 
+    @observable lowerThirdName = '';
+    @observable lowerThirdDesc = '';
+    @observable lowerThirdSecondLine = true;
     @observable lowerThirdSide = 'left';
+    @observable lowerThirdUseLogo = true;
 
     openLowerThird = () => {
       this.overlayActive = true;
       this.overlayContent = <LowerThird/>;
     }
 
-      toggleLowerThirdSide = () => {
-        this.lowerThirdSide = this.lowerThirdSide === 'left' ? 'right' : 'left';
-      };
+    setLowerThirdName = e => {
+      this.lowerThirdName = e.target.value;
+    }
+
+    setLowerThirdDesc = e => {
+      this.lowerThirdDesc = e.target.value;
+    }
+
+    toggleLowerThirdSecondLine = val => {
+      this.lowerThirdSecondLine = val;
+    }
+
+    toggleLowerThirdSide = () => {
+      this.lowerThirdSide = this.lowerThirdSide === 'left' ? 'right' : 'left';
+    };
 
     //Preview stuff
 
