@@ -7,6 +7,7 @@ import styles from './styles.scss';
 @withRouter
 @inject('vlogs')
 @inject('vlogEditor')
+@inject('vlogDetails')
 @observer
 export default class Home extends Component {
 
@@ -19,6 +20,11 @@ export default class Home extends Component {
     this.props.history.push('/edit-vlog');
   }
 
+  viewDetails = vlog => {
+    this.props.vlogDetails.setVlog(vlog);
+    this.props.history.push('/vlog-details');
+  }
+
   renderHighlight = () =>
     <div className={styles.highlight}>
 
@@ -29,8 +35,8 @@ export default class Home extends Component {
       <div className={styles.container}>
         {this.renderHighlight()}
         <div className={styles.carousels}>
-          <Carousel title="Saved Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
-          <Carousel title="Shared Vlogs" items={this.props.vlogs.list} onClick={this.openProject}/>
+          <Carousel title="Saved Vlogs" items={this.props.vlogs.list} onClick={this.viewDetails}/>
+          <Carousel title="Shared Vlogs" items={this.props.vlogs.list} onClick={this.viewDetails}/>
         </div>
       </div>
     );

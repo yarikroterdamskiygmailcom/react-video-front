@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
-import {observer, inject} from 'mobx-react';
 
-@inject('vlogEditor')
-@observer
 export default class Preview extends Component {
 
   render() {

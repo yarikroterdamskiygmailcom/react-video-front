@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
-import {Assets, Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout} from '../containers';
+import {Assets, Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails} from '../containers';
 import styles from './styles.scss';
 
 const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</NavLink>;
@@ -128,8 +128,18 @@ const renderVlog = {
   }
 };
 
+const vlogDetails = {
+  name: 'Vlog details',
+  icon: null,
+  path: '/vlog-details',
+  component: VlogDetails,
+  header: {
+    left: backButton
+  }
+};
+
 export const navBarRoutes = [home, addVlog, profile];
 
-const allRoutes = [notFound, login, logout, forgotPassword, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog];
+const allRoutes = [notFound, login, logout, forgotPassword, home, assets, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails];
 
 export default allRoutes;
