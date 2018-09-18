@@ -113,13 +113,18 @@
 
     .fileName,
     .fileDuration {
-        max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
+
+       
     }
 
     .fileDuration {
         color: $text-grey;
+    }
+
+    &.active {
+        max-width: 125px;
     }
 }
 

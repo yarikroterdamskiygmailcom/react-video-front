@@ -51,7 +51,7 @@ export default class Arranger extends Component {
   itemBody = ({thumb, file, duration, mediatype}, index) => (
     <div className={styles.itemBody}>
       <div className={styles.thumb} onClick={() => this.props.onThumbClick(index)} style={{background: `url(${thumb})`}} />
-      <div className={styles.stack}>
+      <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
         <div className={styles.fileName}>{file || this.getMediaLabel(mediatype)}</div>
         <div className={styles.fileDuration}>{duration}</div>
       </div>

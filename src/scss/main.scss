@@ -11,11 +11,17 @@
         -ms-user-select: none;
         -o-user-select: none;
         user-select: none;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Lucida Grande";
+        font-family: 'Open Sans';
     }
 
     a {
         color: $text-grey;
         text-decoration: none;
+    }
+
+    input {
+        font-family: 'Open Sans';
+        font-size: 16px;
+        color: $text-grey;
     }
 }
