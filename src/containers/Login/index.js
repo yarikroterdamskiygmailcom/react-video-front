@@ -19,9 +19,11 @@ class Login extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.logo}/>
-        <Input className={styles.input} nameTop fieldName="Email" value={email} onChange={changeEmail}/>
-        <Input className={styles.input} nameTop fieldName="Password" type="password" value={password} onChange={changePassword}/>
-        <Button onClick={login} text="Login"/>
+        <div className={styles.text}>Email</div>
+        <input className={styles.input} value={email} onChange={changeEmail}/>
+        <div className={styles.text}>Password</div>
+        <input className={styles.input} type="password" value={password} onChange={changePassword}/>
+        <Button className={styles.button} onClick={login} text="Login"/>
         {error && <div>{error}</div>}
         <NavLink className={styles.link} to="/forgot-password">Forgot your password?</NavLink>
       </div>

@@ -6,9 +6,9 @@ import styles from './styles.scss';
 export default class Button extends Component {
 
   render() {
-    const {onClick, text, highlight, disabled} = this.props;
+    const {onClick, text, highlight, disabled, className} = this.props;
     return (
-      <div className={classNames(styles.container, highlight && styles.active)} onClick={disabled ? noop : onClick}>
+      <div className={classNames(styles.container, highlight && styles.active, className)} onClick={disabled ? noop : onClick}>
         <div className={styles.text}>{text}</div>
       </div>
     );

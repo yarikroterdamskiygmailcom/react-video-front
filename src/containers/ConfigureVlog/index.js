@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {Input, Toggle, Segment, Carousel, RadioButton} from '../../atoms';
+import {Input, Toggle, Segment, Carousel, RadioButton, Icon} from '../../atoms';
 import {Preview} from '../../components';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
@@ -82,13 +82,13 @@ export default class ConfigureVlog extends Component {
 
   orientationOptions = [
     {
-      icon: 'mobile',
+      icon: 'landscape',
       option: 'Portrait Mode',
       desc: '16:9',
       value: '16:9'
     },
     {
-      icon: 'mobile',
+      icon: 'portrait',
       option: 'Landscape Mode',
       desc: '9:16',
       value: '9:16'
@@ -96,7 +96,7 @@ export default class ConfigureVlog extends Component {
   ].map(({icon, option, desc, value}) => ({
     render: (
       <div className={styles.option}>
-        <FontAwesome className={classNames(styles.icon, value === '9:16' && styles.rotate)} name={icon}/>
+        <Icon className={styles.icon} name={icon}/>
         <div className={styles.optionBody}>
           <div className={styles.optionName}>{option}</div>
           <div className={styles.optionDesc}>{desc}</div>
@@ -118,13 +118,6 @@ export default class ConfigureVlog extends Component {
     </div>
   )
 
-  renderPaymentInfo = () => (
-    <div className={styles.spacedRow}>
-      <div>Payment Info</div>
-      <FontAwesome name="chevron-right" style={{color: '#D1D1D6'}}/>
-    </div>
-  )
-
   render() {
     const vlogTitle = 'kaas';
     const vlogDescription = 'kaas';
@@ -136,7 +129,6 @@ export default class ConfigureVlog extends Component {
         <Segment title="Info">
           {this.renderInput('Title', vlogTitle, changeVlogTitle)}
           {this.renderInput('Description', vlogDescription, changeVlogDescription)}
-          {this.renderPaymentInfo()}
         </Segment>
         <Segment title="Styling">
           <Carousel title="Filters" items={this.filters} renderFunction={this.renderFilter}/>

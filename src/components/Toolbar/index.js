@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
+import {Icon} from '../../atoms';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 
@@ -20,7 +21,7 @@ class Toolbar extends Component {
 
   renderAction = (action, i) =>
     <div key={`action-${i}`} className={styles.action} onClick={action.fn}>
-      <FontAwesome className={styles.actionIcon} name={action.icon}/>
+      <Icon className={styles.actionIcon} name={action.icon}/>
       {action.render}
     </div>
 

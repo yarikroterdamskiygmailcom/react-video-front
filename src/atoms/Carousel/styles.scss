@@ -1,12 +1,10 @@
 .container {
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    height: fit-content;
+    margin-bottom: -30px; //because of scrollbar
 
     .header {
         color: $text-grey;
-        margin-bottom: 10px;
+        margin: 10px 0;
         text-transform: uppercase;
     }
 }

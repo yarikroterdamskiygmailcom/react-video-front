@@ -8,7 +8,6 @@ const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</Na
 
 const notFound = {
   name: 'Not Found',
-  icon: null,
   path: '/not-found',
   component: NotFound,
   header: true
@@ -29,7 +28,6 @@ const logout = {
 
 const forgotPassword = {
   name: 'Forgot Password',
-  icon: null,
   path: '/forgot-password',
   component: ForgotPassword,
   header: {
@@ -81,7 +79,7 @@ const addVlog = {
 
 const publish = {
   name: 'Publish',
-  icon: 'share-alt',
+  icon: 'publish',
   path: '/publish',
   component: Publish,
   header: true,
@@ -90,7 +88,6 @@ const publish = {
 
 const settings = {
   name: 'Settings',
-  icon: 'cog',
   path: '/settings',
   component: Settings,
   header: {
@@ -100,7 +97,7 @@ const settings = {
 
 const profile = {
   name: 'Profile',
-  icon: 'user',
+  icon: 'profile',
   path: '/profile',
   component: Profile,
   header: {
@@ -112,7 +109,6 @@ const profile = {
 
 const vlogEditor = {
   name: 'Edit Vlog',
-  icon: null,
   path: '/edit-vlog',
   component: VlogEditor,
   header: {
@@ -122,7 +118,6 @@ const vlogEditor = {
 
 const configureVlog = {
   name: 'Configure Vlog',
-  icon: null,
   path: '/configure-vlog',
   component: ConfigureVlog,
   header: {
@@ -132,7 +127,6 @@ const configureVlog = {
 
 const renderVlog = {
   name: 'Render Vlog',
-  icon: null,
   path: '/render-vlog',
   component: RenderVlog,
   header: {
@@ -142,7 +136,6 @@ const renderVlog = {
 
 const vlogDetails = {
   name: 'Vlog details',
-  icon: null,
   path: '/vlog-details',
   component: VlogDetails,
   header: {

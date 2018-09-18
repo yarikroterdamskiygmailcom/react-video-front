@@ -24,18 +24,18 @@ export default class VlogEditor extends Component {
       render: <span id="input">Video</span>
     },
     {
-      icon: 'random',
+      icon: 'crossfade',
       render: <div>Crossfade</div>,
       fn: this.props.vlogEditor.addCrossfade
     },
     {
-      icon: 'font',
+      icon: 'title',
       render: <div>Title</div>,
       fn: this.props.vlogEditor.openAddTitle
     },
     {
-      icon: 'fire',
-      render: <div>Branding element</div>,
+      icon: 'branding',
+      render: <div>Branding</div>,
       fn: this.props.vlogEditor.openAddBrandingElement
     }
   ]

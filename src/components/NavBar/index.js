@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {NavLink} from 'react-router-dom';
-import FontAwesome from 'react-fontawesome';
+import {Icon} from '../../atoms';
 import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
 import styles from './styles.scss';
@@ -12,7 +12,7 @@ export default class NavBar extends Component {
 
     renderRoute = ({name, icon, path}) => (
       <NavLink key={path} to={path} className={styles.route} activeClassName={styles.active}>
-        <FontAwesome name={icon} className={styles.icon}/>
+        <Icon className={styles.icon} name={icon}/>
         {name}
       </NavLink>
     )

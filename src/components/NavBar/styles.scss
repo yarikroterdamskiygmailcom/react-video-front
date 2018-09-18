@@ -4,6 +4,7 @@
     flex-direction: row; 
     justify-content: space-around;
     width: 100%;
+    height: $navbar-height;
     bottom: 0;
     background: $white;
     padding-top: 5px;
@@ -13,11 +14,13 @@
         align-items: center;
         flex-grow: 1;
         color: $text-grey;
+        fill: $text-grey;
         text-decoration: none;
         transition: color 0.2s, border-bottom 0.2s;
         border-bottom: $white solid 3px;
         &.active {
             color: $purple;
+            fill: $purple;
             border-bottom: $purple solid 3px;
         }
 

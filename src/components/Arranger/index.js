@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Icon} from '../../atoms';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
@@ -18,12 +19,12 @@ export default class Arranger extends Component {
   actions = {
     trim: {
       label: 'Trim',
-      icon: 'cut',
+      icon: 'trim',
       func: this.props.openTrimmer
     },
     lowerThird: {
       label: 'Lower Third',
-      icon: 'tag',
+      icon: 'lowerThird',
       func: this.props.onLowerThird
     },
     delete: {
@@ -43,9 +44,9 @@ export default class Arranger extends Component {
   generateActions = media => this.mediaActionsMap[media.mediatype]
 
   getMediaLabel = mediatype => ({
-    crossfade: <div><FontAwesome name="random" /> Crossfade</div>,
-    title: <div><FontAwesome name="font" /> Title</div>,
-    asset: <div><FontAwesome name="fire" /> Branding Element</div>
+    crossfade: <div><Icon name="crossfade" /> Crossfade</div>,
+    title: <div><Icon name="title" /> Title</div>,
+    asset: <div><Icon name="branding" /> Branding</div>
   }[mediatype])
 
   itemBody = ({thumb, file, duration, mediatype}, index) => (
@@ -116,7 +117,7 @@ export default class Arranger extends Component {
 
   renderAction = (action, i) =>
     <div key={i} className={styles.action} onClick={() => { action.func(i); this.resetReveal(); }}>
-      <FontAwesome name={action.icon} />
+      <Icon name={action.icon} />
       <div>{action.label}</div>
     </div>
 
