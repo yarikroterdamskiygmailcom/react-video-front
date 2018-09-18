@@ -94,7 +94,7 @@ const settings = {
   path: '/settings',
   component: Settings,
   header: {
-    left: backButton
+    left: <NavLink to="/profile"><FontAwesome name="chevron-left"/> Back</NavLink>,
   }
 };
 

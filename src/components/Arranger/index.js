@@ -99,11 +99,12 @@ export default class Arranger extends Component {
   ));
 
   setReveal = (index, side) => {
-    this.resetReveal();
-    this.setState({
-      revealIndex: index,
-      revealSide: side
-    });
+    this.state.revealSide
+      ? this.resetReveal()
+      : this.setState({
+        revealIndex: index,
+        revealSide: side
+      });
   }
 
   resetReveal = () => {
