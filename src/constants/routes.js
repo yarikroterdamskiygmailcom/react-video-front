@@ -70,7 +70,13 @@ const addVlog = {
   name: 'Add Vlog',
   icon: 'camera',
   path: '/add-vlog',
-  redirect: <Redirect from="/add-vlog" to={editVlog.path}/>
+  component: VlogEditor,
+  props: {
+    fromScratch: true
+  },
+  header: {
+    left: backButton
+  }
 };
 
 const publish = {

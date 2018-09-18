@@ -11,7 +11,7 @@ export default class VlogEditor extends Component {
 
   constructor(props) {
     super(props);
-    !props.vlogEditor.projectId && props.vlogEditor.initBlankVlog();
+    props.fromScratch && props.vlogEditor.initBlankVlog();
   }
 
   componentDidMount() {

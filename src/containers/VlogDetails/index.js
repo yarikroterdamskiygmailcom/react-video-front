@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import {Segment} from '../../atoms';
 import {Preview} from '../../components';
 import FontAwesome from 'react-fontawesome';
+import {withRouter} from 'react-router';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 
+@withRouter
 @inject('vlogDetails')
 @inject('vlogEditor')
 @observer

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {Carousel, Icon} from '../../atoms';
+import {isEmpty} from 'lodash-es';
 import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
 
@@ -13,7 +14,6 @@ export default class Home extends Component {
 
   componentWillMount() {
     this.props.vlogs.loadVlogs();
-    this.props.vlogEditor.initBlankVlog();
   }
 
   viewDetails = vlog => {
@@ -36,7 +36,7 @@ renderItem = item =>
 render() {
   return (
     <div className={styles.container}>
-      {this.renderHighlight()}
+      {!isEmpty(this.props.vlogEditor.media) && this.renderHighlight()}
       <div className={styles.carousels}>
         <Carousel title="Saved Vlogs" items={this.props.vlogs.list} renderFunction={this.renderItem} onClick={this.viewDetails}/>
         <Carousel title="Shared Vlogs" items={this.props.vlogs.list} renderFunction={this.renderItem} onClick={this.viewDetails}/>

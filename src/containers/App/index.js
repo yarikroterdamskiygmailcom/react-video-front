@@ -10,7 +10,7 @@ import {observer, inject} from 'mobx-react';
 @observer
 class App extends Component {
 
-  renderRoute = route => route.redirect || <Route key={route.path} exact path={route.path} component={route.component} name={route.name} exact />
+  renderRoute = route => <Route key={route.path} exact path={route.path} component={() => <route.component {...route.props}/>} name={route.name} exact/>
 
   renderAllRoutes = () =>
     <Switch>
