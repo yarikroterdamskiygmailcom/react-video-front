@@ -1,6 +1,7 @@
 export {default as Button} from './Button';
 export {default as Carousel} from './Carousel';
 export {default as ColorPicker} from './ColorPicker';
+export {default as Icon} from './Icon';
 export {default as Input} from './Input';
 export {default as RadioButton} from './RadioButton';
 export {default as Segment} from './Segment';

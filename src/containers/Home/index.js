@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
-import {Carousel} from '../../atoms';
+import {Carousel, Icon} from '../../atoms';
 import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
 
