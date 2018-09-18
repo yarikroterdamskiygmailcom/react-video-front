@@ -13,6 +13,7 @@ export default class Home extends Component {
 
   componentWillMount() {
     this.props.vlogs.loadVlogs();
+    this.props.vlogEditor.initBlankVlog();
   }
 
   viewDetails = vlog => {

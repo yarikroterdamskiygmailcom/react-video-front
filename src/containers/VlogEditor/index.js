@@ -18,10 +18,6 @@ export default class VlogEditor extends Component {
     this.props.vlogEditor.initResumable();
   }
 
-  componentWillUnmount() {
-    this.props.vlogEditor.initBlankVlog();
-  }
-
   getActions = () => [
     {
       icon: 'camera',
