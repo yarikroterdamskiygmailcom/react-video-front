@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Switch, Route, Redirect, withRouter} from 'react-router';
+import {Switch, Route, withRouter, Redirect} from 'react-router';
 import {Header, NavBar, Toolbar} from '../../components';
 import routes, {navBarRoutes} from '../../constants/routes';
 import styles from './styles.scss';
@@ -10,7 +10,7 @@ import {observer, inject} from 'mobx-react';
 @observer
 class App extends Component {
 
-  renderRoute = route => <Route key={route.path} exact path={route.path} component={route.component} name={route.name} exact />
+  renderRoute = route => route.redirect || <Route key={route.path} exact path={route.path} component={route.component} name={route.name} exact />
 
   renderAllRoutes = () =>
     <Switch>
