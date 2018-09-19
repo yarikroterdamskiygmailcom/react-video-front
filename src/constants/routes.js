@@ -2,6 +2,7 @@ import React from 'react';
 import {NavLink, Redirect} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 import {Assets, Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails} from '../containers';
+import {DeleteVlog} from '../components';
 import styles from './styles.scss';
 
 const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</NavLink>;
@@ -140,7 +141,8 @@ const vlogDetails = {
   path: '/vlog-details',
   component: VlogDetails,
   header: {
-    left: backButton
+    left: backButton,
+    right: <DeleteVlog/>
   }
 };
 
