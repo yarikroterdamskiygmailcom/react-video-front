@@ -11,6 +11,10 @@ export class VlogConfigStore {
 
     toggleOrientation = () => this.orientation = this.orientation === '16:9' ? '9:16' : '16:9'
 
+    renderVlog = () => {
+
+    }
+
 }
 
 export default VlogConfigStore;

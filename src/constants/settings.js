@@ -6,10 +6,6 @@ const settings = [
         name: 'Limit mobile data',
         description: 'Only upload videos using Wi-Fi'
       },
-      {
-        name: 'Direct upload',
-        description: 'Only use when uploading doesnt work normally'
-      },
     ]
   },
   {

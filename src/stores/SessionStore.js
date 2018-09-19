@@ -3,6 +3,7 @@ import {php} from '.';
 import encode from 'object-to-formdata';
 import {sha512} from 'js-sha512';
 import {history} from '../';
+import Cookies from 'js-cookie';
 
 export class SessionStore {
   @observable email = ''
@@ -14,7 +15,7 @@ export class SessionStore {
   changePassword = e => this.password = e.target.value
 
   initialize = () => {
-    this.sessionId = sessionStorage.getItem('token') || localStorage.getItem('token') || null;
+    this.sessionId = localStorage.getItem('token') || Cookies.get('token') || null;
     this.sessionId && history.push('/home');
   }
 
@@ -34,14 +35,23 @@ export class SessionStore {
     } else {
       this.error = null;
       this.sessionId = SessionID;
-      localStorage.setItem('token', SessionID);
+      try {
+        localStorage.setItem('token', SessionID);
+      } catch(e) {
+        Cookies.set('token', SessionID);
+      }
       history.push('/home');
     }
   });
 
   logout = () => {
     this.sessionId = null;
-    localStorage.removeItem('token', null);
+    try {
+      localStorage.removeItem('token', null);
+    } catch(e) {
+      Cookies.remove('token');
+    }
+
     history.push('/');
   }
 

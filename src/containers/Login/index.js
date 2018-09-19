@@ -20,7 +20,7 @@ class Login extends Component {
       <div className={styles.container}>
         <div className={styles.logo}/>
         <div className={styles.text}>Email</div>
-        <input className={styles.input} value={email} onChange={changeEmail}/>
+        <input className={styles.input} type="email" value={email} onChange={changeEmail}/>
         <div className={styles.text}>Password</div>
         <input className={styles.input} type="password" value={password} onChange={changePassword}/>
         <Button className={styles.button} onClick={login} text="Login"/>

@@ -11,3 +11,19 @@
 .desc {
     color: gray;
 }
+
+.option {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .icon {
+        color: $grey;
+    }
+}
+
+.preview {
+    padding: 10px 10px 0;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+}

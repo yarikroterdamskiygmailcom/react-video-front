@@ -131,7 +131,8 @@ const renderVlog = {
   component: RenderVlog,
   header: {
     left: <NavLink to={configureVlog.path}><FontAwesome name="angle-left"/> Back</NavLink>
-  }
+  },
+  navBar: true
 };
 
 const vlogDetails = {
