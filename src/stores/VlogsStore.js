@@ -14,7 +14,12 @@ export class VlogsStore {
           action: 'load',
           SessionID: sessionStore.sessionId
         })).then(res => {
-          this.list = res.data.project;
+          if (res.data.error) {
+            //in case our token don't work no more
+            sessionStore.logout();
+          } else {
+            this.list = res.data.project;
+          }
         });
       }
 }
