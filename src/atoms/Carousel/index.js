@@ -18,18 +18,14 @@ export default class Carousel extends Component {
     this.width = this.itemsRef.current.scrollWidth;
   }
 
-  swipe = (e, deltaX) => {
-    this.setState({
-      deltaX
-    });
-  }
+  swipe = (e, deltaX) => this.setState({
+    deltaX
+  });
 
-  postSwipe = (e, deltaX) => {
-    this.setState({
-      offset: this.state.offset - deltaX <= 0 ? this.state.offset - deltaX : 0,
-      deltaX: 0
-    });
-  };
+  postSwipe = (e, deltaX) => this.setState({
+    offset: this.state.offset - deltaX <= 0 ? this.state.offset - deltaX : 0,
+    deltaX: 0
+  });
 
   render() {
     const {offset, deltaX} = this.state;
