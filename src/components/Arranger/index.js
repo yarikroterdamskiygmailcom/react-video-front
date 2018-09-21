@@ -83,7 +83,7 @@ export default class Arranger extends Component {
             this.state.revealIndex === index
             && this.state.revealSide === 'right'
             && styles.active)}
-          >{this.generateActions(value).map(this.renderAction)}</div>
+          >{this.generateActions(value).map(this.renderAction(index))}</div>
           <this.SortableItem
             key={`item-${index}`}
             index={index}
@@ -93,7 +93,7 @@ export default class Arranger extends Component {
             this.state.revealIndex === index
             && this.state.revealSide === 'left'
             && styles.active)}
-          >{this.renderAction(this.actions.delete, index)}</div>
+          >{this.renderAction(index)(this.actions.delete)}</div>
         </div>
       ))}
     </div>
@@ -115,8 +115,8 @@ export default class Arranger extends Component {
     });
   }
 
-  renderAction = (action, i) =>
-    <div key={i} className={styles.action} onClick={() => { action.func(i); this.resetReveal(); }}>
+  renderAction = itemIndex => (action, i) => console.log(itemIndex) ||
+    <div key={i} className={styles.action} onClick={() => { action.func(itemIndex); this.resetReveal(); }}>
       <Icon name={action.icon} />
       <div>{action.label}</div>
     </div>

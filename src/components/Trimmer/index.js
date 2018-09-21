@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Slider} from '../../atoms';
+import {Modal} from '..';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {Range} from 'rc-slider';
@@ -14,6 +15,17 @@ export default class Trimmer extends Component {
     this.videoRef = React.createRef();
   }
 
+  actions = [
+    {
+      label: 'Cancel',
+      func: this.props.vlogEditor.closeOverlay
+    },
+    {
+      label: 'Trim',
+      func: this.props.vlogEditor.trimVideo
+    }
+  ]
+
   preview = () => {
     const {startTime, endTime} = this.props.vlogEditor.trimmer;
     setTimeout(() => this.videoRef.current.pause(), (endTime - startTime) * 1000);
@@ -24,14 +36,11 @@ export default class Trimmer extends Component {
   initEndTime = () => this.props.vlogEditor.initEndTime(this.videoRef.current.duration);
 
   render() {
-    const {setTrim, trimVideo, currentVideo} = this.props.vlogEditor;
+    const {setTrim, currentVideo} = this.props.vlogEditor;
     const {startTime, endTime, duration} = this.props.vlogEditor.trimmer;
     return (
-      <div className={styles.container}>
+      <Modal className={styles.modal} actions={this.actions}>
         <video className={styles.video} ref={this.videoRef} src={currentVideo.src} autoPlay onLoadedMetadata={this.initEndTime}/>
-        {/* <Button text="Preview" onClick={this.preview}/> */}
-        {/* <Slider value={startTime} onChange={setStartTime} min={0} max={duration} step={0.001} label="Start point"/> */}
-        {/* <Slider value={endTime} onChange={setEndTime} min={0} max={duration} step={0.001} label="End point"/> */}
         <div className={styles.timestamps}>
           <div>{startTime}</div>
           <div>{endTime}</div>
@@ -44,8 +53,7 @@ export default class Trimmer extends Component {
           step={0.001}
           allowCross={false}
         />
-        <Button text="Save" onClick={trimVideo}/>
-      </div>
+      </Modal>
     );
   }
 }

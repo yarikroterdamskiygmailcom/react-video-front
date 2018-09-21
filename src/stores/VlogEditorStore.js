@@ -174,8 +174,11 @@ export class VlogEditorStore {
     @observable lowerThirdSecondLine = true;
     @observable lowerThirdSide = 'left';
     @observable lowerThirdUseLogo = true;
+    @observable lowerThirdStart = null;
+    @observable lowerThirdEnd = null;
 
-    openLowerThird = () => {
+    openLowerThird = i => {
+      this.currentVideo = this.media[i];
       this.overlayActive = true;
       this.overlayContent = <LowerThird/>;
     }
@@ -195,6 +198,12 @@ export class VlogEditorStore {
     toggleLowerThirdSide = () => {
       this.lowerThirdSide = this.lowerThirdSide === 'left' ? 'right' : 'left';
     };
+
+    setLowerThirdTime = ([start, end]) => {
+      console.log(start, end);
+      this.lowerThirdStart = start;
+      this.lowerThirdEnd = end;
+    }
 
     //Preview stuff
 
