@@ -20,7 +20,7 @@ class Toolbar extends Component {
   closeMenu = () => this.setState({isOpen: false}, () => this.setState({isOpen: false}));
 
   renderAction = (action, i) =>
-    <div key={`action-${i}`} className={styles.action} onClick={action.fn}>
+    <div key={`action-${i}`} className={styles.action} onClick={() => this.closeMenu() || action.fn()}>
       <Icon className={styles.actionIcon} name={action.icon}/>
       {action.render}
     </div>
