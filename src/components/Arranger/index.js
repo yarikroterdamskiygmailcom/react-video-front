@@ -41,7 +41,7 @@ export default class Arranger extends Component {
     asset: []
   }
 
-  generateActions = media => this.mediaActionsMap[media.mediatype]
+  generateActions = media => this.mediaActionsMap[media.mediatype] || []
 
   getMediaLabel = mediatype => ({
     crossfade: <div><Icon name="crossfade" /> Crossfade</div>,
