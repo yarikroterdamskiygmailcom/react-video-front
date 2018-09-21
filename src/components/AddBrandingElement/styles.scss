@@ -5,8 +5,8 @@
 }
 
 .thumb {
-    width: 160px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
 }
 
 .assetData {
@@ -18,8 +18,6 @@
     border: 2px solid #C04C9F;
 }
 
-.container {
-    width: 80%;
-    height: 80%;
-    background: $background-modal;
+.assetTitle {
+    word-break: break-word;
 }

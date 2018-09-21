@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {isEmpty} from 'lodash-es';
 import classNames from 'classnames';
 import {Button} from '../../atoms';
+import {Modal} from '../';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 
@@ -31,7 +32,8 @@ export default class AddBrandingElement extends Component {
 
   renderAsset = ({id, thumb, title, type}, i) => (
     <div key={id} className={classNames(styles.asset, this.state.currentAsset === i && styles.selected)} onClick={() => this.selectAsset(i)}>
-      <div className={styles.thumb} style={{background: `url(${thumb})`}} />
+      {/* <div className={styles.thumb} style={{background: `url(${thumb})`}} /> */}
+      <img className={styles.thumb} src={thumb}/>
       <div className={styles.assetData}>
         <div className={styles.assetTitle}>{title}</div>
         <div className={styles.assetType}>{type}</div>
@@ -45,13 +47,9 @@ export default class AddBrandingElement extends Component {
     const {assetList} = this.props.assets;
     const {closeOverlay} = this.props.vlogEditor;
     return (
-      <div className={styles.container}>
+      <Modal onCancel={closeOverlay} onPlace={this.addAsset}>
         {assetList.map(this.renderAsset)}
-        <div className={styles.actions}>
-          <Button text="Cancel" onClick={closeOverlay} />
-          <Button text="Confirm" onClick={this.addAsset} />
-        </div>
-      </div>
+      </Modal>
     );
   }
 }
