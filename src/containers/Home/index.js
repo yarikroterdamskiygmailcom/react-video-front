@@ -28,7 +28,11 @@ export default class Home extends Component {
 
 renderItem = item =>
   <div key={item.thumb} className={styles.item} onClick={() => this.viewDetails(item)}>
-    <div className={styles.thumb} style={{background: `linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%), url(${item.thumb})`}}/>
+    <img
+      className={styles.thumb}
+      src={item.thumb}
+      style={{background: `linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%)`}}
+    />
     <div className={styles.title}>{item.title || 'Untitled'}</div>
     <div className={styles.duration}>{item.duration}</div>
   </div>
