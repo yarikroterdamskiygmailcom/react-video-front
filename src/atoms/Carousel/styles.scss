@@ -1,17 +1,25 @@
 .container {
-    display: flex;
-    flex-direction: column;
     width: 100%;
+    margin-bottom: -30px; //because of scrollbar
+
+    .header {
+        color: $text-grey;
+        margin: 10px 0;
+        text-transform: uppercase;
+    }
 }
 
 .items {
     display: flex;
     flex-direction: row;
-    width: fit-content;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: visible;
+    height: fit-content;
+
+    &::-webkit-scrollbar {
+        background: transparent;
+    }
+
+
 }
 
-.header {
-    margin: 10px 0;
-    color: $text-grey;
-}
