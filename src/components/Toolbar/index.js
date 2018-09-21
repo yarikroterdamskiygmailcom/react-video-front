@@ -14,10 +14,10 @@ class Toolbar extends Component {
 
   openMenu = () => {
     this.setState({isOpen: true});
-    document.addEventListener('click', this.closeMenu, {once: true});
   }
 
-  closeMenu = () => this.setState({isOpen: false});
+  //TODO: WTF
+  closeMenu = () => this.setState({isOpen: false}, () => this.setState({isOpen: false}));
 
   renderAction = (action, i) =>
     <div key={`action-${i}`} className={styles.action} onClick={action.fn}>
