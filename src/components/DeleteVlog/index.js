@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Icon} from '../../atoms';
-import {Overlay} from '../';
+import {Overlay, Modal} from '../';
 import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
 
@@ -8,12 +8,21 @@ import styles from './styles.scss';
 @observer
 export default class DeleteVlog extends Component {
 
+  actions = [
+    {
+      label: 'Cancel',
+      func: this.props.vlogDetails.closeOverlay
+    },
+    {
+      label: 'Delete',
+      func: this.props.vlogDetails.deleteVlog
+    }
+  ]
+
     renderModal = () => (
-      <div className={styles.modal}>
-        <div>u sure boi</div>
-        <div onClick={this.props.vlogDetails.deleteVlog}>si</div>
-        <div onClick={this.props.vlogDetails.closeOverlay}>no</div>
-      </div>
+      <Modal className={styles.modal} actions={this.actions} >
+        Are you sure you want to delete this vlog?
+      </Modal>
     )
 
     render() {
