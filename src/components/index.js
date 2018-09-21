@@ -4,6 +4,7 @@ export {default as Arranger} from './Arranger';
 export {default as DeleteVlog} from './DeleteVlog';
 export {default as Header} from './Header';
 export {default as LowerThird} from './LowerThird';
+export {default as Modal} from './Modal';
 export {default as NavBar} from './NavBar';
 export {default as Overlay} from './Overlay';
 export {default as Preview} from './Preview';

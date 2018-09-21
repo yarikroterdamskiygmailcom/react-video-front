@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
 import {Input, Button, ColorPicker} from '../../atoms';
+import {Modal} from '../';
 import {observer, inject} from 'mobx-react';
 
 @inject('vlogEditor')
@@ -22,16 +23,12 @@ export default class AddTitle extends Component {
     const {text, textColor, backgroundColor} = this.props.vlogEditor.title;
     const {setText, setTextColor, setBackgroundColor, addTitle, closeOverlay} = this.props.vlogEditor;
     return (
-      <div className={styles.container}>
+      <Modal className={styles.modal} onPlace={addTitle} onCancel={closeOverlay}>
         {this.renderExample(text, textColor, backgroundColor)}
-        <Input className={styles.input} nameTop fieldName="Text" value={text} onChange={setText} />
+        <input className={styles.input} value={text} onChange={setText}/>
         <ColorPicker value={textColor} options={['#FFFFFF', '#000000']} onChange={setTextColor}/>
         <ColorPicker value={backgroundColor} options={['#FFFFFF', '#000000']} onChange={setBackgroundColor}/>
-        <div className={styles.actions}>
-          <div className={styles.action} onClick={closeOverlay}>Cancel</div>
-          <div className={styles.action} onClick={addTitle}>Place</div>
-        </div>
-      </div>
+      </Modal>
     );
   }
 }
