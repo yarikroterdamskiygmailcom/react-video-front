@@ -22,7 +22,7 @@ export default class Home extends Component {
   }
 
   renderHighlight = () =>
-    <div className={styles.highlight} style={{background: 'linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%)'}}>
+    <div className={styles.highlight}>
 
     </div>
 
@@ -31,7 +31,6 @@ renderItem = item =>
     <img
       className={styles.thumb}
       src={item.thumb}
-      style={{background: `linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%)`}}
     />
     <div className={styles.title}>{item.title || 'Untitled'}</div>
     <div className={styles.duration}>{item.duration}</div>

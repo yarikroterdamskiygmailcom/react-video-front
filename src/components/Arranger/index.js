@@ -41,7 +41,12 @@ export default class Arranger extends Component {
     asset: []
   }
 
-  generateActions = media => this.mediaActionsMap[media.mediatype]
+  generateActions = media => {
+    if(this.mediaActionsMap[media.mediatype]) {
+      return this.mediaActionsMap[media.mediatype];
+    }
+    throw new Error(`Tried to render media with mediatype ${media.mediatype}, must be one of ${Object.keys(this.mediaActionsMap)}`);
+  }
 
   getMediaLabel = mediatype => ({
     crossfade: <div><Icon name="crossfade" /> Crossfade</div>,
@@ -115,7 +120,7 @@ export default class Arranger extends Component {
     });
   }
 
-  renderAction = itemIndex => (action, i) => console.log(itemIndex) ||
+  renderAction = itemIndex => (action, i) =>
     <div key={i} className={styles.action} onClick={() => { action.func(itemIndex); this.resetReveal(); }}>
       <Icon name={action.icon} />
       <div>{action.label}</div>

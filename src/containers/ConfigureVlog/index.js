@@ -47,7 +47,11 @@ export default class ConfigureVlog extends Component {
 
   filters = ['#777777', '#333333', '#777777', '#333333', '#777777', '#333333', '#777777', '#333333', '#777777', '#333333']
 
-  renderFilter = filter => <div className={styles.filter} style={{background: filter}}/>
+  renderFilter = filter => <div
+    className={classNames(styles.filter, this.props.vlogConfig.filter === filter && styles.active)}
+    style={{background: filter}}
+    onClick={this.props.vlogConfig.setFilter(filter)}
+  />
 
   renderInput = (label, value, onChange) => (
     <div className={styles.spacedRow}>
@@ -57,11 +61,9 @@ export default class ConfigureVlog extends Component {
   )
 
   render() {
-    const vlogTitle = 'kaas';
-    const vlogDescription = 'kaas';
-    const changeVlogTitle = () => null;
-    const changeVlogDescription = () => null;
-    const {orientation, toggleOrientation, renderVlog} = this.props.vlogConfig;
+    const {vlogTitle, vlogDescription, filter, useFilter, orientation, customSubs, customEdit,
+      changeVlogTitle, changeVlogDescription, toggleFilter, toggleOrientation, toggleSubs, toggleEdit,
+      renderVlog, rendering, renderUrl} = this.props.vlogConfig;
     return (
       <div className={styles.container}>
         <Segment title="Info">
@@ -69,20 +71,23 @@ export default class ConfigureVlog extends Component {
           {this.renderInput('Description', vlogDescription, changeVlogDescription)}
         </Segment>
         <Segment title="Styling">
-          <Carousel title="Filters" items={this.filters} renderFunction={this.renderFilter}/>
-          <Toggle label="Logo Overlay"/>
+          <Carousel title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter}/>
+          <Toggle label="Logo Overlay" value={useFilter} onChange={toggleFilter}/>
         </Segment>
         <Segment title="Orientation">
           {this.orientationOptions.map(({render, value}) => <RadioButton render={render} active={value === orientation} onChange={toggleOrientation}/>)}
         </Segment>
         <Segment title="Options">
-          <Toggle label="Custom Subtitles" desc="Lorem Ipsum"/>
-          <Toggle label="Custom Edit" desc="Lorem Ipsum"/>
+          <Toggle label="Custom Subtitles" desc="Lorem Ipsum" value={customSubs} onChange={toggleSubs}/>
+          <Toggle label="Custom Edit" desc="Lorem Ipsum" value={customEdit} onChange={toggleEdit}/>
         </Segment>
+        {renderUrl && <Segment title="Preview">
+          <Preview className={styles.preview} src={renderUrl}/>
+        </Segment>}
         <div className={styles.renderSection}>
-          <div className={styles.renderButton} onClick={this.next}>
-            <div>Render</div>
-            <FontAwesome name="chevron-right"/>
+          <div className={classNames(styles.renderButton, rendering && styles.active)} onClick={renderVlog}>
+            <div>{rendering ? 'Rendering...' : 'Render'}</div>
+            <FontAwesome className={styles.icon} name="chevron-right"/>
           </div>
         </div>
       </div>

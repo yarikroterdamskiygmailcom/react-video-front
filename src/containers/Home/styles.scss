@@ -4,7 +4,7 @@
 }
 
 .highlight {
-    background: pink;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%);
     width: 100vw;
     height: 56.25vw;
     margin-bottom: 10px;
@@ -35,6 +35,7 @@
         width: 100%;
         height: 100%;
         border-radius: 5px;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%);
     }
 
     .title {

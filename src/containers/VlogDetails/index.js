@@ -27,7 +27,7 @@ export default class VlogDetails extends Component {
     const vlog = this.props.vlogDetails;
     return (
       <div className={styles.container}>
-        <Preview/>
+        {vlog.status === 'exported' && <Preview src={vlog.exporturl}/>}
         <Segment title="Details">
           {this.renderInfo('Title', vlog.title || 'Untitled', null)}
         </Segment>

@@ -4,6 +4,8 @@ import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
 import {sessionStore} from '../';
+import {php} from '.';
+import encode from 'object-to-formdata';
 
 export class VlogEditorStore {
     @observable media = null
@@ -34,12 +36,13 @@ export class VlogEditorStore {
     //Upload stuff
 
     initResumable = () => {
+      console.log(this.projectId);
       this.resumable = new Resumable({
         target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
         query: {
           SessionID: sessionStore.sessionId,
           action: 'uploadvideo',
-          project_id: 4
+          project_id: this.projectId
         }
       });
       this.resumable.assignBrowse(document.getElementById('input'));
@@ -210,6 +213,7 @@ export class VlogEditorStore {
     openPreview = i => {
       this.currentVideo = this.media[i];
       this.overlayActive = true;
+
       this.overlayContent = <Preview src={this.currentVideo.src}/>;
     }
 
@@ -217,7 +221,12 @@ export class VlogEditorStore {
 
     initBlankVlog = () => {
       this.media = [];
-      this.projectId = 'dud';
+      return php.post('handleproject.php', encode({
+        debug: true,
+        react: true,
+        action: 'new',
+        SessionID: sessionStore.sessionId,
+      })).then(res => this.projectId = res.data.project_id);
     }
 
     setVlog = vlog => {
