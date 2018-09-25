@@ -21,10 +21,14 @@ export default class Home extends Component {
     this.props.history.push('/vlog-details');
   }
 
-  renderHighlight = () =>
-    <div className={styles.highlight}>
-
-    </div>
+  renderHighlight = () => {
+    const video = this.props.vlogEditor.media.filter(media => media.mediatype === 'video')[0];
+    return (
+      <div className={styles.highlight} onClick={() => this.props.history.push('/edit-vlog')}>
+        <img src={video.thumb}/>
+      </div>
+    );
+  }
 
 renderItem = (item, i) =>
   <div key={`${item.thumb}-${i}`} className={styles.item} onClick={() => this.viewDetails(item)}>
