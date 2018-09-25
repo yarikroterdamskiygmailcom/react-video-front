@@ -13,7 +13,7 @@ export default class NavBar extends Component {
     renderRoute = ({name, icon, path}) => (
       <NavLink key={path} to={path} className={styles.route} activeClassName={styles.active}>
         <Icon className={styles.icon} name={icon}/>
-        {name}
+        <div>{name}</div>
       </NavLink>
     )
     render() {
