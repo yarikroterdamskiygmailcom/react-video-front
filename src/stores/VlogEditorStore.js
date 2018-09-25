@@ -106,6 +106,14 @@ export class VlogEditorStore {
       this.closeOverlay();
     }
 
+    //Trimmer stuff
+
+    openTrimmer = i => {
+      this.currentVideo = this.media[i];
+      this.overlayActive = true;
+      this.overlayContent = <Trimmer video={this.currentVideo} onClose={this.closeOverlay}/>;
+    }
+
     //Add Branding Element stuff
 
     openAddBrandingElement = () => {
