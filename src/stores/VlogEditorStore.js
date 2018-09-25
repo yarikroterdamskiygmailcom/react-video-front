@@ -106,43 +106,6 @@ export class VlogEditorStore {
       this.closeOverlay();
     }
 
-    //Trimmer stuff
-
-    @observable trimmer = {
-      startTime: 0,
-      endTime: 0,
-    }
-
-    openTrimmer = i => {
-      this.currentVideo = this.media[i];
-      this.overlayActive = true;
-      this.overlayContent = <Trimmer/>;
-    }
-
-    initEndTime = duration => {
-      this.trimmer = {
-        ...this.trimmer,
-        endTime: duration,
-      };
-    }
-
-    setTrim = values => {
-      this.trimmer = {
-        ...this.trimmer,
-        startTime: values[0],
-        endTime: values[1]
-      };
-    }
-
-    trimVideo = () => {
-      this.currentVideo.inpoint = this.trimmer.startTime;
-      this.currentVideo.outpoint = this.trimmer.endTime;
-      this.currentVideo.trimmed = true;
-      this.trimmer = {startTime: 0, endTime: 0};
-      this.overlayActive = false;
-      this.overlayContent = null;
-    }
-
     //Add Branding Element stuff
 
     openAddBrandingElement = () => {

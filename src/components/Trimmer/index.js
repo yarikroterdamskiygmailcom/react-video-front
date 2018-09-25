@@ -6,59 +6,70 @@ import {observer, inject} from 'mobx-react';
 import {Range} from 'rc-slider';
 import '!style-loader!css-loader!rc-slider/assets/index.css';
 
-@inject('vlogEditor')
-@observer
+// @inject('vlogEditor')
+// @observer
 export default class Trimmer extends Component {
 
   constructor(props) {
     super(props);
     this.videoRef = React.createRef();
+    this.state = {
+      start: 0,
+      stop: 0
+    };
   }
 
   componentWillMount() {
-    const {currentVideo, setTrim} = this.props.vlogEditor;
-    console.log(currentVideo);
-    if(currentVideo.trimmed) {
-      setTrim([currentVideo.inpoint, currentVideo.outpoint]);
+    const {video} = this.props;
+    if(video.trimmed) {
+      this.setTrim(video.inpoint, video.outpoint);
     }
+  }
+
+  setTrim = ([start, stop]) => this.setState({start, stop})
+
+  saveTrim = () => {
+    this.video.inpoint = this.state.start;
+    this.video.outpoint = this.state.stop;
+    this.video.trimmed = true;
   }
 
   actions = [
     {
       label: 'Cancel',
-      func: this.props.vlogEditor.closeOverlay
+      func: this.props.onClose
     },
     {
       label: 'Trim',
-      func: this.props.vlogEditor.trimVideo
+      func: this.saveTrim
     }
   ]
 
   preview = () => {
-    const {startTime, endTime} = this.props.vlogEditor.trimmer;
-    setTimeout(() => this.videoRef.current.pause(), (endTime - startTime) * 1000);
-    this.videoRef.current.currentTime = startTime;
+    const {start, stop} = this.state;
+    setTimeout(() => this.videoRef.current.pause(), (stop - start) * 1000);
+    this.videoRef.current.currentTime = start;
     this.videoRef.current.play();
   }
 
-  initEndTime = () => !this.props.vlogEditor.currentVideo.trimmed && this.props.vlogEditor.initEndTime(this.videoRef.current.duration);
+  initStopTime = () => this.setState({stop: !this.state.stop && this.videoRef.current.duration});
 
   render() {
-    const {setTrim, currentVideo} = this.props.vlogEditor;
-    const {startTime, endTime} = this.props.vlogEditor.trimmer;
+    const {video} = this.props;
+    const {start, stop} = this.state;
     return (
       <Modal className={styles.modal} actions={this.actions}>
-        <video className={styles.video} ref={this.videoRef} src={currentVideo.src} autoPlay onLoadedMetadata={this.initEndTime}/>
+        <video className={styles.video} ref={this.videoRef} src={video.src} autoPlay onLoadedMetadata={this.initStopTime}/>
         <Button onClick={this.preview} text="Preview"/>
         <div className={styles.timestamps}>
-          <div>{startTime}</div>
-          <div>{endTime}</div>
+          <div>{start}</div>
+          <div>{stop}</div>
         </div>
         <Range
-          value={[startTime, endTime]}
-          onChange={setTrim}
+          value={[start, stop]}
+          onChange={this.setTrim}
           min={0}
-          max={currentVideo.vidtime}
+          max={video.vidtime}
           step={0.01}
           allowCross={false}
         />
