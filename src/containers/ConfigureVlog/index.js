@@ -119,8 +119,8 @@ export default class ConfigureVlog extends Component {
           {this.orientationOptions.map(({render, value}) => <RadioButton render={render} active={value === orientation} onChange={toggleOrientation}/>)}
         </Segment>
         <Segment title="Options">
-          <Toggle label="Custom Subtitles" desc="Lorem Ipsum" value={customSubs} onChange={toggleSubs}/>
-          <Toggle label="Custom Edit" desc="Lorem Ipsum" value={customEdit} onChange={toggleEdit}/>
+          <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={toggleSubs}/>
+          <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={toggleEdit}/>
         </Segment>
         {renderUrl && <Segment title="Preview">
           <Preview className={styles.preview} src={renderUrl}/>
