@@ -53,14 +53,19 @@ export class VlogConfigStore {
         react: true,
         action: 'save',
         SessionID: session.sessionId,
-        project_id: toJS(editor.projectId),
+        project_id: editor.projectId,
+        vlog_title: this.vlogTitle,
+        vlog_desc: this.vlogDescription,
+        color_filter: this.useFilter ? this.filter : null,
+        custom_subs: this.customSubs,
+        custom_edit: this.customEdit,
         media: this.shrinkMedia(toJS(editor.media))
       })).then(res => console.log(res));
       await php.post('export.php', encode({
         debug: true,
         react: true,
         SessionID: session.sessionId,
-        project_id: toJS(editor.projectId),
+        project_id: editor.projectId,
         orientation: this.orientation,
       })).then(res => {
         this.rendering = false;
