@@ -160,11 +160,13 @@ export class VlogEditorStore {
 
     //Lower third stuff
 
+    @observable lowerThirdStep = 1;
+
     @observable lowerThirdName = '';
     @observable lowerThirdDesc = '';
     @observable lowerThirdSecondLine = true;
     @observable lowerThirdSide = 'left';
-    @observable lowerThirdUseLogo = true;
+    @observable lowerThirdLogo = true;
     @observable lowerThirdStart = null;
     @observable lowerThirdEnd = null;
 
@@ -190,8 +192,11 @@ export class VlogEditorStore {
       this.lowerThirdSide = this.lowerThirdSide === 'left' ? 'right' : 'left';
     };
 
+    toggleLowerThirdLogo = () => {
+      this.lowerThirdLogo = !this.lowerThirdLogo;
+    }
+
     setLowerThirdTime = ([start, end]) => {
-      console.log(start, end);
       this.lowerThirdStart = start;
       this.lowerThirdEnd = end;
     }

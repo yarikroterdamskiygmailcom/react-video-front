@@ -46,7 +46,6 @@ export default class Trimmer extends Component {
   render() {
     const {setTrim, currentVideo} = this.props.vlogEditor;
     const {startTime, endTime} = this.props.vlogEditor.trimmer;
-    console.log(startTime, endTime);
     return (
       <Modal className={styles.modal} actions={this.actions}>
         <video className={styles.video} ref={this.videoRef} src={currentVideo.src} autoPlay onLoadedMetadata={this.initEndTime}/>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink, Redirect} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
-import {Assets, Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails} from '../containers';
+import {Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails} from '../containers';
 import {DeleteVlog} from '../components';
 import styles from './styles.scss';
 
@@ -45,15 +45,6 @@ const home = {
     center: <div className={styles.homeHeader}></div>
   },
   navBar: true
-};
-
-const assets = {
-  name: 'Assets',
-  path: '/assets',
-  component: Assets,
-  header: {
-    left: backButton
-  }
 };
 
 const editVlog = {
@@ -148,6 +139,6 @@ const vlogDetails = {
 
 export const navBarRoutes = [home, addVlog, profile];
 
-const allRoutes = [notFound, login, logout, forgotPassword, home, assets, editVlog, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails];
+const allRoutes = [notFound, login, logout, forgotPassword, home, editVlog, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails];
 
 export default allRoutes;

@@ -10,17 +10,6 @@ import classNames from 'classnames';
 @observer
 export default class LowerThird extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      step: 0
-    };
-  }
-
-  nextStep = () => {
-    this.setState({step: this.state.step + 1});
-  }
-
   actions = [
     {
       label: 'Cancel',
@@ -28,7 +17,7 @@ export default class LowerThird extends Component {
     },
     {
       label: 'Next',
-      func: this.nextStep
+      func: () => this.props.vlogEditor.lowerThirdStep++
     }
   ]
 
@@ -42,18 +31,21 @@ export default class LowerThird extends Component {
   }
 
   renderFirst = () => {
-    const {lowerThirdSecondLine, toggleLowerThirdSecondLine} = this.props.vlogEditor;
+    const {
+      lowerThirdName, lowerThirdDesc, lowerThirdSecondLine, lowerThirdLogo,
+      setLowerThirdName, setLowerThirdDesc, toggleLowerThirdSecondLine, toggleLowerThirdLogo
+    } = this.props.vlogEditor;
     return <React.Fragment>
-      <Input className={styles.input} fieldName="Name" nameTop />
-      <Input className={styles.input} fieldName="Function" nameTop />
+      <Input className={styles.input} fieldName="Name" nameTop value={lowerThirdName} onChange={setLowerThirdName}/>
+      <Input className={styles.input} fieldName="Function" nameTop value={lowerThirdDesc} onChange={setLowerThirdDesc}/>
       <Toggle label="Used second line" desc="Use it for function or company name" value={lowerThirdSecondLine} onChange={toggleLowerThirdSecondLine} />
       <Seperator />
       <div>Lower Third Style</div>
       <div className={styles.switcherRow}>
-        {this.renderButton('Left')}
-        {this.renderButton('Right')}
+        {this.renderButton('left')}
+        {this.renderButton('right')}
       </div>
-      <Toggle label="Use logo" desc="Use it for function or company name" />
+      <Toggle label="Use logo" desc="Use it for function or company name" value={lowerThirdLogo} onChange={toggleLowerThirdLogo}/>
     </React.Fragment>;
   }
 
@@ -84,12 +76,12 @@ export default class LowerThird extends Component {
     </React.Fragment>;
   }
 
-  steps = [this.renderFirst(), this.renderSecond()]
-
   render() {
+    const {lowerThirdStep} = this.props.vlogEditor;
     return (
       <Modal actions={this.actions}>
-        {this.steps[this.state.step]}
+        {lowerThirdStep === 1 && this.renderFirst()}
+        {lowerThirdStep === 2 && this.renderSecond()}
       </Modal>
     );
   }
