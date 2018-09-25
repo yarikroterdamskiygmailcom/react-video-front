@@ -26,6 +26,7 @@ export default class Home extends Component {
     return (
       <div className={styles.highlight} onClick={() => this.props.history.push('/edit-vlog')}>
         <img src={video.thumb}/>
+        <div className={styles.gradient}/>
       </div>
     );
   }
@@ -36,6 +37,7 @@ renderItem = (item, i) =>
       className={styles.thumb}
       src={item.thumb}
     />
+    <div className={styles.gradient}/>
     <div className={styles.title}>{item.title || 'Untitled'}</div>
     <div className={styles.duration}>{item.duration}</div>
   </div>

@@ -53,7 +53,6 @@ export default class Profile extends Component {
       <img
         className={styles.thumb}
         src={thumb}
-        style={{background: `linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 25%, rgba(0, 0, 0, 0.4) 88.4%)`}}
       />
       <div className={styles.assetTitle}>{title}</div>
     </div>

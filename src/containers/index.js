@@ -1,5 +1,4 @@
 export {default as App} from './App';
-export {default as Assets} from './Assets';
 export {default as ConfigureVlog} from './ConfigureVlog';
 export {default as ForgotPassword} from './ForgotPassword';
 export {default as Home} from './Home';
