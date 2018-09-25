@@ -26,8 +26,8 @@ export default class Home extends Component {
 
     </div>
 
-renderItem = item =>
-  <div key={item.thumb} className={styles.item} onClick={() => this.viewDetails(item)}>
+renderItem = (item, i) =>
+  <div key={`${item.thumb}-${i}`} className={styles.item} onClick={() => this.viewDetails(item)}>
     <img
       className={styles.thumb}
       src={item.thumb}

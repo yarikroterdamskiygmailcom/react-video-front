@@ -15,6 +15,14 @@ export default class Trimmer extends Component {
     this.videoRef = React.createRef();
   }
 
+  componentWillMount() {
+    const {currentVideo, setTrim} = this.props.vlogEditor;
+    console.log(currentVideo);
+    if(currentVideo.trimmed) {
+      setTrim([currentVideo.inpoint, currentVideo.outpoint]);
+    }
+  }
+
   actions = [
     {
       label: 'Cancel',
@@ -33,14 +41,16 @@ export default class Trimmer extends Component {
     this.videoRef.current.play();
   }
 
-  initEndTime = () => this.props.vlogEditor.initEndTime(this.videoRef.current.duration);
+  initEndTime = () => !this.props.vlogEditor.currentVideo.trimmed && this.props.vlogEditor.initEndTime(this.videoRef.current.duration);
 
   render() {
     const {setTrim, currentVideo} = this.props.vlogEditor;
-    const {startTime, endTime, duration} = this.props.vlogEditor.trimmer;
+    const {startTime, endTime} = this.props.vlogEditor.trimmer;
+    console.log(startTime, endTime);
     return (
       <Modal className={styles.modal} actions={this.actions}>
         <video className={styles.video} ref={this.videoRef} src={currentVideo.src} autoPlay onLoadedMetadata={this.initEndTime}/>
+        <Button onClick={this.preview} text="Preview"/>
         <div className={styles.timestamps}>
           <div>{startTime}</div>
           <div>{endTime}</div>
@@ -49,8 +59,8 @@ export default class Trimmer extends Component {
           value={[startTime, endTime]}
           onChange={setTrim}
           min={0}
-          max={duration}
-          step={0.001}
+          max={currentVideo.vidtime}
+          step={0.01}
           allowCross={false}
         />
       </Modal>

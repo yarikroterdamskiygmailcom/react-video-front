@@ -111,7 +111,6 @@ export class VlogEditorStore {
     @observable trimmer = {
       startTime: 0,
       endTime: 0,
-      duration: 0
     }
 
     openTrimmer = i => {
@@ -124,20 +123,7 @@ export class VlogEditorStore {
       this.trimmer = {
         ...this.trimmer,
         endTime: duration,
-        duration: duration
       };
-    }
-
-    setStartTime = e => {
-      if (e.target.value < this.trimmer.endTime) {
-        this.trimmer = {...this.trimmer, startTime: e.target.value};
-      }
-    }
-
-    setEndTime = e => {
-      if(e.target.value > this.trimmer.startTime) {
-        this.trimmer = {...this.trimmer, endTime: e.target.value};
-      }
     }
 
     setTrim = values => {
@@ -149,8 +135,10 @@ export class VlogEditorStore {
     }
 
     trimVideo = () => {
-      this.currentVideo.inpoint = parseInt(this.trimmer.startTime * this.currentVideo.framerate, 10);
-      this.currentVideo.outpoint = parseInt(this.trimmer.endTime * this.currentVideo.framerate, 10);
+      this.currentVideo.inpoint = this.trimmer.startTime;
+      this.currentVideo.outpoint = this.trimmer.endTime;
+      this.currentVideo.trimmed = true;
+      this.trimmer = {startTime: 0, endTime: 0};
       this.overlayActive = false;
       this.overlayContent = null;
     }
