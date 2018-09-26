@@ -53,10 +53,10 @@ export default class Trimmer extends Component {
   }
 
   render() {
-    const {video} = this.props;
+    const {video, noModal} = this.props;
     const {start, stop, min, max} = this.state;
-    return (
-      <Modal className={styles.modal} actions={this.actions}>
+    const content = (
+      <React.Fragment>
         <video className={styles.video} ref={this.videoRef} src={video.src} autoPlay/>
         <Button onClick={this.preview} text="Preview"/>
         <div className={styles.timestamps}>
@@ -71,7 +71,10 @@ export default class Trimmer extends Component {
           step={0.01}
           allowCross={false}
         />
-      </Modal>
+      </React.Fragment>
     );
+    return noModal
+      ? content
+      : <Modal actions={this.actions}>{content}</Modal>;
   }
 }
