@@ -1,4 +1,5 @@
 .container {
+    position: relative;
     width: 100%;
     margin-bottom: -30px; //because of scrollbar
     overflow-y: hidden;
@@ -22,5 +23,28 @@
     }
 
 
+}
+
+.left,
+.right {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 50px;
+    background: $purple;
+    z-index: 2;
+    border-radius: 5px;
+    bottom: 40%;
+    color: $white;
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
 }
 

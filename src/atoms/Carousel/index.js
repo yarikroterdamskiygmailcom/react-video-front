@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 
 export default class Carousel extends Component {
@@ -8,14 +9,22 @@ export default class Carousel extends Component {
     this.carouselRef = React.createRef();
   }
 
-  onScroll = e => this.carouselRef.current.scrollLeft += (e.deltaY * 3)
-
+  scroll = direction => () => {
+    const width = this.carouselRef.current.offsetWidth;
+    this.carouselRef.current.scrollLeft += (direction * width);
+  }
   render() {
     return (
       <div className={styles.container}>
         <div className={styles.header}>{this.props.title}</div>
-        <div ref={this.carouselRef} className={styles.items} onWheel={this.onScroll}>
+        <div className={styles.left} onClick={this.scroll(-1)}>
+          <FontAwesome name="chevron-left"/>
+        </div>
+        <div ref={this.carouselRef} className={styles.items}>
           {this.props.items.map(this.props.renderFunction)}
+        </div>
+        <div className={styles.right} onClick={this.scroll(1)}>
+          <FontAwesome name="chevron-right"/>
         </div>
       </div>
     );
