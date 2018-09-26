@@ -10,8 +10,7 @@ export default class Carousel extends Component {
   }
 
   scroll = direction => () => {
-    const width = this.carouselRef.current.offsetWidth;
-    this.carouselRef.current.scrollLeft += (direction * width);
+    this.carouselRef.current.scrollLeft += (direction * this.props.scrollStep);
   }
   render() {
     return (

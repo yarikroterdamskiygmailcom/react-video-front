@@ -35,16 +35,19 @@
     height: 50px;
     background: $purple;
     z-index: 2;
-    border-radius: 5px;
     bottom: 40%;
     color: $white;
 }
 
 .left {
     left: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .right {
     right: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 

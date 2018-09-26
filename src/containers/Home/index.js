@@ -47,8 +47,13 @@ render() {
     <div className={styles.container}>
       {!isEmpty(this.props.vlogEditor.media) && this.renderHighlight()}
       <div className={styles.carousels}>
-        <Carousel title="Saved Vlogs" items={this.props.vlogs.list} renderFunction={this.renderItem} onClick={this.viewDetails}/>
-        <Carousel title="Shared Vlogs" items={this.props.vlogs.list} renderFunction={this.renderItem} onClick={this.viewDetails}/>
+        <Carousel
+          title="Saved Vlogs"
+          items={this.props.vlogs.list}
+          renderFunction={this.renderItem}
+          scrollStep={310}
+          onClick={this.viewDetails}
+        />
       </div>
     </div>
   );
