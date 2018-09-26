@@ -49,7 +49,14 @@ render() {
       <div className={styles.carousels}>
         <Carousel
           title="Saved Vlogs"
-          items={this.props.vlogs.list}
+          items={this.props.vlogs.list.filter(vlog => vlog.status === 'new')}
+          renderFunction={this.renderItem}
+          scrollStep={310}
+          onClick={this.viewDetails}
+        />
+        <Carousel
+          title="Rendered Vlogs"
+          items={this.props.vlogs.list.filter(vlog => vlog.status === 'exported')}
           renderFunction={this.renderItem}
           scrollStep={310}
           onClick={this.viewDetails}
