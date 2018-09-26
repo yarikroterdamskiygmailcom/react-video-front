@@ -1,37 +1,37 @@
 import React, {Component} from 'react';
-import {Button, Slider} from '../../atoms';
+import {Button} from '../../atoms';
 import {Modal} from '..';
 import styles from './styles.scss';
-import {observer, inject} from 'mobx-react';
 import {Range} from 'rc-slider';
 import '!style-loader!css-loader!rc-slider/assets/index.css';
 
-// @inject('vlogEditor')
-// @observer
 export default class Trimmer extends Component {
 
   constructor(props) {
     super(props);
     this.videoRef = React.createRef();
-    this.state = {
-      start: 0,
-      stop: 0
-    };
   }
 
   componentWillMount() {
     const {video} = this.props;
+    const vidLength = parseFloat(video.seconds);
+    this.setExtremes(0, vidLength);
     if(video.trimmed) {
-      this.setTrim(video.inpoint, video.outpoint);
+      this.setTrim([video.inpoint, video.outpoint]);
+    } else {
+      this.setTrim([0, vidLength]);
     }
   }
 
-  setTrim = ([start, stop]) => this.setState({start, stop})
+  setTrim = values => this.setState({start: values[0], stop: values[1]})
+
+  setExtremes = (min, max) => this.setState({min, max})
 
   saveTrim = () => {
-    this.video.inpoint = this.state.start;
-    this.video.outpoint = this.state.stop;
-    this.video.trimmed = true;
+    this.props.video.inpoint = this.state.start;
+    this.props.video.outpoint = this.state.stop;
+    this.props.video.trimmed = true;
+    this.props.onClose();
   }
 
   actions = [
@@ -52,14 +52,12 @@ export default class Trimmer extends Component {
     this.videoRef.current.play();
   }
 
-  initStopTime = () => this.setState({stop: !this.state.stop && this.videoRef.current.duration});
-
   render() {
     const {video} = this.props;
-    const {start, stop} = this.state;
+    const {start, stop, min, max} = this.state;
     return (
       <Modal className={styles.modal} actions={this.actions}>
-        <video className={styles.video} ref={this.videoRef} src={video.src} autoPlay onLoadedMetadata={this.initStopTime}/>
+        <video className={styles.video} ref={this.videoRef} src={video.src} autoPlay/>
         <Button onClick={this.preview} text="Preview"/>
         <div className={styles.timestamps}>
           <div>{start}</div>
@@ -68,8 +66,8 @@ export default class Trimmer extends Component {
         <Range
           value={[start, stop]}
           onChange={this.setTrim}
-          min={0}
-          max={video.vidtime}
+          min={min}
+          max={max}
           step={0.01}
           allowCross={false}
         />
