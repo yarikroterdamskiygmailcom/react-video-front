@@ -4,7 +4,7 @@ import styles from './styles.scss';
 
 export default class Modal extends Component {
 
-    actions = this.props.actions || [
+    defaultActions = [
       {
         label: 'Cancel',
         func: this.props.onCancel
@@ -29,7 +29,7 @@ export default class Modal extends Component {
             {children}
           </div>
           <div className={styles.actions}>
-            {this.actions.map(this.renderAction)}
+            {(this.props.actions || this.defaultActions).map(this.renderAction)}
           </div>
         </div>
       );
