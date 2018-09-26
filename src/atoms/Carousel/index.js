@@ -13,19 +13,21 @@ export default class Carousel extends Component {
     this.carouselRef.current.scrollLeft += (direction * this.props.scrollStep);
   }
   render() {
-    return (
-      <div className={styles.container}>
-        <div className={styles.header}>{this.props.title}</div>
-        <div className={styles.left} onClick={this.scroll(-1)}>
-          <FontAwesome name="chevron-left"/>
+    return !this.props.pending
+      ? (
+        <div className={styles.container}>
+          <div className={styles.header}>{this.props.title}</div>
+          <div className={styles.left} onClick={this.scroll(-1)}>
+            <FontAwesome name="chevron-left"/>
+          </div>
+          <div ref={this.carouselRef} className={styles.items}>
+            {this.props.items.map(this.props.renderFunction)}
+          </div>
+          <div className={styles.right} onClick={this.scroll(1)}>
+            <FontAwesome name="chevron-right"/>
+          </div>
         </div>
-        <div ref={this.carouselRef} className={styles.items}>
-          {this.props.items.map(this.props.renderFunction)}
-        </div>
-        <div className={styles.right} onClick={this.scroll(1)}>
-          <FontAwesome name="chevron-right"/>
-        </div>
-      </div>
-    );
+      )
+      : <div>Loading your content...</div>;
   }
 }

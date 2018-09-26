@@ -11,9 +11,16 @@ import styles from './styles.scss';
 @inject('vlogDetails')
 @observer
 export default class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pending: false
+    };
+  }
 
   componentWillMount() {
-    this.props.vlogs.loadVlogs();
+    this.setState({pending: true});
+    this.props.vlogs.loadVlogs().then(() => this.setState({pending: false}));
   }
 
   viewDetails = vlog => {
@@ -53,6 +60,7 @@ render() {
           renderFunction={this.renderItem}
           scrollStep={310}
           onClick={this.viewDetails}
+          pending={this.state.pending}
         />
         <Carousel
           title="Rendered Vlogs"
@@ -60,6 +68,7 @@ render() {
           renderFunction={this.renderItem}
           scrollStep={310}
           onClick={this.viewDetails}
+          pending={this.state.pending}
         />
       </div>
     </div>
