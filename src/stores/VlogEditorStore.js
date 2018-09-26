@@ -131,45 +131,10 @@ export class VlogEditorStore {
 
     //Lower third stuff
 
-    @observable lowerThirdStep = 1;
-
-    @observable lowerThirdName = '';
-    @observable lowerThirdDesc = '';
-    @observable lowerThirdSecondLine = true;
-    @observable lowerThirdSide = 'left';
-    @observable lowerThirdLogo = true;
-    @observable lowerThirdStart = null;
-    @observable lowerThirdEnd = null;
-
     openLowerThird = i => {
       this.currentVideo = this.media[i];
       this.overlayActive = true;
-      this.overlayContent = <LowerThird/>;
-    }
-
-    setLowerThirdName = e => {
-      this.lowerThirdName = e.target.value;
-    }
-
-    setLowerThirdDesc = e => {
-      this.lowerThirdDesc = e.target.value;
-    }
-
-    toggleLowerThirdSecondLine = val => {
-      this.lowerThirdSecondLine = val;
-    }
-
-    toggleLowerThirdSide = () => {
-      this.lowerThirdSide = this.lowerThirdSide === 'left' ? 'right' : 'left';
-    };
-
-    toggleLowerThirdLogo = () => {
-      this.lowerThirdLogo = !this.lowerThirdLogo;
-    }
-
-    setLowerThirdTime = ([start, end]) => {
-      this.lowerThirdStart = start;
-      this.lowerThirdEnd = end;
+      this.overlayContent = <LowerThird video={this.currentVideo} onClose={this.closeOverlay}/>;
     }
 
     //Preview stuff
