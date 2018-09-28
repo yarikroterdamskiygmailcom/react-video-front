@@ -10,6 +10,8 @@ import {observer, inject} from 'mobx-react';
 @observer
 class Login extends Component {
 
+  submit = e => e.key === 'Enter' && this.props.session.login()
+
   render() {
     const {
       email, password,
@@ -17,7 +19,7 @@ class Login extends Component {
       error, login
     } = this.props.session;
     return (
-      <div className={styles.container}>
+      <div className={styles.container} onKeyPress={this.submit}>
         <div className={styles.logo}/>
         <div className={styles.text}>Email</div>
         <input className={styles.input} type="email" value={email} onChange={changeEmail}/>
