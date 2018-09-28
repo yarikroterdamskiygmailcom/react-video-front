@@ -82,3 +82,13 @@
 .video {
     width: 100%;
 }
+
+.preview {
+    position: relative;
+}
+
+.previewImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}

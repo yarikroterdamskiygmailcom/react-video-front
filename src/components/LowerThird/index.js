@@ -1,20 +1,77 @@
 import React, {Component} from 'react';
 import {Input, Toggle, Seperator} from '../../atoms';
 import {Modal, Trimmer} from '..';
+import {php} from '../../stores';
+import encode from 'object-to-formdata';
 import styles from './styles.scss';
 import classNames from 'classnames';
+import {observer, inject} from 'mobx-react';
 
+@inject('session')
+@observer
+class Preview extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      path: null,
+      file: null
+    };
+  }
+
+  getPreview = () => {
+    const {video, name, desc, side, useLogo, active} = this.props;
+    const {sessionId} = this.props.session;
+    php.post(`lowerthird.php`, encode({
+      SessionID: sessionId,
+      firstline: name,
+      secondline: desc,
+      placement: side,
+      useimage: useLogo,
+      previewframe: false,
+      lt_id: active,
+      video_id: video.videoid
+    })).then(res => {
+      const {extpath, imagename} = res.data;
+      this.setState({path: extpath, file: imagename});
+    });
+  }
+
+  componentWillMount() {
+    this.getPreview();
+  }
+
+  componentWillUnmount() {
+    this.setState({path: null, file: null});
+  }
+
+  render() {
+    const {video, side} = this.props;
+    const path = `${this.state.path}${this.state.file}?${Math.random()}`;
+    return (
+      <React.Fragment>
+        {path && <Trimmer video={video} lowerThird={{path, side}} noModal />}
+      </React.Fragment>
+    );
+  }
+
+}
+
+@inject('session')
+@observer
 export default class LowerThird extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       step: 'overview',
+      active: 0,
       name: '',
       desc: '',
       useSecondLine: false,
       side: 'left',
-      useLogo: false
+      useLogo: false,
+      path: null,
+      file: null,
     };
   }
 
@@ -25,13 +82,29 @@ export default class LowerThird extends Component {
 
   setStep = step => () => this.setState({step})
 
+  setActive = i => this.setState({active: i})
+
   saveLowerThird = () => {
-    if(this.props.video.lowerthird) {
-      this.props.video.lowerthird.push();
-    } else {
-      this.props.video.lowerthird = [];
-    }
-    this.props.onClose();
+    const {video} = this.props;
+    const {name, desc, useLogo, side, file} = this.state;
+    const lt = {
+      firstline: name,
+      secondline: desc,
+      logo: useLogo,
+      placement: side,
+      file,
+    };
+    const insert = video.lowerthird ? [...video.lowerthird, lt] : [lt];
+
+    php.post('editvid.php', encode({
+      debug: true,
+      action: 'lowerthird',
+      video_id: video.videoid,
+      edit: insert
+    })).then(res => {
+      console.log(res);
+      this.props.onClose();
+    });
   }
 
   actions = {
@@ -58,7 +131,7 @@ export default class LowerThird extends Component {
     preview: [
       {
         label: 'Back',
-        func: this.setStep('overview')
+        func: this.setStep('config') || this.setState({path: null, file: null})
       },
       {
         label: 'Save',
@@ -92,15 +165,16 @@ export default class LowerThird extends Component {
 
   renderItem = (value, i) => (
     <div className={styles.item}>
-      <div>{value}</div>
+      <div onClick={this.setActive(i)}>{value}</div>
       <div onClick={this.removeLowerThird(i)}><Icon name="trash" /></div>
     </div>
   )
 
   generateBody = step => {
     const {video} = this.props;
-    const {name, desc, useSecondLine, useLogo} = this.state;
+    const {name, desc, useSecondLine, useLogo, side, active} = this.state;
     switch (step) {
+
       case 'overview':
         return <React.Fragment>
           <div className={styles.list}>
@@ -147,9 +221,7 @@ export default class LowerThird extends Component {
         </React.Fragment>;
 
       case 'preview':
-        return <React.Fragment>
-          <Trimmer video={video} noModal />
-        </React.Fragment>;
+        return <Preview video={video} name={name} desc={desc} side={side} useLogo={useLogo} active={active}/>;
 
       default: throw new Error(`No switch case in lowerThird for ${step}`);
 

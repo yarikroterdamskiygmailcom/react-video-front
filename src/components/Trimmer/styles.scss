@@ -19,6 +19,20 @@
     justify-content: space-between;
 }
 
-.video {
-    
+.videoContainer {
+    position: relative;
+}
+
+.lowerThird {
+    position: absolute;
+    width: 40%;
+    top: 60%;
+
+    &.left {
+        left: 0;
+    }
+
+    &.right {
+        right: 0;
+    }
 }

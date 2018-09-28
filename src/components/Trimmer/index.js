@@ -3,6 +3,7 @@ import {Button} from '../../atoms';
 import {Modal} from '..';
 import styles from './styles.scss';
 import {Range} from 'rc-slider';
+import classNames from 'classnames';
 import '!style-loader!css-loader!rc-slider/assets/index.css';
 
 export default class Trimmer extends Component {
@@ -16,7 +17,7 @@ export default class Trimmer extends Component {
     const {video} = this.props;
     const vidLength = parseFloat(video.seconds);
     this.setExtremes(0, vidLength);
-    if(video.trimmed) {
+    if (video.trimmed) {
       this.setTrim([video.inpoint, video.outpoint]);
     } else {
       this.setTrim([0, vidLength]);
@@ -53,12 +54,15 @@ export default class Trimmer extends Component {
   }
 
   render() {
-    const {video, noModal} = this.props;
+    const {video, noModal, lowerThird} = this.props;
     const {start, stop, min, max} = this.state;
     const content = (
       <React.Fragment>
-        <video className={styles.video} ref={this.videoRef} src={video.src} autoPlay/>
-        <Button onClick={this.preview} text="Preview"/>
+        <div className={styles.videoContainer}>
+          <video className={styles.video} ref={this.videoRef} src={video.src} autoPlay />
+          {lowerThird && <img className={classNames(styles.lowerThird, styles[lowerThird.side])} src={lowerThird.path}/>}
+        </div>
+        <Button onClick={this.preview} text="Preview" />
         <div className={styles.timestamps}>
           <div>{start}</div>
           <div>{stop}</div>
