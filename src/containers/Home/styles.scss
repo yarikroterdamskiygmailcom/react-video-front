@@ -4,6 +4,8 @@
 }
 
 .highlight {
+    position: relative;
+    display: flex;
     width: 100vw;
     height: 56.25vw;
     margin-bottom: 10px;
@@ -31,12 +33,6 @@
     width: 300px;
     height: 170px;
     margin-right: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
-
-    &:hover {
-        transform: scale(0.95, 0.95);
-        box-shadow: none;
-    }
 
     .thumb {
         width: 100%;
