@@ -79,6 +79,6 @@ export default class Trimmer extends Component {
     );
     return noModal
       ? content
-      : <Modal actions={this.actions}>{content}</Modal>;
+      : <Modal className={styles.modal} actions={this.actions}>{content}</Modal>;
   }
 }

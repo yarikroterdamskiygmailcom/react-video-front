@@ -36,7 +36,7 @@ export default class ConfigureVlog extends Component {
   ].map(({icon, option, desc, value}) => ({
     render: (
       <div className={styles.option}>
-        <Icon className={styles.icon} name={icon}/>
+        <Icon className={styles.icon} name={icon} />
         <div className={styles.optionBody}>
           <div className={styles.optionName}>{option}</div>
           <div className={styles.optionDesc}>{desc}</div>
@@ -87,17 +87,22 @@ export default class ConfigureVlog extends Component {
     }
   ]
 
-  renderFilter = ({name, style}) => <img
-    className={classNames(styles.filter, this.props.vlogConfig.filter === name && styles.active)}
-    style={style}
-    onClick={this.props.vlogConfig.setFilter(name)}
-    src={this.grabThumb()}
-  />
+  renderFilter = ({name, style}) => (
+    <div className={classNames(styles.filter, this.props.vlogConfig.filter === name && styles.active)}>
+      <img
+        className={styles.filterPreview}
+        style={style}
+        onClick={this.props.vlogConfig.setFilter(name)}
+        src={this.grabThumb()}
+      />
+      <div className={styles.filterName}>{name}</div>
+    </div>
+  )
 
   renderInput = (label, value, onChange) => (
     <div className={styles.spacedRow}>
       <div className={styles.label}>{label}</div>
-      <input type="text" value={value} onChange={onChange}/>
+      <input type="text" value={value} onChange={onChange} />
     </div>
   )
 
@@ -112,18 +117,18 @@ export default class ConfigureVlog extends Component {
           {this.renderInput('Description', vlogDescription, changeVlogDescription)}
         </Segment>
         <Segment title="Styling">
-          <Carousel title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter}/>
-          <Toggle label="Logo Overlay" value={useFilter} onChange={toggleFilter}/>
+          <Carousel title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter} />
+          <Toggle label="Logo Overlay" value={useFilter} onChange={toggleFilter} />
         </Segment>
         <Segment title="Orientation">
-          {this.orientationOptions.map(({render, value}) => <RadioButton render={render} active={value === orientation} onChange={toggleOrientation}/>)}
+          {this.orientationOptions.map(({render, value}) => <RadioButton render={render} active={value === orientation} onChange={toggleOrientation} />)}
         </Segment>
         <Segment title="Options">
-          <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={toggleSubs}/>
-          <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={toggleEdit}/>
+          <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={toggleSubs} />
+          <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={toggleEdit} />
         </Segment>
         {renderUrl && <Segment title="Preview">
-          <Preview className={styles.preview} src={renderUrl}/>
+          <Preview className={styles.preview} src={renderUrl} />
         </Segment>}
         <div className={styles.renderSection}>
           {renderUrl && <div className={styles.renderButton} onClick={this.next}>
@@ -131,7 +136,7 @@ export default class ConfigureVlog extends Component {
           </div>}
           <div className={classNames(styles.renderButton, rendering && styles.active)} onClick={renderVlog}>
             <div>{rendering ? 'Rendering...' : 'Render'}</div>
-            <FontAwesome className={styles.icon} name="chevron-right"/>
+            <FontAwesome className={styles.icon} name="chevron-right" />
           </div>
         </div>
       </div>

@@ -32,7 +32,6 @@ export default class AddBrandingElement extends Component {
 
   renderAsset = ({id, thumb, title, type}, i) => (
     <div key={id} className={classNames(styles.asset, this.state.currentAsset === i && styles.selected)} onClick={() => this.selectAsset(i)}>
-      {/* <div className={styles.thumb} style={{background: `url(${thumb})`}} /> */}
       <img className={styles.thumb} src={thumb}/>
       <div className={styles.assetData}>
         <div className={styles.assetTitle}>{title}</div>

@@ -1,7 +1,6 @@
 .container {
     position: relative;
     width: 100%;
-    margin-bottom: -30px; //because of scrollbar
     overflow-y: hidden;
 
     .header {
@@ -19,7 +18,8 @@
     height: fit-content;
 
     &::-webkit-scrollbar {
-        background: transparent;
+        display: none;
+        visibility: hidden;
     }
 
 
@@ -35,7 +35,7 @@
     height: 50px;
     background: $purple;
     z-index: 2;
-    bottom: 40%;
+    bottom: 30%;
     color: $white;
 }
 
