@@ -1,8 +1,8 @@
-import React from 'react';
 import {observable} from 'mobx';
 import {php} from '.';
 import encode from 'object-to-formdata';
-import {sessionStore, history} from '../';
+import {sessionStore} from '../';
+import {history} from '../constants/routes';
 
 export class VlogDetailsStore {
 

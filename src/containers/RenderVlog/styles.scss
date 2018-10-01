@@ -1,5 +1,5 @@
 .container {
-
+    
 }
 
 .row {
@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    color: $text;
 
     .icon {
         color: $grey;
@@ -25,5 +26,9 @@
 .preview {
     padding: 10px 10px 0;
     box-sizing: border-box;
-    margin-bottom: 25px;
+}
+
+a {
+    color: $text;
+    text-decoration: none;
 }

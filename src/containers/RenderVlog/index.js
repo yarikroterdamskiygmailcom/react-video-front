@@ -6,6 +6,7 @@ import styles from './styles.scss';
 import {inject, observer} from 'mobx-react';
 
 @inject('vlogEditor')
+@inject('vlogConfig')
 @inject('vlogRender')
 @observer
 export default class RenderVlog extends Component {
@@ -42,7 +43,7 @@ export default class RenderVlog extends Component {
       func: this.props.vlogRender.shareInstagram
     },
     {
-      text: 'Download Video',
+      text: <a href={this.props.vlogConfig.renderUrl} target="_blank" download>Download Video</a>,
       func: this.props.vlogRender.download
     },
     {
@@ -57,9 +58,10 @@ export default class RenderVlog extends Component {
   ))
 
   render() {
+    const {renderUrl} = this.props.vlogConfig;
     return (
       <div className={styles.container}>
-        <Preview className={styles.preview}/>
+        <Preview className={styles.preview} src={renderUrl}/>
         <Segment title="Share">
           {[this.options]}
         </Segment>

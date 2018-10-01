@@ -126,6 +126,9 @@ export default class ConfigureVlog extends Component {
           <Preview className={styles.preview} src={renderUrl}/>
         </Segment>}
         <div className={styles.renderSection}>
+          {renderUrl && <div className={styles.renderButton} onClick={this.next}>
+            Share!
+          </div>}
           <div className={classNames(styles.renderButton, rendering && styles.active)} onClick={renderVlog}>
             <div>{rendering ? 'Rendering...' : 'Render'}</div>
             <FontAwesome className={styles.icon} name="chevron-right"/>
