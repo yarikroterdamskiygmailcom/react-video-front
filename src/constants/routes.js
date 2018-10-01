@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink, Redirect} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
-import {Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails} from '../containers';
+import {Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template} from '../containers';
 import {DeleteVlog} from '../components';
 import styles from './styles.scss';
 
@@ -137,8 +137,17 @@ const vlogDetails = {
   }
 };
 
+const template = {
+  name: 'Template',
+  path: '/template',
+  component: Template,
+  header: {
+    left: backButton
+  },
+};
+
 export const navBarRoutes = [home, addVlog, profile];
 
-const allRoutes = [notFound, login, logout, forgotPassword, home, editVlog, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails];
+const allRoutes = [notFound, login, logout, forgotPassword, home, editVlog, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails, template];
 
 export default allRoutes;

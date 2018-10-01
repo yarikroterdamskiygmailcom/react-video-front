@@ -9,5 +9,6 @@ export {default as Profile} from './Profile';
 export {default as Publish} from './Publish';
 export {default as RenderVlog} from './RenderVlog';
 export {default as Settings} from './Settings';
+export {default as Template} from './Template';
 export {default as VlogEditor} from './VlogEditor';
 export {default as VlogDetails} from './VlogDetails';

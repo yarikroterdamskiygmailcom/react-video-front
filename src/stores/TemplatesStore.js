@@ -1,0 +1,51 @@
+import {observable} from 'mobx';
+import {php} from '.';
+import encode from 'object-to-formdata';
+import Resumable from 'resumablejs';
+import {sessionStore as session, vlogEditorStore as editor} from '../';
+
+export class TemplatesStore {
+
+  @observable templates = []
+  @observable activeTemplate = null
+  @observable uploading = []
+
+  createResumable = i => {
+    const resumable = new Resumable({
+      target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
+      query: {
+        SessionID: session.sessionId,
+        action: 'uploadvideo',
+        project_id: editor.projectId
+      }
+    });
+    resumable.assignBrowse(document.getElementById(`fieldTarget-${i}`));
+    resumable.on('fileAdded', () => {
+      resumable.upload();
+      this.uploading.push(i);
+    });
+    resumable.on('fileSuccess', (resumableFile, response) => {
+      this.uploading.remove(i);
+      resumable.cancel();
+    });
+  }
+
+  initResumables = () => {
+    this.activeTemplate.fields = this.activeTemplate.fields.map((field, i) => ({...field, resumable: this.createResumable(i)}));
+  }
+
+  setTemplate = index => this.activeTemplate = this.templates[index]
+
+  loadTemplates = () =>
+    php.post('handleproject.php', encode({
+      react: true,
+      action: 'loadtemplates',
+      SessionID: session.sessionId,
+      project_id: editor.initBlankVlog().then(() => editor.projectId),
+      debug: true
+    })).then(res => {
+      this.templates = res.data.templates;
+    });
+}
+
+export default TemplatesStore;

@@ -27,3 +27,37 @@
     }
 
 }
+
+.options {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    .optionsGroup {
+        margin: 0 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        background: $white;
+
+        .optionsHeader,
+        .option {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            border-bottom: $grey 1px solid;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        .optionsHeader {
+            color: $grey;
+        }
+
+        .option {
+            color: $text;
+        }
+    }
+}
