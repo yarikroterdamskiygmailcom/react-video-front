@@ -10,20 +10,23 @@ export default class Carousel extends Component {
   }
 
   scroll = direction => () => {
-    this.carouselRef.current.scrollLeft += (direction * this.props.scrollStep);
+    this.timer = setInterval(() => this.carouselRef.current.scrollLeft += direction * 2, 1);
   }
+
+  stopScrolling = () => clearInterval(this.timer);
+
   render() {
     return !this.props.pending
       ? (
         <div className={styles.container}>
           <div className={styles.header}>{this.props.title}</div>
-          <div className={styles.left} onClick={this.scroll(-1)}>
+          <div className={styles.left} onMouseEnter={this.scroll(-1)} onMouseLeave={this.stopScrolling}>
             <FontAwesome name="chevron-left"/>
           </div>
           <div ref={this.carouselRef} className={styles.items}>
             {this.props.items.map(this.props.renderFunction)}
           </div>
-          <div className={styles.right} onClick={this.scroll(1)}>
+          <div className={styles.right} onMouseEnter={this.scroll(1)} onMouseLeave={this.stopScrolling}>
             <FontAwesome name="chevron-right"/>
           </div>
         </div>
