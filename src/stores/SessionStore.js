@@ -2,7 +2,7 @@ import {observable} from 'mobx';
 import {php} from '.';
 import encode from 'object-to-formdata';
 import {sha512} from 'js-sha512';
-import {history} from '../';
+import {history} from '../constants/routes';
 import Cookies from 'js-cookie';
 
 export class SessionStore {

@@ -1,4 +1,4 @@
-import {observable} from 'mobx';
+import {observable, action} from 'mobx';
 import {php} from '.';
 import encode from 'object-to-formdata';
 import Resumable from 'resumablejs';
@@ -9,6 +9,7 @@ export class TemplatesStore {
   @observable templates = []
   @observable activeTemplate = null
   @observable uploading = []
+  @observable media = []
 
   createResumable = i => {
     const resumable = new Resumable({
@@ -25,10 +26,18 @@ export class TemplatesStore {
       this.uploading.push(i);
     });
     resumable.on('fileSuccess', (resumableFile, response) => {
+      this.addVideo(resumableFile.file, response, i);
       this.uploading.remove(i);
       resumable.cancel();
     });
   }
+
+  addVideo = (localFile, response, i) => this.media[i] = {
+    ...JSON.parse(response),
+    mediatype: 'video',
+    localFileObj: localFile,
+    src: URL.createObjectURL(localFile)
+  };
 
   initResumables = () => {
     this.activeTemplate.fields = this.activeTemplate.fields.map((field, i) => ({...field, resumable: this.createResumable(i)}));
@@ -46,6 +55,10 @@ export class TemplatesStore {
     })).then(res => {
       this.templates = res.data.templates;
     });
+
+    next = () => {
+      editor.media = this.media;
+    }
 }
 
 export default TemplatesStore;

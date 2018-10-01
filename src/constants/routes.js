@@ -1,11 +1,14 @@
 import React from 'react';
 import {NavLink, Redirect} from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory';
 import FontAwesome from 'react-fontawesome';
 import {Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template} from '../containers';
 import {DeleteVlog} from '../components';
 import styles from './styles.scss';
 
-const backButton = <NavLink to="/home"><FontAwesome name="angle-left"/> Back</NavLink>;
+export const history = createBrowserHistory();
+
+const backButton = <div onClick={history.goBack}><FontAwesome name="angle-left"/> Back</div>;
 
 const notFound = {
   name: 'Not Found',
@@ -32,7 +35,7 @@ const forgotPassword = {
   path: '/forgot-password',
   component: ForgotPassword,
   header: {
-    left: <NavLink to={login.path}><FontAwesome name="angle-left"/> Back</NavLink>
+    left: backButton
   }
 };
 
@@ -83,7 +86,7 @@ const settings = {
   path: '/settings',
   component: Settings,
   header: {
-    left: <NavLink to="/profile"><FontAwesome name="chevron-left"/> Back</NavLink>,
+    left: backButton
   }
 };
 
@@ -113,7 +116,7 @@ const configureVlog = {
   path: '/configure-vlog',
   component: ConfigureVlog,
   header: {
-    left: <NavLink to={vlogEditor.path}><FontAwesome name="angle-left"/> Back</NavLink>
+    left: backButton
   }
 };
 
@@ -122,7 +125,7 @@ const renderVlog = {
   path: '/render-vlog',
   component: RenderVlog,
   header: {
-    left: <NavLink to={configureVlog.path}><FontAwesome name="angle-left"/> Back</NavLink>
+    left: backButton
   },
   navBar: true
 };

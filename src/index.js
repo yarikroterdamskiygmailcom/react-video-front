@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
 import {Provider} from 'mobx-react';
 import {Router} from 'react-router';
 import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, VlogConfigStore, VlogDetailsStore, VlogRenderStore, TemplatesStore} from './stores';
 import App from './containers/App';
+import {history} from './constants/routes';
 import './scss/main.scss';
-
-export const history = createBrowserHistory();
 
 export const sessionStore = new SessionStore();
 const assetsStore = new AssetsStore();
