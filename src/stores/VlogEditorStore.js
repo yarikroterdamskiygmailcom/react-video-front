@@ -64,7 +64,10 @@ export class VlogEditorStore {
 
     //Crossfade stuff
 
-    addCrossfade = () => this.addMedia({mediatype: 'crossfade'})
+    addCrossfade = () => this.addMedia({
+      mediatype: 'crossfade',
+      duration: 2
+    })
 
     //Add Title stuff
 

@@ -48,21 +48,47 @@ export default class Arranger extends Component {
     throw new Error(`Tried to render media with mediatype ${media.mediatype}, must be one of ${Object.keys(this.mediaActionsMap)}`);
   }
 
-  getMediaLabel = mediatype => ({
-    crossfade: <div><Icon name="crossfade" /> Crossfade</div>,
-    title: <div><Icon name="title" /> Title</div>,
-    asset: <div><Icon name="branding" /> Branding</div>
-  }[mediatype])
-
-  itemBody = ({thumb, file, videofile, duration, mediatype, trimmed}, index) => (
-    <div className={styles.itemBody}>
-      <div className={styles.thumb} onClick={() => this.props.onThumbClick(index)} style={{backgroundImage: `url(${thumb})`}} />
-      <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-        <div className={styles.fileName}>{file || videofile || this.getMediaLabel(mediatype)}</div>
-        <div className={styles.fileMeta}>{duration} {trimmed && <Icon className={styles.icon} name="trim"/>}</div>
+  generateBody = ({thumb, file, videofile, duration, mediatype, trimmed, text, title}, index) => ({
+    video: (
+      <div className={styles.itemBody}>
+        <div className={styles.thumb} onClick={() => this.props.onThumbClick(index)} style={{backgroundImage: `url(${thumb})`}} />
+        <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+          <div className={styles.fileName}>{file || videofile}</div>
+          <div className={styles.fileMeta}>{duration} {trimmed && <Icon className={styles.icon} name="trim"/>}</div>
+        </div>
       </div>
-    </div>
-  )
+    ),
+
+    crossfade: (
+      <div className={styles.itemBody}>
+        <Icon className={styles.bigIcon} name="crossfade"/>
+        <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+          <div className={styles.fileName}>Crossfade</div>
+          <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
+        </div>
+      </div>
+    ),
+
+    title: (
+      <div className={styles.itemBody}>
+        <Icon className={styles.bigIcon} name="title"/>
+        <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+          <div className={styles.fileName}>Title</div>
+          <div className={styles.fileMeta}>{text}</div>
+        </div>
+      </div>
+    ),
+
+    asset: (
+      <div className={styles.itemBody}>
+        <Icon className={styles.bigIcon} name="branding"/>
+        <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+          <div className={styles.fileName}>Branding</div>
+          <div className={styles.fileMeta}>{title}</div>
+        </div>
+      </div>
+    )
+  }[mediatype])
 
   DragHandle = SortableHandle(() => <FontAwesome className={styles.handle} name="bars" />);
 
@@ -74,7 +100,7 @@ export default class Arranger extends Component {
         onSwipedLeft={() => this.setReveal(revealIndex, 'left')}
         onSwipedRight={() => value.mediatype === 'video' && this.setReveal(revealIndex, 'right')}
       >
-        {this.itemBody(value, revealIndex)}
+        {this.generateBody(value, revealIndex)}
       </Swipeable>
       <this.DragHandle />
     </div>
