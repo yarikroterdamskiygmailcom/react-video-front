@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Input, Toggle, Seperator} from '../../atoms';
 import {Modal, Trimmer} from '..';
 import {php} from '../../stores';
-import encode from 'object-to-formdata';
 import styles from './styles.scss';
 import classNames from 'classnames';
 import {observer, inject} from 'mobx-react';
@@ -20,9 +19,7 @@ class Preview extends Component {
 
   getPreview = () => {
     const {video, name, desc, side, useLogo, active} = this.props;
-    const {sessionId} = this.props.session;
-    php.post(`lowerthird.php`, encode({
-      SessionID: sessionId,
+    php.post(`lowerthird.php`, {
       firstline: name,
       secondline: desc,
       placement: side,
@@ -30,8 +27,8 @@ class Preview extends Component {
       previewframe: false,
       lt_id: active,
       video_id: video.videoid
-    })).then(res => {
-      const {extpath, imagename} = res.data;
+    }).then(res => {
+      const {extpath, imagename} = res;
       this.setState({path: extpath, file: imagename});
     });
   }
@@ -49,7 +46,7 @@ class Preview extends Component {
     const path = `${this.state.path}${this.state.file}?${Math.random()}`;
     return (
       <React.Fragment>
-        {path && <Trimmer video={video} lowerThird={{path, side}} noModal />}
+        {path && <Trimmer video={video} noModal />}
       </React.Fragment>
     );
   }
@@ -96,12 +93,12 @@ export default class LowerThird extends Component {
     };
     const insert = video.lowerthird ? [...video.lowerthird, lt] : [lt];
 
-    php.post('editvid.php', encode({
+    php.post('editvid.php', {
       debug: true,
       action: 'lowerthird',
       video_id: video.videoid,
       edit: insert
-    })).then(res => {
+    }).then(res => {
       console.log(res);
       this.props.onClose();
     });

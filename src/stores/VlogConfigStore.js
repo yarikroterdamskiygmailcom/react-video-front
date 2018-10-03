@@ -1,5 +1,4 @@
 import {observable, toJS} from 'mobx';
-import encode from 'object-to-formdata';
 import {php} from '.';
 import {vlogEditorStore as editor, sessionStore as session} from '..';
 import {pick} from 'lodash-es';
@@ -48,11 +47,10 @@ export class VlogConfigStore {
 
     renderVlog = async () => {
       this.rendering = true;
-      await php.post('handleproject.php', encode({
+      await php.post('handleproject.php', {
         debug: true,
         react: true,
         action: 'save',
-        SessionID: session.sessionId,
         project_id: editor.projectId,
         vlog_title: this.vlogTitle,
         vlog_desc: this.vlogDescription,
@@ -60,18 +58,17 @@ export class VlogConfigStore {
         custom_subs: this.customSubs,
         custom_edit: this.customEdit,
         media: this.shrinkMedia(toJS(editor.media))
-      })).then(res => console.log(res));
-      await php.post('export.php', encode({
+      }).then(res => console.log(res));
+      await php.post('export.php', {
         debug: true,
         react: true,
-        SessionID: session.sessionId,
         project_id: editor.projectId,
         orientation: this.orientation,
-      })).then(res => {
+      }).then(res => {
         this.rendering = false;
         console.log(res);
-        if(res.data.videourl) {
-          this.renderUrl = res.data.videourl;
+        if(res.videourl) {
+          this.renderUrl = res.videourl;
         }
       });
     }

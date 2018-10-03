@@ -1,6 +1,5 @@
 import {observable} from 'mobx';
 import {php} from '.';
-import encode from 'object-to-formdata';
 import {sessionStore} from '../';
 
 export class VlogsStore {
@@ -8,17 +7,12 @@ export class VlogsStore {
   @observable list = [];
   @observable currentVlog = null;
 
-  loadVlogs = () => php.post('handleoverview.php', encode({
+  loadVlogs = () => php.post('handleoverview.php', {
+    debug: true,
     react: true,
     action: 'load',
-    SessionID: sessionStore.sessionId
-  })).then(res => {
-    if (res.data.error) {
-      //in case our token don't work no more
-      sessionStore.logout();
-    } else {
-      this.list = res.data.project;
-    }
+  }).then(res => {
+    this.list = res.project;
   });
 
 }

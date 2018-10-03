@@ -22,14 +22,14 @@ export default class Modal extends Component {
     )
 
     render() {
-      const {className, children} = this.props;
+      const {className, children, actions} = this.props;
       return (
         <div className={classNames(styles.container, className)}>
           <div className={styles.children}>
             {children}
           </div>
           <div className={styles.actions}>
-            {(this.props.actions || this.defaultActions).map(this.renderAction)}
+            {(actions || this.defaultActions).map(this.renderAction)}
           </div>
         </div>
       );

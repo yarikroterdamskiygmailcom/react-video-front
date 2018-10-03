@@ -1,7 +1,5 @@
 import {observable} from 'mobx';
-import {php} from '.';
-import encode from 'object-to-formdata';
-import {sha512} from 'js-sha512';
+import {php, userDB} from '.';
 import {history} from '../constants/routes';
 import Cookies from 'js-cookie';
 
@@ -16,31 +14,37 @@ export class SessionStore {
 
   initialize = () => {
     this.sessionId = localStorage.getItem('token') || Cookies.get('token') || null;
-    this.sessionId && history.push('/home');
+    if(this.sessionId) {
+      php.interceptors.request.use(
+        config => ({...config, data: {...config.data, SessionID: this.sessionId}}),
+        error => error
+      );
+      userDB.defaults.headers.common.Authorization = `Token ${this.sessionId}`;
+      history.push('/home');
+    }
   }
 
-  login = () => php.post('login.php', encode({
+  login = () => php.post('login.php', {
     action: 'login',
     api_data: {
       email: this.email,
-      password: sha512(this.password),
+      password: this.password,
       saveLogin: false
     }
-  }),
-  ).then(res => {
-    const data = res.data;
-    const {IsError, ErrorMessage, SessionID} = data;
-    if (IsError) {
-      this.error = ErrorMessage;
+  }).then(res => {
+    console.log(res);
+    const {access_token, error} = res;
+    if (error) {
+      this.error = error;
     } else {
       this.error = null;
-      this.sessionId = SessionID;
+      this.sessionId = access_token;
       try {
-        localStorage.setItem('token', SessionID);
+        localStorage.setItem('token', access_token);
       } catch(e) {
-        Cookies.set('token', SessionID);
+        Cookies.set('token', access_token);
       }
-      history.push('/home');
+      this.initialize();
     }
   });
 

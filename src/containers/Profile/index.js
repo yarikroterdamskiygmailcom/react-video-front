@@ -4,6 +4,7 @@ import {isEmpty} from 'lodash-es';
 import styles from './styles.scss';
 import {Input, Button} from '../../atoms';
 import {observer, inject} from 'mobx-react';
+import {Overlay, Preview, Modal} from '../../components';
 
 @inject('session')
 @inject('profile')
@@ -11,7 +12,16 @@ import {observer, inject} from 'mobx-react';
 @observer
 export default class Profile extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpen: false,
+      activeAsset: null
+    };
+  }
+
   componentWillMount() {
+    this.props.profile.loadProfile();
     this.props.assets.loadAssets();
   }
 
@@ -19,37 +29,48 @@ export default class Profile extends Component {
     this.props.assets.initResumable();
   }
 
-  renderField = (left, right, func) => (
-    <div className={styles.field} onClick={func}>
+  openAsset = i => () => {
+    this.setState({
+      isOpen: true,
+      activeAsset: i
+    });
+  }
+
+  closeOverlay = () => this.setState({
+    isOpen: false,
+    activeAsset: null
+  })
+
+  renderField = (left, right) => (
+    <div className={styles.field}>
       <div className={styles.fieldLeft}>{left}</div>
       <div className={styles.fieldRight}>{right}</div>
     </div>
   )
 
   renderPersona = () => {
-    const {fullName, companyName, email} = this.props.profile;
+    const {first_name, last_name, team} = this.props.profile.user;
     return (
       <div className={styles.persona}>
-        <div className={styles.avatar}/>
-        <div className={styles.fullName}>{fullName || 'Kees Kaas'}</div>
-        <div className={styles.companyName}>{companyName || 'Het grote bedrijf'}</div>
+        <div className={styles.avatar} />
+        <div className={styles.fullName}>{`${first_name} ${last_name}`}</div>
+        <div className={styles.companyName}>{team}</div>
       </div>
     );
   }
 
   renderFields = () => {
-    const {email, accountType} = this.props.profile;
+    const {email, team} = this.props.profile.user;
     return (
       <div className={styles.fields}>
         {this.renderField('E-mail', email)}
-        {this.renderField('Account Type', accountType)}
-        {this.renderField('Payment Info', <FontAwesome name="chevron-right"/>)}
+        {this.renderField('Account Type', team ? 'Team' : 'Personal')}
       </div>
     );
   }
 
-  renderAsset = ({id, thumb, title}) => (
-    <div key={id} className={styles.asset}>
+  renderAsset = ({id, thumb, title}, i) => (
+    <div key={id} className={styles.asset} onClick={this.openAsset(i)}>
       <img
         className={styles.thumb}
         src={thumb}
@@ -73,12 +94,36 @@ export default class Profile extends Component {
     );
   }
 
+  deleteAsset = id => () => this.props.assets.deleteAsset(id).then(this.closeOverlay)
+
+  renderPreview = () => {
+    const asset = this.props.assets.assetList[this.state.activeAsset];
+    const modalActions = [
+      {
+        label: 'Close',
+        func: this.closeOverlay
+      },
+      {
+        label: 'Delete',
+        func: this.deleteAsset(asset.id)
+      }
+    ];
+    return (
+      <Modal className={styles.modal} actions={modalActions}>
+        <Preview src={asset.src} />
+      </Modal>
+    );
+  }
+
   render() {
+    const {user} = this.props.profile;
+    const {isOpen} = this.state;
     return (
       <div className={styles.container}>
-        {this.renderPersona()}
-        {this.renderFields()}
+        {user && this.renderPersona()}
+        {user && this.renderFields()}
         {this.renderAssets()}
+        {isOpen && <Overlay active={isOpen} content={this.renderPreview()} />}
       </div>
     );
   }

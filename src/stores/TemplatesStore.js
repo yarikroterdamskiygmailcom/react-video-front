@@ -1,6 +1,5 @@
 import {observable, action} from 'mobx';
 import {php} from '.';
-import encode from 'object-to-formdata';
 import Resumable from 'resumablejs';
 import {sessionStore as session, vlogEditorStore as editor} from '../';
 
@@ -46,14 +45,13 @@ export class TemplatesStore {
   setTemplate = index => this.activeTemplate = this.templates[index]
 
   loadTemplates = () =>
-    php.post('handleproject.php', encode({
+    php.post('handleproject.php', {
       react: true,
       action: 'loadtemplates',
-      SessionID: session.sessionId,
       project_id: editor.initBlankVlog().then(() => editor.projectId),
       debug: true
-    })).then(res => {
-      this.templates = res.data.templates;
+    }).then(res => {
+      this.templates = res.templates;
     });
 
     next = () => {

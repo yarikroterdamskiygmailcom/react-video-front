@@ -1,11 +1,10 @@
 import React from 'react';
-import {Trimmer, AddTitle, AddBrandingElement, LowerThird, Preview} from '../components';
+import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Preview} from '../components';
 import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
 import {sessionStore} from '../';
 import {php} from '.';
-import encode from 'object-to-formdata';
 
 export class VlogEditorStore {
     @observable media = null
@@ -36,7 +35,6 @@ export class VlogEditorStore {
     //Upload stuff
 
     initResumable = () => {
-      console.log(this.projectId);
       this.resumable = new Resumable({
         target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
         query: {
@@ -57,7 +55,7 @@ export class VlogEditorStore {
       });
     }
 
-    addVideo = (localFile, response) => this.addMedia({
+    addVideo = (localFile, response) => console.log(response) || this.addMedia({
       ...JSON.parse(response),
       mediatype: 'video',
       localFileObj: localFile,
@@ -134,7 +132,7 @@ export class VlogEditorStore {
     openLowerThird = i => {
       this.currentVideo = this.media[i];
       this.overlayActive = true;
-      this.overlayContent = <LowerThird video={this.currentVideo} onClose={this.closeOverlay}/>;
+      this.overlayContent = <AddOverlay video={this.currentVideo} onClose={this.closeOverlay}/>;
     }
 
     //Preview stuff
@@ -150,12 +148,11 @@ export class VlogEditorStore {
 
     initBlankVlog = () => {
       this.media = [];
-      return php.post('handleproject.php', encode({
+      return php.post('handleproject.php', {
         debug: true,
         react: true,
         action: 'new',
-        SessionID: sessionStore.sessionId,
-      })).then(res => this.projectId = res.data.project_id);
+      }).then(res => this.projectId = res.project_id);
     }
 
     setVlog = vlog => {

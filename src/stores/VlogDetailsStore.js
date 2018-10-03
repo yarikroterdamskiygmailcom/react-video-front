@@ -1,6 +1,5 @@
 import {observable} from 'mobx';
 import {php} from '.';
-import encode from 'object-to-formdata';
 import {sessionStore} from '../';
 import {history} from '../constants/routes';
 
@@ -24,12 +23,10 @@ export class VlogDetailsStore {
       this.overlayContent = null;
     }
 
-    deleteVlog = () => php.post('handleproject.php', encode({
+    deleteVlog = () => php.post('handleproject.php', {
       action: 'del',
-      SessionID: sessionStore.sessionId,
       project_id: this.vlog.project_id
-    }),
-    ).then(() => history.push('/home'))
+    }).then(() => history.push('/home'))
 }
 
 export default VlogDetailsStore;

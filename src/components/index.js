@@ -1,4 +1,5 @@
 export {default as AddBrandingElement} from './AddBrandingElement';
+export {default as AddOverlay} from './AddOverlay';
 export {default as AddTitle} from './AddTitle';
 export {default as Arranger} from './Arranger';
 export {default as DeleteVlog} from './DeleteVlog';
