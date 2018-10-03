@@ -1,5 +1,5 @@
 import React from 'react';
-import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Preview} from '../components';
+import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Preview, AddCrossfade} from '../components';
 import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
@@ -64,10 +64,10 @@ export class VlogEditorStore {
 
     //Crossfade stuff
 
-    addCrossfade = () => this.addMedia({
-      mediatype: 'crossfade',
-      duration: 2
-    })
+    openAddCrossfade = () => {
+      this.overlayActive = true;
+      this.overlayContent = <AddCrossfade onClose={this.closeOverlay} addMedia={this.addMedia}/>;
+    }
 
     //Add Title stuff
 

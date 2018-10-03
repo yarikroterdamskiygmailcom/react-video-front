@@ -30,7 +30,6 @@ export class AssetsStore {
       query: {
         SessionID: sessionStore.sessionId,
         action: 'uploadasset',
-        type: 'video'
       }
     });
     this.resumable.assignBrowse(document.getElementById('addAsset'));
