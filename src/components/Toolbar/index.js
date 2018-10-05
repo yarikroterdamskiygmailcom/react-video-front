@@ -14,13 +14,19 @@ class Toolbar extends Component {
 
   openMenu = () => {
     this.setState({isOpen: true});
+    console.log('tricked');
   }
 
-  //TODO: WTF
-  closeMenu = () => this.setState({isOpen: false}, () => this.setState({isOpen: false}));
+  closeMenu = () => this.setState({isOpen: false});
+
+  handleClick = func => e => {
+    e.stopPropagation();
+    this.closeMenu();
+    func();
+  }
 
   renderAction = (action, i) =>
-    <div key={`action-${i}`} className={styles.action} onClick={() => this.closeMenu() || action.fn()}>
+    <div key={`action-${i}`} className={styles.action} onClick={this.handleClick(action.fn)}>
       <Icon className={styles.actionIcon} name={action.icon}/>
       {action.render}
     </div>
