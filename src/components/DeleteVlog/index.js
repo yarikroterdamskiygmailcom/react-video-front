@@ -8,6 +8,10 @@ import styles from './styles.scss';
 @observer
 export default class DeleteVlog extends Component {
 
+  componentWillUnmount() {
+    this.props.vlogDetails.closeOverlay();
+  }
+
   actions = [
     {
       label: 'Cancel',
