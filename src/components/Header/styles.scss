@@ -6,50 +6,38 @@
     background: $white;
     color: $text;
     border-bottom: $grey solid 1px;
-}
 
-.left {
-    text-align: left;
-    justify-content: flex-start;
-    padding-left: 10px;
-}
-
-.title {
-    text-align: center;
-    font-weight: bold;
-    justify-content: center;
-    width: 40%;
-    height: 100%;
-
-}
-
-.right {
-    text-align: right;
-    justify-content: flex-end;
-    padding-right: 10px;
-}
-
-.left,
-.right {
-    width: 30%;
-}
-
-.left,
-.title,
-.right {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    white-space: nowrap;
-}
-
-.container {
-    a {
-        color: $grey;
-        text-decoration: none;
+    .left {
+        text-align: left;
+        justify-content: flex-start;
+        padding-left: 10px;
+    }
+    
+    .title {
+        text-align: center;
+        font-weight: bold;
+        justify-content: center;
+        width: 40%;
+        height: 100%;
+    
+    }
+    
+    .right {
+        text-align: right;
+        justify-content: flex-end;
+        padding-right: 10px;
+    }
+    
+    .left,
+    .right {
+        width: 30%;
+    }
+    
+    .left,
+    .title,
+    .right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 }
-
-
-
-
