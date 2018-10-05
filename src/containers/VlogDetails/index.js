@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment} from '../../atoms';
+import {Segment, Input} from '../../atoms';
 import {Preview} from '../../components';
 import FontAwesome from 'react-fontawesome';
 import {withRouter} from 'react-router';
@@ -12,10 +12,20 @@ import {observer, inject} from 'mobx-react';
 @observer
 export default class VlogDetails extends Component {
 
-  openVlog = () => {
+  componentWillUnmount() {
+    this.props.vlogDetails.saveChanges();
+  }
+
+  editVlog = () => {
     this.props.vlogEditor.setVlog(this.props.vlogDetails.vlog);
     this.props.history.push('/edit-vlog');
   }
+
+  renderInput = (left, right, func) =>
+    <div className={styles.row}>
+      <div className={styles.left}>{left}</div>
+      <input className={styles.right} value={right} onChange={func}/>
+    </div>
 
   renderInfo = (left, right, func) =>
     <div className={styles.row} {...(func && {onClick: func})}>
@@ -24,15 +34,16 @@ export default class VlogDetails extends Component {
     </div>
 
   render() {
-    const vlog = this.props.vlogDetails;
+    const {vlogDetails} = this.props;
+    const {vlog} = vlogDetails;
     return (
       <div className={styles.container}>
         {vlog.status === 'exported' && <Preview src={vlog.exporturl}/>}
         <Segment title="Details">
-          {this.renderInfo('Title', vlog.title || 'Untitled', null)}
+          {this.renderInput('Title', vlogDetails.title, vlogDetails.changeTitle)}
         </Segment>
         <Segment title="Actions">
-          {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right"/>, this.openVlog)}
+          {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right"/>, this.editVlog)}
         </Segment>
       </div>
     );
