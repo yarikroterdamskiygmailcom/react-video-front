@@ -17,6 +17,10 @@ export class VlogEditorStore {
 
     //Editor stuff
 
+    cleanup = () => {
+      this.media = null;
+    }
+
     @action addMedia = mediaObj => {
       this.media = [...this.media.toJS(), mediaObj];
     }
