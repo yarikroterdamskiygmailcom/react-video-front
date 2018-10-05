@@ -14,7 +14,6 @@ export default class VlogDetails extends Component {
 
   componentWillUnmount() {
     this.props.vlogDetails.saveChanges();
-    this.props.vlogEditor.cleanup();
   }
 
   editVlog = () => {

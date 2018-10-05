@@ -1,6 +1,6 @@
 import {observable} from 'mobx';
 import {php} from '.';
-import {sessionStore} from '../';
+import {vlogEditorStore} from '../';
 import {history} from '../constants/routes';
 
 export class VlogDetailsStore {
@@ -30,7 +30,10 @@ export class VlogDetailsStore {
     deleteVlog = () => php.post('handleproject.php', {
       action: 'del',
       project_id: this.vlog.project_id
-    }).then(() => history.push('/home'))
+    }).then(() => {
+      vlogEditorStore.cleanup();
+      history.push('/home');
+    })
 
     saveChanges = () => php.post('handleproject.php', {
       action: 'save',
