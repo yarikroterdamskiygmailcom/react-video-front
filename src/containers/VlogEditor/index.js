@@ -19,7 +19,7 @@ export default class VlogEditor extends Component {
   getActions = () => [
     {
       icon: 'camera',
-      render: <span id="input">Video</span>,
+      render: <div className={styles.vidinput} id="input">Video</div>,
       fn: () => null
     },
     {
