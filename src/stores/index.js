@@ -1,5 +1,6 @@
 import axios from 'axios';
 import encode from 'object-to-formdata';
+import {sessionStore} from '..';
 export {AssetsStore} from './AssetsStore';
 export {ProfileStore} from './ProfileStore';
 export {SessionStore} from './SessionStore';
@@ -21,7 +22,7 @@ php.interceptors.request.use(
 php.interceptors.response.use(
   response => {
     if (response.data.error) {
-      throw new Error(`Error encountered in response: ${response.data.error}`);
+      sessionStore.error = response.data.error;
     }
     return response.data;
   },

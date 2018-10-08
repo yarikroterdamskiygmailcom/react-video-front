@@ -19,11 +19,13 @@ class App extends Component {
     </Switch>
 
   render() {
-    const authenticated = this.props.session.sessionId;
+    const {sessionId, error} = this.props.session;
+    const authenticated = Boolean(sessionId);
     const currentRouteObj = routes.find(routeObj => routeObj.path === this.props.location.pathname) || {};
     return (
       <div className={styles.container}>
         {currentRouteObj.header && <Header routeObj={currentRouteObj} />}
+        {error && <div className={styles.error}>{error}</div>}
         <div className={styles.content}>
           {!authenticated && <Redirect to="/"/>}
           {this.renderAllRoutes()}
