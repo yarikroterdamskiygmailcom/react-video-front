@@ -5,7 +5,10 @@ import classNames from 'classnames';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import Swipeable from 'react-swipeable';
 import styles from './styles.scss';
+import {observer, inject} from 'mobx-react';
 
+@inject('vlogEditor')
+@observer
 export default class Arranger extends Component {
 
   constructor(props) {
@@ -61,7 +64,7 @@ export default class Arranger extends Component {
 
     crossfade: (
       <div className={styles.itemBody}>
-        <Icon className={styles.bigIcon} name="crossfade"/>
+        <Icon className={styles.bigIcon} name="crossfade" onClick={this.props.vlogEditor.openEditCrossfade(index)}/>
         <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
           <div className={styles.fileName}>Crossfade</div>
           <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>

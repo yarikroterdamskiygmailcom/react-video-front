@@ -2,24 +2,16 @@ import React, {Component} from 'react';
 import {Modal} from '../';
 import styles from './styles.scss';
 
-export default class AddCrossfade extends Component {
+export default class EditCrossfade extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fromScratch: !this.props.initial,
-      duration: this.props.initial ? this.props.initial.duration : 2
+      duration: this.props.crossfade.duration
     };
   }
 
     save = () => {
-      if(this.state.fromScratch) {
-        this.props.addMedia({
-          mediatype: 'crossfade',
-          duration: this.state.duration
-        });
-      } else {
-        this.props.initial.duration = this.state.duration;
-      }
+      this.props.crossfade.duration = this.state.duration;
       this.props.onClose();
     }
 
