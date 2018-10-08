@@ -1,0 +1,26 @@
+.container {
+    position: relative;
+    width: 100%;
+}
+
+.options {
+    width: 100%;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.2s;
+    &.active {
+        opacity: 1;
+    }
+
+}
+
+.option, .label {
+    background: white;
+    padding: 10px;
+    border: $grey 1px solid;
+    border-top: none;
+}
+
+.label {
+    border-top: $grey 1px solid;
+}

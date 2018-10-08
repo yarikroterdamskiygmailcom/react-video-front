@@ -14,3 +14,30 @@
         text-align: left;
     }
 }
+
+.preset {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .presetName {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .colorGroup {
+        display: flex;
+        flex-direction: row;
+        .color {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            border: $grey 1px solid;
+
+            &:first-child {
+                margin-right: 5px;
+            }
+        }
+    }
+}

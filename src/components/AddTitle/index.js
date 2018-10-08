@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
-import {ColorPicker} from '../../atoms';
+import {Dropdown} from '../../atoms';
 import {Modal} from '../';
+import {observer, inject} from 'mobx-react';
 
+@inject('vlogs')
+@observer
 export default class AddTitle extends Component {
   constructor(props) {
     super(props);
+    this.presets = props.vlogs.userPrefs.title;
     this.state = this.props.title ? {...this.props.title} : {
+      dropdownOpen: false,
       text: '',
-      textcolor: '#FFFFFF',
-      backgroundcolor: '#000000',
-      font: 'Arial'
+      ...this.presets[0]
     };
   }
 
@@ -33,6 +36,12 @@ export default class AddTitle extends Component {
     }
   ]
 
+  setText = e => this.setState({text: e.target.value})
+
+  setSelection = index => () => this.setState({...this.presets[index]})
+
+  toggleDropdown = () => this.setState({dropdownOpen: !this.state.dropdownOpen})
+
   generateExampleStyle = (textColor, backgroundColor) => ({
     color: textColor,
     background: backgroundColor
@@ -44,14 +53,25 @@ export default class AddTitle extends Component {
     </div>
   )
 
-  setText = e => this.setState({text: e.target.value})
+  renderPreset = ({name, textcolor, backgroundcolor, font, align}) => (
+    <div className={styles.preset}>
+      <div className={styles.presetName} style={{fontFamily: font}}>{name}</div>
+      <div className={styles.colorGroup}>
+        <div className={styles.color} style={{background: textcolor}}/>
+        <div className={styles.color} style={{background: backgroundcolor}}/>
+      </div>
+    </div>
+  )
 
   render() {
-    const {text, textcolor, backgroundcolor} = this.state;
+    const {text, textcolor, backgroundcolor, dropdownOpen} = this.state;
     return (
       <Modal className={styles.modal} actions={this.modalActions}>
         {this.renderExample(text, textcolor, backgroundcolor)}
         <input className={styles.input} value={text} onChange={this.setText} placeholder="Enter your text here!"/>
+        <Dropdown label="Please select a style..." isOpen={dropdownOpen} toggleOpen={this.toggleDropdown} onSelect={this.setSelection}>
+          {this.presets.map(this.renderPreset)}
+        </Dropdown>
       </Modal>
     );
   }

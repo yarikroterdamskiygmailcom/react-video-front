@@ -5,6 +5,7 @@ export class VlogsStore {
 
   @observable list = [];
   @observable currentVlog = null;
+  @observable userPrefs = null;
 
   loadVlogs = () => php.post('handleoverview.php', {
     debug: true,
@@ -12,6 +13,7 @@ export class VlogsStore {
     action: 'load',
   }).then(res => {
     this.list = res.project;
+    this.userPrefs = res.userprefs;
   });
 
 }
