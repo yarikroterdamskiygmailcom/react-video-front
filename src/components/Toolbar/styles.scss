@@ -29,6 +29,10 @@
     .right {
         background: $purple;
         color: $white;
+
+        &.disabled {
+            opacity: 0.2;
+        }
     }
 }
 

@@ -3,7 +3,10 @@ import classNames from 'classnames';
 import {Icon} from '../../atoms';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
+import {observer, inject} from 'mobx-react';
 
+@inject('session')
+@observer
 class Toolbar extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +43,7 @@ class Toolbar extends Component {
     </div>
 
   render() {
-    const {className} = this.props;
+    const {className, allowNext, next, session} = this.props;
     return (
       <div className={classNames(styles.container, className)}>
         <div className={classNames(styles.overlay, this.state.isOpen && styles.active)}/>
@@ -48,7 +51,7 @@ class Toolbar extends Component {
           <FontAwesome name="plus"/>
           {this.renderMenu()}
         </div>
-        <div className={styles.right} onClick={this.props.next}>
+        <div className={classNames(styles.right, !allowNext && styles.disabled)} onClick={allowNext ? next : () => session.showError('Not enough media :(')}>
           <FontAwesome name="angle-right" />
         </div>
       </div>

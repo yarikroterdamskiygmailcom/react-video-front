@@ -12,6 +12,11 @@ export class SessionStore {
   changeEmail = e => this.email = e.target.value
   changePassword = e => this.password = e.target.value
 
+  showError = text => {
+    this.error = text;
+    setTimeout(() => this.error = null, 5000);
+  }
+
   initialize = () => {
     this.sessionId = localStorage.getItem('token') || Cookies.get('token') || null;
     if(this.sessionId) {

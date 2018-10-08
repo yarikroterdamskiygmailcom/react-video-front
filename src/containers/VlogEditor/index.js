@@ -9,11 +9,24 @@ import styles from './styles.scss';
 @inject('vlogEditor')
 @observer
 export default class VlogEditor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pending: false
+    };
+  }
+
+  componentWillMount() {
+    if (this.props.fromScratch) {
+      this.setState({pending: true});
+      this.props.vlogEditor.initBlankVlog().then(() => {
+        this.setState({pending: false});
+      });
+    }
+  }
 
   componentDidMount() {
-    this.props.fromScratch
-      ? this.props.vlogEditor.initBlankVlog().then(() => this.props.vlogEditor.initResumable())
-      : this.props.vlogEditor.initResumable();
+    this.props.vlogEditor.initResumable();
   }
 
   getActions = () => [
@@ -47,8 +60,13 @@ export default class VlogEditor extends Component {
       <div className={styles.container}>
         <div className={classNames(styles.uploadingIndicator, uploading && styles.active)}>Uploading your video...</div>
         <div className={styles.header}>Videos & Media</div>
-        {media && <Arranger/>}
-        <Toolbar className={styles.toolbar} actions={this.getActions()} next={this.nextStep}/>
+        <Arranger/>
+        <Toolbar
+          className={styles.toolbar}
+          actions={this.getActions()}
+          allowNext={media.filter(m => m.mediatype === 'video').length > 0}
+          next={this.nextStep}
+        />
         <Overlay className={styles.overlay} active={overlayActive} content={overlayContent} onClose={closeOverlay}/>
       </div>
     );
