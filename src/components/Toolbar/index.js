@@ -14,7 +14,6 @@ class Toolbar extends Component {
 
   openMenu = () => {
     this.setState({isOpen: true});
-    console.log('tricked');
   }
 
   closeMenu = () => this.setState({isOpen: false});

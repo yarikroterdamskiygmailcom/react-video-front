@@ -27,6 +27,14 @@ export class VlogEditorStore {
       this.media = [...this.media.toJS(), mediaObj];
     }
 
+    @action replaceMedia = (index, mediaObj) => {
+      if (this.media[index]) {
+        this.media = this.media.map((m, i) => i === index ? mediaObj : m);
+      } else {
+        throw new Error(`Tried to replace media[${index}], but it doesn't exist`);
+      }
+    }
+
     deleteMedia = i => {
       this.media = this.media.filter((value, index) => index !== i);
     }
@@ -75,9 +83,17 @@ export class VlogEditorStore {
       duration: duration || 2
     })
 
+    saveCrossfade = index => crossfade => this.replaceMedia(index, crossfade)
+
     openEditCrossfade = index => () => {
       this.overlayActive = true;
-      this.overlayContent = <EditCrossfade onClose={this.closeOverlay} crossfade={this.media[index]}/>;
+      this.overlayContent = (
+        <EditCrossfade
+          crossfade={this.media[index]}
+          onClose={this.closeOverlay}
+          onSave={this.saveCrossfade(index)}
+        />
+      );
     }
 
     //Add Title stuff
@@ -151,7 +167,7 @@ export class VlogEditorStore {
 
     //Preview stuff
 
-    openPreview = i => {
+    openPreview = i => () => {
       this.currentVideo = this.media[i];
       this.overlayActive = true;
 

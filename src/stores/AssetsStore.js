@@ -22,7 +22,7 @@ export class AssetsStore {
       react: true,
       action: 'deleteasset',
       id: id
-    }).then(res => console.log(res) || this.loadAssets());
+    }).then(this.loadAssets);
 
   initResumable = () => {
     this.resumable = new Resumable({

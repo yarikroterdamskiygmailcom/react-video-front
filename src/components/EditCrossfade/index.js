@@ -11,7 +11,7 @@ export default class EditCrossfade extends Component {
   }
 
     save = () => {
-      this.props.crossfade.duration = this.state.duration;
+      this.props.onSave({...this.props.crossfade, duration: this.state.duration});
       this.props.onClose();
     }
 

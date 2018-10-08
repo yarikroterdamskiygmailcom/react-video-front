@@ -31,7 +31,6 @@ export class VlogConfigStore {
   toggleEdit = () => this.customEdit = !this.customEdit;
 
     init = () => {
-      console.log(editor);
       this.title = editor.title || 'Untitled';
     }
 
@@ -41,7 +40,6 @@ export class VlogConfigStore {
         ? pick(m, ['mediatype', 'video_id', 'lowerthird', 'inpoint', 'outpoint'])
         : m
     );
-    console.log(shrunk);
     return JSON.stringify(shrunk);
   }
 
@@ -58,7 +56,7 @@ export class VlogConfigStore {
         custom_subs: this.customSubs,
         custom_edit: this.customEdit,
         media: this.shrinkMedia(toJS(editor.media))
-      }).then(res => console.log(res));
+      });
       await php.post('export.php', {
         debug: true,
         react: true,
@@ -66,7 +64,6 @@ export class VlogConfigStore {
         orientation: this.orientation,
       }).then(res => {
         this.rendering = false;
-        console.log(res);
         if(res.videourl) {
           this.renderUrl = res.videourl;
         }

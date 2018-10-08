@@ -23,17 +23,17 @@ export default class Arranger extends Component {
     trim: {
       label: 'Trim',
       icon: 'trim',
-      func: this.props.openTrimmer
+      func: this.props.vlogEditor.openTrimmer
     },
     lowerThird: {
       label: 'Lower Third',
       icon: 'lowerThird',
-      func: this.props.onLowerThird
+      func: this.props.vlogEditor.openLowerThird
     },
     delete: {
       label: 'Delete',
       icon: 'trash',
-      func: this.props.onDelete
+      func: this.props.vlogEditor.deleteMedia
     }
   }
 
@@ -51,47 +51,50 @@ export default class Arranger extends Component {
     throw new Error(`Tried to render media with mediatype ${media.mediatype}, must be one of ${Object.keys(this.mediaActionsMap)}`);
   }
 
-  generateBody = ({thumb, file, videofile, duration, mediatype, trimmed, text, title}, index) => ({
-    video: (
-      <div className={styles.itemBody}>
-        <div className={styles.thumb} onClick={() => this.props.onThumbClick(index)} style={{backgroundImage: `url(${thumb})`}} />
-        <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-          <div className={styles.fileName}>{file || videofile}</div>
-          <div className={styles.fileMeta}>{duration} {trimmed && <Icon className={styles.icon} name="trim"/>}</div>
+  generateBody = ({thumb, file, videofile, duration, mediatype, trimmed, text, title}, index) => {
+    const {openPreview} = this.props.vlogEditor;
+    return ({
+      video: (
+        <div className={styles.itemBody}>
+          <div className={styles.thumb} onClick={openPreview(index)} style={{backgroundImage: `url(${thumb})`}} />
+          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+            <div className={styles.fileName}>{file || videofile}</div>
+            <div className={styles.fileMeta}>{duration} {trimmed && <Icon className={styles.icon} name="trim"/>}</div>
+          </div>
         </div>
-      </div>
-    ),
+      ),
 
-    crossfade: (
-      <div className={styles.itemBody}>
-        <Icon className={styles.bigIcon} name="crossfade" onClick={this.props.vlogEditor.openEditCrossfade(index)}/>
-        <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-          <div className={styles.fileName}>Crossfade</div>
-          <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
+      crossfade: (
+        <div className={styles.itemBody}>
+          <Icon className={styles.bigIcon} name="crossfade" onClick={this.props.vlogEditor.openEditCrossfade(index)}/>
+          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+            <div className={styles.fileName}>Crossfade</div>
+            <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
+          </div>
         </div>
-      </div>
-    ),
+      ),
 
-    title: (
-      <div className={styles.itemBody}>
-        <Icon className={styles.bigIcon} name="title"/>
-        <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-          <div className={styles.fileName}>Title</div>
-          <div className={styles.fileMeta}>{text}</div>
+      title: (
+        <div className={styles.itemBody}>
+          <Icon className={styles.bigIcon} name="title"/>
+          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+            <div className={styles.fileName}>Title</div>
+            <div className={styles.fileMeta}>{text}</div>
+          </div>
         </div>
-      </div>
-    ),
+      ),
 
-    asset: (
-      <div className={styles.itemBody}>
-        <Icon className={styles.bigIcon} name="branding"/>
-        <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-          <div className={styles.fileName}>Branding</div>
-          <div className={styles.fileMeta}>{title}</div>
+      asset: (
+        <div className={styles.itemBody}>
+          <Icon className={styles.bigIcon} name="branding"/>
+          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+            <div className={styles.fileName}>Branding</div>
+            <div className={styles.fileMeta}>{title}</div>
+          </div>
         </div>
-      </div>
-    )
-  }[mediatype])
+      )
+    }[mediatype]);
+  }
 
   DragHandle = SortableHandle(() => <FontAwesome className={styles.handle} name="bars" />);
 
@@ -149,17 +152,23 @@ export default class Arranger extends Component {
     });
   }
 
+  handleAction = (action, itemIndex) => () => {
+    action.func(itemIndex);
+    this.resetReveal();
+  }
+
   renderAction = itemIndex => (action, i) =>
-    <div key={i} className={styles.action} onClick={() => { action.func(itemIndex); this.resetReveal(); }}>
+    <div key={i} className={styles.action} onClick={this.handleAction(action, itemIndex)}>
       <Icon name={action.icon} />
       <div>{action.label}</div>
     </div>
 
   render() {
+    const {media, onSortEnd} = this.props.vlogEditor;
     return (
       <this.SortableList
-        items={this.props.items}
-        onSortEnd={this.props.onSortEnd}
+        items={media}
+        onSortEnd={onSortEnd}
         onSortStart={this.resetReveal}
         useDragHandle={true}
       />

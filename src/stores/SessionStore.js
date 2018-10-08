@@ -32,7 +32,6 @@ export class SessionStore {
       saveLogin: false
     }
   }).then(res => {
-    console.log(res);
     const {access_token, error} = res;
     if (error) {
       this.error = error;

@@ -9,6 +9,7 @@ import styles from './styles.scss';
 @inject('vlogs')
 @inject('vlogEditor')
 @inject('vlogDetails')
+@inject('session')
 @observer
 export default class Home extends Component {
   constructor(props) {
@@ -20,7 +21,13 @@ export default class Home extends Component {
 
   componentWillMount() {
     this.setState({pending: true});
-    this.props.vlogs.loadVlogs().then(() => this.setState({pending: false}));
+    this.props.vlogs.loadVlogs().then(() => {
+      if (this.props.session.error) {
+        this.props.session.logout();
+      } else {
+        this.setState({pending: false});
+      }
+    });
   }
 
   viewDetails = vlog => {
@@ -53,6 +60,7 @@ renderItem = (item, i) =>
   </div>
 
 render() {
+
   return (
     <div className={styles.container}>
       {!isEmpty(this.props.vlogEditor.media) && this.renderHighlight()}

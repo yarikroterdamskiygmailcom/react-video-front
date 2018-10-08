@@ -99,7 +99,6 @@ export default class LowerThird extends Component {
       video_id: video.videoid,
       edit: insert
     }).then(res => {
-      console.log(res);
       this.props.onClose();
     });
   }
