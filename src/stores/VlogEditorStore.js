@@ -70,6 +70,11 @@ export class VlogEditorStore {
 
     //Crossfade stuff
 
+    addCrossfade = duration => this.addMedia({
+      mediatype: 'crossfade',
+      duration: duration || 2
+    })
+
     openAddCrossfade = () => {
       this.overlayActive = true;
       this.overlayContent = <AddCrossfade onClose={this.closeOverlay} addMedia={this.addMedia}/>;
