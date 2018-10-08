@@ -76,7 +76,7 @@ export default class Arranger extends Component {
 
       title: (
         <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="title"/>
+          <Icon className={styles.bigIcon} name="title" onClick={this.props.vlogEditor.openEditTitle(index)}/>
           <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
             <div className={styles.fileName}>Title</div>
             <div className={styles.fileMeta}>{text}</div>

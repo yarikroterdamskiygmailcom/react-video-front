@@ -1,12 +1,37 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
-import {Input, Button, ColorPicker} from '../../atoms';
+import {ColorPicker} from '../../atoms';
 import {Modal} from '../';
-import {observer, inject} from 'mobx-react';
 
-@inject('vlogEditor')
-@observer
 export default class AddTitle extends Component {
+  constructor(props) {
+    super(props);
+    this.state = this.props.title ? {...this.props.title} : {
+      text: '',
+      textcolor: '#FFFFFF',
+      backgroundcolor: '#000000',
+      font: 'Arial'
+    };
+  }
+
+  save = () => {
+    this.props.onSave({
+      mediatype: 'title',
+      ...this.state
+    });
+    this.props.onClose();
+  }
+
+  modalActions = [
+    {
+      label: 'Cancel',
+      func: this.props.onClose
+    },
+    {
+      label: 'Save',
+      func: this.save
+    }
+  ]
 
   generateExampleStyle = (textColor, backgroundColor) => ({
     color: textColor,
@@ -19,15 +44,14 @@ export default class AddTitle extends Component {
     </div>
   )
 
+  setText = e => this.setState({text: e.target.value})
+
   render() {
-    const {text, textColor, backgroundColor} = this.props.vlogEditor.title;
-    const {setText, setTextColor, setBackgroundColor, addTitle, closeOverlay} = this.props.vlogEditor;
+    const {text, textcolor, backgroundcolor} = this.state;
     return (
-      <Modal className={styles.modal} onPlace={addTitle} onCancel={closeOverlay}>
-        {this.renderExample(text, textColor, backgroundColor)}
-        <input className={styles.input} value={text} onChange={setText}/>
-        <ColorPicker value={textColor} options={['#FFFFFF', '#000000']} onChange={setTextColor}/>
-        <ColorPicker value={backgroundColor} options={['#FFFFFF', '#000000']} onChange={setBackgroundColor}/>
+      <Modal className={styles.modal} actions={this.modalActions}>
+        {this.renderExample(text, textcolor, backgroundcolor)}
+        <input className={styles.input} value={text} onChange={this.setText} placeholder="Enter your text here!"/>
       </Modal>
     );
   }

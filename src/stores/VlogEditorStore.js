@@ -39,6 +39,8 @@ export class VlogEditorStore {
       this.media = this.media.filter((value, index) => index !== i);
     }
 
+    saveMedia = index => crossfade => this.replaceMedia(index, crossfade)
+
     closeOverlay = () => {
       this.overlayActive = false;
       this.overlayContent = null;
@@ -83,55 +85,38 @@ export class VlogEditorStore {
       duration: duration || 2
     })
 
-    saveCrossfade = index => crossfade => this.replaceMedia(index, crossfade)
-
     openEditCrossfade = index => () => {
       this.overlayActive = true;
       this.overlayContent = (
         <EditCrossfade
           crossfade={this.media[index]}
           onClose={this.closeOverlay}
-          onSave={this.saveCrossfade(index)}
+          onSave={this.saveMedia(index)}
         />
       );
     }
 
     //Add Title stuff
 
-    @observable title = {
-      text: '',
-      textColor: '#000000',
-      backgroundColor: '#FFFFFF'
-    }
-
     openAddTitle = () => {
       this.overlayActive = true;
-      this.overlayContent = <AddTitle/>;
+      this.overlayContent = (
+        <AddTitle
+          onClose={this.closeOverlay}
+          onSave={this.addMedia}
+        />
+      );
     }
 
-    setText = e => this.title = {
-      ...this.title,
-      text: e.target.value
-    }
-
-    setTextColor = color => {
-      this.title = {
-        ...this.title,
-        textColor: color
-      };
-    }
-
-    setBackgroundColor = color => this.title = {
-      ...this.title,
-      backgroundColor: color
-    }
-
-    addTitle = () => {
-      this.addMedia({
-        mediatype: 'title',
-        ...this.title
-      });
-      this.closeOverlay();
+    openEditTitle = index => () => {
+      this.overlayActive = true;
+      this.overlayContent = (
+        <AddTitle
+          onClose={this.closeOverlay}
+          onSave={this.saveMedia(index)}
+          title={this.media[index]}
+        />
+      );
     }
 
     //Trimmer stuff

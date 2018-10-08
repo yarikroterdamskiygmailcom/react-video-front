@@ -1,6 +1,5 @@
 import {observable} from 'mobx';
 import {php} from '.';
-import {sessionStore} from '../';
 
 export class VlogsStore {
 
