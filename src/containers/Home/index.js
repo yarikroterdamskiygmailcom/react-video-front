@@ -67,7 +67,7 @@ render() {
       <div className={styles.carousels}>
         <Carousel
           title="Saved Vlogs"
-          items={this.props.vlogs.list.filter(vlog => vlog.status === 'new')}
+          items={this.props.vlogs.list.filter(vlog => ['new', 'saved'].includes(vlog.status))}
           renderFunction={this.renderItem}
           scrollStep={310}
           onClick={this.viewDetails}
@@ -76,6 +76,14 @@ render() {
         <Carousel
           title="Rendered Vlogs"
           items={this.props.vlogs.list.filter(vlog => vlog.status === 'exported')}
+          renderFunction={this.renderItem}
+          scrollStep={310}
+          onClick={this.viewDetails}
+          pending={this.state.pending}
+        />
+        <Carousel
+          title="Shared Vlogs"
+          items={this.props.vlogs.list.filter(vlog => vlog.status === 'shared')}
           renderFunction={this.renderItem}
           scrollStep={310}
           onClick={this.viewDetails}

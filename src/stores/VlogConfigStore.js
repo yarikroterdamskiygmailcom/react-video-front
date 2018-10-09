@@ -50,7 +50,7 @@ export class VlogConfigStore {
         react: true,
         action: 'save',
         project_id: editor.projectId,
-        vlog_title: this.vlogTitle,
+        title: this.vlogTitle,
         vlog_desc: this.vlogDescription,
         color_filter: this.useFilter ? this.filter : null,
         custom_subs: this.customSubs,

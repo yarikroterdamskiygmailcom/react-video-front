@@ -39,7 +39,7 @@ export class VlogDetailsStore {
     php.post('handleproject.php', {
       action: 'update',
       project_id: this.vlog.project_id,
-      vlog_title: this.title
+      title: this.title
     })
 }
 
