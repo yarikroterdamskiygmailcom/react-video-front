@@ -26,7 +26,14 @@ export default class Trimmer extends Component {
     this.props.onClose();
   }
 
-  setTrim = ([start, stop]) => this.setState({start, stop})
+  setTrim = ([start, stop]) => {
+    this.setState({
+      start,
+      stop,
+      lastChanged: start === this.state.start ? 'stop' : 'start'
+    });
+
+  }
 
   modalActions = [
     {
@@ -40,9 +47,16 @@ export default class Trimmer extends Component {
   ]
 
   preview = () => {
-    const {start} = this.state;
-    this.videoRef.current.currentTime = start;
-    this.videoRef.current.play();
+    const {start, stop, lastChanged} = this.state;
+    if (lastChanged === 'start') {
+      this.videoRef.current.currentTime = start;
+      this.videoRef.current.play();
+    }
+
+    if (lastChanged === 'stop') {
+      this.videoRef.current.currentTime = stop;
+      this.videoRef.current.pause();
+    }
   }
 
   render() {
