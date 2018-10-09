@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Button} from '../../atoms';
 import {Modal} from '..';
 import styles from './styles.scss';
 import {Range} from 'rc-slider';
@@ -11,58 +10,51 @@ export default class Trimmer extends Component {
   constructor(props) {
     super(props);
     this.videoRef = React.createRef();
+    this.state = {
+      start: props.video.inpoint || 0,
+      stop: props.video.outpoint || parseFloat(props.video.seconds)
+    };
   }
 
-  componentWillMount() {
-    const {video} = this.props;
-    const vidLength = parseFloat(video.seconds);
-    this.setExtremes(0, vidLength);
-    if (video.trimmed) {
-      this.setTrim([video.inpoint, video.outpoint]);
-    } else {
-      this.setTrim([0, vidLength]);
-    }
-  }
-
-  setTrim = values => this.setState({start: values[0], stop: values[1]})
-
-  setExtremes = (min, max) => this.setState({min, max})
-
-  saveTrim = () => {
-    this.props.video.inpoint = this.state.start;
-    this.props.video.outpoint = this.state.stop;
-    this.props.video.trimmed = true;
+  save = () => {
+    this.props.onSave({
+      ...this.props.video,
+      inpoint: this.state.start,
+      outpoint: this.state.stop,
+      trimmed: true
+    });
     this.props.onClose();
   }
 
-  actions = [
+  setTrim = ([start, stop]) => this.setState({start, stop})
+
+  modalActions = [
     {
       label: 'Cancel',
       func: this.props.onClose
     },
     {
-      label: 'Trim',
-      func: this.saveTrim
+      label: 'Save',
+      func: this.save
     }
   ]
 
   preview = () => {
-    const {start, stop} = this.state;
-    setTimeout(() => this.videoRef.current.pause(), (stop - start) * 1000);
+    const {start} = this.state;
     this.videoRef.current.currentTime = start;
     this.videoRef.current.play();
   }
 
   render() {
     const {video, noModal, lowerThird} = this.props;
-    const {start, stop, min, max} = this.state;
+    const {start, stop} = this.state;
+    const max = parseFloat(video.seconds);
     const content = (
       <React.Fragment>
         <div className={styles.videoContainer}>
-          <video className={styles.video} ref={this.videoRef} src={video.src} autoPlay />
+          <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`} />
           {lowerThird && <img className={classNames(styles.lowerThird, styles[lowerThird.side])} src={lowerThird.path}/>}
         </div>
-        <Button onClick={this.preview} text="Preview" />
         <div className={styles.timestamps}>
           <div>{start}</div>
           <div>{stop}</div>
@@ -70,7 +62,8 @@ export default class Trimmer extends Component {
         <Range
           value={[start, stop]}
           onChange={this.setTrim}
-          min={min}
+          onAfterChange={this.preview}
+          min={0}
           max={max}
           step={0.01}
           allowCross={false}
@@ -79,6 +72,6 @@ export default class Trimmer extends Component {
     );
     return noModal
       ? content
-      : <Modal className={styles.modal} actions={this.actions}>{content}</Modal>;
+      : <Modal className={styles.modal} actions={this.modalActions}>{content}</Modal>;
   }
 }
