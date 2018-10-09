@@ -18,7 +18,7 @@ export default class VlogEditor extends Component {
   }
 
   componentWillMount() {
-    this.props.vlogEditor.initMedia();
+    this.props.fromScratch && this.props.vlogEditor.initMedia();
   }
 
   componentDidMount() {
