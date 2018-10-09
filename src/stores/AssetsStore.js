@@ -2,6 +2,7 @@ import {observable} from 'mobx';
 import {php} from '.';
 import Resumable from 'resumablejs';
 import {sessionStore} from '../';
+import {isEmpty} from 'lodash-es';
 
 export class AssetsStore {
 
@@ -14,7 +15,7 @@ export class AssetsStore {
       react: true,
       action: 'loadassets',
     }).then(res => {
-      this.assetList = res.asset;
+      this.assetList = !isEmpty(res.asset) ? res.asset : [];
     });
   }
 
