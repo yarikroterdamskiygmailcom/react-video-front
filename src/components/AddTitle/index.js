@@ -59,7 +59,7 @@ export default class AddTitle extends Component {
   }
 
   renderPreset = ({name, textcolor, backgroundcolor, font, align}) => (
-    <div className={styles.preset}>
+    <div key={name} className={styles.preset}>
       <div className={styles.presetName} style={{fontFamily: font}}>{name}</div>
       <div className={styles.colorGroup}>
         <div className={styles.color} style={{background: textcolor}}/>

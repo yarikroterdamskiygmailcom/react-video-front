@@ -24,7 +24,7 @@ export default class Template extends Component {
   clearField = i => () => this.props.templates.media[i] = null
 
   renderField = ({title, type, description, short_description}, i) => (
-    <div className={classNames(styles.field)}>
+    <div key={title} className={classNames(styles.field)}>
       <div
         className={classNames(
           styles.button,
