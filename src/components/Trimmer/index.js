@@ -52,7 +52,7 @@ export default class Trimmer extends Component {
     const content = (
       <React.Fragment>
         <div className={styles.videoContainer}>
-          <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`} />
+          <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`} controls/>
           {lowerThird && <img className={classNames(styles.lowerThird, styles[lowerThird.side])} src={lowerThird.path}/>}
         </div>
         <div className={styles.timestamps}>
