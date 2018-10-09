@@ -19,15 +19,24 @@ export class TemplatesStore {
         project_id: editor.projectId
       }
     });
+
     resumable.assignBrowse(document.getElementById(`fieldTarget-${i}`));
+
     resumable.on('fileAdded', () => {
+      this.uploading[i] = 0;
       resumable.upload();
-      this.uploading.push(i);
     });
+
     resumable.on('fileSuccess', (resumableFile, response) => {
       this.addVideo(resumableFile.file, response, i);
-      this.uploading.remove(i);
+      this.uploading[i] = null;
       resumable.cancel();
+    });
+
+    resumable.on('progress', () => {
+      if (resumable.progress() !== 0) {
+        this.uploading[i] = resumable.progress() * 100;
+      }
     });
   }
 
@@ -42,7 +51,11 @@ export class TemplatesStore {
     this.activeTemplate.fields = this.activeTemplate.fields.map((field, i) => ({...field, resumable: this.createResumable(i)}));
   }
 
-  setTemplate = index => this.activeTemplate = this.templates[index]
+  setTemplate = index => {
+    this.activeTemplate = this.templates[index];
+    this.uploading = Array(this.activeTemplate.fields.length).fill(null);
+    this.media = Array(this.activeTemplate.fields.length).fill(null);
+  }
 
   loadTemplates = () =>
     php.post('handleproject.php', {
@@ -54,9 +67,9 @@ export class TemplatesStore {
       this.templates = res.templates;
     });
 
-    next = () => {
-      editor.media = this.media;
-    }
+  next = () => {
+    editor.media = this.media;
+  }
 }
 
 export default TemplatesStore;

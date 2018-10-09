@@ -8,6 +8,7 @@
     flex-direction: row;
 
     .button {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -20,9 +21,6 @@
         margin-right: 15px;
         font-size: 25px;
 
-        &.uploading {
-            animation: spin 2s ease infinite;
-        }
     }
 
     
@@ -68,6 +66,12 @@
     border-radius: 5px;
 }
 
-@keyframes spin {
-    100% { transform: rotate(360deg); }
+.progressBar {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: $purple;
+    border-radius: 5px;
+    font-size: 12px;
 }

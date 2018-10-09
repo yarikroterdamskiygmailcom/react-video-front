@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Segment} from '../../atoms';
+import {Segment, ProgressBar} from '../../atoms';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import classNames from 'classnames';
 import {withRouter} from 'react-router';
-import {noop} from 'lodash-es';
+import {noop, isNumber} from 'lodash-es';
 
 @withRouter
 @inject('templates')
@@ -23,29 +23,37 @@ export default class Template extends Component {
 
   clearField = i => () => this.props.templates.media[i] = null
 
-  renderField = ({title, type, description, short_description}, i) => (
-    <div key={title} className={classNames(styles.field)}>
-      <div
-        className={classNames(
-          styles.button,
-          this.props.templates.uploading.includes(i) && styles.uploading
-        )}
-        id={`fieldTarget-${i}`}
-      >
-        {this.props.templates.media[i]
-          ? <img
-            className={styles.thumb}
-            src={this.props.templates.media[i].thumb}
-            onClick={this.clearField(i)}
-          />
-          : <FontAwesome name="plus" />}
+  renderField = ({title, type, description, short_description}, i) => {
+    const progress = this.props.templates.uploading[i];
+    return (
+      <div key={title} className={classNames(styles.field)}>
+        <div
+          className={classNames(
+            styles.button,
+            isNumber(progress) && styles.uploading
+          )}
+          id={`fieldTarget-${i}`}
+        >
+          {this.props.templates.media[i]
+            ? <img
+              className={styles.thumb}
+              src={this.props.templates.media[i].thumb}
+              onClick={this.clearField(i)}
+            />
+            : progress
+              ? <div
+                className={styles.progressBar}
+                style={{width: `${progress}%`}}
+              />
+              : <FontAwesome name="plus" />}
+        </div>
+        <div className={styles.stack}>
+          <div className={styles.title}>{title}</div>
+          <div className={styles.descShort}>{short_description}</div>
+        </div>
       </div>
-      <div className={styles.stack}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.descShort}>{short_description}</div>
-      </div>
-    </div>
-  )
+    );
+  }
 
   allowNext = () => {
     const {media, activeTemplate} = this.props.templates;
