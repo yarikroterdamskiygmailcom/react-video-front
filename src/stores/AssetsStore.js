@@ -7,6 +7,7 @@ export class AssetsStore {
 
   @observable assetList = []
   @observable uploading = false;
+  @observable progress = 0;
 
   loadAssets = () => {
     php.post('handleproject.php', {
@@ -32,16 +33,22 @@ export class AssetsStore {
         action: 'uploadasset',
       }
     });
+
     this.resumable.assignBrowse(document.getElementById('addAsset'));
+
     this.resumable.on('fileAdded', () => {
       this.resumable.upload();
       this.uploading = true;
     });
+
     this.resumable.on('fileSuccess', () => {
       this.uploading = false;
       this.loadAssets();
       this.resumable.cancel();
+      this.progress = 0;
     });
+
+    this.resumable.on('progress', () => this.progress = this.resumable.progress() * 100);
   }
 
 }

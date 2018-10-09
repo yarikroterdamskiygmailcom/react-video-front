@@ -19,7 +19,10 @@ class Toolbar extends Component {
     this.setState({isOpen: true});
   }
 
-  closeMenu = () => this.setState({isOpen: false});
+  closeMenu = e => {
+    e && e.stopPropagation();
+    this.setState({isOpen: false});
+  }
 
   handleClick = func => e => {
     e.stopPropagation();

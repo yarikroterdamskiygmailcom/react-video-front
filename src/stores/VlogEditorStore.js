@@ -14,6 +14,7 @@ export class VlogEditorStore {
     @observable overlayContent = null
     @observable currentVideo = null
     @observable uploading = false
+    @observable progress = 0
 
     //Editor stuff
 
@@ -59,16 +60,23 @@ export class VlogEditorStore {
           project_id: this.projectId
         }
       });
+
       this.resumable.assignBrowse(document.getElementById('input'));
+
       this.resumable.on('fileAdded', () => {
         this.resumable.upload();
         this.uploading = true;
       });
+
       this.resumable.on('fileSuccess', (resumableFile, response) => {
         this.addVideo(resumableFile.file, response);
         this.uploading = false;
         this.resumable.cancel();
+        this.progress = 0;
       });
+
+      this.resumable.on('progress', () => this.progress = this.resumable.progress() * 100);
+
     }
 
     addVideo = (localFile, response) => console.log(response) || this.addMedia({
@@ -155,8 +163,13 @@ export class VlogEditorStore {
     openPreview = i => () => {
       this.currentVideo = this.media[i];
       this.overlayActive = true;
-
-      this.overlayContent = <Preview src={this.currentVideo.src}/>;
+      this.overlayContent = (
+        <Preview
+          src={this.currentVideo.src}
+          start={this.currentVideo.inpoint}
+          stop={this.currentVideo.outpoint}
+        />
+      );
     }
 
     //When initializing the editor

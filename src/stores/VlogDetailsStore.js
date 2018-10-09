@@ -35,8 +35,9 @@ export class VlogDetailsStore {
       history.push('/home');
     })
 
-    saveChanges = () => php.post('handleproject.php', {
-      action: 'save',
+    saveChanges = () => this.vlog.title !== this.title &&
+    php.post('handleproject.php', {
+      action: 'update',
       project_id: this.vlog.project_id,
       vlog_title: this.title
     })

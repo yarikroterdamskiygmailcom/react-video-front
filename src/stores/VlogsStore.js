@@ -1,5 +1,6 @@
 import {observable} from 'mobx';
 import {php} from '.';
+import {sessionStore} from '..';
 
 export class VlogsStore {
 
@@ -12,8 +13,12 @@ export class VlogsStore {
     react: true,
     action: 'load',
   }).then(res => {
-    this.list = res.project;
-    this.userPrefs = res.userprefs;
+    if(res.error === 'loginerror') {
+      sessionStore.logout();
+    } else {
+      this.list = res.project;
+      this.userPrefs = res.userprefs;
+    }
   });
 
 }

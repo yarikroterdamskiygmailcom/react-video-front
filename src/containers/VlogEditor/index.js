@@ -4,6 +4,7 @@ import {withRouter} from 'react-router';
 import {Arranger, Overlay, Toolbar} from '../../components';
 import classNames from 'classnames';
 import styles from './styles.scss';
+import {ProgressBar} from '../../atoms';
 
 @withRouter
 @inject('vlogEditor')
@@ -55,10 +56,10 @@ export default class VlogEditor extends Component {
   nextStep = () => this.props.history.push('/configure-vlog')
 
   render() {
-    const {uploading, media, overlayActive, overlayContent, closeOverlay} = this.props.vlogEditor;
+    const {uploading, progress, media, overlayActive, overlayContent, closeOverlay} = this.props.vlogEditor;
     return (
       <div className={styles.container}>
-        <div className={classNames(styles.uploadingIndicator, uploading && styles.active)}>Uploading your video...</div>
+        <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress}/>
         <div className={styles.header}>Videos & Media</div>
         <Arranger/>
         <Toolbar

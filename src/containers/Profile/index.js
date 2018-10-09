@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import {isEmpty} from 'lodash-es';
 import styles from './styles.scss';
-import {Input, Button} from '../../atoms';
+import {Input, Button, ProgressBar} from '../../atoms';
 import {observer, inject} from 'mobx-react';
+import classNames from 'classnames';
 import {Overlay, Preview, Modal} from '../../components';
 
 @inject('session')
@@ -80,13 +81,14 @@ export default class Profile extends Component {
   )
 
   renderAssets = () => {
-    const {assetList, uploading} = this.props.assets;
+    const {assetList, uploading, progress} = this.props.assets;
     return (
       <div className={styles.assets}>
         <div className={styles.assetsHeader}>
           <div>Assets</div>
           <div className={styles.upload} id="addAsset">Upload +</div>
         </div>
+        <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress}/>
         <div className={styles.assetList}>
           {!isEmpty(assetList) ? assetList.map(this.renderAsset) : 'You havent added any assets yet'}
         </div>

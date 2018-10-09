@@ -13,6 +13,7 @@ export default class AddTitle extends Component {
     this.state = this.props.title ? {...this.props.title} : {
       dropdownOpen: false,
       text: '',
+      selectedIndex: 0,
       ...this.presets[0]
     };
   }
@@ -38,20 +39,24 @@ export default class AddTitle extends Component {
 
   setText = e => this.setState({text: e.target.value})
 
-  setSelection = index => () => this.setState({...this.presets[index]})
+  setSelection = index => () => this.setState({...this.presets[index], selectedIndex: index})
 
   toggleDropdown = () => this.setState({dropdownOpen: !this.state.dropdownOpen})
 
-  generateExampleStyle = (textColor, backgroundColor) => ({
+  generateExampleStyle = (textColor, backgroundColor, font) => ({
     color: textColor,
-    background: backgroundColor
+    background: backgroundColor,
+    fontFamily: font
   })
 
-  renderExample = (text, textColor, backgroundColor) => (
-    <div className={styles.example} style={this.generateExampleStyle(textColor, backgroundColor)}>
-      {text}
-    </div>
-  )
+  renderExample = () => {
+    const {textcolor, backgroundcolor, font, text} = this.state;
+    return (
+      <div className={styles.example} style={this.generateExampleStyle(textcolor, backgroundcolor, font)}>
+        {text}
+      </div>
+    );
+  }
 
   renderPreset = ({name, textcolor, backgroundcolor, font, align}) => (
     <div className={styles.preset}>
@@ -64,12 +69,18 @@ export default class AddTitle extends Component {
   )
 
   render() {
-    const {text, textcolor, backgroundcolor, dropdownOpen} = this.state;
+    const {text, dropdownOpen} = this.state;
     return (
       <Modal className={styles.modal} actions={this.modalActions}>
-        {this.renderExample(text, textcolor, backgroundcolor)}
+        {this.renderExample()}
         <input className={styles.input} value={text} onChange={this.setText} placeholder="Enter your text here!"/>
-        <Dropdown label="Please select a style..." isOpen={dropdownOpen} toggleOpen={this.toggleDropdown} onSelect={this.setSelection}>
+        <Dropdown
+          label="Please select a style..."
+          isOpen={dropdownOpen}
+          toggleOpen={this.toggleDropdown}
+          onSelect={this.setSelection}
+          selectedIndex={this.state.selectedIndex}
+        >
           {this.presets.map(this.renderPreset)}
         </Dropdown>
       </Modal>

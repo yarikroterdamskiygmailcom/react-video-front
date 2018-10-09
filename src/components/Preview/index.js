@@ -5,10 +5,10 @@ import styles from './styles.scss';
 export default class Preview extends Component {
 
   render() {
-    const {src, className} = this.props;
+    const {src, start, stop, className} = this.props;
     return (
       <div className={classNames(styles.container, className)}>
-        <video className={styles.video} src={src} autoPlay loop controls playsInline/>
+        <video className={styles.video} src={(start || stop) ? `${src}#t=${start},${stop}` : src} autoPlay loop controls playsInline/>
       </div>
     );
   }
