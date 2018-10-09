@@ -130,7 +130,6 @@ export class VlogEditorStore {
     //Trimmer stuff
 
     openTrimmer = index => {
-      console.log(this.media[index]);
       this.overlayActive = true;
       this.overlayContent = (
         <Trimmer
