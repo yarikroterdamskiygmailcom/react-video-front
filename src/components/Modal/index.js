@@ -16,7 +16,7 @@ export default class Modal extends Component {
     ]
 
     renderAction = ({label, func}) => (
-      <div className={styles.action} onClick={func}>
+      <div key={label} className={styles.action} onClick={func}>
         {label}
       </div>
     )

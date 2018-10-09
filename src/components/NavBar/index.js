@@ -57,18 +57,18 @@ export default class NavBar extends Component {
   }
 
   renderTemplate = ({title}, i) => (
-    <div className={styles.option} onClick={this.startFromTemplate(i)}>
+    <div key={title} className={styles.option} onClick={this.startFromTemplate(i)}>
       {title}
     </div>
   );
 
   renderRoute = ({name, icon, path, onClick}) => path
-    ? <NavLink key={path} to={path} className={styles.route} activeClassName={styles.active}>
+    ? <NavLink key={name} to={path} className={styles.route} activeClassName={styles.active}>
       <Icon className={styles.icon} name={icon} />
       <div>{name}</div>
     </NavLink>
 
-    : <div className={styles.route} onClick={onClick}>
+    : <div key={name} className={styles.route} onClick={onClick}>
       <Icon className={styles.icon} name={icon} />
       <div>{name}</div>
     </div>
