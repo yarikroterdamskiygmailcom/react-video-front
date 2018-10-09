@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import {isEmpty} from 'lodash-es';
 import styles from './styles.scss';
+import classNames from 'classnames';
 
 export default class Carousel extends Component {
 
@@ -17,13 +18,13 @@ export default class Carousel extends Component {
   stopScrolling = () => clearInterval(this.timer);
 
   render() {
-    const {items, renderFunction} = this.props;
+    const {items, renderFunction, className} = this.props;
     const empty = isEmpty(items);
     const hasTouch = 'ontouchstart' in document.documentElement;
     const renderNavKeys = !empty && !hasTouch;
     return !this.props.pending
       ? (
-        <div className={styles.container}>
+        <div className={classNames(styles.container, className)}>
           <div className={styles.header}>{this.props.title}</div>
           {renderNavKeys && <div className={styles.left} onMouseEnter={this.scroll(-1)} onMouseLeave={this.stopScrolling}>
             <FontAwesome name="chevron-left"/>

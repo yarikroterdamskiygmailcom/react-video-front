@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
+import classNames from 'classnames';
 import styles from './styles.scss';
 
 export default class Segment extends Component {
 
-    renderElement = child => <div className={styles.element}>{child}</div>
+    renderElement = child => (
+      <div className={classNames(styles.element, child.props.noRender && styles.noRender)}>
+        {child}
+      </div>
+    )
 
     render() {
       const {title, children} = this.props;

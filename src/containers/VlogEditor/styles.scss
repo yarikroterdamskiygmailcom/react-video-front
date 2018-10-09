@@ -19,7 +19,11 @@
 }
 
 .progressBar {
+    position: fixed;
+    width: 100vw;
     height: 0;
+    left: 0;
+    top: 50px;
     transition: height 0.8s;
     opacity: 0;
     &.active {

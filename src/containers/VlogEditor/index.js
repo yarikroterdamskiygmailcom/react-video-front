@@ -18,16 +18,17 @@ export default class VlogEditor extends Component {
   }
 
   componentWillMount() {
-    if (this.props.fromScratch) {
-      this.setState({pending: true});
-      this.props.vlogEditor.initBlankVlog().then(() => {
-        this.setState({pending: false});
-      });
-    }
+    this.props.vlogEditor.initMedia();
   }
 
   componentDidMount() {
-    this.props.vlogEditor.initResumable();
+    if (this.props.fromScratch) {
+      this.setState({pending: true});
+      this.props.vlogEditor.getProjectId().then(() => {
+        this.props.vlogEditor.initResumable();
+        this.setState({pending: false});
+      });
+    }
   }
 
   getActions = () => [

@@ -87,3 +87,10 @@ input {
     padding: 0;
     margin: 0;
 }
+
+.carousel {
+    visibility: hidden;
+        &.active {
+        visibility: visible;
+    }
+}

@@ -19,6 +19,7 @@ export class VlogEditorStore {
     //Editor stuff
 
     cleanup = () => {
+      console.log('warning: cleaning up!!!!!');
       this.media = null;
       this.title = null;
       this.projectId = null;
@@ -28,9 +29,9 @@ export class VlogEditorStore {
       this.media = [...this.media.toJS(), mediaObj];
     }
 
-    @action replaceMedia = (index, mediaObj) => {
+    @action updateMedia = (index, changes) => {
       if (this.media[index]) {
-        this.media = this.media.map((m, i) => i === index ? mediaObj : m);
+        this.media = this.media.map((mediaObj, i) => i === index ? {...mediaObj, ...changes} : mediaObj);
       } else {
         throw new Error(`Tried to replace media[${index}], but it doesn't exist`);
       }
@@ -40,7 +41,7 @@ export class VlogEditorStore {
       this.media = this.media.filter((value, index) => index !== i);
     }
 
-    saveMedia = index => crossfade => this.replaceMedia(index, crossfade)
+    saveMedia = index => changes => this.updateMedia(index, changes)
 
     closeOverlay = () => {
       this.overlayActive = false;
@@ -79,7 +80,7 @@ export class VlogEditorStore {
 
     }
 
-    addVideo = (localFile, response) => console.log(response) || this.addMedia({
+    addVideo = (localFile, response) => this.addMedia({
       ...JSON.parse(response),
       mediatype: 'video',
       localFileObj: localFile,
@@ -178,6 +179,14 @@ export class VlogEditorStore {
     }
 
     //When initializing the editor
+
+    getProjectId = () => php.post('handleproject.php', {
+      debug: true,
+      react: true,
+      action: 'new',
+    }).then(res => this.projectId = res.project_id);
+
+    initMedia = () => this.media = []
 
     initBlankVlog = () => {
       this.media = [];

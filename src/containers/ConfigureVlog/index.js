@@ -107,8 +107,8 @@ export default class ConfigureVlog extends Component {
   )
 
   render() {
-    const {vlogTitle, vlogDescription, filter, useFilter, orientation, customSubs, customEdit,
-      changeVlogTitle, changeVlogDescription, toggleFilter, toggleOrientation, toggleSubs, toggleEdit,
+    const {vlogTitle, vlogDescription, filter, useFilter, useLogoOverlay, orientation, customSubs, customEdit,
+      changeVlogTitle, changeVlogDescription, toggleFilter, toggleLogoOverlay, toggleOrientation, toggleSubs, toggleEdit,
       renderVlog, rendering, renderUrl} = this.props.vlogConfig;
     return (
       <div className={styles.container}>
@@ -117,8 +117,9 @@ export default class ConfigureVlog extends Component {
           {this.renderInput('Description', vlogDescription, changeVlogDescription)}
         </Segment>
         <Segment title="Styling">
-          <Carousel title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter} />
-          <Toggle label="Logo Overlay" value={useFilter} onChange={toggleFilter} />
+          <Carousel className={classNames(styles.carousel, useFilter && styles.active)} noRender={!useFilter} title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter} />
+          <Toggle label="Use Filter" value={useFilter} onChange={toggleFilter} />
+          <Toggle label="Logo Overlay" value={useLogoOverlay} onChange={toggleLogoOverlay} />
         </Segment>
         <Segment title="Orientation">
           {this.orientationOptions.map(({render, value}) => <RadioButton render={render} active={value === orientation} onChange={toggleOrientation} />)}

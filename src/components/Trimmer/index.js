@@ -11,8 +11,8 @@ export default class Trimmer extends Component {
     super(props);
     this.videoRef = React.createRef();
     this.state = {
-      start: props.video.inpoint || 0,
-      stop: props.video.outpoint || parseFloat(props.video.seconds)
+      start: props.video.inpoint,
+      stop: props.video.outpoint
     };
   }
 
@@ -62,7 +62,7 @@ export default class Trimmer extends Component {
   render() {
     const {video, noModal, lowerThird} = this.props;
     const {start, stop} = this.state;
-    const max = parseFloat(video.seconds);
+    const max = video.seconds;
     const content = (
       <React.Fragment>
         <div className={styles.videoContainer}>
