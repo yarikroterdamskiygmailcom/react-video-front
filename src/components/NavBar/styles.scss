@@ -19,6 +19,7 @@
         text-decoration: none;
         transition: color 0.2s, border-bottom 0.2s;
         border-bottom: $white solid 3px;
+        cursor: pointer;
         &.active {
             color: $purple;
             fill: $purple;
