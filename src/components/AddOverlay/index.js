@@ -15,7 +15,7 @@ export default class AddOverlay extends Component {
       step: 'overview',
       selectedType: null,
       editing: false,
-      text: 'pepijnnnnn',
+      text: '',
       emphasize: false,
       logo: false,
       vertical: 50,

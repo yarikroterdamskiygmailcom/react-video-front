@@ -21,7 +21,7 @@ export default class AddTitle extends Component {
   save = () => {
     this.props.onSave({
       mediatype: 'title',
-      ...this.state
+      text: this.state.text,
     });
     this.props.onClose();
   }

@@ -74,7 +74,7 @@ export default class NavBar extends Component {
     </div>
 
   renderOverlayContent = () => (
-    <div className={styles.options}>
+    <div className={classNames(styles.options, this.state.isOpen && styles.active)}>
       {this.state.fromTemplate
         ? <div className={styles.optionsGroup}>
           <div className={styles.optionsHeader}>Choose template</div>
@@ -96,7 +96,7 @@ export default class NavBar extends Component {
     return (
       <div className={styles.container}>
         {this.routes.map(this.renderRoute)}
-        <Overlay active={isOpen} content={this.renderOverlayContent()} onClose={this.closeOverlay} />
+        <Overlay className={classNames(styles.overlay, isOpen && styles.active)} content={this.renderOverlayContent()} onClose={this.closeOverlay} />
       </div>
     );
   }
