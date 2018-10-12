@@ -4,7 +4,8 @@ const settings = [
     settings: [
       {
         name: 'Limit mobile data',
-        description: 'Only upload videos using Wi-Fi'
+        desc: 'Only upload videos using Wi-Fi',
+        storeKey: 'limitNetwork'
       },
     ]
   },
@@ -13,20 +14,13 @@ const settings = [
     settings: [
       {
         name: 'Enable push notifications',
-        description: 'Allow push notifications on this device'
+        desc: 'Allow push notifications on this device',
+        storeKey: 'pushNotifications'
       },
       {
         name: 'Show orientation warning',
-        description: 'Show warning when not in landscape mode'
-      },
-    ]
-  },
-  {
-    title: 'Security',
-    settings: [
-      {
-        name: 'Automatic login',
-        description: 'Save username and password on this device'
+        desc: 'Show warning when not in landscape mode',
+        storeKey: 'orientationWarning'
       },
     ]
   },

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'mobx-react';
 import {Router} from 'react-router';
-import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, VlogConfigStore, VlogDetailsStore, TemplatesStore} from './stores';
+import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, VlogConfigStore, VlogDetailsStore, TemplatesStore, SettingsStore} from './stores';
 import App from './containers/App';
 import {history} from './constants/routes';
 import './scss/main.scss';
@@ -15,6 +15,7 @@ export const vlogEditorStore = new VlogEditorStore();
 const vlogDetailsStore = new VlogDetailsStore();
 const vlogsStore = new VlogsStore();
 const templatesStore = new TemplatesStore();
+const settingsStore = new SettingsStore();
 
 sessionStore.initialize();
 
@@ -26,7 +27,8 @@ const stores = {
   vlogDetails: vlogDetailsStore,
   vlogEditor: vlogEditorStore,
   vlogs: vlogsStore,
-  templates: templatesStore
+  templates: templatesStore,
+  settings: settingsStore
 };
 
 const renderApp = () =>

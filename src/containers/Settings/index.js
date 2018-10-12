@@ -2,29 +2,35 @@ import React, {Component} from 'react';
 import {Toggle} from '../../atoms';
 import settings from '../../constants/settings';
 import styles from './styles.scss';
+import {observer, inject} from 'mobx-react';
 
+@inject('settings')
+@observer
 export default class Settings extends Component {
 
-    renderSetting = setting =>
-      <div className={styles.setting}>
-        <div className={styles.left}>
-          <div className={styles.settingName}>{setting.name}</div>
-          <div className={styles.settingDescription}>{setting.description}</div>
-        </div>
-        <Toggle/>
-      </div>
+  toggle = key => () => this.props.settings.toggle(key)
 
-    renderSegment = segment =>
-      <div className={styles.segment}>
-        <div className={styles.segmentTitle}>{segment.title}</div>
-        {segment.settings.map(this.renderSetting)}
-      </div>
+  renderSetting = setting =>
+    <div className={styles.setting}>
+      <Toggle
+        label={setting.name}
+        desc={setting.desc}
+        value={this.props.settings.settings[setting.storeKey]}
+        onChange={this.toggle(setting.storeKey)}
+      />
+    </div>
 
-    render() {
-      return (
-        <div className={styles.container}>
-          {settings.map(this.renderSegment)}
-        </div>
-      );
-    }
+  renderSegment = segment =>
+    <div className={styles.segment}>
+      <div className={styles.segmentTitle}>{segment.title}</div>
+      {segment.settings.map(this.renderSetting)}
+    </div>
+
+  render() {
+    return (
+      <div className={styles.container}>
+        {settings.map(this.renderSegment)}
+      </div>
+    );
+  }
 }

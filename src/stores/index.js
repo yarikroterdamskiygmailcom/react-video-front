@@ -4,6 +4,7 @@ import {sessionStore} from '..';
 export {AssetsStore} from './AssetsStore';
 export {ProfileStore} from './ProfileStore';
 export {SessionStore} from './SessionStore';
+export {SettingsStore} from './SettingsStore';
 export {TemplatesStore} from './TemplatesStore';
 export {VlogConfigStore} from './VlogConfigStore';
 export {VlogDetailsStore} from './VlogDetailsStore';
