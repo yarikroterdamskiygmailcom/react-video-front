@@ -1,4 +1,5 @@
 import addVlog from './addVlog.svg';
+import backdrop from './backdrop.svg';
 import branding from './branding.svg';
 import camera from './camera.svg';
 import crossfade from './crossfade.svg';
@@ -17,6 +18,7 @@ import trash from './trash.svg';
 
 export default {
   addVlog,
+  backdrop,
   branding,
   camera,
   crossfade,

@@ -4,7 +4,8 @@ import {withRouter} from 'react-router';
 import {Arranger, Overlay, Toolbar} from '../../components';
 import classNames from 'classnames';
 import styles from './styles.scss';
-import {ProgressBar} from '../../atoms';
+import {ProgressBar, Icon} from '../../atoms';
+import {isEmpty} from 'lodash-es';
 
 @withRouter
 @inject('vlogEditor')
@@ -60,6 +61,7 @@ export default class VlogEditor extends Component {
     const {uploading, progress, media, overlayActive, overlayContent, closeOverlay} = this.props.vlogEditor;
     return (
       <div className={styles.container}>
+        {isEmpty(media) && <Icon className={styles.backdrop} name="backdrop"/>}
         <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress}/>
         <div className={styles.header}>Videos & Media</div>
         <Arranger/>

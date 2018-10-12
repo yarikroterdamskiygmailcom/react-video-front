@@ -8,6 +8,10 @@
         margin: 10px 0;
         text-transform: uppercase;
     }
+
+    .spinner {
+        color: $purple;
+    }
 }
 
 .items {
@@ -50,4 +54,3 @@
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }
-

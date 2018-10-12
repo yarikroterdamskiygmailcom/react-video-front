@@ -22,23 +22,25 @@ export default class Carousel extends Component {
     const empty = isEmpty(items);
     const hasTouch = 'ontouchstart' in document.documentElement;
     const renderNavKeys = !empty && !hasTouch;
-    return !this.props.pending
-      ? (
-        <div className={classNames(styles.container, className)}>
-          <div className={styles.header}>{this.props.title}</div>
-          {renderNavKeys && <div className={styles.left} onMouseEnter={this.scroll(-1)} onMouseLeave={this.stopScrolling}>
-            <FontAwesome name="chevron-left"/>
-          </div>}
-          <div ref={this.carouselRef} className={styles.items}>
-            {!empty
-              ? items.map(renderFunction)
-              : 'Nothing here!'}
-          </div>
-          {renderNavKeys && <div className={styles.right} onMouseEnter={this.scroll(1)} onMouseLeave={this.stopScrolling}>
-            <FontAwesome name="chevron-right"/>
-          </div>}
-        </div>
-      )
-      : <div>Loading your content...</div>;
+
+    if(empty) {
+      return null;
+    }
+
+    return (
+      <div className={classNames(styles.container, className)}>
+        <div className={styles.header}>{this.props.title}</div>
+        {renderNavKeys && <div className={styles.left} onMouseEnter={this.scroll(-1)} onMouseLeave={this.stopScrolling}>
+          <FontAwesome name="chevron-left"/>
+        </div>}
+        {!this.props.pending ? <div ref={this.carouselRef} className={styles.items}>
+          {!empty && items.map(renderFunction)}
+        </div> : <FontAwesome className={styles.spinner} name="spinner" spin style={{fontSize: '50px'}}/>}
+        {renderNavKeys && <div className={styles.right} onMouseEnter={this.scroll(1)} onMouseLeave={this.stopScrolling}>
+          <FontAwesome name="chevron-right"/>
+        </div>}
+      </div>
+
+    );
   }
 }

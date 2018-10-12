@@ -65,12 +65,12 @@ export default class NavBar extends Component {
   renderRoute = ({name, icon, path, onClick}) => path
     ? <NavLink key={name} to={path} className={styles.route} activeClassName={styles.active}>
       <Icon className={styles.icon} name={icon} />
-      <div>{name}</div>
+      <div className={styles.routeName}>{name}</div>
     </NavLink>
 
     : <div key={name} className={styles.route} onClick={onClick}>
       <Icon className={styles.icon} name={icon} />
-      <div>{name}</div>
+      <div className={styles.routeName}>{name}</div>
     </div>
 
   renderOverlayContent = () => (
