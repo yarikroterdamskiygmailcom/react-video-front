@@ -70,7 +70,7 @@ export class VlogEditorStore {
       });
 
       this.resumable.on('fileSuccess', (resumableFile, response) => {
-        this.addVideo(resumableFile.file, response);
+        this.addMedia(JSON.parse(response));
         this.uploading = false;
         this.resumable.cancel();
         this.progress = 0;
@@ -79,13 +79,6 @@ export class VlogEditorStore {
       this.resumable.on('progress', () => this.progress = this.resumable.progress() * 100);
 
     }
-
-    addVideo = (localFile, response) => this.addMedia({
-      ...JSON.parse(response),
-      mediatype: 'video',
-      localFileObj: localFile,
-      src: URL.createObjectURL(localFile)
-    });
 
     //Crossfade stuff
 
@@ -158,10 +151,15 @@ export class VlogEditorStore {
 
     //Lower third stuff
 
-    openLowerThird = i => {
-      this.currentVideo = this.media[i];
+    openLowerThird = index => {
       this.overlayActive = true;
-      this.overlayContent = <AddOverlay video={this.currentVideo} onClose={this.closeOverlay}/>;
+      this.overlayContent = (
+        <AddOverlay
+          onClose={this.closeOverlay}
+          onSave={this.saveMedia(index)}
+          video={this.media[index]}
+        />
+      );
     }
 
     //Preview stuff

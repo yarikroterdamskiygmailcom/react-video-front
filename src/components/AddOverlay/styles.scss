@@ -52,16 +52,76 @@ textarea {
         }
 
         .textBar {
+            height: fit-content;
             position: absolute;
             width: 100%;
             background: black;
             color: white;
             text-align: center;
-            padding: 5px;
+        }
+
+        .textSlider {
+            position: absolute;
+            top: 0;
+            right: 0;
         }
     }
 }
 
 .emphasizeFirst {
     font-weight: bold;
+}
+
+.chooseType {
+    width: 100%;
+
+    .type {
+        width: 100%;
+
+
+        &.highlight {
+            background: $pink;
+        }
+    }
+
+}
+
+.textPreview {
+    position: absolute;
+    background: black;
+    width: 100%;
+    text-align: center;
+
+    .textLine {
+        color: white;
+    }
+
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.item {
+    &.active {
+        color: $purple;
+    }
+}
+
+.lowerThird {
+    width: 100%;
+    .lowerThirdBox {
+        position: relative;
+        width: 100%;
+
+        .thumb {
+            width: 100%;
+        }
+
+        .lowerThirdThumb {
+            position: absolute;
+            right: 0;
+            bottom: 33%;
+        }
+    }
 }

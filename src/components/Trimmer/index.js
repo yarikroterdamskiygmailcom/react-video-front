@@ -27,6 +27,7 @@ export default class Trimmer extends Component {
   }
 
   setTrim = ([start, stop]) => {
+    this.props.noModal && this.props.onChange([start, stop]);
     this.setState({
       start,
       stop,
@@ -60,14 +61,14 @@ export default class Trimmer extends Component {
   }
 
   render() {
-    const {video, noModal, lowerThird} = this.props;
+    const {video, noModal} = this.props;
     const {start, stop} = this.state;
     const max = video.seconds;
     const content = (
       <React.Fragment>
         <div className={styles.videoContainer}>
           <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`} controls/>
-          {lowerThird && <img className={classNames(styles.lowerThird, styles[lowerThird.side])} src={lowerThird.path}/>}
+          {this.props.children}
         </div>
         <div className={styles.timestamps}>
           <div>{start}</div>

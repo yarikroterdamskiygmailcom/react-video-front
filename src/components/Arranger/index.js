@@ -51,14 +51,14 @@ export default class Arranger extends Component {
     throw new Error(`Tried to render media with mediatype ${media.mediatype}, must be one of ${Object.keys(this.mediaActionsMap)}`);
   }
 
-  generateBody = ({thumb, file, videofile, duration, mediatype, trimmed, text, title}, index) => {
+  generateBody = ({thumb, videoname, duration, mediatype, trimmed, text, title}, index) => {
     const {openPreview} = this.props.vlogEditor;
     return ({
       video: (
         <div className={styles.itemBody}>
           <div className={styles.thumb} onClick={openPreview(index)} style={{backgroundImage: `url(${thumb})`}} />
           <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-            <div className={styles.fileName}>{file || videofile}</div>
+            <div className={styles.fileName}>{videoname}</div>
             <div className={styles.fileMeta}>{duration} {trimmed && <Icon className={styles.icon} name="trim"/>}</div>
           </div>
         </div>
