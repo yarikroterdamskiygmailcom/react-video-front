@@ -11,7 +11,7 @@ export default class Settings extends Component {
   toggle = key => () => this.props.settings.toggle(key)
 
   renderSetting = setting =>
-    <div className={styles.setting}>
+    <div key={setting.storeKey} className={styles.setting}>
       <Toggle
         label={setting.name}
         desc={setting.desc}
@@ -21,7 +21,7 @@ export default class Settings extends Component {
     </div>
 
   renderSegment = segment =>
-    <div className={styles.segment}>
+    <div key={segment.title} className={styles.segment}>
       <div className={styles.segmentTitle}>{segment.title}</div>
       {segment.settings.map(this.renderSetting)}
     </div>
