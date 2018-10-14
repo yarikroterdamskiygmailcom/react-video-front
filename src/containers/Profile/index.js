@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import FontAwesome from 'react-fontawesome';
 import {isEmpty} from 'lodash-es';
 import styles from './styles.scss';
-import {Input, Button, ProgressBar} from '../../atoms';
+import {ProgressBar} from '../../atoms';
 import {observer, inject} from 'mobx-react';
 import classNames from 'classnames';
 import {Overlay, Preview, Modal} from '../../components';
@@ -39,7 +38,6 @@ export default class Profile extends Component {
 
   closeOverlay = () => this.setState({
     isOpen: false,
-    activeAsset: null
   })
 
   renderField = (left, right) => (
@@ -99,6 +97,7 @@ export default class Profile extends Component {
   deleteAsset = id => () => this.props.assets.deleteAsset(id).then(this.closeOverlay)
 
   renderPreview = () => {
+    if (this.state.activeAsset === null) {return null;}
     const asset = this.props.assets.assetList[this.state.activeAsset];
     const modalActions = [
       {
@@ -125,7 +124,9 @@ export default class Profile extends Component {
         {user && this.renderPersona()}
         {user && this.renderFields()}
         {this.renderAssets()}
-        {isOpen && <Overlay active={isOpen} content={this.renderPreview()} />}
+        <Overlay active={isOpen}>
+          {this.renderPreview()}
+        </Overlay>
       </div>
     );
   }

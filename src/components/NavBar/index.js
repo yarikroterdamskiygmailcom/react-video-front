@@ -96,7 +96,9 @@ export default class NavBar extends Component {
     return (
       <div className={styles.container}>
         {this.routes.map(this.renderRoute)}
-        <Overlay className={classNames(styles.overlay, isOpen && styles.active)} content={this.renderOverlayContent()} onClose={this.closeOverlay} />
+        <Overlay active={isOpen} onClose={this.closeOverlay}>
+          {this.renderOverlayContent()}
+        </Overlay>
       </div>
     );
   }

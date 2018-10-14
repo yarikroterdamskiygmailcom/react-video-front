@@ -31,13 +31,10 @@
 
 .options {
     position: absolute;
-    bottom: -250px;
+    bottom: 0;
     width: 100%;
-    transition: bottom 0.2s;
 
-    &.active {
-        bottom: 0;
-    } 
+
     .optionsGroup {
         margin: 0 10px;
         margin-bottom: 10px;
@@ -75,15 +72,4 @@
 
 .icon {
     margin-bottom: 5px;
-}
-
-.overlay {
-    opacity: 0;
-    transition: opacity 0.2s;
-    pointer-events: none;
-
-    &.active {
-        opacity: 1;
-        pointer-events: all;
-    }
 }

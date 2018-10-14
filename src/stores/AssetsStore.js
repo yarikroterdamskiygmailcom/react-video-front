@@ -10,14 +10,12 @@ export class AssetsStore {
   @observable uploading = false;
   @observable progress = 0;
 
-  loadAssets = () => {
-    php.post('handleproject.php', {
-      react: true,
-      action: 'loadassets',
-    }).then(res => {
-      this.assetList = !isEmpty(res.asset) ? res.asset : [];
-    });
-  }
+  loadAssets = () => php.post('handleproject.php', {
+    react: true,
+    action: 'loadassets',
+  }).then(res => {
+    this.assetList = !isEmpty(res.asset) ? res.asset : [];
+  });
 
   deleteAsset = id =>
     php.post('handleproject.php', {

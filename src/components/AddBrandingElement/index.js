@@ -46,7 +46,7 @@ export default class AddBrandingElement extends Component {
     const {assetList} = this.props.assets;
     const {closeOverlay} = this.props.vlogEditor;
     return (
-      <Modal onCancel={closeOverlay} onPlace={this.addAsset}>
+      <Modal className={styles.modal} onCancel={closeOverlay} onPlace={this.addAsset}>
         {assetList.map(this.renderAsset)}
       </Modal>
     );

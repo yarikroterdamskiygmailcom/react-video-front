@@ -45,7 +45,6 @@ export class VlogEditorStore {
 
     closeOverlay = () => {
       this.overlayActive = false;
-      this.overlayContent = null;
     }
 
     onSortEnd = ({oldIndex, newIndex}) => this.media = arrayMove(this.media, oldIndex, newIndex);

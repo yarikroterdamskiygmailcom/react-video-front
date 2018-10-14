@@ -71,7 +71,9 @@ export default class VlogEditor extends Component {
           allowNext={media.filter(m => m.mediatype === 'video').length > 0}
           next={this.nextStep}
         />
-        <Overlay className={styles.overlay} active={overlayActive} content={overlayContent} onClose={closeOverlay}/>
+        <Overlay active={overlayActive} onClose={closeOverlay}>
+          {overlayContent}
+        </Overlay>
       </div>
     );
   }

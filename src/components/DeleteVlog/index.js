@@ -34,7 +34,9 @@ export default class DeleteVlog extends Component {
       return (
         <div className={styles.container}>
           <Icon name="trash" onClick={confirmDelete(this.renderModal())}/>
-          <Overlay className={styles.overlay} active={overlayActive} content={overlayContent} onClose={closeOverlay}/>
+          <Overlay className={styles.overlay} active={overlayActive} onClose={closeOverlay}>
+            {overlayContent}
+          </Overlay>
         </div>
       );
     }

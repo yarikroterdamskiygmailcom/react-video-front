@@ -8,10 +8,12 @@ export default class Overlay extends Component {
   onClose = () => this.props.onClose()
 
   render() {
-    const {content, className} = this.props;
+    const {children, active, className} = this.props;
     return (
-      <div className={classNames(styles.container, className)}>
-        {content}
+      <div className={classNames(styles.container, !active && styles.closed, className)}>
+        <div className={classNames(styles.content, !active && styles.closed)}>
+          {children}
+        </div>
         <div className={styles.close} onClick={this.onClose}>
           <FontAwesome name="times"/>
         </div>
