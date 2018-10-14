@@ -9,9 +9,9 @@ export default class Toggle extends Component {
     }
 
     render() {
-      const {label, desc, value} = this.props;
+      const {label, desc, value, className} = this.props;
       return (
-        <div className={styles.container}>
+        <div className={classNames(styles.container, className)}>
           <div>
             <div className={styles.label}>{label}</div>
             {desc && <div className={styles.desc}>{desc}</div>}

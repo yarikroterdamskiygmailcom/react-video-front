@@ -77,9 +77,20 @@ textarea {
 
     .type {
         width: 100%;
+        height: fit-content;
+        border-bottom: $grey 1px solid;
+        padding: 5px;
 
+        &:first-child {
+            border-top: $grey 1px solid;
+            margin-top: 20px;
+        }
 
-        &.highlight {
+        .typeName {
+            color: $purple;
+        }
+
+        &.active {
             background: $pink;
         }
     }
@@ -124,4 +135,52 @@ textarea {
             bottom: 33%;
         }
     }
+}
+
+.radio {
+
+    &.active {
+        background: $pink;
+    }
+}
+
+.radioRow {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
+    .radioButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 5px 0;
+        color: #80848F;
+        text-transform: capitalize;
+        border: #80848F solid 1px;
+        background: $background-modal;
+        transition: background 0.2s, color 0.2s;
+    
+        &.active {
+            color: $background-modal;
+            background: #80848F;
+        }
+
+        &:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        &:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+    }
+}
+
+.toggle {
+    margin-bottom: 10px;
+}
+
+.textarea {
+    margin: 5px 0;
 }
