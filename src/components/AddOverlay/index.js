@@ -72,7 +72,6 @@ export default class AddOverlay extends Component {
   getModalActions = step => {
     switch (step) {
       case 'overview':
-        console.log(this.props.video.overlay);
         return [
           {label: 'Cancel', func: this.props.onClose},
           {label: 'Add new...', func: this.goToStep('chooseType')}

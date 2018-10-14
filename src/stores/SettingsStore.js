@@ -9,9 +9,7 @@ export class SettingsStore {
   };
 
   toggle = setting => {
-    console.log(setting);
     this.settings = {...this.settings, [setting]: !this.settings[setting]};
-    console.log(this.settings);
   }
 }
 
