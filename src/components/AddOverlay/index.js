@@ -20,7 +20,7 @@ export default class AddOverlay extends Component {
       logo: false,
       vertical: 50,
       horizontal: 50,
-      side: null,
+      side: 'right',
       inpoint: props.video.inpoint,
       outpoint: props.video.outpoint
     };
