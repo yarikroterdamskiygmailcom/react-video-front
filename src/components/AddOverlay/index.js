@@ -89,13 +89,9 @@ export default class AddOverlay extends Component {
   }
   save = () => {
     if (isNumber(this.state.editing)) {
-      this.props.onSave({
-        overlay: this.props.video.overlay.map((x, i) => i === this.state.editing ? this.buildOverlay() : x)
-      });
+      this.props.onSave(this.props.video.overlay.map((x, i) => i === this.state.editing ? this.buildOverlay() : x));
     } else {
-      this.props.onSave({
-        overlay: [...this.props.video.overlay.toJS(), this.buildOverlay()]
-      });
+      this.props.onSave([...this.props.video.overlay.toJS(), this.buildOverlay()]);
     }
     this.goToStep('overview')();
   }
@@ -139,7 +135,8 @@ export default class AddOverlay extends Component {
 
   deleteOverview = index => e => {
     e.stopPropagation();
-    this.props.onSave({overlay: this.props.video.overlay.filter((x, i) => i !== index)});
+    this.props.onSave(this.props.video.overlay.filter((x, i) => i !== index));
+    this.forceUpdate();
   }
 
   renderItem = (item, i) => (

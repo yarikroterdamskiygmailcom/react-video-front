@@ -55,7 +55,6 @@ export class VlogConfigStore {
 
   renderVlog = async () => {
     this.rendering = true;
-    console.log(this.shrinkMedia(toJS(editor.media)));
     await php.post('handleproject.php', {
       debug: true,
       react: true,
