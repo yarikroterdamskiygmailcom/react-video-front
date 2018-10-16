@@ -24,14 +24,14 @@ export default class ConfigureVlog extends Component {
     {
       icon: 'landscape',
       option: 'Landscape Mode',
-      desc: '16:9',
-      value: '16:9'
+      desc: 'Landscape',
+      value: 'landscape'
     },
     {
       icon: 'portrait',
       option: 'Portrait Mode',
-      desc: '9:16',
-      value: '9:16'
+      desc: 'Portrait',
+      value: 'portrait'
     }
   ].map(({icon, option, desc, value}) => ({
     render: (
@@ -88,7 +88,7 @@ export default class ConfigureVlog extends Component {
   ]
 
   renderFilter = ({name, style}) => (
-    <div className={classNames(styles.filter, this.props.vlogConfig.filter === name && styles.active)}>
+    <div key={name} className={classNames(styles.filter, this.props.vlogConfig.filter === name && styles.active)}>
       <img
         className={styles.filterPreview}
         style={style}
@@ -102,7 +102,7 @@ export default class ConfigureVlog extends Component {
   renderInput = (label, value, onChange) => (
     <div className={styles.spacedRow}>
       <div className={styles.label}>{label}</div>
-      <input type="text" value={value} onChange={onChange} />
+      <input className={styles.input} type="text" value={value} onChange={onChange} />
     </div>
   )
 
@@ -122,24 +122,24 @@ export default class ConfigureVlog extends Component {
           <Toggle label="Logo Overlay" value={useLogoOverlay} onChange={toggleLogoOverlay} />
         </Segment>
         <Segment title="Orientation">
-          {this.orientationOptions.map(({render, value}) => <RadioButton render={render} active={value === orientation} onChange={toggleOrientation} />)}
+          {this.orientationOptions.map(({render, value}) => <RadioButton key={value} render={render} active={value === orientation} onChange={toggleOrientation} />)}
         </Segment>
         <Segment title="Options">
           <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={toggleSubs} />
           <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={toggleEdit} />
         </Segment>
-        {renderUrl && <Segment title="Preview">
-          <Preview className={styles.preview} src={renderUrl} />
-        </Segment>}
-        <div className={styles.renderSection}>
-          {renderUrl && <div className={styles.renderButton} onClick={this.next}>
+        {renderUrl && <Preview className={styles.preview} src={renderUrl} />}
+        <Segment title="Finalize">
+          <div className={styles.row}>
+            <div className={classNames(styles.renderButton, renderUrl && styles.active)} onClick={this.next}>
             Share!
-          </div>}
-          <div className={classNames(styles.renderButton, rendering && styles.active)} onClick={renderVlog}>
-            <div>{rendering ? 'Rendering...' : 'Render'}</div>
-            <FontAwesome className={styles.icon} name="chevron-right" />
+            </div>
+            <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={renderVlog}>
+              <div>{rendering ? 'Rendering...' : 'Render'}</div>
+              <FontAwesome className={styles.icon} name="chevron-right" />
+            </div>
           </div>
-        </div>
+        </Segment>
       </div>
     );
   }

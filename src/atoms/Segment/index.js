@@ -4,8 +4,8 @@ import styles from './styles.scss';
 
 export default class Segment extends Component {
 
-    renderElement = child => (
-      <div className={classNames(styles.element, child.props.noRender && styles.noRender)}>
+    renderElement = child => console.log(child) || (
+      <div className={classNames(styles.element, child.props && child.props.noRender && styles.noRender)}>
         {child}
       </div>
     )

@@ -36,6 +36,7 @@ export default class VlogDetails extends Component {
   render() {
     const {vlogDetails} = this.props;
     const {vlog} = vlogDetails;
+    console.log(this.props.vlogDetails.vlog);
     return (
       <div className={styles.container}>
         {vlog.status === 'exported' && <Preview src={vlog.exporturl}/>}

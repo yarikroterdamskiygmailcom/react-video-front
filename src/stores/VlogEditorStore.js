@@ -7,7 +7,7 @@ import {sessionStore} from '../';
 import {php} from '.';
 
 export class VlogEditorStore {
-    @observable media = null
+    @observable media = []
     @observable title = null
     @observable projectId = null
     @observable overlayActive = false
@@ -20,7 +20,7 @@ export class VlogEditorStore {
 
     cleanup = () => {
       console.log('warning: cleaning up!!!!!');
-      this.media = null;
+      this.media = [];
       this.title = null;
       this.projectId = null;
     }
@@ -45,6 +45,7 @@ export class VlogEditorStore {
 
     closeOverlay = () => {
       this.overlayActive = false;
+      setTimeout(() => this.overlayContent = null, 200);
     }
 
     onSortEnd = ({oldIndex, newIndex}) => this.media = arrayMove(this.media, oldIndex, newIndex);
@@ -52,13 +53,15 @@ export class VlogEditorStore {
     //Upload stuff
 
     initResumable = () => {
+      console.log(this.projectId);
       this.resumable = new Resumable({
         target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
         query: {
           SessionID: sessionStore.sessionId,
           action: 'uploadvideo',
           project_id: this.projectId
-        }
+        },
+        fileType: ['mp4']
       });
 
       this.resumable.assignBrowse(document.getElementById('input'));
@@ -183,8 +186,6 @@ export class VlogEditorStore {
       action: 'new',
     }).then(res => this.projectId = res.project_id);
 
-    initMedia = () => this.media = []
-
     initBlankVlog = () => {
       this.media = [];
       return php.post('handleproject.php', {
@@ -195,7 +196,8 @@ export class VlogEditorStore {
     }
 
     setVlog = vlog => {
-      this.media = vlog.video;
+      this.media = vlog.video.filter(media => Boolean(media));
+      console.log(vlog.video.filter(media => Boolean(media)));
       this.projectId = vlog.project_id;
       this.title = vlog.title;
     }

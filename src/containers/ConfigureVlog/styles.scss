@@ -65,27 +65,27 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background: $purple;
+    background: $pink;
     color: $white;
     width: fit-content;
     margin: 30px 20px;
     padding: 15px;
     border-radius: 3px;
+    pointer-events: none;
 
     .icon {
         margin-left: 10px;
     }
 
     &.active {
-        background: $pink;
+        background: $purple;
+        pointer-events: all;
     }
+
 }
 
-input {
-    border: none;
-    text-align: left;
-    padding: 0;
-    margin: 0;
+.input {
+    margin-left: 10px;
 }
 
 .carousel {
@@ -93,4 +93,8 @@ input {
         &.active {
         visibility: visible;
     }
+}
+
+.grey {
+    color: $grey;
 }

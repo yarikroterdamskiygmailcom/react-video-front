@@ -17,7 +17,8 @@ export class TemplatesStore {
         SessionID: session.sessionId,
         action: 'uploadvideo',
         project_id: editor.projectId
-      }
+      },
+      filetype: ['mp4']
     });
 
     resumable.assignBrowse(document.getElementById(`fieldTarget-${i}`));

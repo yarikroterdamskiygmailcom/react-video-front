@@ -18,17 +18,15 @@ export default class VlogEditor extends Component {
     };
   }
 
-  componentWillMount() {
-    this.props.fromScratch && this.props.vlogEditor.initMedia();
-  }
-
   componentDidMount() {
-    if (this.props.fromScratch) {
+    if (this.props.fromScratch && !this.props.vlogEditor.projectId) {
       this.setState({pending: true});
       this.props.vlogEditor.getProjectId().then(() => {
-        this.props.vlogEditor.initResumable();
         this.setState({pending: false});
+        this.props.vlogEditor.initResumable();
       });
+    } else {
+      this.props.vlogEditor.initResumable();
     }
   }
 

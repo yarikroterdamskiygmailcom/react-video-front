@@ -1,20 +1,12 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
-import {Dropdown} from '../../atoms';
-import {Modal} from '../';
-import {observer, inject} from 'mobx-react';
+import {StylePicker, Modal} from '../';
 
-@inject('vlogs')
-@observer
 export default class AddTitle extends Component {
   constructor(props) {
     super(props);
-    this.presets = props.vlogs.userPrefs.title;
     this.state = this.props.title ? {...this.props.title} : {
-      dropdownOpen: false,
-      text: '',
-      selectedIndex: 0,
-      ...this.presets[0]
+      text: 'Sample Text',
     };
   }
 
@@ -22,6 +14,7 @@ export default class AddTitle extends Component {
     this.props.onSave({
       mediatype: 'title',
       text: this.state.text,
+      style: this.state.style
     });
     this.props.onClose();
   }
@@ -39,50 +32,33 @@ export default class AddTitle extends Component {
 
   setText = e => this.setState({text: e.target.value})
 
-  setSelection = index => () => this.setState({...this.presets[index], selectedIndex: index})
+  setSelection = style => this.setState({style})
 
-  toggleDropdown = () => this.setState({dropdownOpen: !this.state.dropdownOpen})
-
-  generateExampleStyle = (textColor, backgroundColor, font) => ({
-    color: textColor,
-    background: backgroundColor,
+  generateExampleStyle = ({textcolor, backgroundcolor, font}) => ({
+    color: textcolor,
+    background: backgroundcolor,
     fontFamily: font
   })
 
   renderExample = () => {
-    const {textcolor, backgroundcolor, font, text} = this.state;
+    const {text, style} = this.state;
     return (
-      <div className={styles.example} style={this.generateExampleStyle(textcolor, backgroundcolor, font)}>
+      <div className={styles.example} style={style ? this.generateExampleStyle(style) : {}}>
         {text}
       </div>
     );
   }
 
-  renderPreset = ({name, textcolor, backgroundcolor, font, align}) => (
-    <div key={name} className={styles.preset}>
-      <div className={styles.presetName} style={{fontFamily: font}}>{name}</div>
-      <div className={styles.colorGroup}>
-        <div className={styles.color} style={{background: textcolor}}/>
-        <div className={styles.color} style={{background: backgroundcolor}}/>
-      </div>
-    </div>
-  )
-
   render() {
-    const {text, dropdownOpen} = this.state;
+    const {text} = this.state;
     return (
       <Modal className={styles.modal} actions={this.modalActions}>
         {this.renderExample()}
-        <input className={styles.input} value={text} onChange={this.setText} placeholder="Enter your text here!"/>
-        <Dropdown
-          label="Please select a style..."
-          isOpen={dropdownOpen}
-          toggleOpen={this.toggleDropdown}
+        <textarea className={styles.textarea} value={text} onChange={this.setText} placeholder="Enter your text here!"/>
+        <StylePicker
           onSelect={this.setSelection}
-          selectedIndex={this.state.selectedIndex}
-        >
-          {this.presets.map(this.renderPreset)}
-        </Dropdown>
+          selected={this.state.style}
+        />
       </Modal>
     );
   }

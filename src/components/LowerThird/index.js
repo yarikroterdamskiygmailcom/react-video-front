@@ -26,7 +26,7 @@ class Preview extends Component {
       useimage: useLogo,
       previewframe: false,
       lt_id: active,
-      video_id: video.videoid
+      video_id: video.video_id
     }).then(res => {
       const {extpath, imagename} = res;
       this.setState({path: extpath, file: imagename});
@@ -96,7 +96,7 @@ export default class LowerThird extends Component {
     php.post('editvid.php', {
       debug: true,
       action: 'lowerthird',
-      video_id: video.videoid,
+      video_id: video.video_id,
       edit: insert
     }).then(res => {
       this.props.onClose();

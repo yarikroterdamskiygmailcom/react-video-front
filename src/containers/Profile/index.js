@@ -124,8 +124,8 @@ export default class Profile extends Component {
         {user && this.renderPersona()}
         {user && this.renderFields()}
         {this.renderAssets()}
-        <Overlay active={isOpen}>
-          {this.renderPreview()}
+        <Overlay active={isOpen} onClose={this.closeOverlay}>
+          {isOpen && this.renderPreview()}
         </Overlay>
       </div>
     );

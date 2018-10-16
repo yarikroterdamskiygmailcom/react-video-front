@@ -1,27 +1,35 @@
 import React, {Component} from 'react';
-import {isNumber} from 'lodash-es';
 import classNames from 'classnames';
 import styles from './styles.scss';
 
 export default class Dropdown extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpen: false
+    };
+  }
 
-    renderOption = (option, index) => (
-      <div className={styles.option} onClick={this.props.onSelect(index)}>
-        {option}
-      </div>
-    )
+  toggleOpen = e => {
+    e.stopPropagation();
+    this.setState({isOpen: !this.state.isOpen});
+  }
 
-    render() {
-      const {label, isOpen, toggleOpen, selectedIndex, children, className} = this.props;
-      return (
-        <div className={classNames(styles.container, className)} onClick={toggleOpen}>
-          {isNumber(selectedIndex)
-            ? this.renderOption(React.Children.toArray(children)[selectedIndex])
-            : <div className={styles.label}>{label}</div>}
-          {isOpen && <div className={classNames(styles.options, isOpen && styles.active)}>
-            {React.Children.map(children, this.renderOption)}
-          </div>}
+  renderItem = (item, i) => React.cloneElement(item, {onClick: this.props.onSelect(i)})
+
+  render() {
+    const {isOpen} = this.state;
+    const {label, selected, children, className} = this.props;
+    return (
+      <div className={classNames(styles.container, className)} onClick={this.toggleOpen}>
+        {isOpen && <div className={styles.overlay} onClick={this.toggleOpen}/>}
+        {selected
+          ? selected
+          : <div className={styles.label}>{label}</div>}
+        <div className={classNames(styles.options, !isOpen && styles.closed)}>
+          {isOpen && React.Children.map(children, this.renderItem)}
         </div>
-      );
-    }
+      </div>
+    );
+  }
 }

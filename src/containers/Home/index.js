@@ -38,12 +38,16 @@ export default class Home extends Component {
   renderHighlight = () => {
     const video = this.props.vlogEditor.media.filter(media => media.mediatype === 'video')[0];
     return (
-      <div className={styles.highlightContainer}>
-        <img
-          className={styles.highlight}
-          src={video.thumb}
-          onClick={() => this.props.history.push('/edit-vlog')}
-        />
+      <div className={styles.center}>
+        <div className={styles.highlight} onClick={() => this.props.history.push('/edit-vlog')}>
+          <img
+            className={styles.thumb}
+            src={video.thumb}
+          />
+          <div className={styles.gradient}/>
+          <div className={styles.title}>{video.title || 'Untitled'}</div>
+          <div className={styles.duration}>{video.duration}</div>
+        </div>
       </div>
     );
   }

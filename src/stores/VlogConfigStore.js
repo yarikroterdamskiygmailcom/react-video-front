@@ -10,7 +10,7 @@ export class VlogConfigStore {
   @observable filter = null
   @observable useFilter = false
   @observable useLogoOverlay = false
-  @observable orientation = '16:9'
+  @observable orientation = 'landscape'
   @observable customSubs = false
   @observable customEdit = false
 
@@ -27,7 +27,7 @@ export class VlogConfigStore {
 
   toggleLogoOverlay = () => this.useLogoOverlay = !this.useLogoOverlay;
 
-  toggleOrientation = () => this.orientation = this.orientation === '16:9' ? '9:16' : '16:9';
+  toggleOrientation = () => this.orientation = this.orientation === 'landscape' ? 'portrait' : 'landscape';
 
   toggleSubs = () => this.customSubs = !this.customSubs;
 
@@ -40,7 +40,7 @@ export class VlogConfigStore {
   shrinkMedia = media => {
     const shrunk = media.map(m =>
       m.mediatype === 'video'
-        ? pick(m, ['mediatype', 'video_id', 'lowerthird', 'inpoint', 'outpoint'])
+        ? pick(m, ['mediatype', 'video_id', 'overlay', 'inpoint', 'outpoint'])
         : m
     );
     return JSON.stringify(shrunk);
@@ -55,6 +55,7 @@ export class VlogConfigStore {
 
   renderVlog = async () => {
     this.rendering = true;
+    console.log(this.shrinkMedia(toJS(editor.media)));
     await php.post('handleproject.php', {
       debug: true,
       react: true,

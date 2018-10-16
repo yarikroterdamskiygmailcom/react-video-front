@@ -40,3 +40,15 @@
 .modal {
     height: fit-content;
 }
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: $purple;
+
+    > * {
+        margin: 10px;
+    }
+}
+

@@ -4,6 +4,8 @@ import styles from './styles.scss';
 import {Range} from 'rc-slider';
 import classNames from 'classnames';
 import '!style-loader!css-loader!rc-slider/assets/index.css';
+import FontAwesome from 'react-fontawesome';
+import axios from 'axios';
 
 export default class Trimmer extends Component {
 
@@ -60,6 +62,10 @@ export default class Trimmer extends Component {
     }
   }
 
+  pause = () => this.videoRef.current.pause()
+
+  play = () => this.videoRef.current.play()
+
   render() {
     const {video, noModal} = this.props;
     const {start, stop} = this.state;
@@ -67,8 +73,12 @@ export default class Trimmer extends Component {
     const content = (
       <React.Fragment>
         <div className={styles.videoContainer}>
-          <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`} controls/>
+          <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`}/>
           {this.props.children}
+        </div>
+        <div className={styles.controls}>
+          <FontAwesome name="pause" onClick={this.pause}/>
+          <FontAwesome name="play" onClick={this.play}/>
         </div>
         <div className={styles.timestamps}>
           <div>{start}</div>

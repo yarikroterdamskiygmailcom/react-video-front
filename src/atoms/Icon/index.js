@@ -6,9 +6,9 @@ import svgs from './icons';
 export default class Icon extends Component {
 
   render() {
-    const {name, className, onClick} = this.props;
+    const {name, style, className, onClick} = this.props;
     return (
-      <div className={classNames(styles.container, className)}>
+      <div className={classNames(styles.container, className)} style={style}>
         <object data={svgs[name]}/>
         <div className={styles.clickable} onClick={onClick}/>
       </div>

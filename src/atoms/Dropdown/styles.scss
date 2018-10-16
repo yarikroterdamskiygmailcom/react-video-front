@@ -6,21 +6,19 @@
 .options {
     width: 100%;
     position: absolute;
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.2s;
-    &.active {
-        opacity: 1;
+    &.closed {
+        opacity: 0;
     }
 
 }
 
-.option, .label {
-    background: white;
-    padding: 10px;
-    border: $grey 1px solid;
-    border-top: none;
+.overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
 }
 
-.label {
-    border-top: $grey 1px solid;
-}

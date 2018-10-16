@@ -1,31 +1,30 @@
-.example {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: $white;
-    width: 100%;
-    height: 50px; 
-    margin-bottom: 10px;
-}
-
-.preset {
+.style {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    background: $white;
+    padding: 10px;
+    border: $grey 1px solid;
+    border-top: none;
 
-    .presetMeta {
+    &.selected {
+        border-top: $grey 1px solid;
+    }
+
+
+    .styleMeta {
         display: flex;
         flex-direction: row;
 
     }
 
-    .presetName, .fontName {
+    .styleName, .fontName {
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    .presetName {
+    .styleName {
         margin-right: 5px;
     }
 
@@ -49,11 +48,15 @@
     }
 }
 
-.dropdown {
-
+.prompt {
+    background: $white;
 }
 
-.input {
-    margin-bottom: 10px;
-    text-align: left;
+.label {
+    box-sizing: border-box;
+    background: $white;
+    width: 100%;
+    padding: 5px;
+    border: 1px $grey solid;
 }
+

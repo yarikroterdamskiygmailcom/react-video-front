@@ -6,6 +6,13 @@ import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable
 import Swipeable from 'react-swipeable';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
+import {isEmpty} from 'lodash-es';
+
+const formatTime = number => {
+  const minutes = Math.floor(number / 60);
+  const seconds = Math.floor(number % 60);
+  return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+};
 
 @inject('vlogEditor')
 @observer
@@ -26,7 +33,7 @@ export default class Arranger extends Component {
       func: this.props.vlogEditor.openTrimmer
     },
     lowerThird: {
-      label: 'Lower Third',
+      label: 'Overlay',
       icon: 'lowerThird',
       func: this.props.vlogEditor.openLowerThird
     },
@@ -51,7 +58,7 @@ export default class Arranger extends Component {
     throw new Error(`Tried to render media with mediatype ${media.mediatype}, must be one of ${Object.keys(this.mediaActionsMap)}`);
   }
 
-  generateBody = ({thumb, videoname, duration, mediatype, trimmed, text, title}, index) => {
+  generateBody = ({thumb, videoname, duration, mediatype, trimmed, overlay, text, title, inpoint, outpoint}, index) => {
     const {openPreview} = this.props.vlogEditor;
     return ({
       video: (
@@ -59,7 +66,15 @@ export default class Arranger extends Component {
           <div className={styles.thumb} onClick={openPreview(index)} style={{backgroundImage: `url(${thumb})`}} />
           <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
             <div className={styles.fileName}>{videoname}</div>
-            <div className={styles.fileMeta}>{duration} {trimmed && <Icon className={styles.icon} name="trim"/>}</div>
+            <div className={styles.fileMeta}>
+              <div className={classNames(styles.duration, trimmed && styles.strike)}>{duration}</div>
+              {trimmed &&
+              <div className={styles.row}>
+                <div className={styles.duration}>{formatTime(outpoint - inpoint)}</div>
+                <Icon className={styles.icon} name="trim" style={{marginLeft: '10px'}}/>
+              </div>}
+              {!isEmpty(overlay) && <Icon className={styles.icon} name="lowerThird"/>}
+            </div>
           </div>
         </div>
       ),

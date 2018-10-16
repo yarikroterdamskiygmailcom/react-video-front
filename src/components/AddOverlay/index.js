@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import styles from './styles.scss';
 import {Modal, Trimmer} from '..';
 import {isEmpty, isNumber, isEqual} from 'lodash-es';
-import {Toggle} from '../../atoms';
+import {Toggle, Icon} from '../../atoms';
+import {StylePicker} from '../';
 import Slider from 'rc-slider';
 import classNames from 'classnames';
 import '!style-loader!css-loader!rc-slider/assets/index.css';
@@ -18,6 +19,7 @@ export default class AddOverlay extends Component {
       text: '',
       emphasize: false,
       logo: false,
+      style: null,
       vertical: 50,
       horizontal: 50,
       side: 'right',
@@ -26,16 +28,14 @@ export default class AddOverlay extends Component {
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !isEqual(this.props.video, nextProps.video) || !isEqual(this.state, nextState);
-  }
-
   updateLowerThird = () => {
     php.post('overlay.php', {
       type: 'lowerthird',
       video_id: this.props.video.video_id,
       text: this.state.text,
-      logo: true
+      logo: this.state.logo,
+      placement: this.state.side,
+      style: this.state.style
     }).then(res => this.setState({lowerThird: `${res.src}?${Math.random()}`}));
   }
 
@@ -47,19 +47,46 @@ export default class AddOverlay extends Component {
   setSelectedType = type => () => this.setState({selectedType: type})
 
   loadExisting = (overlay, i) => () => {
-    this.setState({editing: i, step: overlay.type});
+    this.setState({
+      ...overlay,
+      editing: i,
+      step: overlay.type,
+      selectedType: overlay.type
+    });
   }
 
-  buildOverlay = () => ({
-    type: this.state.selectedType,
-    text: this.state.text,
-    emphasize: this.state.emphasize,
-    vertical: this.state.vertical,
-    horizontal: this.state.horizontal,
-    inpoint: this.state.inpoint,
-    outpoint: this.state.outpoint
-  })
+  buildOverlay = () => {
+    const {selectedType, text, emphasize, side, logo, vertical, horizontal, inpoint, outpoint} = this.state;
+    switch (selectedType) {
+      case 'lowerThird':
+        return {
+          type: 'lowerThird',
+          text,
+          emphasize,
+          placement: side,
+          logo,
+          inpoint,
+          outpoint
+        };
 
+      case 'text':
+        return {
+          type: 'text',
+          text,
+          emphasize,
+          vertical,
+          inpoint,
+          outpoint
+        };
+
+      case 'custom':
+        return {
+          type: 'custom'
+        };
+
+      default: throw new Error('rggg');
+    }
+  }
   save = () => {
     if (isNumber(this.state.editing)) {
       this.props.onSave({
@@ -67,17 +94,17 @@ export default class AddOverlay extends Component {
       });
     } else {
       this.props.onSave({
-        overlay: this.props.video.overlay.push(this.buildOverlay())
+        overlay: [...this.props.video.overlay.toJS(), this.buildOverlay()]
       });
     }
-    this.setState({step: 'overview', editing: false});
+    this.goToStep('overview')();
   }
 
   getModalActions = step => {
     switch (step) {
       case 'overview':
         return [
-          {label: 'Cancel', func: this.props.onClose},
+          {label: 'Close', func: this.props.onClose},
           {label: 'Add new...', func: this.goToStep('chooseType')}
         ];
 
@@ -110,9 +137,15 @@ export default class AddOverlay extends Component {
     }
   }
 
+  deleteOverview = index => e => {
+    e.stopPropagation();
+    this.props.onSave({overlay: this.props.video.overlay.filter((x, i) => i !== index)});
+  }
+
   renderItem = (item, i) => (
-    <div className={classNames(styles.item, i === this.state.editing && styles.active)} onClick={this.loadExisting(item, i)}>
-      <div>{`Type: ${item.type}`}</div>
+    <div key={item.text} className={styles.item} onClick={this.loadExisting(item, i)}>
+      <div>{`${item.type} overlay`}</div>
+      <Icon className={styles.icon} name="trash" onClick={this.deleteOverview(i)}/>
     </div>
   )
 
@@ -122,7 +155,10 @@ export default class AddOverlay extends Component {
         styles.radioButton,
         value === this.state.side && styles.active
       )}
-      onClick={() => this.setState({side: this.state.side === 'left' ? 'right' : 'left'})}>
+      onClick={() =>
+        this.setState({side: this.state.side === 'left' ? 'right' : 'left'})
+        || this.updateLowerThird()}
+    >
       {value}
     </div>
   )
@@ -137,7 +173,7 @@ export default class AddOverlay extends Component {
         return (
           <div className={styles.textPreview} style={{bottom: `${vertical}%`}}>
             {textLines.map((line, i) =>
-              <div className={classNames(styles.textLine,
+              <div key={line} className={classNames(styles.textLine,
                 (emphasize && i === 0) && styles.bold)}>
                 {line}
               </div>)}
@@ -151,18 +187,26 @@ export default class AddOverlay extends Component {
     }
   }
 
-  toggleEmphasize = () => this.setState({emphasize: !this.state.emphasize})
+  generateStyles = () => this.state.style ? {
+    color: this.state.style.textcolor,
+    background: this.state.style.backgroundcolor,
+    fontFamily: this.state.style.font
+  } : {}
 
-  toggleLogo = () => this.setState({logo: !this.state.logo})
+  toggleEmphasize = () => this.setState({emphasize: !this.state.emphasize}, this.updateLowerThird)
+
+  toggleLogo = () => this.setState({logo: !this.state.logo}, this.updateLowerThird)
 
   setVertical = val => this.setState({vertical: val})
+
+  setStyle = style => this.setState({style})
 
   handleTrimmer = ([start, stop]) => this.setState({inpoint: start, outpoint: stop})
 
   generateContent = step => {
     const {video} = this.props;
-    const {selectedType, text, emphasize, logo, vertical, horizontal} = this.state;
-    const textarea = (props = {}) => <textarea className={styles.textarea} value={text} wrap="off" onChange={e => this.setState({text: e.target.value})} {...props}/>;
+    const {selectedType, text, emphasize, logo, vertical, horizontal, style} = this.state;
+    const textarea = (props = {}) => <textarea className={styles.textarea} value={text} wrap="off" onChange={e => this.setState({text: e.target.value})} {...props} />;
     const thumb = <img className={styles.thumb} src={video.thumb} />;
 
     switch (step) {
@@ -203,9 +247,18 @@ export default class AddOverlay extends Component {
         return <div className={styles.lowerThird}>
           <div className={styles.lowerThirdBox}>
             {thumb}
-            <img className={styles.lowerThirdThumb} src={this.state.lowerThird} />
+            <img
+              className={styles.lowerThirdThumb}
+              style={this.state.side === 'left' ? {left: 0} : {right: 0}}
+              src={this.state.lowerThird}
+            />
           </div>
           {textarea({onBlur: this.updateLowerThird})}
+          <StylePicker
+            className={styles.stylePicker}
+            onSelect={this.setStyle}
+            selected={this.state.style}
+          />
           <Toggle className={styles.toggle} label="Emphasize first line" value={emphasize} onChange={this.toggleEmphasize} />
           <Toggle className={styles.toggle} label="Use Logo" value={logo} onChange={this.toggleLogo} />
           <div>Lower Third side</div>
@@ -220,13 +273,18 @@ export default class AddOverlay extends Component {
           <div className={styles.textAligner}>
             <div className={styles.textBox}>
               {thumb}
-              <div className={styles.textBar} style={{bottom: `${vertical}%`}}>
-                {text.split(/\r?\n/).map((line, i) => <div className={classNames(styles.textLine, (emphasize && i === 0) && styles.emphasizeFirst)}>{line}</div>)}
+              <div className={styles.textBar} style={{...this.generateStyles(), bottom: `${vertical}%`}}>
+                {text.split(/\r?\n/).map((line, i) => <div key={line} className={classNames(styles.textLine, (emphasize && i === 0) && styles.emphasizeFirst)}>{line}</div>)}
               </div>
               <Slider className={styles.textSlider} value={vertical} min={0} max={100} step={1} vertical onChange={this.setVertical} />
             </div>
           </div>
           {textarea()}
+          <StylePicker
+            className={styles.stylePicker}
+            onSelect={this.setStyle}
+            selected={this.state.style}
+          />
           <Toggle className={styles.toggle} label="Emphasize first line" value={emphasize} onChange={this.toggleEmphasize} />
         </div>;
 
@@ -248,6 +306,7 @@ export default class AddOverlay extends Component {
 
   render() {
     const {step} = this.state;
+    console.log('updated');
     return (
       <Modal actions={this.getModalActions(step)}>
         {this.generateContent(step)}

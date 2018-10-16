@@ -3,19 +3,6 @@
     margin-bottom: $navbar-height;
 }
 
-.highlightContainer {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .highlight {
-        width: 75vh;
-        max-width: 100%;
-    }
-
-}
-
 .carousels {
     display: flex;
     flex-direction: column;
@@ -23,11 +10,46 @@
     padding: 0 10px;
 }
 
-.item {
+.title {
+    top: 10px;
+    left: 10px;
+    position: absolute;
+    color: $white;
+    text-shadow: 0 1px 0 black;
+}
+
+.duration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 30px;
+    top: 10px;
+    right: 10px;
+    position: absolute;
+    color: $white;
+    border-radius: 20px;
+    background: #FFFFFF4D;
+    text-shadow: 0 1px 0 black;
+}
+
+.item,
+.highlight {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+
+}
+
+.highlight {
+    width: 75vh;
+    max-width: 100%;
+}
+
+.item {
     flex-shrink: 0;
     flex-grow: 0;
     width: 300px;
@@ -35,31 +57,7 @@
     margin-right: 10px;
 
     .thumb {
-        width: 100%;
-        height: 100%;
         border-radius: 5px;
-    }
-
-    .title {
-        top: 10px;
-        left: 10px;
-        position: absolute;
-        color: $white;
-    }
-
-    .duration {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 20%;
-        height: 20%;
-        top: 10px;
-        right: 10px;
-        position: absolute;
-        color: $white;
-        border-radius: 20px;
-        background: #FFFFFF4D;
     }
 }
 
@@ -68,4 +66,16 @@
     background: linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%);
     width: 100%;
     height: 100%;
+}
+
+.thumb {
+    width: 100%;
+    height: 100%;
+}
+
+.center {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

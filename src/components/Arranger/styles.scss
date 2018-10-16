@@ -85,15 +85,10 @@
     flex-direction: column;
     justify-content: space-evenly;
 
-    .fileName,
-    .fileDuration {
+    .fileName {
         max-width: 175px;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    .fileDuration {
-        color: #B2B2B2;
     }
 
     .fileMeta {
@@ -102,9 +97,12 @@
         color: $text-grey;
 
         .icon {
-            margin-left: 15px;
             width: 20px;
             height: 20px;
+        }
+
+        > * {
+            margin-right: 10px;
         }
     }
 
@@ -113,10 +111,21 @@
     }
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
 .bigIcon {
     flex-shrink: 0;
     width: 60px;
     height: 60px;
     padding: 10px;
     margin-right: 15px;
+}
+
+.duration {
+    &.strike {
+        text-decoration: line-through;
+    }
 }
