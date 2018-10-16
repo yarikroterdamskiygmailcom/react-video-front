@@ -1,0 +1,65 @@
+.container {
+
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.upload {
+    background: $pink;
+    color: $purple;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.subHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    color: $grey;
+}
+
+.imagePreview {
+    width: 100%;
+}
+
+.thumb {
+    height: 100px;
+}
+
+.styleList {
+    display: flex;
+    flex-direction: column;
+}
+
+.style {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: $grey solid 1px;
+}
+
+.color {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    border: $grey solid 1px;
+}
+
+.styleGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    width: 125px;
+}

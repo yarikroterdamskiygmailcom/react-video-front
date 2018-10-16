@@ -17,7 +17,7 @@ export default class StylePicker extends Component {
     };
   }
 
-    setSelected = i => () => {
+    setSelected = i => {
       this.setState({selected: this.styles[i]});
       this.props.onSelect(this.styles[i]);
     }

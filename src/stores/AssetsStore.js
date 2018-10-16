@@ -9,6 +9,19 @@ export class AssetsStore {
   @observable assetList = []
   @observable uploading = false;
   @observable progress = 0;
+  @observable styleList = [];
+
+  loadStyles = () => php.post('handleoverview.php', {
+    debug: true,
+    react: true,
+    action: 'load',
+  }).then(res => {
+    if(res.error === 'loginerror') {
+      sessionStore.logout();
+    } else {
+      this.styleList = res.userprefs.title;
+    }
+  });
 
   loadAssets = () => php.post('handleproject.php', {
     react: true,

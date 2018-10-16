@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
-import {isEmpty} from 'lodash-es';
+import {isEmpty, noop} from 'lodash-es';
 import styles from './styles.scss';
 import {ProgressBar} from '../../atoms';
 import {observer, inject} from 'mobx-react';
 import classNames from 'classnames';
 import {Overlay, Preview, Modal} from '../../components';
+import {withRouter} from 'react-router';
+import FontAwesome from 'react-fontawesome';
 
+@withRouter
 @inject('session')
 @inject('profile')
 @inject('assets')
@@ -40,8 +43,10 @@ export default class Profile extends Component {
     isOpen: false,
   })
 
-  renderField = (left, right) => (
-    <div className={styles.field}>
+  goToCustomize = () => this.props.history.push('/customize')
+
+  renderField = (left, right, func) => (
+    <div className={styles.field} onClick={func || noop}>
       <div className={styles.fieldLeft}>{left}</div>
       <div className={styles.fieldRight}>{right}</div>
     </div>
@@ -64,6 +69,7 @@ export default class Profile extends Component {
       <div className={styles.fields}>
         {this.renderField('E-mail', email)}
         {this.renderField('Account Type', team ? 'Team' : 'Personal')}
+        {this.renderField('Customize', <FontAwesome className={styles.icon} name="chevron-right"/>, this.goToCustomize)}
       </div>
     );
   }

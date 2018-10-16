@@ -73,7 +73,7 @@ export default class Trimmer extends Component {
     const content = (
       <React.Fragment>
         <div className={styles.videoContainer}>
-          <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`}/>
+          <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`} playsInline/>
           {this.props.children}
         </div>
         <div className={styles.controls}>
