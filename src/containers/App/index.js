@@ -19,8 +19,8 @@ class App extends Component {
     </Switch>
 
   render() {
-    const {sessionId, error} = this.props.session;
-    const authenticated = Boolean(sessionId);
+    const {token, error} = this.props.session;
+    const authenticated = Boolean(token);
     const currentRouteObj = routes.find(routeObj => routeObj.path === this.props.location.pathname) || {};
     return (
       <div className={styles.container}>

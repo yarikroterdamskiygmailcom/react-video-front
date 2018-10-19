@@ -13,6 +13,7 @@ export class VlogConfigStore {
   @observable orientation = 'landscape'
   @observable customSubs = false
   @observable customEdit = false
+  @observable shareWithTeam = true
 
   @observable rendering = false
   @observable renderUrl = null
@@ -32,6 +33,8 @@ export class VlogConfigStore {
   toggleSubs = () => this.customSubs = !this.customSubs;
 
   toggleEdit = () => this.customEdit = !this.customEdit;
+
+  toggleShareWithTeam = () => this.shareWithTeam = !this.shareWithTeam
 
   init = () => {
     this.title = editor.title || 'Untitled';
@@ -55,20 +58,13 @@ export class VlogConfigStore {
 
   renderVlog = async () => {
     this.rendering = true;
-    await php.post('handleproject.php', {
-      debug: true,
-      react: true,
-      action: 'save',
-      project_id: editor.projectId,
+    await php.post(`/api/v1/vlog/${editor.projectId}`, {
       title: this.vlogTitle,
       description: this.vlogDescription,
       options: this.getOptions(),
       media: this.shrinkMedia(toJS(editor.media))
     });
-    await php.post('export.php', {
-      debug: true,
-      react: true,
-      project_id: editor.projectId,
+    await php.post(`/api/v1/vlog/render/${editor.projectId}`, {
       orientation: this.orientation,
     }).then(res => {
       this.rendering = false;

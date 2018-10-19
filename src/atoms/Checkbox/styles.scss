@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    background: $white;
+    border: 3px $purple solid;
+    transition: background 0.2s;
+
+    &.active {
+        background: $purple;
+    }
+}
+
+.check {
+    color: $white;
+    opacity: 0;
+    transition: opacity 0.2s;
+    &.active {
+        opacity: 1;
+    }
+}

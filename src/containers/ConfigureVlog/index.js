@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {Input, Toggle, Segment, Carousel, RadioButton, Icon} from '../../atoms';
+import {Input, Toggle, Segment, Carousel, RadioButton, Icon, Checkbox} from '../../atoms';
 import {Preview} from '../../components';
 import {isEmpty} from 'lodash-es';
 import styles from './styles.scss';
@@ -107,8 +107,8 @@ export default class ConfigureVlog extends Component {
   )
 
   render() {
-    const {vlogTitle, vlogDescription, filter, useFilter, useLogoOverlay, orientation, customSubs, customEdit,
-      changeVlogTitle, changeVlogDescription, toggleFilter, toggleLogoOverlay, toggleOrientation, toggleSubs, toggleEdit,
+    const {vlogTitle, vlogDescription, filter, useFilter, useLogoOverlay, orientation, customSubs, customEdit, shareWithTeam,
+      changeVlogTitle, changeVlogDescription, toggleFilter, toggleLogoOverlay, toggleOrientation, toggleSubs, toggleEdit, toggleShareWithTeam,
       renderVlog, rendering, renderUrl} = this.props.vlogConfig;
     return (
       <div className={styles.container}>
@@ -127,6 +127,7 @@ export default class ConfigureVlog extends Component {
         <Segment title="Options">
           <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={toggleSubs} />
           <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={toggleEdit} />
+          <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={shareWithTeam} onChange={toggleShareWithTeam}/>
         </Segment>
         {renderUrl && <Preview className={styles.preview} src={renderUrl} />}
         <Segment title="Finalize">

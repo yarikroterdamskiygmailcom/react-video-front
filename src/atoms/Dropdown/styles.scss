@@ -5,11 +5,13 @@
 
 .options {
     width: 100%;
-    position: absolute;
     opacity: 1;
-    transition: opacity 0.2s;
+    max-height: 200px;
+    transition: opacity 0.2s, max-height 0.2s;
+    overflow-y: auto;
     &.closed {
         opacity: 0;
+        max-height: 0;
     }
 
 }

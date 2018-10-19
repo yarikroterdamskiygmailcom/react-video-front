@@ -2,12 +2,16 @@ import React, {Component} from 'react';
 import {Modal} from '../';
 import styles from './styles.scss';
 import {Dropdown} from '../../atoms';
+import {ChromePicker} from 'react-color';
 
 const fonts = [
   'Arial',
   'Helvetica',
   'Courier',
-  'Comic Sans'
+  'Comic Sans',
+  'Times New Roman',
+  'Georgia',
+  'Impact'
 ];
 
 export default class StyleEditor extends Component {
@@ -24,10 +28,14 @@ export default class StyleEditor extends Component {
 
   setName = e => this.setState({name: e.target.value})
 
-  setFilter = e => {
-    e.stopPropagation();
-    this.setState({filter: e.target.value});
-  }
+  setTextColor = e => this.setState({textColor: e.hex})
+
+  setBackgroundColor = e => this.setState({backgroundColor: e.hex})
+
+    setFilter = e => {
+      e.stopPropagation();
+      this.setState({filter: e.target.value});
+    }
 
   setFont = i => this.setState({font: fonts[i], filter: ''})
 
@@ -63,10 +71,13 @@ export default class StyleEditor extends Component {
             label="Please choose a font..."
             selected={this.renderFont(this.state.font)}
             onSelect={this.setFont}
+            hasFilter
           >
-            <input value={filter} onChange={this.setFilter}/>
+            <input value={filter} onChange={this.setFilter} placeholder="Search..."/>
             {fonts.filter(font => font.toLowerCase().includes(filter.toLowerCase())).map(this.renderFont)}
           </Dropdown>
+          <ChromePicker color={textColor} onChange={this.setTextColor}/>
+          <ChromePicker color={backgroundColor} onChange={this.setBackgroundColor}/>
         </Modal>
       );
     }

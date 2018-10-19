@@ -303,7 +303,6 @@ export default class AddOverlay extends Component {
 
   render() {
     const {step} = this.state;
-    console.log('updated');
     return (
       <Modal actions={this.getModalActions(step)}>
         {this.generateContent(step)}

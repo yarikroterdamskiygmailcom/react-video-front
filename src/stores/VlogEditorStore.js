@@ -53,7 +53,6 @@ export class VlogEditorStore {
     //Upload stuff
 
     initResumable = () => {
-      console.log(this.projectId);
       this.resumable = new Resumable({
         target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
         query: {
@@ -180,24 +179,17 @@ export class VlogEditorStore {
 
     //When initializing the editor
 
-    getProjectId = () => php.post('handleproject.php', {
-      debug: true,
-      react: true,
-      action: 'new',
-    }).then(res => this.projectId = res.project_id);
+    getProjectId = () => php.get('/api/v1/vlog/new')
+    .then(res => this.projectId = res.project_id);
 
     initBlankVlog = () => {
       this.media = [];
-      return php.post('handleproject.php', {
-        debug: true,
-        react: true,
-        action: 'new',
-      }).then(res => this.projectId = res.project_id);
+      return php.get('/api/v1/vlog/new')
+      .then(res => this.projectId = res.project_id);
     }
 
     setVlog = vlog => {
       this.media = vlog.video.filter(media => Boolean(media));
-      console.log(vlog.video.filter(media => Boolean(media)));
       this.projectId = vlog.project_id;
       this.title = vlog.title;
     }

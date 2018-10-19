@@ -58,15 +58,11 @@ export class TemplatesStore {
     this.media = Array(this.activeTemplate.fields.length).fill(null);
   }
 
-  loadTemplates = () =>
-    php.post('handleproject.php', {
-      react: true,
-      action: 'loadtemplates',
-      project_id: editor.initBlankVlog().then(() => editor.projectId),
-      debug: true
-    }).then(res => {
-      this.templates = res.templates;
-    });
+  loadTemplates = () => php.get('/api/v1/templates', {
+    project_id: editor.initBlankVlog().then(() => editor.projectId),
+  }).then(res => {
+    this.templates = res.templates;
+  });
 
   next = () => {
     editor.media = this.media;

@@ -15,7 +15,7 @@ export default class Dropdown extends Component {
     this.setState({isOpen: !this.state.isOpen});
   }
 
-  renderItem = (item, i) => React.cloneElement(item, {onClick: () => this.props.onSelect(i)})
+  renderItem = (item, i) => React.cloneElement(item, {onClick: () => this.props.onSelect(this.props.hasFilter ? i - 1 : i)})
 
   render() {
     const {isOpen} = this.state;

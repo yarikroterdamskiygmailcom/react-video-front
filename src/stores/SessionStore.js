@@ -19,7 +19,7 @@ export class SessionStore {
 
   initialize = () => {
     this.token = localStorage.getItem('token') || Cookies.get('token') || null;
-    if(this.token) {
+    if (this.token) {
       php.interceptors.request.use(
         config => ({...config, headers: {Authorization: `Token ${this.token}`}}),
         error => error
@@ -42,22 +42,21 @@ export class SessionStore {
       this.token = access_token;
       try {
         localStorage.setItem('token', access_token);
-      } catch(e) {
+      } catch (e) {
         Cookies.set('token', access_token);
       }
       this.initialize();
     }
   });
 
-  logout = () => {
+  logout = () => php.get('/api/v1/logout')
+  .then(() => {
     this.token = null;
     try {
       localStorage.removeItem('token', null);
-    } catch(e) {
+    } catch (e) {
       Cookies.remove('token');
     }
-
     history.push('/');
-  }
-
+  })
 }

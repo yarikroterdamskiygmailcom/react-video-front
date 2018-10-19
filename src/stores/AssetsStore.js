@@ -11,11 +11,8 @@ export class AssetsStore {
   @observable progress = 0;
   @observable styleList = [];
 
-  loadStyles = () => php.post('handleoverview.php', {
-    debug: true,
-    react: true,
-    action: 'load',
-  }).then(res => {
+  loadStyles = () => php.get('/api/v1/vlogs')
+  .then(res => {
     if(res.error === 'loginerror') {
       sessionStore.logout();
     } else {
@@ -23,19 +20,14 @@ export class AssetsStore {
     }
   });
 
-  loadAssets = () => php.post('handleproject.php', {
-    react: true,
-    action: 'loadassets',
-  }).then(res => {
+  loadAssets = () => php.get('/api/v1/assets')
+  .then(res => {
     this.assetList = !isEmpty(res.asset) ? res.asset : [];
   });
 
   deleteAsset = id =>
-    php.post('handleproject.php', {
-      react: true,
-      action: 'deleteasset',
-      id: id
-    }).then(this.loadAssets);
+    php.delete(`/api/v1/asset/${id}`)
+    .then(this.loadAssets);
 
   initResumable = () => {
     this.resumable = new Resumable({
@@ -47,7 +39,7 @@ export class AssetsStore {
       filetype: ['mp4']
     });
 
-    this.resumable.assignBrowse(document.getElementById('addAsset'));
+    this.resumable.assignBrowse(document.getElementById('teamupload'));
 
     this.resumable.on('fileAdded', () => {
       this.resumable.upload();

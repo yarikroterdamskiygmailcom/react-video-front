@@ -19,6 +19,7 @@
     "object-to-formdata": "^1.5.2",
     "rc-slider": "^8.6.2",
     "react": "16.4.2",
+    "react-color": "^2.14.1",
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",
     "react-resumable-js": "^1.1.24",

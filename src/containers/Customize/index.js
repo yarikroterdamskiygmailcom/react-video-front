@@ -3,6 +3,7 @@ import styles from './styles.scss';
 import {Segment, Carousel} from '../../atoms';
 import {Overlay, Preview, StyleEditor} from '../../components';
 import {inject, observer} from 'mobx-react';
+import classNames from 'classnames';
 
 @inject('assets')
 @observer
@@ -20,6 +21,12 @@ export default class Customize extends Component {
     this.props.assets.loadAssets();
     this.props.assets.loadStyles();
   }
+
+  componentDidMount() {
+    this.props.assets.initResumable();
+  }
+
+  deleteAsset = id => () => this.props.assets.deleteAsset(id).then(this.closeOverlay)
 
   openStyleEditor = () => this.setState({
     overlayOpen: true,
@@ -95,7 +102,6 @@ export default class Customize extends Component {
     render() {
       const {assetList, styleList} = this.props.assets;
       const {overlayOpen, overlayContent, teamOpen, personalOpen} = this.state;
-      console.log(this.props.assets.styleList);
       return (
         <div className={styles.container}>
           <Segment title={this.renderHeader('Team')}>
