@@ -12,7 +12,7 @@ export {VlogEditorStore} from './VlogEditorStore';
 export {VlogsStore} from './VlogsStore';
 
 export const php = axios.create({
-  baseURL: 'https://intranet.sonicvoyage.nl/fileuploader/web/',
+  baseURL: 'https://videodb.vlogahead.cloud',
 });
 
 php.interceptors.request.use(

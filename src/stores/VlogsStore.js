@@ -8,11 +8,8 @@ export class VlogsStore {
   @observable currentVlog = null;
   @observable userPrefs = null;
 
-  loadVlogs = () => php.post('handleoverview.php', {
-    debug: true,
-    react: true,
-    action: 'load',
-  }).then(res => {
+  loadVlogs = () => php.get('/api/v1/vlogs')
+  .then(res => {
     if(res.error === 'loginerror') {
       sessionStore.logout();
     } else {

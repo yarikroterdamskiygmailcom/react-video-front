@@ -7,7 +7,7 @@ export class SessionStore {
   @observable email = ''
   @observable password = ''
   @observable error = null
-  @observable sessionId = null
+  @observable token = null
 
   changeEmail = e => this.email = e.target.value
   changePassword = e => this.password = e.target.value
@@ -18,31 +18,28 @@ export class SessionStore {
   }
 
   initialize = () => {
-    this.sessionId = localStorage.getItem('token') || Cookies.get('token') || null;
-    if(this.sessionId) {
+    this.token = localStorage.getItem('token') || Cookies.get('token') || null;
+    if(this.token) {
       php.interceptors.request.use(
-        config => ({...config, data: {...config.data, SessionID: this.sessionId}}),
+        config => ({...config, headers: {Authorization: `Token ${this.token}`}}),
         error => error
       );
-      userDB.defaults.headers.common.Authorization = `Token ${this.sessionId}`;
+      userDB.defaults.headers.common.Authorization = `Token ${this.token}`;
       history.push('/home');
     }
   }
 
-  login = () => php.post('login.php', {
-    action: 'login',
-    api_data: {
-      email: this.email,
-      password: this.password,
-      saveLogin: false
-    }
+  login = () => php.post('/api/v1/login', {
+    email: this.email,
+    password: this.password,
+    saveLogin: false
   }).then(res => {
     const {access_token, error} = res;
     if (error) {
       this.error = error;
     } else {
       this.error = null;
-      this.sessionId = access_token;
+      this.token = access_token;
       try {
         localStorage.setItem('token', access_token);
       } catch(e) {
@@ -53,7 +50,7 @@ export class SessionStore {
   });
 
   logout = () => {
-    this.sessionId = null;
+    this.token = null;
     try {
       localStorage.removeItem('token', null);
     } catch(e) {
