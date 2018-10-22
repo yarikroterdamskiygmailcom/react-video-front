@@ -22,7 +22,11 @@ export default class Profile extends Component {
   }
 
   componentWillMount() {
-    this.props.profile.loadProfile().then(this.props.profile.getTeam);
+    this.props.profile.loadProfile().then(() => {
+      if(this.props.profile.user.team) {
+        this.props.profile.getTeam();
+      }
+    });
   }
 
   goToCustomize = () => this.props.history.push('/customize')

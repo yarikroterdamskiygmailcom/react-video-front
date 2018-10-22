@@ -7,11 +7,19 @@
     text-transform: uppercase;
     background: $background;
     color: $text-grey;
+    border-bottom:  #D8D7DA solid 1px;
 }
 
 .content {
     width: 100%;
-    border-top: #D8D7DA solid 1px;
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 0.2s, opacity 0.2s;
+
+    &.hidden {
+        max-height: 0;
+        opacity: 0;
+    }
 }
 
 .element {
@@ -20,13 +28,4 @@
     padding: 15px;
     max-height: 1000px;
     opacity: 1;
-    transition: max-height 0.2s, opacity 0.2s;
-
-    &.noRender {
-        max-height: 0;
-        padding: 0;
-        border: none;
-        opacity: 0;
-
-    }
 }

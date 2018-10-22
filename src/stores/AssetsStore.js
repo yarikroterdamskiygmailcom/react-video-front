@@ -11,14 +11,16 @@ export class AssetsStore {
   @observable progress = 0;
   @observable styleList = [];
 
-  loadStyles = () => php.get('/api/v1/vlogs')
+  loadStyles = () => php.get('/api/v1/styles')
   .then(res => {
-    if(res.error === 'loginerror') {
-      sessionStore.logout();
-    } else {
-      this.styleList = res.userprefs.title;
-    }
+    this.styleList = !isEmpty(res.styles) ? res.styles : [];
   });
+
+  uploadStyle = style => php.post('api/v1/styles', style.toJS())
+
+  updateStyle = (id, style) => php.put(`api/v1/styles/${id}`, style.toJS())
+
+  deleteStyle = id => php.delete(`/api/v1/styles/${id}`)
 
   loadAssets = () => php.get('/api/v1/assets')
   .then(res => {

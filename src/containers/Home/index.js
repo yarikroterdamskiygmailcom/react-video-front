@@ -87,7 +87,7 @@ render() {
         />
         <Carousel
           title="Shared Vlogs"
-          items={this.props.vlogs.list.filter(vlog => vlog.status === 'shared')}
+          items={this.props.vlogs.list.filter(vlog => vlog.access === 'team')}
           renderFunction={this.renderItem}
           scrollStep={310}
           onClick={this.viewDetails}

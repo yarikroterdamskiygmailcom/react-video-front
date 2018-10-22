@@ -68,6 +68,10 @@
     .fieldRight {
         color: $grey;
     }
+
+    &:last-child {
+        border-bottom: 1px $grey solid;
+    }
 }
 
 .assets {

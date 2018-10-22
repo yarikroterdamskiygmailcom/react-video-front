@@ -5,6 +5,7 @@ import FontAwesome from 'react-fontawesome';
 import {withRouter} from 'react-router';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
+import {assign} from 'lodash-es';
 
 @withRouter
 @inject('vlogDetails')
@@ -13,12 +14,26 @@ import {observer, inject} from 'mobx-react';
 export default class VlogDetails extends Component {
 
   componentWillUnmount() {
-    this.props.vlogDetails.saveChanges();
+    this.props.vlogDetails.saveChanges(this.getChanges());
+  }
+
+  getChanges = () => {
+    const properties = ['title', 'access'];
+    const changes = properties.map(prop =>
+      this.props.vlogDetails[prop] !== this.props.vlogDetails.vlog[prop]
+        ? {[prop]: this.props.vlogDetails[prop]}
+        : undefined
+    ).filter(x => x);
+    return assign({}, ...changes);
   }
 
   editVlog = () => {
     this.props.vlogEditor.setVlog(this.props.vlogDetails.vlog);
     this.props.history.push('/edit-vlog');
+  }
+
+  shareWithTeam = () => {
+    this.props.vlogDetails.toggleAccess();
   }
 
   renderInput = (left, right, func) =>
@@ -45,6 +60,7 @@ export default class VlogDetails extends Component {
         </Segment>
         <Segment title="Actions">
           {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right"/>, this.editVlog)}
+          {this.renderInfo('Share with Team', <FontAwesome name="chevron-right"/>, this.shareWithTeam)}
         </Segment>
       </div>
     );

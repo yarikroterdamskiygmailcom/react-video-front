@@ -7,15 +7,19 @@ export class VlogDetailsStore {
 
     @observable vlog = null;
     @observable title = ''
+    @observable access = null
     @observable overlayActive = false;
     @observable overlayContent = null;
 
     setVlog = vlog => {
       this.vlog = vlog;
       this.title = vlog.title;
+      this.access = vlog.access;
     }
 
     changeTitle = e => this.title = e.target.value
+
+    toggleAccess = () => this.access = 'team'
 
     confirmDelete = render => () => {
       this.overlayActive = true;
@@ -33,10 +37,7 @@ export class VlogDetailsStore {
       history.push('/home');
     })
 
-    saveChanges = () => this.vlog.title !== this.title &&
-    php.put(`/api/v1/vlog/${this.vlog.project_id}`, {
-      title: this.title
-    })
+    saveChanges = changes => php.put(`/api/v1/vlog/${this.vlog.project_id}`, {...changes})
 }
 
 export default VlogDetailsStore;
