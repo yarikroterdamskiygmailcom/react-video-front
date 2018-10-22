@@ -14,7 +14,7 @@ export class TemplatesStore {
     const resumable = new Resumable({
       target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
       query: {
-        SessionID: session.sessionId,
+        SessionID: session.token,
         action: 'uploadvideo',
         project_id: editor.projectId
       },

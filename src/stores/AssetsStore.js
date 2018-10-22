@@ -33,7 +33,7 @@ export class AssetsStore {
     this.resumable = new Resumable({
       target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
       query: {
-        SessionID: sessionStore.sessionId,
+        SessionID: sessionStore.token,
         action: 'uploadasset',
       },
       filetype: ['mp4']
