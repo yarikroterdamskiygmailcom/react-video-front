@@ -27,10 +27,8 @@ export class VlogDetailsStore {
       this.overlayContent = null;
     }
 
-    deleteVlog = () => php.post('handleproject.php', {
-      action: 'del',
-      project_id: this.vlog.project_id
-    }).then(() => {
+    deleteVlog = () => php.delete(`/api/v1/vlog/${this.vlog.project_id}`)
+    .then(() => {
       vlogEditorStore.cleanup();
       history.push('/home');
     })
