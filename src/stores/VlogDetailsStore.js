@@ -12,7 +12,7 @@ export class VlogDetailsStore {
 
     setVlog = vlog => {
       this.vlog = vlog;
-      this.title = vlog.title || 'Untitled';
+      this.title = vlog.title;
     }
 
     changeTitle = e => this.title = e.target.value
@@ -34,9 +34,7 @@ export class VlogDetailsStore {
     })
 
     saveChanges = () => this.vlog.title !== this.title &&
-    php.post('handleproject.php', {
-      action: 'update',
-      project_id: this.vlog.project_id,
+    php.put(`/api/v1/vlog/${this.vlog.project_id}`, {
       title: this.title
     })
 }
