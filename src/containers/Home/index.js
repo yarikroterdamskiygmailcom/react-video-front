@@ -78,6 +78,7 @@ render() {
           scrollStep={310}
           onClick={this.viewDetails}
           pending={this.state.pending}
+          className={styles.carousel}
         />
         <Carousel
           title="Rendered Vlogs"
@@ -86,6 +87,7 @@ render() {
           scrollStep={310}
           onClick={this.viewDetails}
           pending={this.state.pending}
+          className={styles.carousel}
         />
         <Carousel
           title="Shared Vlogs"
@@ -94,6 +96,7 @@ render() {
           scrollStep={310}
           onClick={this.viewDetails}
           pending={this.state.pending}
+          className={styles.carousel}
         />
       </div>
     </div>
