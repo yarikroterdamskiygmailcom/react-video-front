@@ -36,14 +36,22 @@ export default class VlogDetails extends Component {
     this.props.vlogDetails.toggleAccess();
   }
 
+  share = () => {
+    this.props.history.push('/share');
+  }
+
+  download = () => {
+    window.open(this.props.vlogDetails.vlog.exporturl);
+  }
+
   renderInput = (left, right, func) =>
     <div className={styles.row}>
       <div className={styles.left}>{left}</div>
       <input className={styles.right} value={right} onChange={func}/>
     </div>
 
-  renderInfo = (left, right, func) =>
-    <div className={styles.row} {...(func && {onClick: func})}>
+  renderInfo = (left, right, func, noRender) =>
+    <div className={styles.row} onClick={func} noRender={noRender}>
       <div className={styles.left}>{left}</div>
       <div className={styles.right}>{right}</div>
     </div>
@@ -60,7 +68,9 @@ export default class VlogDetails extends Component {
         </Segment>
         <Segment title="Actions">
           {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right"/>, this.editVlog)}
-          {this.renderInfo('Share with Team', <FontAwesome name="chevron-right"/>, this.shareWithTeam)}
+          {this.renderInfo('Share with Team', <FontAwesome name="users"/>, this.shareWithTeam, vlog.access === 'team')}
+          {this.renderInfo('Share on Social Media', <FontAwesome name="share"/>, this.share, !vlog.exporturl)}
+          {this.renderInfo('Download', <FontAwesome name="download"/>, this.download, !vlog.exporturl)}
         </Segment>
       </div>
     );
