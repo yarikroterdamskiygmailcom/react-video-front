@@ -35,7 +35,7 @@ export default class Customize extends Component {
 
   openStyleEditor = () => this.setState({
     overlayOpen: true,
-    overlayContent: <StyleEditor onClose={this.closeOverlay} onSave={() => null} />
+    overlayContent: <StyleEditor onClose={this.closeOverlay} onSave={this.props.assets.uploadStyle} />
   })
 
   toggleSegment = type => () => this.setState({[`${type}Open`]: !this.state[`${type}Open`]})

@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {Modal} from '../';
 import styles from './styles.scss';
 import {Dropdown} from '../../atoms';
-import {ChromePicker} from 'react-color';
+import {SketchPicker} from 'react-color';
+import {pick} from 'lodash-es';
 
 const fonts = [
   'Arial',
@@ -39,6 +40,13 @@ export default class StyleEditor extends Component {
 
   setFont = i => this.setState({font: fonts[i], filter: ''})
 
+  save = () => this.props.onSave({
+    name: this.state.name,
+    textcolor: this.state.textColor,
+    backgroundcolor: this.state.backgroundColor,
+    font: this.state.font
+  })
+
     modalActions = [
       {
         label: 'Cancel',
@@ -46,7 +54,7 @@ export default class StyleEditor extends Component {
       },
       {
         label: 'Save',
-        func: this.props.onSave
+        func: this.save
       }
     ]
 
@@ -66,7 +74,9 @@ export default class StyleEditor extends Component {
           >
           This is some text.
           </div>
+          <div className={styles.label}>Style Name</div>
           <input className={styles.input} value={name} onChange={this.setName}/>
+          <div className={styles.label}>Font</div>
           <Dropdown
             label="Please choose a font..."
             selected={this.renderFont(this.state.font)}
@@ -76,8 +86,10 @@ export default class StyleEditor extends Component {
             <input value={filter} onChange={this.setFilter} placeholder="Search..."/>
             {fonts.filter(font => font.toLowerCase().includes(filter.toLowerCase())).map(this.renderFont)}
           </Dropdown>
-          <ChromePicker color={textColor} onChange={this.setTextColor}/>
-          <ChromePicker color={backgroundColor} onChange={this.setBackgroundColor}/>
+          <div className={styles.label}>Text Color</div>
+          <SketchPicker color={textColor} onChange={this.setTextColor} width="calc(100% - 20px)"/>
+          <div className={styles.label}>Background Color</div>
+          <SketchPicker color={backgroundColor} onChange={this.setBackgroundColor} width="calc(100% - 20px)"/>
         </Modal>
       );
     }
