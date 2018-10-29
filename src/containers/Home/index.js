@@ -44,6 +44,7 @@ export default class Home extends Component {
           <img
             className={styles.thumb}
             src={video.thumb}
+            onError={e => e.target.src = placeholder}
           />
           <div className={styles.gradient}/>
           <div className={styles.title}>{video.title || 'Untitled'}</div>
