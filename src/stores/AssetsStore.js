@@ -64,7 +64,7 @@ export class AssetsStore {
       query: {
         SessionID: sessionStore.token,
         action: 'uploadasset',
-        access: 'team'
+        access: 'personal'
       },
       filetype: ['mp4']
     });
