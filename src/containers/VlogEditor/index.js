@@ -37,9 +37,9 @@ export default class VlogEditor extends Component {
       fn: () => null
     },
     {
-      icon: 'crossfade',
-      render: <div>Crossfade</div>,
-      fn: this.props.vlogEditor.addCrossfade
+      icon: 'fade',
+      render: <div>Fade</div>,
+      fn: this.props.vlogEditor.openAddFade
     },
     {
       icon: 'title',

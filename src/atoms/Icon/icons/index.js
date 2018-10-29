@@ -2,7 +2,7 @@ import addVlog from './addVlog.svg';
 import backdrop from './backdrop.svg';
 import branding from './branding.svg';
 import camera from './camera.svg';
-import crossfade from './crossfade.svg';
+import fade from './fade.svg';
 import emptyVlog from './emptyVlog.svg';
 import eye from './eye.svg';
 import home from './home.svg';
@@ -21,7 +21,7 @@ export default {
   backdrop,
   branding,
   camera,
-  crossfade,
+  fade,
   emptyVlog,
   eye,
   home,

@@ -1,5 +1,5 @@
 export {default as AddBrandingElement} from './AddBrandingElement';
-export {default as EditCrossfade} from './EditCrossfade';
+export {default as EditFade} from './EditFade';
 export {default as AddOverlay} from './AddOverlay';
 export {default as AddTitle} from './AddTitle';
 export {default as Arranger} from './Arranger';

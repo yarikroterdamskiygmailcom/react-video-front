@@ -46,13 +46,16 @@ export default class Arranger extends Component {
 
   mediaActionsMap = {
     video: [this.actions.trim, this.actions.lowerThird],
+    fadein: [],
+    fadeout: [],
+    fadeoutin: [],
     crossfade: [],
     title: [],
     asset: []
   }
 
   generateActions = media => {
-    if(this.mediaActionsMap[media.mediatype]) {
+    if (this.mediaActionsMap[media.mediatype]) {
       return this.mediaActionsMap[media.mediatype];
     }
     throw new Error(`Tried to render media with mediatype ${media.mediatype}, must be one of ${Object.keys(this.mediaActionsMap)}`);
@@ -69,19 +72,49 @@ export default class Arranger extends Component {
             <div className={styles.fileMeta}>
               <div className={classNames(styles.duration, trimmed && styles.strike)}>{duration}</div>
               {trimmed &&
-              <div className={styles.row}>
-                <div className={styles.duration}>{formatTime(outpoint - inpoint)}</div>
-                <Icon className={styles.icon} name="trim" style={{marginLeft: '10px'}}/>
-              </div>}
-              {!isEmpty(overlay) && <Icon className={styles.icon} name="lowerThird"/>}
+                <div className={styles.row}>
+                  <div className={styles.duration}>{formatTime(outpoint - inpoint)}</div>
+                  <Icon className={styles.icon} name="trim" style={{marginLeft: '10px'}} />
+                </div>}
+              {!isEmpty(overlay) && <Icon className={styles.icon} name="lowerThird" />}
             </div>
+          </div>
+        </div>
+      ),
+
+      fadein: (
+        <div className={styles.itemBody}>
+          <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
+          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+            <div className={styles.fileName}>Fade-In</div>
+            <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
+          </div>
+        </div>
+      ),
+
+      fadeout: (
+        <div className={styles.itemBody}>
+          <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
+          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+            <div className={styles.fileName}>Fade-Out</div>
+            <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
+          </div>
+        </div>
+      ),
+
+      fadeoutin: (
+        <div className={styles.itemBody}>
+          <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
+          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
+            <div className={styles.fileName}>Fade-Out / Fade-In</div>
+            <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
           </div>
         </div>
       ),
 
       crossfade: (
         <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="crossfade" onClick={this.props.vlogEditor.openEditCrossfade(index)}/>
+          <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
           <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
             <div className={styles.fileName}>Crossfade</div>
             <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
@@ -91,7 +124,7 @@ export default class Arranger extends Component {
 
       title: (
         <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="title" onClick={this.props.vlogEditor.openEditTitle(index)}/>
+          <Icon className={styles.bigIcon} name="title" onClick={this.props.vlogEditor.openEditTitle(index)} />
           <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
             <div className={styles.fileName}>Title</div>
             <div className={styles.fileMeta}>{text}</div>
@@ -101,7 +134,7 @@ export default class Arranger extends Component {
 
       asset: (
         <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="branding"/>
+          <Icon className={styles.bigIcon} name="branding" />
           <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
             <div className={styles.fileName}>Branding</div>
             <div className={styles.fileMeta}>{title}</div>
