@@ -85,7 +85,7 @@ export default class Customize extends Component {
       {
         label: (
           <div className={styles.actionLabel}>
-            <Icon className={styles.icon} name="trim"/>
+            <Icon className={styles.icon} name="trim" />
             <div>Edit</div>
           </div>
         ),
@@ -96,7 +96,7 @@ export default class Customize extends Component {
       {
         label: (
           <div className={styles.actionLabel}>
-            <Icon className={styles.icon} name="trash"/>
+            <Icon className={styles.icon} name="trash" />
             <div>Delete</div>
           </div>
         ),
@@ -129,7 +129,7 @@ export default class Customize extends Component {
         <div>{`${group} Styles`}</div>
         <div className={styles.upload} onClick={this.openStyleEditor}>Add +</div>
       </div>
-      <div className={styles.style}>
+      {!isEmpty(styleList) && <div className={styles.style}>
         <div className={styles.styleGroup}>
           <div>NAME</div>
           <div>FONT</div>
@@ -138,7 +138,7 @@ export default class Customize extends Component {
           <div>TEXT</div>
           <div>BACK</div>
         </div>
-      </div>
+      </div>}
       {styleList.map(this.renderStyle(group))}
     </div>
   );
