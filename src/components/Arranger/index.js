@@ -7,6 +7,7 @@ import Swipeable from 'react-swipeable';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {isEmpty} from 'lodash-es';
+import placeholder from '../../../assets/vlogahead_applogo.png';
 
 const formatTime = number => {
   const minutes = Math.floor(number / 60);
@@ -66,7 +67,7 @@ export default class Arranger extends Component {
     return ({
       video: (
         <div className={styles.itemBody}>
-          <div className={styles.thumb} onClick={openPreview(index)} style={{backgroundImage: `url(${thumb})`}} />
+          <img className={styles.thumb} src={thumb} onClick={openPreview(index)} onError={e => e.target.src = placeholder}/>
           <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
             <div className={styles.fileName}>{videoname}</div>
             <div className={styles.fileMeta}>
