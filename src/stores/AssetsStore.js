@@ -31,31 +31,59 @@ export class AssetsStore {
     php.delete(`/api/v1/asset/${id}`)
     .then(this.loadAssets);
 
-  initResumable = () => {
-    this.resumable = new Resumable({
+  initResumables = () => {
+
+    const teamResumable = new Resumable({
       target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
       query: {
         SessionID: sessionStore.token,
         action: 'uploadasset',
+        access: 'team'
       },
       filetype: ['mp4']
     });
 
-    this.resumable.assignBrowse(document.getElementById('teamupload'));
+    teamResumable.assignBrowse(document.getElementById('teamupload'));
 
-    this.resumable.on('fileAdded', () => {
-      this.resumable.upload();
+    teamResumable.on('fileAdded', () => {
+      teamResumable.upload();
       this.uploading = true;
     });
 
-    this.resumable.on('fileSuccess', () => {
+    teamResumable.on('fileSuccess', () => {
       this.uploading = false;
       this.loadAssets();
-      this.resumable.cancel();
+      teamResumable.cancel();
       this.progress = 0;
     });
 
-    this.resumable.on('progress', () => this.progress = this.resumable.progress() * 100);
+    teamResumable.on('progress', () => this.progress = teamResumable.progress() * 100);
+
+    const personalResumable = new Resumable({
+      target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
+      query: {
+        SessionID: sessionStore.token,
+        action: 'uploadasset',
+        access: 'team'
+      },
+      filetype: ['mp4']
+    });
+
+    personalResumable.assignBrowse(document.getElementById('personalupload'));
+
+    personalResumable.on('fileAdded', () => {
+      personalResumable.upload();
+      this.uploading = true;
+    });
+
+    personalResumable.on('fileSuccess', () => {
+      this.uploading = false;
+      this.loadAssets();
+      personalResumable.cancel();
+      this.progress = 0;
+    });
+
+    personalResumable.on('progress', () => this.progress = personalResumable.progress() * 100);
   }
 
 }

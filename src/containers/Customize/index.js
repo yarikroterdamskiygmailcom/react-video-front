@@ -28,7 +28,7 @@ export default class Customize extends Component {
   }
 
   componentDidMount() {
-    this.props.assets.initResumable();
+    this.props.assets.initResumables();
   }
 
   deleteAsset = id => () => this.props.assets.deleteAsset(id).then(this.closeOverlay)
