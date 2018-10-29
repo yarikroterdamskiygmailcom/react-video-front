@@ -4,6 +4,7 @@ import {Carousel, Icon} from '../../atoms';
 import {isEmpty} from 'lodash-es';
 import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
+import placeholder from '../../../assets/placeholder.png';
 
 @withRouter
 @inject('vlogs')
@@ -57,6 +58,7 @@ renderItem = (item, i) =>
     <img
       className={styles.thumb}
       src={item.thumb}
+      onError={e => e.target.src = placeholder}
     />
     <div className={styles.gradient}/>
     <div className={styles.title}>{item.title || 'Untitled'}</div>
