@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Toggle} from '../../atoms';
+import {Toggle, Segment} from '../../atoms';
 import settings from '../../constants/settings';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
@@ -20,16 +20,14 @@ export default class Settings extends Component {
       />
     </div>
 
-  renderSegment = segment =>
-    <div key={segment.title} className={styles.segment}>
-      <div className={styles.segmentTitle}>{segment.title}</div>
-      {segment.settings.map(this.renderSetting)}
-    </div>
-
   render() {
     return (
       <div className={styles.container}>
-        {settings.map(this.renderSegment)}
+        {settings.map(group => (
+          <Segment title={group.title}>
+            {group.settings.map(this.renderSetting)}
+          </Segment>
+        ))}
       </div>
     );
   }
