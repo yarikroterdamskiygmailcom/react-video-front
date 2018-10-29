@@ -148,14 +148,16 @@ export default class Customize extends Component {
     const {overlayOpen, overlayContent, teamOpen, personalOpen} = this.state;
 
     const personalAssets = assetList.filter(asset => asset.access === 'personal');
-    const personalVideos = personalAssets.filter(asset => asset.type = 'video');
-    const personalImages = personalAssets.filter(asset => asset.type = 'image');
-    const personalAudio = personalAssets.filter(asset => asset.type = 'audio');
+    const personalVideos = personalAssets.filter(asset => asset.type === 'video');
+    const personalImages = personalAssets.filter(asset => asset.type === 'image');
+    const personalAudio = personalAssets.filter(asset => asset.type === 'audio');
+    const personalStyles = styleList.filter(style => style.access === 'personal');
 
     const teamAssets = assetList.filter(asset => asset.access === 'team');
     const teamVideos = teamAssets.filter(asset => asset.type === 'video');
     const teamImages = teamAssets.filter(asset => asset.type === 'image');
     const teamAudio = teamAssets.filter(asset => asset.type === 'audio');
+    const teamStyles = styleList.filter(style => style.access === 'team');
 
     return (
       <div className={styles.container}>
@@ -178,7 +180,7 @@ export default class Customize extends Component {
             renderFunction={this.renderAsset}
             noRender={isEmpty(personalAudio)}
           />
-          {this.renderStyles(styleList, 'personal')}
+          {this.renderStyles(personalStyles, 'personal')}
         </Segment>
         <Segment title={this.renderHeader('team')} hideChildren={!teamOpen}>
           <Carousel
@@ -199,7 +201,7 @@ export default class Customize extends Component {
             renderFunction={this.renderAsset}
             noRender={isEmpty(teamAudio)}
           />
-          {this.renderStyles(styleList, 'team')}
+          {this.renderStyles(teamStyles, 'team')}
         </Segment>
         <Overlay active={overlayOpen} onClose={this.closeOverlay}>
           {overlayContent}
