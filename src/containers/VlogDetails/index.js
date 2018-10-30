@@ -47,7 +47,7 @@ export default class VlogDetails extends Component {
   renderInput = (left, right, func) =>
     <div className={styles.row}>
       <div className={styles.left}>{left}</div>
-      <input className={styles.right} value={right} onChange={func}/>
+      <input className={styles.right} value={right} placeholder="Untitled" onChange={func}/>
     </div>
 
   renderInfo = (left, right, func, noRender) =>
