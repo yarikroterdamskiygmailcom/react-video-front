@@ -64,13 +64,21 @@
     .thumb {
         border-radius: 5px;
     }
+
+    &::before {
+        border-radius: 5px;
+    }
 }
 
-.gradient {
-    position: absolute;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%);
-    width: 100%;
-    height: 100%;
+.highlight,
+.item {
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%);
+    }
 }
 
 .thumb {
