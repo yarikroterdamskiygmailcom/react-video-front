@@ -19,8 +19,9 @@ export default class VlogEditor extends Component {
   }
 
   componentDidMount() {
-    if (this.props.fromScratch && !this.props.vlogEditor.projectId) {
+    if (this.props.fromScratch) {
       this.setState({pending: true});
+      this.props.vlogEditor.cleanup();
       this.props.vlogEditor.getProjectId().then(() => {
         this.setState({pending: false});
         this.props.vlogEditor.initResumable();
