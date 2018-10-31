@@ -27,9 +27,7 @@ export class AssetsStore {
     this.assetList = !isEmpty(res.asset) ? res.asset : [];
   });
 
-  deleteAsset = id =>
-    php.delete(`/api/v1/asset/${id}`)
-    .then(this.loadAssets);
+  deleteAsset = id => php.delete(`/api/v1/assets/${id}`)
 
   initResumables = () => {
 

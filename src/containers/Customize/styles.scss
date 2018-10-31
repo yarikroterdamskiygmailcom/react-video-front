@@ -1,5 +1,5 @@
 .container {
-
+    position: relative;
 }
 
 .header {
@@ -31,9 +31,45 @@
     width: 100%;
 }
 
-.thumb {
-    height: 100px;
+.asset {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 170px;
+    flex-shrink: 0;
+
+    .thumb {
+        height: 100%;
+    }
+
+    .check {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        right: 10px;
+        top: 10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        background: $purple;
+        opacity: 0;
+        transition: opacity 0.2s;
+
+        &.active {
+            opacity: 1;
+        }
+
+        .icon {
+            color: $white;
+        }
+
+    }
 }
+
+
 
 .styleList {
     display: flex;
@@ -71,3 +107,21 @@
     align-items: center;
     justify-content: center;
 }
+
+.trash {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+
+    &.active {
+        animation: wiggle 1s infinite;
+    }
+}
+
+@keyframes wiggle {
+    0% {transform: rotate(10deg);}
+    25% {transform: rotate(-10deg);}
+    50% {transform: rotate(20deg);}
+    75% {transform: rotate(-5deg);}
+    100% {transform: rotate(10deg);}
+  }

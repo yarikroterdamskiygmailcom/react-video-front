@@ -3,6 +3,7 @@ export {default as EditFade} from './EditFade';
 export {default as AddOverlay} from './AddOverlay';
 export {default as AddTitle} from './AddTitle';
 export {default as Arranger} from './Arranger';
+export {default as ConfirmationPrompt} from './ConfirmationPrompt';
 export {default as DeleteVlog} from './DeleteVlog';
 export {default as Header} from './Header';
 export {default as Modal} from './Modal';

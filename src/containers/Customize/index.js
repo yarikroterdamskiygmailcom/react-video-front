@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
 import {Segment, Carousel, SwipeItem, Icon} from '../../atoms';
-import {Overlay, Preview, StyleEditor} from '../../components';
+import {Overlay, Preview, StyleEditor, ConfirmationPrompt} from '../../components';
 import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
 import {isEmpty} from 'lodash-es';
+import FontAwesome from 'react-fontawesome';
 
 @inject('assets')
 @observer
@@ -15,6 +16,8 @@ export default class Customize extends Component {
       teamOpen: false,
       personalOpen: false,
       overlayOpen: false,
+      deleteMode: false,
+      assetsToDelete: [],
       reveal: {
         personal: {},
         team: {}
@@ -31,7 +34,31 @@ export default class Customize extends Component {
     this.props.assets.initResumables();
   }
 
-  deleteAsset = id => () => this.props.assets.deleteAsset(id).then(this.closeOverlay)
+  deleteAsset = id => this.props.assets.deleteAsset(id)
+
+  deleteAssets = () => isEmpty(this.state.assetsToDelete)
+    ? this.toggleDeleteMode
+    : this.setState({
+      overlayOpen: true,
+      overlayContent: (
+        <ConfirmationPrompt
+          onCancel={() => {
+            this.toggleDeleteMode();
+            this.setState({assetsToDelete: []});
+            this.closeOverlay();
+          }}
+          onProceed={() => {
+            this.toggleDeleteMode();
+            Promise.all(this.state.assetsToDelete.map(id => this.deleteAsset(id)))
+            .then(this.props.assets.loadAssets);
+            this.setState({assetsToDelete: []});
+            this.closeOverlay();
+
+          }}
+          body={`Are you sure you want to delete ${this.state.assetsToDelete.length} assets? This can not be undone.`}
+        />
+      )
+    })
 
   openStyleEditor = () => this.setState({
     overlayOpen: true,
@@ -53,7 +80,20 @@ export default class Customize extends Component {
 
   closeOverlay = () => this.setState({overlayOpen: false})
 
-  renderThumb = ({type, thumb, src}) => <img className={styles.thumb} src={thumb} onClick={this.openPreview(type, src)} />
+  scheduleDeletion = id => () => this.setState({
+    assetsToDelete: this.state.assetsToDelete.includes(id)
+      ? this.state.assetsToDelete.filter(x => x !== id)
+      : [...this.state.assetsToDelete, id]
+  });
+
+  renderThumb = ({id, thumb, type, src}) => (
+    <div className={styles.asset}>
+      <img className={styles.thumb} src={thumb} onClick={this.state.deleteMode ? this.scheduleDeletion(id) : this.openPreview(type, src)} />
+      <div className={classNames(styles.check, this.state.assetsToDelete.includes(id) && styles.active)}>
+        <FontAwesome className={styles.icon} name="check" />
+      </div>
+    </div>
+  )
 
   renderAsset = asset => {
     switch (asset.type) {
@@ -79,6 +119,8 @@ export default class Customize extends Component {
   })
 
   deleteStyle = id => () => this.props.assets.deleteStyle(id)
+
+  toggleDeleteMode = () => this.setState({deleteMode: !this.state.deleteMode})
 
   getSwipeActions = id => ({
     left: [
@@ -203,6 +245,13 @@ export default class Customize extends Component {
           />
           {this.renderStyles(teamStyles, 'team')}
         </Segment>
+        <Icon
+          className={classNames(styles.trash, this.state.deleteMode && styles.active)}
+          name="trash"
+          onClick={this.state.deleteMode
+            ? this.deleteAssets
+            : this.toggleDeleteMode}
+        />
         <Overlay active={overlayOpen} onClose={this.closeOverlay}>
           {overlayContent}
         </Overlay>
