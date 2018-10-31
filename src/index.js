@@ -42,5 +42,3 @@ const renderApp = () =>
   );
 
 renderApp();
-
-module.hot.accept(renderApp);

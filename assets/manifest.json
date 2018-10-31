@@ -7,7 +7,7 @@
   "description": "Vloggity vlog.",
   "icons": [
     {
-      "src": "favicons/icon-196x196.png",
+      "src": "../favicons/icon-196x196.png",
       "sizes": "196x196",
       "type": "image/png"
     }
