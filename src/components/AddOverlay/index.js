@@ -29,7 +29,7 @@ export default class AddOverlay extends Component {
   }
 
   updateLowerThird = () => {
-    php.post('overlay.php', {
+    php.post('lowerthird', {
       type: 'lowerthird',
       video_id: this.props.video.video_id,
       text: this.state.text,

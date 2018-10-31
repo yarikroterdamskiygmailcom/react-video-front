@@ -6,7 +6,7 @@ export default class AddTitle extends Component {
   constructor(props) {
     super(props);
     this.state = this.props.title ? {...this.props.title} : {
-      text: 'Sample Text',
+      text: '',
     };
   }
 
@@ -54,7 +54,9 @@ export default class AddTitle extends Component {
     return (
       <Modal className={styles.modal} actions={this.modalActions}>
         {this.renderExample()}
+        <div className={styles.label}>Text</div>
         <textarea className={styles.textarea} value={text} onChange={this.setText} placeholder="Enter your text here!"/>
+        <div className={styles.label}>Style</div>
         <StylePicker
           onSelect={this.setSelection}
           selected={this.state.style}

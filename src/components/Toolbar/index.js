@@ -5,6 +5,7 @@ import {Overlay} from '../../components';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
+import {noop} from 'lodash-es';
 
 @inject('session')
 @observer
@@ -53,7 +54,7 @@ class Toolbar extends Component {
         <div className={styles.left} onClick={this.openMenu}>
           <FontAwesome name="plus" />
         </div>
-        <div className={classNames(styles.right, !allowNext && styles.disabled)} onClick={allowNext ? next : () => session.showError('Not enough media :(')}>
+        <div className={classNames(styles.right, !allowNext && styles.disabled)} onClick={allowNext ? next : noop}>
           <FontAwesome name="angle-right" />
         </div>
         <Overlay active={this.state.isOpen} onClose={this.closeMenu}>
