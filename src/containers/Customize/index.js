@@ -37,7 +37,7 @@ export default class Customize extends Component {
   deleteAsset = id => this.props.assets.deleteAsset(id)
 
   deleteAssets = () => isEmpty(this.state.assetsToDelete)
-    ? this.toggleDeleteMode
+    ? this.toggleDeleteMode()
     : this.setState({
       overlayOpen: true,
       overlayContent: (
