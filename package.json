@@ -5,7 +5,8 @@
   "repository": "git@gitlab.com:Gedos/video-frontend.git",
   "license": "MIT",
   "scripts": {
-    "start": "webpacker serve"
+    "start": "webpacker serve",
+    "build": "webpacker build"
   },
   "dependencies": {
     "autoprefixer": "^9.0.0",
