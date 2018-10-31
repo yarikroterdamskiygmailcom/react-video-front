@@ -39,6 +39,8 @@
     height: 170px;
     flex-shrink: 0;
     margin-right: 10px;
+    overflow: hidden;
+    border-radius: 5px;
 
     .thumb {
         height: 100%;
