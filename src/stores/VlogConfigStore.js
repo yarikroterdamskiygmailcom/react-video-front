@@ -40,6 +40,10 @@ export class VlogConfigStore {
     this.title = editor.title || 'Untitled';
   }
 
+  cleanup = () => {
+    this.renderUrl = null;
+  }
+
   shrinkMedia = media => {
     const shrunk = media.map(m =>
       m.mediatype === 'video'

@@ -55,7 +55,7 @@ const editVlog = {
   path: '/edit-vlog',
   component: VlogEditor,
   header: {
-    left: backButton
+    left: <div onClick={() => history.push('/home')}><FontAwesome name="angle-left"/> Back</div>
   }
 };
 
@@ -107,7 +107,7 @@ const vlogEditor = {
   path: '/edit-vlog',
   component: VlogEditor,
   header: {
-    left: backButton
+    left: <div onClick={() => history.push('/home')}><FontAwesome name="angle-left"/> Back</div>
   }
 };
 
@@ -116,7 +116,7 @@ const configureVlog = {
   path: '/configure-vlog',
   component: ConfigureVlog,
   header: {
-    left: backButton
+    left: <div onClick={() => history.push('/edit-vlog')}><FontAwesome name="angle-left"/> Back</div>
   }
 };
 

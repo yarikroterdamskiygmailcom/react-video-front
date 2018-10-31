@@ -18,6 +18,10 @@ export default class ConfigureVlog extends Component {
     this.props.vlogConfig.init();
   }
 
+  componentWillUnmount() {
+    this.props.vlogConfig.cleanup();
+  }
+
   next = () => this.props.history.push('/render-vlog')
 
   orientationOptions = [
