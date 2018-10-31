@@ -4,7 +4,7 @@ import {Segment, Carousel, SwipeItem, Icon} from '../../atoms';
 import {Overlay, Preview, StyleEditor, ConfirmationPrompt} from '../../components';
 import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
-import {isEmpty} from 'lodash-es';
+import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
 
 @inject('assets')
@@ -60,9 +60,9 @@ export default class Customize extends Component {
       )
     })
 
-  openStyleEditor = () => this.setState({
+  openStyleEditor = group => () => this.setState({
     overlayOpen: true,
-    overlayContent: <StyleEditor onClose={this.closeOverlay} onSave={this.props.assets.uploadStyle} />
+    overlayContent: <StyleEditor onClose={this.closeOverlay} onSave={this.props.assets.uploadStyle(group)} />
   })
 
   toggleSegment = type => () => this.setState({[`${type}Open`]: !this.state[`${type}Open`]})
@@ -80,7 +80,7 @@ export default class Customize extends Component {
 
   closeOverlay = () => this.setState({overlayOpen: false})
 
-  scheduleDeletion = id => () => this.setState({
+  scheduleAssetDeletion = id => () => this.setState({
     assetsToDelete: this.state.assetsToDelete.includes(id)
       ? this.state.assetsToDelete.filter(x => x !== id)
       : [...this.state.assetsToDelete, id]
@@ -88,7 +88,7 @@ export default class Customize extends Component {
 
   renderThumb = ({id, thumb, type, src}) => (
     <div className={styles.asset}>
-      <img className={styles.thumb} src={thumb} onClick={this.state.deleteMode ? this.scheduleDeletion(id) : this.openPreview(type, src)} />
+      <img className={styles.thumb} src={thumb} onClick={this.state.deleteMode ? this.scheduleAssetDeletion(id) : this.openPreview(type, src)} />
       <div className={classNames(styles.check, this.state.assetsToDelete.includes(id) && styles.active)}>
         <FontAwesome className={styles.icon} name="check" />
       </div>
@@ -169,7 +169,7 @@ export default class Customize extends Component {
     <div className={styles.styleList}>
       <div className={styles.subHeader}>
         <div>{`${group} Styles`}</div>
-        <div className={styles.upload} onClick={this.openStyleEditor}>Add +</div>
+        <div className={styles.upload} onClick={this.openStyleEditor(group)}>Add +</div>
       </div>
       {!isEmpty(styleList) && <div className={styles.style}>
         <div className={styles.styleGroup}>

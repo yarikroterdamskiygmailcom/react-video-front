@@ -86,6 +86,12 @@
     width: 100%;
     padding: 10px 0;
     border-bottom: $grey solid 1px;
+    opacity: 1;
+    transition: opacity 0.2s;
+
+    &.delete {
+        opacity: 0.3;
+    }
 }
 
 .color {
