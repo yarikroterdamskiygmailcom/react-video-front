@@ -7,6 +7,7 @@ import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {assign, isEmpty, noop} from 'lodash-es';
 import trash from '../../../assets/trash.png';
+import classNames from 'classnames';
 
 @withRouter
 @inject('vlogEditor')
@@ -53,8 +54,8 @@ export default class VlogDetails extends Component {
       <input className={styles.right} value={right} placeholder="Nothing" onChange={func} onBlur={onBlur}/>
     </div>
 
-  renderInfo = (left, right, func, noRender) =>
-    <div className={styles.row} onClick={func || noop} noRender={noRender}>
+  renderInfo = (left, right, func, disabled) =>
+    <div className={classNames(styles.row, disabled && styles.disabled)} onClick={func || noop}>
       <div className={styles.left}>{left}</div>
       <div className={styles.right}>{right}</div>
     </div>

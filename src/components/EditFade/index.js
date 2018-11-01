@@ -32,7 +32,7 @@ const defState = {
   color: 'black'
 };
 
-export default class EditCrossfade extends Component {
+export default class EditFade extends Component {
   constructor(props) {
     super(props);
     this.state = this.props.crossfade
@@ -72,6 +72,7 @@ export default class EditCrossfade extends Component {
 
   renderFade = ({name, desc, type}) => (
     <div
+      key={name}
       className={classNames(styles.fade, this.state.type === type && styles.active)}
       onClick={this.setType(type)}
     >

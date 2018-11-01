@@ -9,8 +9,8 @@ export default class SwipeItem extends Component {
       ? `${this.props.actions[side].length * 80}px`
       : '0px'
 
-      renderAction = action => (
-        <div className={styles.action} onClick={action.func}>
+      renderAction = (action, i) => (
+        <div key={i} className={styles.action} onClick={action.func}>
           {action.label}
         </div>
       )

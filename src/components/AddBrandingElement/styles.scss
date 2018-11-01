@@ -1,10 +1,14 @@
 .asset {
     display: flex;
     flex-direction: row;
-    margin: 5px 0;
+    margin-bottom: 5px;
     transition: background 0.2s;
     color: $text;
     height: 100px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 
 .thumb {
@@ -12,11 +16,22 @@
     max-width: 100px;
     min-height: 100px;
     max-height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
 }
 
 .assetData {
     display: flex;
     flex-direction: column;
+    width: calc(100% - 110px);
+
+    .assetTitle,
+    .assetType {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
 }
 
 .selected {

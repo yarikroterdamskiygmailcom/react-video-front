@@ -88,7 +88,7 @@ export default class Customize extends Component {
   });
 
   renderThumb = ({id, thumb, type, src}) => (
-    <div className={styles.asset}>
+    <div key={id} className={styles.asset}>
       <img className={styles.thumb} src={thumb} onClick={this.state.deleteMode ? this.scheduleAssetDeletion(id) : this.openPreview(type, src)} />
       <div className={classNames(styles.check, this.state.assetsToDelete.includes(id) && styles.active)}>
         <FontAwesome className={styles.icon} name="check" />
@@ -151,6 +151,7 @@ export default class Customize extends Component {
 
   renderStyle = group => ({backgroundcolor, font, name, textcolor, id}, i) => (
     <SwipeItem
+      key={`${name}-${i}`}
       className={styles.style}
       onSwipe={this.reveal(group, i)}
       reveal={this.state.reveal[group].index === i && this.state.reveal[group].side}

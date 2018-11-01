@@ -74,7 +74,6 @@
     pointer-events: none;
     max-width: 100px;
     transition: max-width 0.2s;
-    width: 70px;
 
     .icon {
         margin-left: 10px;
@@ -100,7 +99,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 5px;
     width: 100%;
     box-sizing: border-box;
 }

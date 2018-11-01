@@ -59,7 +59,7 @@ export default class StyleEditor extends Component {
     ]
 
     renderFont = (font, selected) => (
-      <div className={styles.font} style={{fontFamily: font}}>
+      <div key={font} className={styles.font} style={{fontFamily: font}}>
         {font}
       </div>
     )
