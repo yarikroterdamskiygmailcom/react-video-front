@@ -135,7 +135,7 @@ export default class Arranger extends Component {
 
       asset: (
         <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="branding" />
+          <img className={styles.thumb} src={thumb} onClick={openPreview(index)} onError={e => e.target.src = placeholder}/>
           <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
             <div className={styles.fileName}>Branding</div>
             <div className={styles.fileMeta}>{title}</div>
