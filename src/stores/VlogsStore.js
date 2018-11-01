@@ -14,7 +14,6 @@ export class VlogsStore {
       sessionStore.logout();
     } else {
       this.list = res.project;
-      this.userPrefs = res.userprefs;
     }
   });
 
