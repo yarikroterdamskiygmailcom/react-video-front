@@ -18,7 +18,7 @@ export default class StylePicker extends Component {
   }
 
   renderStyle = ({name, textcolor, backgroundcolor, font, selected}, i) => (
-    <div key={`${name}-${i}`} className={classNames(styles.style, selected && styles.selected)} onClick={selected ? noop : () => this.setSelected(this.styles[i])}>
+    <div key={`${name}-${i}`} className={classNames(styles.style, selected && styles.selected)} onClick={selected ? noop : () => this.setSelected(this.props.assets.styleList[i])}>
       <div className={styles.styleMeta}>
         <div className={styles.styleName} style={{fontFamily: font}}>{name}</div>
         <div className={styles.fontName}>{font}</div>
