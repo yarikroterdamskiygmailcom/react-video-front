@@ -1,7 +1,7 @@
 {
   "name": "VlogAhead",
   "short_name": "VlogAhead",
-  "start_url": ".",
+  "start_url": "/home",
   "display": "standalone",
   "background_color": "#fff",
   "description": "Vloggity vlog.",
