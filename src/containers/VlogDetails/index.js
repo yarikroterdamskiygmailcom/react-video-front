@@ -6,6 +6,7 @@ import {withRouter} from 'react-router';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {assign} from 'lodash-es';
+import trash from '../../../assets/trash.png';
 
 @withRouter
 @inject('vlogEditor')
@@ -91,7 +92,7 @@ export default class VlogDetails extends Component {
           {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exportUrl)}
           {this.renderInfo('Download', <FontAwesome name="download" />, this.download, !exportUrl)}
         </Segment>
-        <Icon className={styles.delete} name="trash" onClick={this.confirmDelete} />
+        <img className={styles.delete} src={trash} onClick={this.confirmDelete} />
         <Overlay active={overlayActive} onClose={this.closeOverlay}>
           {overlayContent}
         </Overlay>

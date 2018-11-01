@@ -120,6 +120,7 @@
     position: fixed;
     top: 10px;
     right: 10px;
+    width: 25px;
 
     &.active {
         animation: wiggle 1s infinite;

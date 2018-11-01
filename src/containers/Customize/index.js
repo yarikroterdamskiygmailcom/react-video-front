@@ -6,6 +6,7 @@ import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
 import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
+import trash from '../../../assets/trash.png';
 
 @inject('assets')
 @observer
@@ -246,12 +247,12 @@ export default class Customize extends Component {
           />
           {this.renderStyles(teamStyles, 'team')}
         </Segment>
-        <Icon
+        <img
           className={classNames(styles.trash, this.state.deleteMode && styles.active)}
-          name="trash"
           onClick={this.state.deleteMode
             ? this.deleteAssets
             : this.toggleDeleteMode}
+          src={trash}
         />
         <Overlay active={overlayOpen} onClose={this.closeOverlay}>
           {overlayContent}
