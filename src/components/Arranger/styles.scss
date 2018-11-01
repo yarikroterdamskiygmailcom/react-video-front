@@ -92,9 +92,11 @@
     }
 
     .fileMeta {
-        display: flex;
-        flex-direction: row;
         color: $text-grey;
+        max-width: 175px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         .icon {
             width: 20px;
