@@ -137,10 +137,15 @@ export default class ConfigureVlog extends Component {
           <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={() => toggleProperty('customEdit')} />
           <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={access === 'team'} onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')}/>
         </Segment>
-        {renderUrl && <Preview className={styles.preview} src={renderUrl} />}
+        <Segment className={classNames(styles.preview, renderUrl && styles.active)} title={renderUrl ? 'Preview' : ''}>
+          {renderUrl && <Preview src={renderUrl} />}
+        </Segment>
         <Segment title="Finalize">
-          <div className={styles.row}>
-            <div className={classNames(styles.renderButton, renderUrl && styles.active)} onClick={this.next}>
+          <div className={styles.finalize}>
+            <div className={classNames(styles.renderButton, styles.active, !renderUrl && styles.invisible)}>
+              <FontAwesome name="chevron-left"/> Home
+            </div>
+            <div className={classNames(styles.renderButton, styles.active, !renderUrl && styles.invisible)} onClick={this.next}>
             Share!
             </div>
             <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={this.renderVlog}>

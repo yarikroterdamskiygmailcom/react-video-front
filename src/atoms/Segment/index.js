@@ -15,9 +15,9 @@ export default class Segment extends Component {
     )
 
     render() {
-      const {title, hideChildren, children} = this.props;
+      const {title, hideChildren, children, className} = this.props;
       return (
-        <div className={styles.container}>
+        <div className={classNames(styles.container, className)}>
           <div className={styles.title}>{title}</div>
           <div className={classNames(styles.content, hideChildren && styles.hidden)}>
             {React.Children.map(children, this.renderElement)}

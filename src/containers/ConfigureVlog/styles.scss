@@ -65,13 +65,16 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    text-align: center;
     background: $pink;
     color: $white;
     width: fit-content;
-    margin: 30px 20px;
     padding: 15px;
     border-radius: 3px;
     pointer-events: none;
+    max-width: 100px;
+    transition: max-width 0.2s;
+    width: 70px;
 
     .icon {
         margin-left: 10px;
@@ -82,6 +85,24 @@
         pointer-events: all;
     }
 
+    &.invisible {
+        width: 0;
+        padding: 0;
+    }
+
+    &:nth-child(2) {
+        justify-content: center;
+    }
+
+}
+
+.finalize {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .input {
@@ -92,6 +113,15 @@
     visibility: hidden;
         &.active {
         visibility: visible;
+    }
+}
+
+.preview {
+    max-height: 0;
+    transition: max-height 0.2s;
+
+    &.active {
+        max-height: 300px;
     }
 }
 
