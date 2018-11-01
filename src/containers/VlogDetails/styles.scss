@@ -8,8 +8,16 @@
     justify-content: space-between;
 }
 
+.left {
+    margin-right: 10px;
+}
+
 .right {
-    margin-left: 10px;
+    color: $grey;
+
+    &::placeholder {
+        color: $grey;
+    }
 }
 
 .delete {
