@@ -21,7 +21,7 @@ php.interceptors.request.use(
 
 php.interceptors.response.use(
   response => {
-    if (response.data.error) {
+    if (response.data && response.data.error) {
       sessionStore.showError(response.data.error);
     }
     return response.data;

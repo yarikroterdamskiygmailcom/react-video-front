@@ -119,6 +119,7 @@ export default class Customize extends Component {
   })
 
   deleteStyle = id => () => this.props.assets.deleteStyle(id)
+  .then(this.props.assets.loadStyles)
 
   toggleDeleteMode = () => this.setState({deleteMode: !this.state.deleteMode})
 
