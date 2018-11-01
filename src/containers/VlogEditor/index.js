@@ -13,6 +13,7 @@ import {isEmpty} from 'lodash-es';
 export default class VlogEditor extends Component {
   constructor(props) {
     super(props);
+    this.resumableRef = React.createRef();
     this.state = {
       pending: false,
       showToast: false,
@@ -22,6 +23,7 @@ export default class VlogEditor extends Component {
 
   componentDidMount() {
     this.props.vlogEditor.initResumable();
+    this.resumableRef.current.children[0].accept = 'video/*';
   }
 
   showToast = text => {
@@ -34,7 +36,7 @@ export default class VlogEditor extends Component {
   getActions = () => [
     {
       icon: 'camera',
-      render: <div className={styles.vidinput} id="input">Video</div>,
+      render: <div ref={this.resumableRef} className={styles.vidinput} id="input">Video</div>,
       fn: () => null
     },
     {

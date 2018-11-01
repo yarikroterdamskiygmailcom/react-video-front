@@ -77,7 +77,6 @@ export class VlogEditorStore {
         action: 'uploadvideo',
         project_id: this.projectId
       },
-      fileType: ['mp4']
     });
 
     this.resumable.assignBrowse(document.getElementById('input'));

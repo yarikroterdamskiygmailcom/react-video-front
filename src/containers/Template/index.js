@@ -12,8 +12,14 @@ import {noop, isNumber} from 'lodash-es';
 @observer
 export default class Template extends Component {
 
+  constructor(props) {
+    super(props);
+    this.resumableRefs = props.templates.activeTemplate.fields.map(() => React.createRef());
+  }
+
   componentDidMount() {
     this.props.templates.initResumables();
+    this.resumableRefs.forEach(ref => ref.current.children[1].accept = 'video/*');
   }
 
   next = () => {
@@ -28,6 +34,7 @@ export default class Template extends Component {
     return (
       <div key={title} className={classNames(styles.field)}>
         <div
+          ref={this.resumableRefs[i]}
           className={classNames(
             styles.button,
             isNumber(progress) && styles.uploading
