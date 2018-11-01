@@ -55,19 +55,6 @@ const editVlog = {
   path: '/edit-vlog',
   component: VlogEditor,
   header: {
-    left: <div onClick={() => history.push('/home')}><FontAwesome name="angle-left"/> Back</div>
-  }
-};
-
-const addVlog = {
-  name: 'Add Vlog',
-  icon: 'camera',
-  path: '/add-vlog',
-  component: VlogEditor,
-  props: {
-    fromScratch: true
-  },
-  header: {
     left: backButton
   }
 };
@@ -107,7 +94,7 @@ const vlogEditor = {
   path: '/edit-vlog',
   component: VlogEditor,
   header: {
-    left: <div onClick={() => history.push('/home')}><FontAwesome name="angle-left"/> Back</div>
+    left: backButton
   }
 };
 
@@ -116,7 +103,7 @@ const configureVlog = {
   path: '/configure-vlog',
   component: ConfigureVlog,
   header: {
-    left: <div onClick={() => history.push('/edit-vlog')}><FontAwesome name="angle-left"/> Back</div>
+    left: backButton
   }
 };
 
@@ -136,7 +123,6 @@ const vlogDetails = {
   component: VlogDetails,
   header: {
     left: backButton,
-    right: <DeleteVlog/>
   }
 };
 
@@ -167,8 +153,8 @@ const share = {
   }
 };
 
-export const navBarRoutes = [home, addVlog, profile];
+export const navBarRoutes = [home, editVlog, profile];
 
-const allRoutes = [notFound, login, logout, forgotPassword, home, editVlog, addVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails, template, customize, share];
+const allRoutes = [notFound, login, logout, forgotPassword, home, editVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails, template, customize, share];
 
 export default allRoutes;

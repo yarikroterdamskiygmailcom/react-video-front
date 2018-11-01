@@ -3,11 +3,10 @@ import encode from 'object-to-formdata';
 import {sessionStore} from '..';
 export {AssetsStore} from './AssetsStore';
 export {ProfileStore} from './ProfileStore';
+export {ProjectStore} from './ProjectStore';
 export {SessionStore} from './SessionStore';
 export {SettingsStore} from './SettingsStore';
 export {TemplatesStore} from './TemplatesStore';
-export {VlogConfigStore} from './VlogConfigStore';
-export {VlogDetailsStore} from './VlogDetailsStore';
 export {VlogEditorStore} from './VlogEditorStore';
 export {VlogsStore} from './VlogsStore';
 

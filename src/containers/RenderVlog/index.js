@@ -6,7 +6,6 @@ import styles from './styles.scss';
 import {inject, observer} from 'mobx-react';
 
 @inject('vlogEditor')
-@inject('vlogConfig')
 @observer
 export default class RenderVlog extends Component {
 

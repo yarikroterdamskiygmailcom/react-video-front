@@ -9,22 +9,17 @@ import {head, last} from 'lodash-es';
 
 export class VlogEditorStore {
   @observable media = []
-  @observable title = null
   @observable projectId = null
   @observable overlayActive = false
   @observable overlayContent = null
-  @observable currentVideo = null
   @observable uploading = false
   @observable progress = 0
 
   //Editor stuff
 
-  cleanup = () => {
-    console.log('warning: cleaning up!!!!!');
-    this.media = [];
-    this.title = null;
-    this.projectId = null;
-  }
+  setMedia = media => this.media = media;
+
+  setProjectId = id => this.projectId = id;
 
   @action addMedia = mediaObj => {
     this.media = [...this.media.toJS(), mediaObj];
@@ -193,32 +188,15 @@ export class VlogEditorStore {
   //Preview stuff
 
   openPreview = i => () => {
-    this.currentVideo = this.media[i];
+    const currentVideo = this.media[i];
     this.overlayActive = true;
     this.overlayContent = (
       <Preview
-        src={this.currentVideo.src}
-        start={this.currentVideo.inpoint}
-        stop={this.currentVideo.outpoint}
+        src={currentVideo.src}
+        start={currentVideo.inpoint}
+        stop={currentVideo.outpoint}
       />
     );
-  }
-
-  //When initializing the editor
-
-  getProjectId = () => php.get('/api/v1/vlog/new')
-  .then(res => this.projectId = res.project_id);
-
-  initBlankVlog = () => {
-    this.media = [];
-    return php.get('/api/v1/vlog/new')
-    .then(res => this.projectId = res.project_id);
-  }
-
-  setVlog = vlog => {
-    this.media = vlog.video.filter(media => Boolean(media));
-    this.projectId = vlog.project_id;
-    this.title = vlog.title;
   }
 
 }

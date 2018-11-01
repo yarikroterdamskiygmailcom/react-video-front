@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Segment, Input} from '../../atoms';
-import {Preview} from '../../components';
+import {Segment, Icon} from '../../atoms';
+import {Preview, ConfirmationPrompt, Overlay} from '../../components';
 import FontAwesome from 'react-fontawesome';
 import {withRouter} from 'react-router';
 import styles from './styles.scss';
@@ -8,13 +8,18 @@ import {observer, inject} from 'mobx-react';
 import {assign} from 'lodash-es';
 
 @withRouter
-@inject('vlogDetails')
 @inject('vlogEditor')
+@inject('project')
 @observer
 export default class VlogDetails extends Component {
 
-  componentWillUnmount() {
-    this.props.vlogDetails.saveChanges(this.getChanges());
+  constructor(props) {
+    super(props);
+    this.state = {
+      overlayActive: false,
+      overlayContent: null
+
+    };
   }
 
   getChanges = () => {
@@ -28,7 +33,6 @@ export default class VlogDetails extends Component {
   }
 
   editVlog = () => {
-    this.props.vlogEditor.setVlog(this.props.vlogDetails.vlog);
     this.props.history.push('/edit-vlog');
   }
 
@@ -44,10 +48,26 @@ export default class VlogDetails extends Component {
     window.open(this.props.vlogDetails.vlog.exporturl);
   }
 
+  confirmDelete = () => this.setState({
+    overlayActive: true,
+    overlayContent: (
+      <ConfirmationPrompt
+        onCancel={this.closeOverlay}
+        onProceed={() => this.props.project.deleteProject().then(this.props.history.push('/home'))}
+        body="Are you sure you want to delete this vlog?"
+      />
+    )
+  })
+
+  closeOverlay = () => this.setState({
+    overlayActive: false,
+    overlayContent: null
+  })
+
   renderInput = (left, right, func) =>
     <div className={styles.row}>
       <div className={styles.left}>{left}</div>
-      <input className={styles.right} value={right} placeholder="Untitled" onChange={func}/>
+      <input className={styles.right} value={right} placeholder="Untitled" onChange={func} />
     </div>
 
   renderInfo = (left, right, func, noRender) =>
@@ -57,21 +77,24 @@ export default class VlogDetails extends Component {
     </div>
 
   render() {
-    const {vlogDetails} = this.props;
-    const {vlog} = vlogDetails;
-    console.log(this.props.vlogDetails.vlog);
+    const {status, access, title, exportUrl, setProperty} = this.props.project;
+    const {overlayActive, overlayContent} = this.state;
     return (
       <div className={styles.container}>
-        {vlog.status === 'exported' && <Preview src={vlog.exporturl}/>}
+        {status === 'exported' && <Preview src={exportUrl} />}
         <Segment title="Details">
-          {this.renderInput('Title', vlogDetails.title, vlogDetails.changeTitle)}
+          {this.renderInput('Title', title, e => setProperty('title', e.target.value))}
         </Segment>
         <Segment title="Actions">
-          {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right"/>, this.editVlog)}
-          {this.renderInfo('Share with Team', <FontAwesome name="users"/>, this.shareWithTeam, vlog.access === 'team')}
-          {this.renderInfo('Share on Social Media', <FontAwesome name="share"/>, this.share, !vlog.exporturl)}
-          {this.renderInfo('Download', <FontAwesome name="download"/>, this.download, !vlog.exporturl)}
+          {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right" />, this.editVlog)}
+          {this.renderInfo('Share with Team', <FontAwesome name="users" />, this.shareWithTeam, access === 'team')}
+          {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exportUrl)}
+          {this.renderInfo('Download', <FontAwesome name="download" />, this.download, !exportUrl)}
         </Segment>
+        <Icon className={styles.delete} name="trash" onClick={this.confirmDelete} />
+        <Overlay active={overlayActive} onClose={this.closeOverlay}>
+          {overlayContent}
+        </Overlay>
       </div>
     );
   }

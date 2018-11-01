@@ -9,6 +9,7 @@ import Overlay from '../Overlay';
 
 @withRouter
 @inject('templates')
+@inject('project')
 @observer
 export default class NavBar extends Component {
 
@@ -42,11 +43,14 @@ export default class NavBar extends Component {
     },
   ]
 
-  startFromScratch = () => this.props.history.push('/add-vlog')
+  startFromScratch = () => {
+    this.props.project.startFromScratch()
+    .then(() => this.props.history.push('/edit-vlog'));
+  }
 
   startFromTemplate = i => () => {
-    this.props.templates.setTemplate(i);
-    this.props.history.push('template');
+    this.props.project.startFromTemplate(i)
+    .then(() => this.props.history.push('/template'));
   }
 
   loadTemplates = () => {

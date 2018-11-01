@@ -6,9 +6,18 @@ import {sessionStore as session, vlogEditorStore as editor} from '../';
 export class TemplatesStore {
 
   @observable templates = []
+  @observable projectId = null;
   @observable activeTemplate = null
   @observable uploading = []
   @observable media = []
+
+  setActiveTemplate = index => {
+    this.activeTemplate = this.templates[index];
+    this.uploading = Array(this.activeTemplate.fields.length).fill(null);
+    this.media = Array(this.activeTemplate.fields.length).fill(null);
+  }
+
+  setProjectId = id => this.projectId = id
 
   createResumable = i => {
     const resumable = new Resumable({
@@ -16,7 +25,7 @@ export class TemplatesStore {
       query: {
         SessionID: session.token,
         action: 'uploadvideo',
-        project_id: editor.projectId
+        project_id: this.projectId
       },
       filetype: ['mp4']
     });
@@ -29,7 +38,7 @@ export class TemplatesStore {
     });
 
     resumable.on('fileSuccess', (resumableFile, response) => {
-      this.addVideo(resumableFile.file, response, i);
+      this.insertMedia(JSON.parse(response), i);
       this.uploading[i] = null;
       resumable.cancel();
     });
@@ -41,28 +50,17 @@ export class TemplatesStore {
     });
   }
 
-  addVideo = (localFile, response, i) => this.media[i] = {
-    ...JSON.parse(response),
-    mediatype: 'video',
-    localFileObj: localFile,
-    src: URL.createObjectURL(localFile)
-  };
+  @action insertMedia = (mediaObj, i) => {
+    this.media[i] = mediaObj;
+  }
 
   initResumables = () => {
     this.activeTemplate.fields = this.activeTemplate.fields.map((field, i) => ({...field, resumable: this.createResumable(i)}));
   }
 
-  setTemplate = index => {
-    this.activeTemplate = this.templates[index];
-    this.uploading = Array(this.activeTemplate.fields.length).fill(null);
-    this.media = Array(this.activeTemplate.fields.length).fill(null);
-  }
-
-  loadTemplates = () => php.get('/api/v1/templates', {
-    project_id: editor.initBlankVlog().then(() => editor.projectId),
-  }).then(res => {
-    this.templates = res.templates;
-  });
+  loadTemplates = async () => this.templates = await php.get('/api/v1/templates', {
+    project_id: this.projectId,
+  }).then(res => res.templates);
 
   next = () => {
     editor.media = this.media;

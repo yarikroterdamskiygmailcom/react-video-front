@@ -8,31 +8,24 @@ import placeholder from '../../../assets/placeholder.png';
 
 @withRouter
 @inject('vlogs')
+@inject('project')
 @inject('vlogEditor')
-@inject('vlogDetails')
 @inject('session')
 @observer
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pending: false
+      pending: true
     };
   }
 
-  componentWillMount() {
-    this.setState({pending: true});
-    this.props.vlogs.loadVlogs().then(() => {
-      if (this.props.session.error) {
-        this.props.session.logout();
-      } else {
-        this.setState({pending: false});
-      }
-    });
+  componentDidMount() {
+    this.props.vlogs.loadVlogs().then(() => this.setState({pending: false}));
   }
 
   viewDetails = vlog => {
-    this.props.vlogDetails.setVlog(vlog);
+    this.props.project.setProject(vlog);
     this.props.history.push('/vlog-details');
   }
 

@@ -2,24 +2,23 @@ import React, {Component} from 'react';
 import classNames from 'classnames';
 import {Input, Toggle, Segment, Carousel, RadioButton, Icon, Checkbox} from '../../atoms';
 import {Preview} from '../../components';
-import {isEmpty} from 'lodash-es';
+import {isEmpty, head} from 'lodash-es';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import FontAwesome from 'react-fontawesome';
 import {withRouter} from 'react-router';
 
 @withRouter
-@inject('vlogConfig')
 @inject('vlogEditor')
+@inject('project')
 @observer
 export default class ConfigureVlog extends Component {
 
-  componentWillMount() {
-    this.props.vlogConfig.init();
-  }
-
-  componentWillUnmount() {
-    this.props.vlogConfig.cleanup();
+  constructor(props) {
+    super(props);
+    this.state = {
+      orientation: 'landscape'
+    };
   }
 
   next = () => this.props.history.push('/render-vlog')
@@ -51,10 +50,9 @@ export default class ConfigureVlog extends Component {
   })
   );
 
-  grabThumb = () => {
-    const videos = this.props.vlogEditor.media.filter(m => m.mediatype === 'video');
-    return !isEmpty(videos) ? videos[0].thumb : 'https://i.imgur.com/bLgcS46.jpg';
-  }
+  toggleOrientation = () => this.setState({orientation: this.state.orientation === 'landscape' ? 'portrait' : 'landscape'})
+
+  grabThumb = () => head(this.props.vlogEditor.media).thumb;
 
   filters = [
     {
@@ -91,12 +89,19 @@ export default class ConfigureVlog extends Component {
     }
   ]
 
+  renderVlog = () => {
+    this.setState({rendering: true});
+    this.props.project.saveProject()
+    .then(() => this.props.project.renderProject(this.state.orientation))
+    .then(res => this.setState({rendering: false, renderUrl: res.videourl}));
+  }
+
   renderFilter = ({name, style}) => (
-    <div key={name} className={classNames(styles.filter, this.props.vlogConfig.filter === name && styles.active)}>
+    <div key={name} className={classNames(styles.filter, this.props.project.filter === name && styles.active)}>
       <img
         className={styles.filterPreview}
         style={style}
-        onClick={this.props.vlogConfig.setFilter(name)}
+        onClick={() => this.props.project.setProperty('filter', name)}
         src={this.grabThumb()}
       />
       <div className={styles.filterName}>{name}</div>
@@ -111,27 +116,26 @@ export default class ConfigureVlog extends Component {
   )
 
   render() {
-    const {vlogTitle, vlogDescription, filter, useFilter, useLogoOverlay, orientation, customSubs, customEdit, shareWithTeam,
-      changeVlogTitle, changeVlogDescription, toggleFilter, toggleLogoOverlay, toggleOrientation, toggleSubs, toggleEdit, toggleShareWithTeam,
-      renderVlog, rendering, renderUrl} = this.props.vlogConfig;
+    const {title, description, filter, logoOverlay, customSubs, customEdit, access, setProperty, toggleProperty} = this.props.project;
+    const {orientation, renderUrl, rendering} = this.state;
     return (
       <div className={styles.container}>
         <Segment title="Info">
-          {this.renderInput('Title', vlogTitle, changeVlogTitle)}
-          {this.renderInput('Description', vlogDescription, changeVlogDescription)}
+          {this.renderInput('Title', title, e => setProperty('title', e.target.value))}
+          {this.renderInput('Description', description, e => setProperty('description', e.target.value))}
         </Segment>
         <Segment title="Styling">
-          <Carousel className={classNames(styles.carousel, useFilter && styles.active)} noRender={!useFilter} title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter} />
-          <Toggle label="Use Filter" value={useFilter} onChange={toggleFilter} />
-          <Toggle label="Logo Overlay" value={useLogoOverlay} onChange={toggleLogoOverlay} />
+          <Carousel className={classNames(styles.carousel, filter && styles.active)} noRender={!filter} title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter} />
+          <Toggle label="Use Filter" value={filter} onChange={() => toggleProperty('filter')} />
+          <Toggle label="Logo Overlay" value={logoOverlay} onChange={() => toggleProperty('logoOverlay')} />
         </Segment>
         <Segment title="Orientation">
-          {this.orientationOptions.map(({render, value}) => <RadioButton key={value} render={render} active={value === orientation} onChange={toggleOrientation} />)}
+          {this.orientationOptions.map(({render, value}) => <RadioButton key={value} render={render} active={value === orientation} onChange={this.toggleOrientation} />)}
         </Segment>
         <Segment title="Options">
-          <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={toggleSubs} />
-          <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={toggleEdit} />
-          <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={shareWithTeam} onChange={toggleShareWithTeam}/>
+          <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={() => toggleProperty('customSubs')} />
+          <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={() => toggleProperty('customEdit')} />
+          <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={access === 'team'} onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')}/>
         </Segment>
         {renderUrl && <Preview className={styles.preview} src={renderUrl} />}
         <Segment title="Finalize">
@@ -139,8 +143,8 @@ export default class ConfigureVlog extends Component {
             <div className={classNames(styles.renderButton, renderUrl && styles.active)} onClick={this.next}>
             Share!
             </div>
-            <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={renderVlog}>
-              <div>{rendering ? 'Rendering...' : 'Render'}</div>
+            <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={this.renderVlog}>
+              <div>{rendering ? <FontAwesome className={styles.spinner} name="spinner"/> : 'Render'}</div>
               <FontAwesome className={styles.icon} name="chevron-right" />
             </div>
           </div>
