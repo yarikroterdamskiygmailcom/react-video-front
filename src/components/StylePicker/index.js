@@ -10,7 +10,8 @@ import {noop} from 'lodash-es';
 export default class StylePicker extends Component {
 
   componentWillMount() {
-    this.props.assets.loadStyles();
+    this.props.assets.loadStyles()
+    .then(() => this.setSelected(0));
   }
 
   setSelected = i => {
