@@ -77,7 +77,6 @@ export default class StyleEditor extends Component {
           <Input modal name="Style Name" value={name} onChange={this.setName}/>
           <div className={styles.label}>Font</div>
           <Dropdown
-            label="Please choose a font..."
             selected={this.renderFont(this.state.font)}
             onSelect={this.setFont}
             hasFilter

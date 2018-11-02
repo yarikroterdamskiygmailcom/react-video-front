@@ -19,13 +19,11 @@ export default class Dropdown extends Component {
 
   render() {
     const {isOpen} = this.state;
-    const {label, selected, children, className} = this.props;
+    const {selected, children, className} = this.props;
     return (
       <div className={classNames(styles.container, className)} onClick={this.toggleOpen}>
         {isOpen && <div className={styles.overlay} onClick={this.toggleOpen}/>}
-        {selected
-          ? selected
-          : <div className={styles.label}>{label}</div>}
+        {selected}
         <div className={classNames(styles.options, !isOpen && styles.closed)}>
           {isOpen && React.Children.map(children, this.renderItem)}
         </div>
