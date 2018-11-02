@@ -37,6 +37,7 @@
 textarea {
     resize: none;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .textAligner {
@@ -178,10 +179,6 @@ textarea {
     margin-bottom: 10px;
 }
 
-.textarea {
-    margin: 5px 0;
-}
-
 .stylePicker {
     margin-bottom: 10px;
 }
@@ -203,4 +200,8 @@ textarea {
         color: $purple;
     }
 
+}
+
+.label {
+    margin: 5px 0; 
 }

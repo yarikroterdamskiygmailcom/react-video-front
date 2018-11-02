@@ -21,10 +21,8 @@ class Login extends Component {
     return (
       <div className={styles.container} onKeyPress={this.submit}>
         <div className={styles.logo}/>
-        <div className={styles.text}>Email</div>
-        <input className={styles.input} type="email" value={email} onChange={changeEmail}/>
-        <div className={styles.text}>Password</div>
-        <input className={styles.input} type="password" value={password} onChange={changePassword}/>
+        <Input auth modal name="Email" value={email} onChange={changeEmail}/>
+        <Input auth modal type="password" name="Password" value={password} onChange={changePassword}/>
         <Button className={styles.button} onClick={login} text="Login"/>
         {error && <div>{error}</div>}
         <NavLink className={styles.link} to="/forgot-password">Forgot your password?</NavLink>

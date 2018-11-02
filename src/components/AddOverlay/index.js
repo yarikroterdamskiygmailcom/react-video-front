@@ -29,7 +29,7 @@ export default class AddOverlay extends Component {
   }
 
   updateLowerThird = () => {
-    php.post('lowerthird', {
+    php.post('api/v1/lowerthird', {
       type: 'lowerthird',
       video_id: this.props.video.video_id,
       text: this.state.text,
@@ -250,7 +250,9 @@ export default class AddOverlay extends Component {
               src={this.state.lowerThird}
             />
           </div>
+          <div className={styles.label}>Text</div>
           {textarea({onBlur: this.updateLowerThird})}
+          <div className={styles.label}>Style</div>
           <StylePicker
             className={styles.stylePicker}
             onSelect={this.setStyle}

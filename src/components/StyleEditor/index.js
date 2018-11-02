@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal} from '../';
 import styles from './styles.scss';
-import {Dropdown} from '../../atoms';
+import {Dropdown, Input} from '../../atoms';
 import {SketchPicker} from 'react-color';
 import {pick} from 'lodash-es';
 
@@ -74,8 +74,7 @@ export default class StyleEditor extends Component {
           >
           This is some text.
           </div>
-          <div className={styles.label}>Style Name</div>
-          <input className={styles.input} value={name} onChange={this.setName}/>
+          <Input modal name="Style Name" value={name} onChange={this.setName}/>
           <div className={styles.label}>Font</div>
           <Dropdown
             label="Please choose a font..."
@@ -83,7 +82,7 @@ export default class StyleEditor extends Component {
             onSelect={this.setFont}
             hasFilter
           >
-            <input value={filter} onChange={this.setFilter} placeholder="Search..."/>
+            <Input modal value={filter} onChange={this.setFilter} placeholder="Search..."/>
             {fonts.filter(font => font.toLowerCase().includes(filter.toLowerCase())).map(this.renderFont)}
           </Dropdown>
           <div className={styles.label}>Text Color</div>

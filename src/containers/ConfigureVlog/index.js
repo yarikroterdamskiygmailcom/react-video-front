@@ -108,21 +108,14 @@ export default class ConfigureVlog extends Component {
     </div>
   )
 
-  renderInput = (label, value, onChange) => (
-    <div className={styles.spacedRow}>
-      <div className={styles.label}>{label}</div>
-      <input className={styles.input} type="text" value={value} onChange={onChange} />
-    </div>
-  )
-
   render() {
     const {title, description, filter, logoOverlay, customSubs, customEdit, access, setProperty, toggleProperty} = this.props.project;
     const {orientation, renderUrl, rendering} = this.state;
     return (
       <div className={styles.container}>
         <Segment title="Info">
-          {this.renderInput('Title', title, e => setProperty('title', e.target.value))}
-          {this.renderInput('Description', description, e => setProperty('description', e.target.value))}
+          <Input field name="Title" value={title} onChange={e => setProperty('title', e.target.value)}/>
+          <Input field name="Description" value={description} onChange={e => setProperty('description', e.target.value)}/>
         </Segment>
         <Segment title="Styling">
           <Carousel className={classNames(styles.carousel, filter && styles.active)} noRender={!filter} title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter} />

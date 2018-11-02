@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Modal} from '../';
 import styles from './styles.scss';
 import classNames from 'classnames';
+import {Input} from '../../atoms';
 
 const fades = [
   {
@@ -104,8 +105,7 @@ export default class EditFade extends Component {
             White
           </div>
         </div>
-        <div className={styles.option}>Duration</div>
-        <input min={1} max={5} step={0.1} type="number" value={duration} onChange={this.setDuration} />
+        <Input modal name="Duration" value={duration} onChange={this.setDuration} type="number" min={1} max={5} step={0.1}/>
       </Modal>
     );
   }

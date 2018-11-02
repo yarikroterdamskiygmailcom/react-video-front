@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment, Icon} from '../../atoms';
+import {Segment, Icon, Input} from '../../atoms';
 import {Preview, ConfirmationPrompt, Overlay} from '../../components';
 import FontAwesome from 'react-fontawesome';
 import {withRouter} from 'react-router';
@@ -48,12 +48,6 @@ export default class VlogDetails extends Component {
     overlayContent: null
   })
 
-  renderInput = (left, right, func, onBlur) =>
-    <div className={styles.row}>
-      <div className={styles.left}>{left}</div>
-      <input className={styles.right} value={right} placeholder="Nothing" onChange={func} onBlur={onBlur}/>
-    </div>
-
   renderInfo = (left, right, func, disabled) =>
     <div className={classNames(styles.row, disabled && styles.disabled)} onClick={func || noop}>
       <div className={styles.left}>{left}</div>
@@ -72,8 +66,20 @@ export default class VlogDetails extends Component {
       <div className={styles.container}>
         {status === 'exported' && <Preview src={exportUrl} />}
         <Segment title="Details">
-          {this.renderInput('Title', title, e => setProperty('title', e.target.value), updateTitle)}
-          {this.renderInput('Description', description, e => setProperty('description', e.target.value), updateDescription)}
+          <Input
+            field
+            name="Title"
+            value={title}
+            onChange={e => setProperty('title', e.target.value)}
+            onBlur={updateTitle}
+          />
+          <Input
+            field
+            name="Description"
+            value={description}
+            onChange={e => setProperty('description', e.target.value)}
+            onBlur={updateDescription}
+          />
           {this.renderInfo('Shared with Team', access === 'team' ? 'Yes' : 'No')}
         </Segment>
         <Segment title="Actions">

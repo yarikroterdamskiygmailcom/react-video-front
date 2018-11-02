@@ -11,26 +11,27 @@ export default class Input extends Component {
     };
   }
 
-    getType = () => this.props.type === 'password'
-      ? this.state.legible
-        ? 'text'
-        : 'password'
-      : this.props.type || 'text'
+  getType = () => this.props.type === 'password'
+    ? this.state.legible
+      ? 'text'
+      : 'password'
+    : this.props.type || 'text'
 
-    toggleLegible = () => this.setState({legible: !this.state.legible})
+  toggleLegible = () => this.setState({legible: !this.state.legible})
 
-    render() {
-      const {fieldName, nameTop, type, value, onChange, className} = this.props;
+  render() {
+    const {name, modal, field, auth, className, ...props} = this.props;
+
+    if (modal || field || auth) {
       return (
-        <div className={classNames(styles.container, className)}>
-          {nameTop
-            ? <div className={styles.fieldName}>{fieldName}</div>
-            : null}
-          <div className={styles.row}>
-            <input value={value} onChange={onChange} type={this.getType()} {...!nameTop && {placeholder: fieldName}}/>
-            {type === 'password' && <FontAwesome name="eye" onClick={this.toggleLegible}/>}
-          </div>
+        <div className={classNames(styles.container, modal && styles.modal, field && styles.field, auth && styles.auth, className)}>
+          {name && <div className={styles.label}>{name}</div>}
+          <input className={styles.input} {...props} />
         </div>
       );
     }
+
+    throw new Error('Dude specify an input style');
+
+  }
 }
