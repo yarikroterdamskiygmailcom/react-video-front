@@ -92,7 +92,7 @@ export class ProjectStore {
           : mediaObj))
     })
 
-    updateProject = changes => php.put(`/api/v1/vlog/${this.projectId}`, {...changes})
+    updateProject = changes => php.post(`/api/v1/vlog/${this.projectId}`, {...changes})
 
     deleteProject = () => php.delete(`/api/v1/vlog/${this.projectId}`).then(this.clearProject)
 
