@@ -22,7 +22,6 @@ export default class StyleEditor extends Component {
       name: 'New style',
       textColor: '#FFFFFF',
       backgroundColor: '#000000',
-      filter: '',
       font: 'Arial'
     };
   }
@@ -33,12 +32,7 @@ export default class StyleEditor extends Component {
 
   setBackgroundColor = e => this.setState({backgroundColor: e.hex})
 
-    setFilter = e => {
-      e.stopPropagation();
-      this.setState({filter: e.target.value});
-    }
-
-  setFont = i => this.setState({font: fonts[i], filter: ''})
+  setFont = i => this.setState({font: fonts[i]})
 
   save = () => this.props.onSave({
     name: this.state.name,
@@ -65,7 +59,7 @@ export default class StyleEditor extends Component {
     )
 
     render() {
-      const {name, textColor, backgroundColor, filter, font} = this.state;
+      const {name, textColor, backgroundColor, font} = this.state;
       return (
         <Modal actions={this.modalActions}>
           <div
@@ -79,10 +73,8 @@ export default class StyleEditor extends Component {
           <Dropdown
             selected={this.renderFont(this.state.font)}
             onSelect={this.setFont}
-            hasFilter
           >
-            <Input modal value={filter} onChange={this.setFilter} placeholder="Search..."/>
-            {fonts.filter(font => font.toLowerCase().includes(filter.toLowerCase())).map(this.renderFont)}
+            {fonts.map(this.renderFont)}
           </Dropdown>
           <div className={styles.label}>Text Color</div>
           <SketchPicker color={textColor} onChange={this.setTextColor} width="calc(100% - 20px)"/>

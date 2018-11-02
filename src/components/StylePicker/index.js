@@ -39,7 +39,9 @@ export default class StylePicker extends Component {
         className={classNames(styles.dropdown, className)}
         onSelect={this.setSelected}
         selected={selected ? this.renderStyle(selected) : null}
-      >{styleList.map(this.renderStyle)}</Dropdown>
+      >
+        {styleList.map(this.renderStyle)}
+      </Dropdown>
     );
   }
 }
