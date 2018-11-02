@@ -119,8 +119,13 @@ export default class Customize extends Component {
     }
   })
 
+  resetReveal = () => this.setState({
+    reveal: {}
+  })
+
   deleteStyle = id => () => this.props.assets.deleteStyle(id)
   .then(this.props.assets.loadStyles)
+  .then(this.resetReveal)
 
   toggleDeleteMode = () => this.setState({deleteMode: !this.state.deleteMode})
 
