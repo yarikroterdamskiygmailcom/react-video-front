@@ -9,6 +9,7 @@ import {isEmpty} from 'lodash-es';
 
 @withRouter
 @inject('vlogEditor')
+@inject('project')
 @observer
 export default class VlogEditor extends Component {
   constructor(props) {
@@ -24,6 +25,10 @@ export default class VlogEditor extends Component {
   componentDidMount() {
     this.props.vlogEditor.initResumable();
     this.resumableRef.current.children[0].accept = 'video/*';
+  }
+
+  componentWillUnmount() {
+    this.props.project.updateProject({media: JSON.stringify(this.props.vlogEditor.media.toJS())});
   }
 
   showToast = text => {
