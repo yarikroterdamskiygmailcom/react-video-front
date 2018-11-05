@@ -10,7 +10,7 @@ export class VlogsStore {
 
   loadVlogs = () => php.get('/api/v1/vlogs')
   .then(res => {
-    if(res.error === 'loginerror') {
+    if(res.error) {
       sessionStore.logout();
     } else {
       this.list = res.project;
