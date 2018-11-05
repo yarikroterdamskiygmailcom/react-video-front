@@ -36,7 +36,7 @@ export default class AddOverlay extends Component {
       logo: this.state.logo,
       placement: this.state.side,
       style: this.state.style
-    }).then(res => this.setState({lowerThird: `${res.src}?${Math.random()}`}));
+    }).then(res => this.setState({lowerThird: `${res.srcbase64}`}));
   }
 
   goToStep = step => () => {

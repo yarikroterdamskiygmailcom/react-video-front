@@ -18,7 +18,7 @@ export default class SwipeItem extends Component {
       render() {
         const {onSwipe, actions: {left, right}, children, className} = this.props;
         return (
-          <div className={styles.container}>
+          <div className={classNames(styles.container, className)}>
             {left && <div className={styles.actions} style={{width: this.getActionsWidth('left')}}>
               {left.map(this.renderAction)}
             </div>}

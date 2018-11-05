@@ -1,122 +1,26 @@
 .item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    background: white;
-
-    .handle {
-        display: flex;
-        align-items: center;
-        color: $text;
-        padding-right: 20px;
-    }
-}
-
-.itemContainer {
+    position: relative;
     display: flex;
     flex-direction: row;
     border-bottom: #F6F6F7 solid 1px;
-}
-
-.itemInner {
+    background: white;
     width: 100%;
+    overflow-x: auto;
+
+    &:first-child {
+        border-top: #F6F6F7 solid 1px;
+    }
+
 }
 
-.leftActions,
-.rightActions {
-    display: flex;
-    flex-direction: row;
-    background: $pink;
-    height: 80px;
-    width: 0;
-    visibility: hidden;
-    transition: width 0.2s;
-    &.active {
-        visibility: visible;
-    }
-}
-
-.leftActions {
-    &.active {
-        width: 160px;
-    }
-}
-    
-.rightActions {
-    &.active {
-        width: 80px;
-    }
-}
-
-.action {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+.thumb {
     width: 80px;
     height: 80px;
-    color: #CD62AE;
-}
-
-.list {
-    border-top: #F6F6F7 solid 1px;
-    overflow-x: hidden;
-}
-.itemBody {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-
-    .thumb {
-        width: 80px;
-        height: 80px;
-        flex-shrink: 0;
-        margin-right: 15px;
-        background-position: center;
-        background-size: cover;
-        object-fit: cover;
-    }
-}
-
-.stack {
-    display: flex;
-    flex-direction: column;
-
-    .fileName {
-        max-width: 175px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .fileMeta {
-        color: $text-grey;
-        max-width: 175px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-
-        .icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        > * {
-            margin-right: 10px;
-        }
-    }
-
-    &.active {
-        max-width: 125px;
-    }
-}
-
-.row {
-    display: flex;
-    flex-direction: row;
+    flex-shrink: 0;
+    margin-right: 15px;
+    background-position: center;
+    background-size: cover;
+    object-fit: cover;
 }
 
 .bigIcon {
@@ -131,4 +35,46 @@
     &.strike {
         text-decoration: line-through;
     }
+}
+
+.fileMeta {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; 
+    height: 100%;
+    width: calc(100% - 160px);
+    padding: 15px 0;
+    box-sizing: border-box;
+
+    .fileName,
+    .fileProp {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .fileName {
+        color: $text;
+    }
+
+    .fileProp {
+        color: $text-grey;
+    }
+}
+
+.handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 30px;
+}
+
+.action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

@@ -145,7 +145,7 @@ export class VlogEditorStore {
 
   //Trimmer stuff
 
-  openTrimmer = index => {
+  openTrimmer = index => () => {
     this.overlayActive = true;
     this.overlayContent = (
       <Trimmer
@@ -173,7 +173,7 @@ export class VlogEditorStore {
 
   //Lower third stuff
 
-  openLowerThird = index => {
+  openLowerThird = index => () => {
     this.overlayActive = true;
     this.overlayContent = (
       <AddOverlay

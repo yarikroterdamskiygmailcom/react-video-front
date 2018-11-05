@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {Icon} from '../../atoms';
+import {Icon, SwipeItem} from '../../atoms';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
-import Swipeable from 'react-swipeable';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {isEmpty} from 'lodash-es';
@@ -14,6 +13,13 @@ const formatTime = number => {
   const seconds = Math.floor(number % 60);
   return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
 };
+
+const getFadeName = mediatype => ({
+  fadein: 'Fade-In',
+  fadeout: 'Fade-Out',
+  fadeoutin: 'Fade-Out / Fade-In',
+  crossfade: 'Crossfade'
+})[mediatype];
 
 @inject('vlogEditor')
 @observer
@@ -27,165 +33,139 @@ export default class Arranger extends Component {
     };
   }
 
+  renderActionLabel = (label, icon) => (
+    <div className={styles.action}>
+      <Icon name={icon} />
+      <div>{label}</div>
+    </div>
+  )
+
   actions = {
-    trim: {
-      label: 'Trim',
-      icon: 'trim',
-      func: this.props.vlogEditor.openTrimmer
-    },
-    lowerThird: {
-      label: 'Overlay',
-      icon: 'lowerThird',
-      func: this.props.vlogEditor.openLowerThird
-    },
-    delete: {
-      label: 'Delete',
-      icon: 'trash',
-      func: this.props.vlogEditor.deleteMedia
-    }
+    trim: i => ({
+      label: this.renderActionLabel('Trim', 'trim'),
+      func: this.props.vlogEditor.openTrimmer(i)
+    }),
+    lowerThird: i => ({
+      label: this.renderActionLabel('Ovelay', 'lowerThird'),
+      func: this.props.vlogEditor.openLowerThird(i)
+    }),
+    delete: i => ({
+      label: this.renderActionLabel('Delete', 'trash'),
+      func: () => {
+        this.props.vlogEditor.deleteMedia(i);
+        this.resetReveal();
+      }
+    })
   }
 
-  mediaActionsMap = {
-    video: [this.actions.trim, this.actions.lowerThird],
-    fadein: [],
-    fadeout: [],
-    fadeoutin: [],
-    crossfade: [],
-    title: [],
-    asset: []
-  }
-
-  generateActions = media => {
-    if (this.mediaActionsMap[media.mediatype]) {
-      return this.mediaActionsMap[media.mediatype];
-    }
-    throw new Error(`Tried to render media with mediatype ${media.mediatype}, must be one of ${Object.keys(this.mediaActionsMap)}`);
+  generateActions = (mediaObj, i) => {
+    const actions = {
+      video: [this.actions.trim(i), this.actions.lowerThird(i)],
+      fadein: [],
+      fadeout: [],
+      fadeoutin: [],
+      crossfade: [],
+      title: [],
+      asset: []
+    }[mediaObj.mediatype];
+    if (actions) { return actions; }
+    throw new Error(`Tried to render media with mediatype ${mediaObj.mediatype}, must be one of ${Object.keys(actions)}`);
   }
 
   generateBody = ({thumb, videoname, duration, mediatype, trimmed, overlay, text, title, inpoint, outpoint}, index) => {
     const {openPreview} = this.props.vlogEditor;
-    return ({
-      video: (
-        <div className={styles.itemBody}>
-          <img className={styles.thumb} src={thumb} onClick={openPreview(index)} onError={e => e.target.src = placeholder}/>
-          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-            <div className={styles.fileName}>{videoname}</div>
+
+    switch (mediatype) {
+      case 'video':
+        return (
+          <React.Fragment>
+            <img className={styles.thumb} src={thumb} onClick={openPreview(index)} onError={e => e.target.src = placeholder} />
             <div className={styles.fileMeta}>
-              <div className={classNames(styles.duration, trimmed && styles.strike)}>{duration}</div>
-              {trimmed &&
-                <div className={styles.row}>
-                  <div className={styles.duration}>{formatTime(outpoint - inpoint)}</div>
-                  <Icon className={styles.icon} name="trim" style={{marginLeft: '10px'}} />
-                </div>}
-              {!isEmpty(overlay) && <Icon className={styles.icon} name="lowerThird" />}
+              <div className={styles.fileName}>{videoname}</div>
+              <div className={styles.fileProp}>
+                <div className={classNames(styles.duration, trimmed && styles.strike)}>{duration}</div>
+                {trimmed &&
+                  <div className={styles.row}>
+                    <div className={styles.duration}>{formatTime(outpoint - inpoint)}</div>
+                    <Icon className={styles.icon} name="trim" style={{marginLeft: '10px'}} />
+                  </div>}
+                {!isEmpty(overlay) && <Icon className={styles.icon} name="lowerThird" />}
+              </div>
             </div>
-          </div>
-        </div>
-      ),
+            <this.DragHandle />
+          </React.Fragment>
+        );
 
-      fadein: (
-        <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
-          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-            <div className={styles.fileName}>Fade-In</div>
-            <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
-          </div>
-        </div>
-      ),
+      case 'fadein':
+      case 'fadeout':
+      case 'fadeoutin':
+      case 'crossfade':
+        return (
+          <React.Fragment>
+            <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
+            <div className={styles.fileMeta}>
+              <div className={styles.fileName}>{getFadeName(mediatype)}</div>
+              <div className={styles.fileProp}>{`Duration: ${duration} seconds`}</div>
+            </div>
+            <this.DragHandle />
+          </React.Fragment>
+        );
 
-      fadeout: (
-        <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
-          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-            <div className={styles.fileName}>Fade-Out</div>
-            <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
-          </div>
-        </div>
-      ),
+      case 'title':
+        return (
+          <React.Fragment>
+            <Icon className={styles.bigIcon} name="title" onClick={this.props.vlogEditor.openEditTitle(index)} />
+            <div className={styles.fileMeta}>
+              <div className={styles.fileName}>Title</div>
+              <div className={styles.fileProp}>{text}</div>
+            </div>
+            <this.DragHandle />
+          </React.Fragment>
+        );
 
-      fadeoutin: (
-        <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
-          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-            <div className={styles.fileName}>Fade-Out / Fade-In</div>
-            <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
-          </div>
-        </div>
-      ),
+      case 'asset':
+        return (
+          <React.Fragment>
+            <img className={styles.thumb} src={thumb} onClick={openPreview(index)} onError={e => e.target.src = placeholder} />
+            <div className={classNames(styles.fileMeta, this.state.revealIndex === index && styles.active)}>
+              <div className={styles.fileName}>Branding</div>
+              <div className={styles.fileProp}>{title}</div>
+            </div>
+            <this.DragHandle />
+          </React.Fragment>
+        );
 
-      crossfade: (
-        <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="fade" onClick={this.props.vlogEditor.openEditFade(index)} />
-          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-            <div className={styles.fileName}>Crossfade</div>
-            <div className={styles.fileMeta}>{`Duration: ${duration} seconds`}</div>
-          </div>
-        </div>
-      ),
+      default: throw new Error(`No body for ${mediatype}`);
+    }
 
-      title: (
-        <div className={styles.itemBody}>
-          <Icon className={styles.bigIcon} name="title" onClick={this.props.vlogEditor.openEditTitle(index)} />
-          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-            <div className={styles.fileName}>Title</div>
-            <div className={styles.fileMeta}>{text}</div>
-          </div>
-        </div>
-      ),
-
-      asset: (
-        <div className={styles.itemBody}>
-          <img className={styles.thumb} src={thumb} onClick={openPreview(index)} onError={e => e.target.src = placeholder}/>
-          <div className={classNames(styles.stack, this.state.revealIndex === index && styles.active)}>
-            <div className={styles.fileName}>Branding</div>
-            <div className={styles.fileMeta}>{title}</div>
-          </div>
-        </div>
-      )
-    }[mediatype]);
   }
 
-  DragHandle = SortableHandle(() => <FontAwesome className={styles.handle} name="bars" />);
+  DragHandle = SortableHandle(() => <div className={styles.handle}><FontAwesome name="bars" /></div>);
 
   SortableItem = SortableElement(({value, revealIndex}) => (
-    <div className={styles.item}>
-      <Swipeable
-        trackMouse
-        className={styles.itemInner}
-        onSwipedLeft={() => this.setReveal(revealIndex, 'left')}
-        onSwipedRight={() => value.mediatype === 'video' && this.setReveal(revealIndex, 'right')}
-      >
-        {this.generateBody(value, revealIndex)}
-      </Swipeable>
-      <this.DragHandle />
-    </div>
+    <SwipeItem
+      actions={{left: this.generateActions(value, revealIndex), right: [this.actions.delete(revealIndex)]}}
+      onSwipe={this.setReveal(revealIndex)}
+      reveal={revealIndex === this.state.revealIndex && this.state.revealSide}
+      className={styles.item}
+    >
+      {this.generateBody(value, revealIndex)}
+    </SwipeItem>
   ));
 
   SortableList = SortableContainer(({items}) => (
     <div className={styles.list}>
       {items.map((value, index) => (
-        <div key={index} className={styles.itemContainer}>
-          <div className={classNames(styles.leftActions,
-            this.state.revealIndex === index
-            && this.state.revealSide === 'right'
-            && styles.active)}
-          >{this.generateActions(value).map(this.renderAction(index))}</div>
-          <this.SortableItem
-            key={`item-${index}`}
-            index={index}
-            revealIndex={index}
-            value={value} />
-          <div className={classNames(styles.rightActions,
-            this.state.revealIndex === index
-            && this.state.revealSide === 'left'
-            && styles.active)}
-          >{this.renderAction(index)(this.actions.delete)}</div>
-        </div>
+        <this.SortableItem
+          key={`item-${index}`}
+          index={index}
+          revealIndex={index}
+          value={value} />
       ))}
     </div>
   ));
 
-  setReveal = (index, side) => {
+  setReveal = index => side => () => {
     this.state.revealSide
       ? this.resetReveal()
       : this.setState({
@@ -205,12 +185,6 @@ export default class Arranger extends Component {
     action.func(itemIndex);
     this.resetReveal();
   }
-
-  renderAction = itemIndex => (action, i) =>
-    <div key={i} className={styles.action} onClick={this.handleAction(action, itemIndex)}>
-      <Icon name={action.icon} />
-      <div>{action.label}</div>
-    </div>
 
   render() {
     const {media, onSortEnd} = this.props.vlogEditor;
