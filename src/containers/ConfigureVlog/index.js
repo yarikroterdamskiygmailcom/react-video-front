@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import classNames from 'classnames';
 import {Input, Toggle, Segment, Carousel, RadioButton, Icon, Checkbox} from '../../atoms';
 import {Preview} from '../../components';
-import {isEmpty, head} from 'lodash-es';
+import {isEmpty, head, noop} from 'lodash-es';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import FontAwesome from 'react-fontawesome';
@@ -21,7 +21,9 @@ export default class ConfigureVlog extends Component {
     };
   }
 
-  next = () => this.props.history.push('/render-vlog')
+  goHome = () => this.props.history.push('/home')
+
+  share = noop
 
   orientationOptions = [
     {
@@ -135,10 +137,10 @@ export default class ConfigureVlog extends Component {
         </Segment>
         <Segment title="Finalize">
           <div className={styles.finalize}>
-            <div className={classNames(styles.renderButton, styles.active, !renderUrl && styles.invisible)}>
+            <div className={classNames(styles.renderButton, styles.active, !renderUrl && styles.invisible)} onClick={this.goHome}>
               <FontAwesome name="chevron-left"/> Home
             </div>
-            <div className={classNames(styles.renderButton, styles.active, !renderUrl && styles.invisible)} onClick={this.next}>
+            <div className={classNames(styles.renderButton, !renderUrl && styles.invisible)} onClick={this.share}>
             Share!
             </div>
             <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={this.renderVlog}>
