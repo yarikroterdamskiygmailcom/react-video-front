@@ -32,7 +32,7 @@ export default class StyleEditor extends Component {
 
   setBackgroundColor = e => this.setState({backgroundColor: e.hex})
 
-  setFont = i => this.setState({font: fonts[i]})
+  setFont = font => () => this.setState({font})
 
   save = () => {
     this.props.onSave({
@@ -54,8 +54,14 @@ export default class StyleEditor extends Component {
       }
     ]
 
-    renderFont = (font, selected) => (
-      <div key={font} className={styles.font} style={{fontFamily: font}}>
+    renderSelected = font => (
+      <div className={styles.font} style={{fontFamily: font}}>
+        {font}
+      </div>
+    )
+
+    renderFont = font => (
+      <div key={font} className={styles.font} style={{fontFamily: font}} onClick={this.setFont(font)}>
         {font}
       </div>
     )
@@ -73,8 +79,7 @@ export default class StyleEditor extends Component {
           <Input modal name="Style Name" value={name} onChange={this.setName}/>
           <div className={styles.label}>Font</div>
           <Dropdown
-            selected={this.renderFont(this.state.font)}
-            onSelect={this.setFont}
+            selected={this.state.font && this.renderSelected(this.state.font)}
           >
             {fonts.map(this.renderFont)}
           </Dropdown>

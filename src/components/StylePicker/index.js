@@ -3,30 +3,47 @@ import {Dropdown} from '../../atoms';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import classNames from 'classnames';
-import {noop} from 'lodash-es';
+import {head} from 'lodash-es';
 
 @inject('assets')
 @observer
 export default class StylePicker extends Component {
 
   componentWillMount() {
-    this.props.assets.loadStyles()
-    .then(() => this.setSelected(0));
+    if(!this.props.selected) {
+      this.props.assets.loadStyles()
+      .then(() => this.props.onSelect(head(this.props.assets.styleList)));
+    } else {
+      this.props.assets.loadStyles();
+    }
   }
 
-  setSelected = i => {
-    this.props.onSelect(this.props.assets.styleList[i]);
+  setSelected = style => () => {
+    this.props.onSelect(style);
   }
 
-  renderStyle = ({name, textcolor, backgroundcolor, font, selected}, i) => (
-    <div key={`${name}-${i}`} className={classNames(styles.style, selected && styles.selected)} onClick={selected ? noop : () => this.setSelected(this.props.assets.styleList[i])}>
+  renderSelected = style => (
+    <div className={styles.style}>
       <div className={styles.styleMeta}>
-        <div className={styles.styleName} style={{fontFamily: font}}>{name}</div>
-        <div className={styles.fontName}>{font}</div>
+        <div className={styles.styleName} style={{fontFamily: style.font}}>{style.name}</div>
+        <div className={styles.fontName}>{style.font}</div>
       </div>
       <div className={styles.colorGroup}>
-        <div className={styles.color} style={{background: textcolor}} />
-        <div className={styles.color} style={{background: backgroundcolor}} />
+        <div className={styles.color} style={{background: style.textcolor}} />
+        <div className={styles.color} style={{background: style.backgroundcolor}} />
+      </div>
+    </div>
+  )
+
+  renderStyle = (style, i) => (
+    <div key={`${style.name}-${i}`} className={styles.style} onClick={this.setSelected(style)}>
+      <div className={styles.styleMeta}>
+        <div className={styles.styleName} style={{fontFamily: style.font}}>{style.name}</div>
+        <div className={styles.fontName}>{style.font}</div>
+      </div>
+      <div className={styles.colorGroup}>
+        <div className={styles.color} style={{background: style.textcolor}} />
+        <div className={styles.color} style={{background: style.backgroundcolor}} />
       </div>
     </div>
   )
@@ -37,8 +54,7 @@ export default class StylePicker extends Component {
     return (
       <Dropdown
         className={classNames(styles.dropdown, className)}
-        onSelect={this.setSelected}
-        selected={selected ? this.renderStyle(selected) : null}
+        selected={selected && this.renderSelected(selected)}
       >
         {styleList.map(this.renderStyle)}
       </Dropdown>
