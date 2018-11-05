@@ -110,15 +110,6 @@
     }
 }
 
-.preview {
-    max-height: 0;
-    transition: max-height 0.2s;
-
-    &.active {
-        max-height: 300px;
-    }
-}
-
 .grey {
     color: $grey;
 }
