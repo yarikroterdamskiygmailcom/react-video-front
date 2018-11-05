@@ -34,12 +34,14 @@ export default class StyleEditor extends Component {
 
   setFont = i => this.setState({font: fonts[i]})
 
-  save = () => this.props.onSave({
-    name: this.state.name,
-    textcolor: this.state.textColor,
-    backgroundcolor: this.state.backgroundColor,
-    font: this.state.font
-  })
+  save = () => {
+    this.props.onSave({
+      name: this.state.name,
+      textcolor: this.state.textColor,
+      backgroundcolor: this.state.backgroundColor,
+      font: this.state.font
+    }).then(this.props.onClose);
+  }
 
     modalActions = [
       {

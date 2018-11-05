@@ -16,7 +16,7 @@ export class AssetsStore {
     this.styleList = !isEmpty(res.styles) ? res.styles : [];
   });
 
-  uploadStyle = access => style => php.post('api/v1/styles', {...style, access})
+  uploadStyle = (access, style) => php.post('api/v1/styles', {...style, access})
 
   updateStyle = (id, style) => php.put(`api/v1/styles/${id}`, style.toJS())
 

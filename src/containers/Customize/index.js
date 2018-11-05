@@ -61,9 +61,12 @@ export default class Customize extends Component {
       )
     })
 
+  uploadStyle = group => style => this.props.assets.uploadStyle(group, style)
+  .then(this.props.assets.loadStyles)
+
   openStyleEditor = group => () => this.setState({
     overlayOpen: true,
-    overlayContent: <StyleEditor onClose={this.closeOverlay} onSave={this.props.assets.uploadStyle(group)} />
+    overlayContent: <StyleEditor onClose={this.closeOverlay} onSave={this.uploadStyle(group)} />
   })
 
   toggleSegment = type => () => this.setState({[`${type}Open`]: !this.state[`${type}Open`]})
@@ -120,7 +123,10 @@ export default class Customize extends Component {
   })
 
   resetReveal = () => this.setState({
-    reveal: {}
+    reveal: {
+      personal: {},
+      team: {}
+    }
   })
 
   deleteStyle = id => () => this.props.assets.deleteStyle(id)
