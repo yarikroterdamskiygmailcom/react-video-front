@@ -15,7 +15,7 @@ export class VlogsStore {
     } else {
       this.list = res.project;
     }
-  });
+  }).catch(sessionStore.logout);
 
 }
 
