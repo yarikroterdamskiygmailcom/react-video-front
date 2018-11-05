@@ -31,5 +31,6 @@
 .children {
     padding: 20px;
     overflow-y: auto;
-    height: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }

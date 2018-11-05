@@ -8,19 +8,23 @@
     border-radius: 15px;
 }
 
-.video {
-    width: 100%;
-    height: 56.25%;
-}
-
 .timestamps {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
+.video {
+    width: 100%;
+    height: 100%;
+}
+
 .videoContainer {
+    display: flex;
+    justify-content: center;
     position: relative;
+    max-height: 70vh;
+    max-width: 100%;
 }
 
 .lowerThird {

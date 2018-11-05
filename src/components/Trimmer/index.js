@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import {Modal} from '..';
 import styles from './styles.scss';
 import {Range} from 'rc-slider';
-import classNames from 'classnames';
 import '!style-loader!css-loader!rc-slider/assets/index.css';
 import FontAwesome from 'react-fontawesome';
-import axios from 'axios';
 
 export default class Trimmer extends Component {
 
