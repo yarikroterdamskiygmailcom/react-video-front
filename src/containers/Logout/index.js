@@ -6,14 +6,15 @@ import {observer, inject} from 'mobx-react';
 @observer
 export default class Logout extends Component {
 
-    scheduleLogout = () => setTimeout(this.props.session.logout, 3000);
+  componentDidMount() {
+    this.props.session.logout();
+  }
 
-    render() {
-      return (
-        <div className={styles.container}>
-        see ya loser
-          {this.scheduleLogout()}
-        </div>
-      );
-    }
+  render() {
+    return (
+      <div className={styles.container}>
+
+      </div>
+    );
+  }
 }
