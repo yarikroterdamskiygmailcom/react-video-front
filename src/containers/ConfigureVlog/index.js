@@ -17,7 +17,9 @@ export default class ConfigureVlog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orientation: 'landscape'
+      orientation: 'landscape',
+      rendering: false,
+      renderUrl: null
     };
   }
 
@@ -92,7 +94,7 @@ export default class ConfigureVlog extends Component {
   ]
 
   renderVlog = () => {
-    this.setState({rendering: true});
+    this.setState({rendering: true, renderUrl: null});
     this.props.project.saveProject()
     .then(() => this.props.project.renderProject(this.state.orientation))
     .then(res => this.setState({rendering: false, renderUrl: res.videourl}));
