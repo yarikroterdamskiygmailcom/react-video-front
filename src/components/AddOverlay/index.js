@@ -36,7 +36,9 @@ export default class AddOverlay extends Component {
       logo: this.state.logo,
       placement: this.state.side,
       style: this.state.style
-    }).then(res => this.setState({lowerThird: `${res.srcbase64}`}));
+
+      //Fuck you pepijn
+    }).then(res => this.setState({lowerThird: `${res.srcbase64}`, lowerThirdFile: res.file}));
   }
 
   goToStep = step => () => {
@@ -56,7 +58,7 @@ export default class AddOverlay extends Component {
   }
 
   buildOverlay = () => {
-    const {selectedType, text, emphasize, side, logo, vertical, horizontal, inpoint, outpoint} = this.state;
+    const {selectedType, text, emphasize, side, logo, vertical, horizontal, inpoint, outpoint, lowerThirdFile} = this.state;
     switch (selectedType) {
       case 'lowerThird':
         return {
@@ -66,7 +68,8 @@ export default class AddOverlay extends Component {
           placement: side,
           logo,
           inpoint,
-          outpoint
+          outpoint,
+          file: lowerThirdFile
         };
 
       case 'text':
@@ -230,13 +233,13 @@ export default class AddOverlay extends Component {
               <div className={styles.typeName}>Text</div>
               <div className={styles.typeDesc}>Place some text over your video.</div>
             </div>
-            <div
+            {/* <div
               className={classNames(styles.type, selectedType === 'custom' && styles.active)}
               onClick={this.setSelectedType('custom')}
             >
               <div className={styles.typeName}>Custom</div>
               <div className={styles.typeDesc}>Configure an overlay exactly to your liking!</div>
-            </div>
+            </div> */}
           </div>
         </div>;
 
