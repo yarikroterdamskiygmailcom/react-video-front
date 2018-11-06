@@ -1,3 +1,7 @@
+.list {
+    margin-bottom: 100px;
+}
+
 .item {
     position: relative;
     display: flex;
@@ -32,6 +36,7 @@
 }
 
 .duration {
+    margin-right: 5px;
     &.strike {
         text-decoration: line-through;
     }
@@ -59,6 +64,8 @@
     }
 
     .fileProp {
+        display: flex;
+        flex-direction: row;
         color: $text-grey;
     }
 }
@@ -77,4 +84,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
 }

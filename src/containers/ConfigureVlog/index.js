@@ -135,7 +135,7 @@ export default class ConfigureVlog extends Component {
           <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={access === 'team'} onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')}/>
         </Segment>
         <Segment className={classNames(styles.preview, renderUrl && styles.active)} title={renderUrl ? 'Preview' : ''}>
-          {renderUrl && <Preview src={renderUrl} />}
+          {renderUrl && <Preview src={`${renderUrl}?${Math.random()}`} />}
         </Segment>
         <Segment title="Finalize">
           <div className={styles.finalize}>
