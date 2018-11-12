@@ -10,6 +10,14 @@ import {observer, inject} from 'mobx-react';
 @observer
 class App extends Component {
 
+  componentDidMount() {
+    window.onbeforeunload = e => {
+      const text = 'Changes may be lost';
+      e.returnValue = text;
+      return text;
+    };
+  }
+
   renderRoute = route => <Route key={route.path} exact path={route.path} component={() => <route.component {...route.props}/>} name={route.name} exact/>
 
   renderAllRoutes = () =>
