@@ -36,11 +36,11 @@ const defState = {
 export default class EditFade extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props.crossfade
+    this.state = this.props.fade
       ? {
-        type: this.props.crossfade.mediatype,
-        duration: this.props.crossfade.duration,
-        color: this.props.crossfade.color
+        type: this.props.fade.mediatype,
+        duration: this.props.fade.duration,
+        color: this.props.fade.color
       }
       : defState;
   }
@@ -60,7 +60,7 @@ export default class EditFade extends Component {
       func: this.props.onClose
     },
     {
-      label: 'Save',
+      label: this.props.fade ? 'Save' : 'Place',
       func: this.save
     }
   ]

@@ -8,7 +8,8 @@
     flex-direction: column;
     align-items: center;
     padding: 0 10px;
-    margin-top: 10px;
+    background: #f9f9f9;
+    padding-top: 10px;
 }
 
 .carousel {
@@ -35,7 +36,7 @@
     position: absolute;
     color: $white;
     border-radius: 20px;
-    background: #FFFFFF4D;
+    background-color: rgba(255,255,255,0.3);
     text-shadow: 0 1px 0 black;
 }
 
@@ -56,29 +57,26 @@
 }
 
 .item {
+    position: relative;
     flex-shrink: 0;
     flex-grow: 0;
     width: 300px;
     height: 170px;
     margin-right: 10px;
+    border: 1px solid #e8e8e8;
+    border-radius: 5px;
 
-    .thumb {
-        border-radius: 5px;
-    }
-
-    &::before {
-        border-radius: 5px;
-    }
 }
 
 .highlight,
 .item {
     &::before {
-        content: '';
+        content: "";
         position: absolute;
-        width: 100%;
-        height: 100%;
+        width: 300px;
+        height: 170px;
         background: linear-gradient(0deg, rgba(0, 0, 0, 5e-05) 17.77%, rgba(0, 0, 0, 0.35) 74.79%);
+        border-radius: 5px;
     }
 }
 
@@ -86,6 +84,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 4px;
 }
 
 .center {
@@ -93,4 +92,36 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+.spinner {
+    position: fixed;
+    animation: spin 1s linear infinite;
+    color: $purple;
+    text-align: center;
+    width: 100%;
+}
+
+.hint {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    bottom: 60px;
+    color: $grey;
+
+
+    .arrow {
+        position: relative;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
 }

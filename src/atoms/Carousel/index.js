@@ -33,9 +33,9 @@ export default class Carousel extends Component {
         {renderNavKeys && <div className={styles.left} onMouseEnter={this.scroll(-1)} onMouseLeave={this.stopScrolling}>
           <FontAwesome name="chevron-left"/>
         </div>}
-        {!this.props.pending ? <div ref={this.carouselRef} className={styles.items}>
-          {!empty && items.map(renderFunction)}
-        </div> : <FontAwesome className={styles.spinner} name="spinner" spin style={{fontSize: '50px'}}/>}
+        {<div ref={this.carouselRef} className={styles.items}>
+          {items.map(renderFunction)}
+        </div>}
         {renderNavKeys && <div className={styles.right} onMouseEnter={this.scroll(1)} onMouseLeave={this.stopScrolling}>
           <FontAwesome name="chevron-right"/>
         </div>}

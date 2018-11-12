@@ -145,10 +145,10 @@ export default class ConfigureVlog extends Component {
             <div className={classNames(styles.renderButton, !renderUrl && styles.invisible)} onClick={this.share}>
             Share!
             </div>
-            <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={this.renderVlog}>
+            {!renderUrl && <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={this.renderVlog}>
               <div>{rendering ? <FontAwesome className={styles.spinner} name="spinner"/> : 'Render'}</div>
               <FontAwesome className={styles.icon} name="chevron-right" />
-            </div>
+            </div>}
           </div>
         </Segment>
       </div>

@@ -18,6 +18,19 @@ export default class AddBrandingElement extends Component {
     };
   }
 
+  addAsset = () => this.props.vlogEditor.AddBrandingElement(this.props.assets.assetList[this.state.currentAsset])
+
+  modalActions = [
+    {
+      label: 'Cancel',
+      func: this.props.vlogEditor.closeOverlay
+    },
+    {
+      label: 'Place',
+      func: this.addAsset
+    }
+  ]
+
   componentWillMount() {
     this.props.assets.loadAssets();
   }
@@ -40,13 +53,10 @@ export default class AddBrandingElement extends Component {
     </div>
   )
 
-  addAsset = () => this.props.vlogEditor.AddBrandingElement(this.props.assets.assetList[this.state.currentAsset])
-
   render() {
     const {assetList} = this.props.assets;
-    const {closeOverlay} = this.props.vlogEditor;
     return (
-      <Modal className={styles.modal} onCancel={closeOverlay} onPlace={this.addAsset}>
+      <Modal actions={this.modalActions}className={styles.modal}>
         {assetList.map(this.renderAsset)}
       </Modal>
     );

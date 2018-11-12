@@ -25,7 +25,7 @@ export default class AddTitle extends Component {
       func: this.props.onClose
     },
     {
-      label: 'Save',
+      label: this.props.title ? 'Save' : 'Place',
       func: this.save
     }
   ]

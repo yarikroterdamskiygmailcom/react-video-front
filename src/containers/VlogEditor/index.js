@@ -69,19 +69,26 @@ export default class VlogEditor extends Component {
     }
   }
 
+  renderHint = () => (
+    <React.Fragment>
+      <Icon className={styles.backdrop} name="backdrop" />
+      <Icon className={styles.arrow} name="arrow"/>
+    </React.Fragment>
+  )
+
   render() {
     const {uploading, progress, media, overlayActive, overlayContent, closeOverlay} = this.props.vlogEditor;
     const {showToast, toastContent} = this.state;
     return (
       <div className={styles.container}>
-        {isEmpty(media) && <Icon className={styles.backdrop} name="backdrop" />}
+        {isEmpty(media) && this.renderHint()}
         <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} />
         <div className={styles.header}>Videos & Media</div>
         <Arranger />
         <Toolbar
           className={styles.toolbar}
           actions={this.getActions()}
-          allowNext={media.filter(m => m.mediatype === 'video').length > 0}
+          allowNext={media.some(mediaObj => ['video', 'title', 'asset'].includes(mediaObj.mediatype))}
           next={this.nextStep}
         />
         <Toast active={showToast} onClose={this.hideToast}>

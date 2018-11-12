@@ -4,16 +4,11 @@
     overflow-y: hidden;
 
     .header {
-        color: $text-grey;
+        color: $text;
         margin-bottom: 10px;
-        text-transform: uppercase;
+        font-weight: bold;
     }
 
-    .spinner {
-        color: $purple;
-        text-align: center;
-        width: 100%;
-    }
 }
 
 .items {

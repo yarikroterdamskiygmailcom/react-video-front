@@ -5,6 +5,7 @@ import {isEmpty} from 'lodash-es';
 import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
 import placeholder from '../../../assets/placeholder.png';
+import FontAwesome from 'react-fontawesome';
 
 @withRouter
 @inject('vlogs')
@@ -57,41 +58,47 @@ renderItem = (item, i) =>
     <div className={styles.duration}>{item.duration}</div>
   </div>
 
-render() {
-
-  return (
-    <div className={styles.container}>
-      {!isEmpty(this.props.vlogEditor.media) && this.renderHighlight()}
-      <div className={styles.carousels}>
-        <Carousel
-          title="Saved Vlogs"
-          items={this.props.vlogs.list.filter(vlog => ['new', 'saved'].includes(vlog.status))}
-          renderFunction={this.renderItem}
-          scrollStep={310}
-          onClick={this.viewDetails}
-          pending={this.state.pending}
-          className={styles.carousel}
-        />
-        <Carousel
-          title="Rendered Vlogs"
-          items={this.props.vlogs.list.filter(vlog => vlog.status === 'exported')}
-          renderFunction={this.renderItem}
-          scrollStep={310}
-          onClick={this.viewDetails}
-          pending={this.state.pending}
-          className={styles.carousel}
-        />
-        <Carousel
-          title="Shared Vlogs"
-          items={this.props.vlogs.list.filter(vlog => vlog.access === 'team')}
-          renderFunction={this.renderItem}
-          scrollStep={310}
-          onClick={this.viewDetails}
-          pending={this.state.pending}
-          className={styles.carousel}
-        />
-      </div>
+  renderHint = () => (
+    <div className={styles.hint}>
+      <div>Start creating your first vlog here!</div>
+      <Icon className={styles.arrow} name="arrow"/>
     </div>
-  );
-}
+  )
+
+  render() {
+    return (
+      <div className={styles.container}>
+        {/* Geen highlight voor nu */}
+        {/* {!isEmpty(this.props.vlogEditor.media) && this.renderHighlight()} */}
+        {this.state.pending && <FontAwesome className={styles.spinner} name="spinner"/>}
+        <div className={styles.carousels}>
+          <Carousel
+            title="Saved Vlogs"
+            items={this.props.vlogs.list.filter(vlog => ['new', 'saved'].includes(vlog.status))}
+            renderFunction={this.renderItem}
+            scrollStep={310}
+            onClick={this.viewDetails}
+            className={styles.carousel}
+          />
+          <Carousel
+            title="Rendered Vlogs"
+            items={this.props.vlogs.list.filter(vlog => vlog.status === 'exported')}
+            renderFunction={this.renderItem}
+            scrollStep={310}
+            onClick={this.viewDetails}
+            className={styles.carousel}
+          />
+          <Carousel
+            title="Shared Vlogs"
+            items={this.props.vlogs.list.filter(vlog => vlog.access === 'team')}
+            renderFunction={this.renderItem}
+            scrollStep={310}
+            onClick={this.viewDetails}
+            className={styles.carousel}
+          />
+          {isEmpty(this.props.vlogs.list) && !this.state.pending && this.renderHint()}
+        </div>
+      </div>
+    );
+  }
 }
