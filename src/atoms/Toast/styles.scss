@@ -10,10 +10,11 @@
     padding: 5px;
     margin: 10px;
     border-radius: 5px;
-    background: $pink;
+    background: rgb(100, 100, 100);
     transition: bottom 0.5s;
     webkit-box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
     box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    color: white;
 
     &.active {
         bottom: 0;
@@ -23,7 +24,7 @@
 .close {
     position: absolute;
     right: 5px;
-    color: $purple;
+    color: white;
 }
 
 .content {
