@@ -105,7 +105,11 @@ export default class EditFade extends Component {
             White
           </div>
         </div>
-        <Input modal name="Duration" value={duration} onChange={this.setDuration} type="number" min={1} max={5} step={0.1}/>
+        <div className={styles.duration}>
+          <div>Duration:</div>
+          <Input className={styles.input} modal value={duration} onChange={this.setDuration} type="number" min={1} max={5} step={0.1}/>
+          <div>seconds</div>
+        </div>
       </Modal>
     );
   }

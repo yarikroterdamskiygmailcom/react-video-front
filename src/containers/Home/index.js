@@ -40,7 +40,7 @@ export default class Home extends Component {
   }
 
   disableSearch = () => {
-    this.setState({searchActive: false});
+    this.setState({searchActive: false, searchValue: ''});
   }
 
   setSearch = e => this.setState({searchValue: e.target.value})
