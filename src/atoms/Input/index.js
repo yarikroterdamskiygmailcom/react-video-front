@@ -20,13 +20,13 @@ export default class Input extends Component {
   toggleLegible = () => this.setState({legible: !this.state.legible})
 
   render() {
-    const {name, modal, field, auth, className, ...props} = this.props;
+    const {name, modal, field, auth, className, inputRef, ...props} = this.props;
 
     if (modal || field || auth) {
       return (
         <div className={classNames(styles.container, modal && styles.modal, field && styles.field, auth && styles.auth, className)}>
           {name && <div className={styles.label}>{name}</div>}
-          <input className={styles.input} {...props} />
+          <input ref={inputRef} className={styles.input} {...props} />
         </div>
       );
     }

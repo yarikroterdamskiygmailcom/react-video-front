@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
-import {Carousel, Icon} from '../../atoms';
+import {Carousel, Icon, Input} from '../../atoms';
 import {isEmpty} from 'lodash-es';
 import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
 import placeholder from '../../../assets/placeholder.png';
 import FontAwesome from 'react-fontawesome';
+import classNames from 'classnames';
 
 @withRouter
 @inject('vlogs')
@@ -16,8 +17,11 @@ import FontAwesome from 'react-fontawesome';
 export default class Home extends Component {
   constructor(props) {
     super(props);
+    this.searchRef = React.createRef();
     this.state = {
-      pending: true
+      pending: true,
+      searchActive: false,
+      searchValue: ''
     };
   }
 
@@ -29,6 +33,17 @@ export default class Home extends Component {
     this.props.project.setProject(vlog);
     this.props.history.push('/vlog-details');
   }
+
+  enableSearch = () => {
+    this.searchRef.current.focus();
+    this.setState({searchActive: true, searchValue: ''});
+  }
+
+  disableSearch = () => {
+    this.setState({searchActive: false});
+  }
+
+  setSearch = e => this.setState({searchValue: e.target.value})
 
   renderHighlight = () => {
     const video = this.props.vlogEditor.media.filter(media => media.mediatype === 'video')[0];
@@ -66,6 +81,10 @@ renderItem = (item, i) =>
   )
 
   render() {
+    const {searchActive, searchValue} = this.state;
+    const vlogs = this.state.searchValue
+      ? this.props.vlogs.list.filter(vlog => vlog.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+      : this.props.vlogs.list;
     return (
       <div className={styles.container}>
         {/* Geen highlight voor nu */}
@@ -74,7 +93,7 @@ renderItem = (item, i) =>
         <div className={styles.carousels}>
           <Carousel
             title="Saved Vlogs"
-            items={this.props.vlogs.list.filter(vlog => ['new', 'saved'].includes(vlog.status))}
+            items={vlogs.filter(vlog => ['new', 'saved'].includes(vlog.status))}
             renderFunction={this.renderItem}
             scrollStep={310}
             onClick={this.viewDetails}
@@ -82,7 +101,7 @@ renderItem = (item, i) =>
           />
           <Carousel
             title="Rendered Vlogs"
-            items={this.props.vlogs.list.filter(vlog => vlog.status === 'exported')}
+            items={vlogs.filter(vlog => vlog.status === 'exported')}
             renderFunction={this.renderItem}
             scrollStep={310}
             onClick={this.viewDetails}
@@ -90,13 +109,22 @@ renderItem = (item, i) =>
           />
           <Carousel
             title="Shared Vlogs"
-            items={this.props.vlogs.list.filter(vlog => vlog.access === 'team')}
+            items={vlogs.filter(vlog => vlog.access === 'team')}
             renderFunction={this.renderItem}
             scrollStep={310}
             onClick={this.viewDetails}
             className={styles.carousel}
           />
           {isEmpty(this.props.vlogs.list) && !this.state.pending && this.renderHint()}
+          <FontAwesome className={styles.searchButton} name="search" onClick={this.enableSearch}/>
+          <Input
+            className={classNames(styles.search, searchActive && styles.active)}
+            inputRef={this.searchRef}
+            field
+            value={searchValue}
+            onChange={this.setSearch}
+            onBlur={this.disableSearch}
+          />
         </div>
       </div>
     );
