@@ -8,7 +8,7 @@ import styles from './styles.scss';
 
 export const history = createBrowserHistory();
 
-const backButton = <div onClick={history.goBack}><FontAwesome name="angle-left"/> Back</div>;
+const backButton = <FontAwesome className={styles.icon} name="angle-left" onClick={history.goBack}/>;
 
 const notFound = {
   name: 'Not Found',
@@ -83,8 +83,8 @@ const profile = {
   path: '/profile',
   component: Profile,
   header: {
-    left: <NavLink to="/settings"><FontAwesome name="cog"/></NavLink>,
-    right: <NavLink to="/logout">Log Out</NavLink>
+    left: <NavLink to="/settings"><FontAwesome className={styles.icon} name="cog"/></NavLink>,
+    right: <NavLink to="/logout"><FontAwesome className={styles.icon} name="sign-out"/></NavLink>
   },
   navBar: true
 };

@@ -137,15 +137,15 @@ export default class Customize extends Component {
 
   getSwipeActions = id => ({
     left: [
-      {
-        label: (
-          <div className={styles.actionLabel}>
-            <Icon className={styles.icon} name="trim" />
-            <div>Edit</div>
-          </div>
-        ),
-        func: () => null
-      }
+      // {
+      //   label: (
+      //     <div className={styles.actionLabel}>
+      //       <Icon className={styles.icon} name="trim" />
+      //       <div>Edit</div>
+      //     </div>
+      //   ),
+      //   func: () => null
+      // }
     ],
     right: [
       {

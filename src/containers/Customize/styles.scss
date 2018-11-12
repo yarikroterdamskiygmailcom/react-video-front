@@ -86,8 +86,8 @@
     padding: 10px 0;
     border-bottom: $grey solid 1px;
     opacity: 1;
-    overflow: auto;
     transition: opacity 0.2s;
+    max-width: 100%;
 
     &.delete {
         opacity: 0.3;
@@ -106,7 +106,10 @@
     flex-direction: row;
     justify-content: space-around;
     align-content: center;
-    width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-word;
 }
 
 .actionLabel {
