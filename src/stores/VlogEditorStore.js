@@ -5,7 +5,7 @@ import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
 import {sessionStore} from '../';
 import {php} from '.';
-import {head, last} from 'lodash-es';
+import {head, last, pick} from 'lodash-es';
 
 export class VlogEditorStore {
   @observable media = []
@@ -114,7 +114,10 @@ export class VlogEditorStore {
     });
 
     this.resumable.on('fileSuccess', (resumableFile, response) => {
-      this.addMedia(JSON.parse(response));
+      const properties = ['duration', 'inpoint', 'outpoint', 'mediatype',
+        'overlay', 'seconds', 'src', 'thumb', 'thumbbase64', 'video_id', 'videoname'];
+      this.addMedia(pick(JSON.parse(response), properties));
+      console.log(this.media);
       this.uploading = false;
       this.resumable.cancel();
       this.progress = 0;
