@@ -7,6 +7,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    text-transform: capitalize;
 }
 
 .upload {
@@ -24,6 +25,7 @@
     align-content: center;
     align-items: center;
     color: $grey;
+    text-transform: capitalize;
 }
 
 .imagePreview {
