@@ -146,3 +146,24 @@
 .icon {
     color: $grey;
 }
+
+.googleLogin {
+    width: 100%;
+    background: white;
+    border: none;
+    height: 50px;
+}
+
+.youtubeButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-height: 100%;
+}
+
+.youtube {
+    object-fit: contain;
+    height: 15px;
+    margin-left: 10px;
+}

@@ -8,6 +8,8 @@ import {Overlay, Preview, Modal} from '../../components';
 import {withRouter} from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import placeholder from './profile-placeholder.png';
+import GoogleLogin from 'react-google-login';
+import youtube from './youtube.png';
 
 @withRouter
 @inject('profile')
@@ -65,12 +67,29 @@ export default class Profile extends Component {
     );
   }
 
+  renderYoutubeButton = () => (
+    <div className={styles.youtubeButton}>
+      <div>Link with</div>
+      <img className={styles.youtube} src={youtube}/>
+    </div>
+  )
+
   render() {
     const {user} = this.props.profile;
     return (
       <div className={styles.container}>
         {user && this.renderPersona()}
         {user && this.renderFields()}
+        <GoogleLogin
+          className={styles.googleLogin}
+          buttonText={this.renderYoutubeButton()}
+          clientId="814043436795-k11mvtqeal0rmj7dob63c092lmlit08l.apps.googleusercontent.com"
+          scope="https://www.googleapis.com/auth/youtube"
+          responseType="code"
+          onSuccess={console.log}
+          onFailure={console.log}
+          redirectUri="http://google.com"
+        />
       </div>
     );
   }
