@@ -68,6 +68,22 @@ export class ProjectStore {
       editor.setProjectId(this.projectId);
     }
 
+    startProfessional = async () => {
+      this.projectId = await php.get('/api/v1/vlog/new').then(res => res.project_id);
+      this.title = '';
+      this.description = '';
+      this.access = 'personal';
+      this.status = 'saved';
+      this.filter = null;
+      this.logoOverlay = false;
+      this.customSubs = false;
+      this.customEdit = true;
+      this.exportUrl = null;
+
+      editor.setMedia([]);
+      editor.setProjectId(this.projectId);
+    }
+
     startFromTemplate = async i => {
       await this.startFromScratch();
       templates.setActiveTemplate(i);

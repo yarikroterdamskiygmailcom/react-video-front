@@ -6,6 +6,8 @@ import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
 import styles from './styles.scss';
 import Overlay from '../Overlay';
+import {Modal} from '../';
+import FontAwesome from 'react-fontawesome';
 
 @withRouter
 @inject('templates')
@@ -16,14 +18,43 @@ export default class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
-      fromTemplate: false
+      overlayOpen: false,
+      overlay: 'main',
     };
   }
 
-  openOverlay = () => this.setState({isOpen: true})
+  openOverlay = () => this.setState({overlayOpen: true})
 
-  closeOverlay = () => this.setState({isOpen: false, fromTemplate: false})
+  closeOverlay = () => {
+    this.setState({overlayOpen: false});
+    setTimeout(() => this.setState({overlay: 'main'}), 200);
+  }
+
+  setOverlay = overlay => () => {
+    overlay === 'template' && this.loadTemplates();
+    this.setState({overlay});
+  }
+
+  startFromScratch = () => {
+    this.props.project.startFromScratch()
+    .then(() => this.props.history.push('/edit-vlog'));
+  }
+
+  startProfessional = () => {
+    this.props.project.startProfessional()
+    .then(() => this.props.history.push('/edit-vlog'));
+  }
+
+  startFromTemplate = i => () => {
+    this.props.project.startFromTemplate(i)
+    .then(() => this.props.history.push('/template'));
+  }
+
+  loadTemplates = () => {
+    this.setState({pending: true});
+    this.props.templates.loadTemplates()
+    .then(() => this.setState({pending: false}));
+  }
 
   routes = [
     {
@@ -43,22 +74,22 @@ export default class NavBar extends Component {
     },
   ]
 
-  startFromScratch = () => {
-    this.props.project.startFromScratch()
-    .then(() => this.props.history.push('/edit-vlog'));
-  }
+  modalActions = [
+    {
+      label: 'Cancel',
+      func: this.setOverlay('main')
+    },
+    {
+      label: 'Confirm',
+      func: this.startProfessional
+    }
+  ]
 
-  startFromTemplate = i => () => {
-    this.props.project.startFromTemplate(i)
-    .then(() => this.props.history.push('/template'));
-  }
-
-  loadTemplates = () => {
-    this.props.templates.loadTemplates().then(() => {
-      this.setState({fromTemplate: true});
-    });
-
-  }
+  renderSpinner = () => (
+    <div className={styles.option}>
+      <FontAwesome className={styles.spinner} name="spinner" />
+    </div>
+  )
 
   renderTemplate = ({title}, i) => (
     <div key={title} className={styles.option} onClick={this.startFromTemplate(i)}>
@@ -67,41 +98,73 @@ export default class NavBar extends Component {
   );
 
   renderRoute = ({name, icon, path, onClick}) => path
-    ? <NavLink key={name} to={path} className={styles.route} activeClassName={styles.active}>
-      <Icon className={styles.icon} name={icon} />
-      <div className={styles.routeName}>{name}</div>
-    </NavLink>
+    ? (
+      <NavLink key={name} to={path} className={styles.route} activeClassName={styles.active}>
+        <Icon className={styles.icon} name={icon} />
+        <div className={styles.routeName}>{name}</div>
+      </NavLink>
+    )
 
-    : <div key={name} className={styles.route} onClick={onClick}>
-      <Icon className={styles.icon} name={icon} />
-      <div className={styles.routeName}>{name}</div>
-    </div>
-
-  renderOverlayContent = () => (
-    <div className={classNames(styles.options, this.state.isOpen && styles.active)}>
-      {this.state.fromTemplate
-        ? <div className={styles.optionsGroup}>
-          <div className={styles.optionsHeader}>Choose template</div>
-          {this.props.templates.templates.map(this.renderTemplate)}
-        </div>
-        : <div className={styles.optionsGroup}>
-          <div className={styles.optionsHeader}>Add Vlog</div>
-          <div className={styles.option} onClick={this.loadTemplates}>Start from template</div>
-          <div className={styles.option} onClick={this.startFromScratch}>Start from scratch</div>
-        </div>}
-      <div className={styles.optionsGroup}>
-        <div className={styles.option} onClick={this.closeOverlay}>Cancel</div>
+    : (
+      <div key={name} className={styles.route} onClick={onClick}>
+        <Icon className={styles.icon} name={icon} />
+        <div className={styles.routeName}>{name}</div>
       </div>
-    </div>
-  )
+    )
+
+  renderOverlay = () => {
+    const {overlay, pending} = this.state;
+    switch (overlay) {
+      case 'main': return (
+        <div className={classNames(styles.options, this.state.overlayOpen && styles.active)}>
+          <div className={styles.optionsGroup}>
+            <div className={styles.optionsHeader}>Create Vlog</div>
+            <div className={styles.option} onClick={this.setOverlay('template')}>From template</div>
+            <div className={styles.option} onClick={this.startFromScratch}>From scratch</div>
+            <div className={styles.option} onClick={this.setOverlay('modal')}>
+              <div className={styles.prof}>Professional Vlog</div>
+            </div>
+          </div>
+          <div className={styles.optionsGroup}>
+            <div className={styles.option} onClick={this.closeOverlay}>Cancel</div>
+          </div>
+        </div>
+      );
+
+      case 'template': return (
+        <div className={classNames(styles.options, this.state.overlayOpen && styles.active)}>
+          <div className={styles.optionsGroup}>
+            <div className={styles.optionsHeader}>Choose template</div>
+            {pending
+              ? this.renderSpinner()
+              : this.props.templates.templates.map(this.renderTemplate)
+            }
+          </div>
+          <div className={styles.optionsGroup}>
+            <div className={styles.option} onClick={this.closeOverlay}>Cancel</div>
+          </div>
+        </div>
+      );
+
+      case 'modal': return (
+        <Modal className={styles.modal} actions={this.modalActions}>
+          Are you sure you want to create a
+          <div className={styles.prof}>Professional Vlog?</div>
+          Additional charges apply.
+        </Modal>
+      );
+
+      default: return null;
+    }
+  }
 
   render() {
-    const {isOpen} = this.state;
+    const {overlayOpen} = this.state;
     return (
       <div className={styles.container}>
         {this.routes.map(this.renderRoute)}
-        <Overlay active={isOpen} onClose={this.closeOverlay}>
-          {this.renderOverlayContent()}
+        <Overlay active={overlayOpen} onClose={this.closeOverlay}>
+          {this.renderOverlay()}
         </Overlay>
       </div>
     );

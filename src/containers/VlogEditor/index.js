@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
 import {withRouter} from 'react-router';
-import {Arranger, Overlay, Toolbar} from '../../components';
+import {Arranger, Overlay, Toolbar, Hamburger, Modal} from '../../components';
 import classNames from 'classnames';
 import styles from './styles.scss';
-import {ProgressBar, Icon, Toast} from '../../atoms';
+import {ProgressBar, Icon, Toast, Toggle, Segment} from '../../atoms';
 import {isEmpty} from 'lodash-es';
+import FontAwesome from 'react-fontawesome';
 
 @withRouter
 @inject('vlogEditor')
@@ -18,7 +19,8 @@ export default class VlogEditor extends Component {
     this.state = {
       pending: false,
       showToast: false,
-      toastContent: ''
+      toastContent: '',
+      hamburgerActive: false
     };
   }
 
@@ -31,12 +33,18 @@ export default class VlogEditor extends Component {
     this.props.project.updateProject({media: JSON.stringify(this.props.vlogEditor.media.toJS())});
   }
 
-  showToast = text => {
-    this.setState({showToast: true, toastContent: text});
-    setTimeout(this.hideToast, 5000);
+  confirmProfessional = () => {
+    this.props.vlogEditor.setOverlay(this.renderConfirmProfessional());
   }
 
+    showToast = text => {
+      this.setState({showToast: true, toastContent: text});
+      setTimeout(this.hideToast, 5000);
+    }
+
   hideToast = () => this.setState({showToast: false})
+
+  toggleHamburger = () => this.setState({hamburgerActive: !this.state.hamburgerActive})
 
   getActions = () => [
     {
@@ -76,14 +84,37 @@ export default class VlogEditor extends Component {
     </React.Fragment>
   )
 
+  modalActions = [
+    {
+      label: 'Cancel',
+      func: this.props.vlogEditor.closeOverlay
+    },
+    {
+      label: 'Confirm',
+      func: () => {
+        this.props.project.toggleProperty('customEdit');
+        this.props.vlogEditor.closeOverlay();
+      }
+    }
+  ]
+
+  renderConfirmProfessional = () => (
+    <Modal className={styles.modal} actions={this.modalActions}>
+    Are you sure you want to create a
+      <div className={styles.prof}>Professional Vlog?</div>
+    Additional charges apply.
+    </Modal>
+  )
+
   render() {
     const {uploading, progress, media, overlayActive, overlayContent, closeOverlay} = this.props.vlogEditor;
-    const {showToast, toastContent} = this.state;
+    const {projectId, customEdit, toggleProperty} = this.props.project;
+    const {showToast, toastContent, hamburgerActive} = this.state;
     return (
       <div className={styles.container}>
         {isEmpty(media) && this.renderHint()}
         <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} />
-        <div className={styles.header}>Videos & Media</div>
+        <FontAwesome className={styles.icon} name="bars" onClick={this.toggleHamburger}/>
         <Arranger />
         <Toolbar
           className={styles.toolbar}
@@ -97,6 +128,24 @@ export default class VlogEditor extends Component {
         <Overlay active={overlayActive} onClose={closeOverlay}>
           {overlayContent}
         </Overlay>
+        <Hamburger active={hamburgerActive} onClose={this.toggleHamburger}>
+          <Segment title="Vlog Data">
+            <div className={styles.option}>
+              <div>Vlog ID</div>
+              <div>{`#${projectId}`}</div>
+            </div>
+          </Segment>
+          <Segment title="Extra's">
+            <div className={styles.option}>
+              <div>Professional Vlog</div>
+              <Toggle
+                className={styles.customToggle}
+                value={customEdit}
+                onChange={customEdit ? () => toggleProperty('customEdit') : this.confirmProfessional}
+              />
+            </div>
+          </Segment>
+        </Hamburger>
       </div>
     );
   }

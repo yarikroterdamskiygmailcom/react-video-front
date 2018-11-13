@@ -77,3 +77,23 @@
 .icon {
     margin-bottom: 5px;
 }
+
+.prof {
+    color: $purple;
+    margin: 0 3px;
+    font-weight: bold;
+    display: inline;
+}
+
+.modal {
+    height: fit-content;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    color: $purple;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}

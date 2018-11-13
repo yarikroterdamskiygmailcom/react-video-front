@@ -39,6 +39,11 @@ export class VlogEditorStore {
 
   saveMedia = index => changes => this.updateMedia(index, changes)
 
+  setOverlay = overlay => {
+    this.overlayActive = true;
+    this.overlayContent = overlay;
+  };
+
   closeOverlay = () => {
     this.overlayActive = false;
     setTimeout(() => this.overlayContent = null, 200);

@@ -15,7 +15,6 @@
 .header {
     color: $text-grey;
     margin: 20px;
-    text-transform: uppercase;
 }
 
 .vidinput {
@@ -23,11 +22,8 @@
 }
 
 .progressBar {
-    position: fixed;
     width: 100vw;
     height: 0;
-    left: 0;
-    top: 50px;
     transition: height 0.8s;
     opacity: 0;
     &.active {
@@ -49,7 +45,7 @@
     right: 0;
     width: 70vw;
     max-width: 500px;
-    height: 70vh;
+    height: 50vh;
     pointer-events: none;
 
 }
@@ -60,4 +56,35 @@
     left: 80px;
     width: 65px;
     height: 65px;
+}
+
+.option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: $grey;
+}
+
+.customToggle {
+    margin-left: 10px;
+}
+
+.icon {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    color: $purple;
+    font-size: 27px !important;
+}
+
+.prof {
+    color: $purple;
+    margin: 0 3px;
+    font-weight: bold;
+    display: inline;
+}
+
+.modal {
+    height: fit-content;
 }
