@@ -189,11 +189,11 @@ export default class Customize extends Component {
         <div className={styles.upload} onClick={this.openStyleEditor(group)}>Add +</div>
       </div>
       {!isEmpty(styleList) && <div className={styles.style}>
-        <div className={styles.styleGroup}>
+        <div className={classNames(styles.styleGroup, styles.header)}>
           <div>NAME</div>
           <div>FONT</div>
         </div>
-        <div className={styles.styleGroup}>
+        <div className={classNames(styles.styleGroup, styles.header)}>
           <div>TEXT</div>
           <div>BACK</div>
         </div>
