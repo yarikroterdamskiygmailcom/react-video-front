@@ -9,6 +9,21 @@
         color: $purple;
         font-size: 27px;
     }
+
+    .search {
+        position: fixed;
+        width: 0;
+        height: 50px;
+        top: 0;
+        right: 0;
+        background: black;
+        pointer-events: none;
+        transition: width 0.2s;
+    
+        &.active {
+            width: 100vw;
+        }
+    }
 }
 
 .carousels {
@@ -128,21 +143,7 @@
     }
 }
 
-.search {
-    position: fixed;
-    height: 50px;
-    top: -50px;
-    left: 0;
-    right: 0;
-    background: black;
-    pointer-events: none;
-    width: 100%;
-    transition: top 0.2s;
 
-    &.active {
-        top: 0;
-    }
-}
 
 
 

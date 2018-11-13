@@ -115,17 +115,17 @@ renderItem = (item, i) =>
             onClick={this.viewDetails}
             className={styles.carousel}
           />
-          {isEmpty(this.props.vlogs.list) && !this.state.pending && this.renderHint()}
-          <FontAwesome className={styles.searchButton} name="search" onClick={this.enableSearch}/>
-          <Input
-            className={classNames(styles.search, searchActive && styles.active)}
-            inputRef={this.searchRef}
-            field
-            value={searchValue}
-            onChange={this.setSearch}
-            onBlur={this.disableSearch}
-          />
         </div>
+        {isEmpty(this.props.vlogs.list) && !this.state.pending && this.renderHint()}
+        <FontAwesome className={styles.searchButton} name="search" onClick={this.enableSearch}/>
+        <Input
+          className={classNames(styles.search, searchActive && styles.active)}
+          inputRef={this.searchRef}
+          field
+          value={searchValue}
+          onChange={this.setSearch}
+          onBlur={this.disableSearch}
+        />
       </div>
     );
   }
