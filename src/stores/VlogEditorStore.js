@@ -48,6 +48,8 @@ export class VlogEditorStore {
     const media = this.media.toJS();
 
     const fades = ['fadein', 'fadeout', 'fadeoutin', 'crossfade'];
+    const interFades = ['crossfade', 'fadeoutin'];
+
     if (media.some((mediaObj, i) => {
       if (fades.includes(mediaObj.mediatype) && media[i + 1] && fades.includes(media[i + 1].mediatype)) {
         return true;
@@ -56,7 +58,22 @@ export class VlogEditorStore {
       return `Two fades can't succeed each other.`;
     }
 
-    const interFades = ['crossfade', 'fadeoutin'];
+    if (media.some((mediaObj, i) => {
+      if (
+        (mediaObj.mediatype === 'crossfade'
+          && (
+            (media[i - 1].outpoint - media[i - 1].inpoint) < mediaObj.duration / 2
+            || (media[i + 1].outpoint - media[i + 1].inpoint) < mediaObj.duration / 2
+          )
+        )
+      ) {
+        return true;
+      }
+      return false;
+    })) {
+      return 'Videos can only be crossfaded if they are longer than half the crossfade duration';
+    }
+
     if (interFades.includes(head(media).mediatype)
       || interFades.includes(last(media).mediatype)) {
       return `Vlogs can't start or end with a Crossfade or a Fade-Out / Fade-In.`;
