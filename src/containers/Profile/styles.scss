@@ -62,16 +62,11 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border-top: 1px $grey solid;
-    padding: 10px;
 
     .fieldRight {
         color: $grey;
     }
 
-    &:last-child {
-        border-bottom: 1px $grey solid;
-    }
 }
 
 .assets {
@@ -151,7 +146,6 @@
     width: 100%;
     background: white;
     border: none;
-    height: 50px;
 }
 
 .youtubeButton {

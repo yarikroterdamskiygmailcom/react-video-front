@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {isEmpty, noop} from 'lodash-es';
 import styles from './styles.scss';
-import {ProgressBar} from '../../atoms';
+import {Segment} from '../../atoms';
 import {observer, inject} from 'mobx-react';
 import classNames from 'classnames';
 import {Overlay, Preview, Modal} from '../../components';
@@ -25,7 +25,7 @@ export default class Profile extends Component {
 
   componentWillMount() {
     this.props.profile.loadProfile().then(() => {
-      if(this.props.profile.user.team) {
+      if (this.props.profile.user.team) {
         this.props.profile.getTeam();
       }
     });
@@ -47,7 +47,7 @@ export default class Profile extends Component {
       <div className={styles.persona}>
         <div className={styles.avatar} style={{backgroundImage: `url(${avatar || placeholder})`}}>
           <div className={styles.logoWrapper}>
-            <img className={styles.logo} src={logo}/>
+            <img className={styles.logo} src={logo} />
           </div>
         </div>
         <div className={styles.fullName}>{`${first_name} ${last_name}`}</div>
@@ -59,19 +59,34 @@ export default class Profile extends Component {
   renderFields = () => {
     const {email, team} = this.props.profile.user;
     return (
-      <div className={styles.fields}>
+      <Segment>
         {this.renderField('E-mail', email)}
         {this.renderField('Account Type', team ? 'Team' : 'Personal')}
-        {this.renderField('Customize', <FontAwesome className={styles.icon} name="chevron-right"/>, this.goToCustomize)}
-      </div>
+        {this.renderField('Customize', <FontAwesome className={styles.icon} name="chevron-right" />, this.goToCustomize)}
+      </Segment>
     );
   }
 
-  renderYoutubeButton = () => (
+  renderYoutube = () => (
     <div className={styles.youtubeButton}>
       <div>Link with</div>
-      <img className={styles.youtube} src={youtube}/>
+      <img className={styles.youtube} src={youtube} />
     </div>
+  )
+
+  renderLinks = () => (
+    <Segment title="Links">
+      <GoogleLogin
+        className={styles.googleLogin}
+        buttonText={this.renderYoutube()}
+        clientId="814043436795-k11mvtqeal0rmj7dob63c092lmlit08l.apps.googleusercontent.com"
+        scope="https://www.googleapis.com/auth/youtube"
+        responseType="code"
+        onSuccess={console.log}
+        onFailure={console.log}
+        redirectUri="http://google.com"
+      />
+    </Segment>
   )
 
   render() {
@@ -80,16 +95,8 @@ export default class Profile extends Component {
       <div className={styles.container}>
         {user && this.renderPersona()}
         {user && this.renderFields()}
-        <GoogleLogin
-          className={styles.googleLogin}
-          buttonText={this.renderYoutubeButton()}
-          clientId="814043436795-k11mvtqeal0rmj7dob63c092lmlit08l.apps.googleusercontent.com"
-          scope="https://www.googleapis.com/auth/youtube"
-          responseType="code"
-          onSuccess={console.log}
-          onFailure={console.log}
-          redirectUri="http://google.com"
-        />
+        {user && this.renderLinks()}
+
       </div>
     );
   }
