@@ -82,7 +82,10 @@ export default class Customize extends Component {
     this.setState({overlayOpen: true, overlayContent: content});
   }
 
-  closeOverlay = () => this.setState({overlayOpen: false})
+  closeOverlay = () => {
+    this.setState({overlayOpen: false});
+    setTimeout(() => this.setState({overlayContent: null}), 200);
+  }
 
   scheduleAssetDeletion = id => () => this.setState({
     assetsToDelete: this.state.assetsToDelete.includes(id)
