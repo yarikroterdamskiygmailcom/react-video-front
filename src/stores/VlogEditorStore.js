@@ -17,17 +17,21 @@ export class VlogEditorStore {
 
   //Editor stuff
 
+  syncMedia = () => php.post(`/api/v1/vlog/${this.projectId}`, {media: JSON.stringify(this.media.toJS())})
+
   setMedia = media => this.media = media;
 
   setProjectId = id => this.projectId = id;
 
   @action addMedia = mediaObj => {
     this.media = [...this.media.toJS(), mediaObj];
+    this.syncMedia();
   }
 
   @action updateMedia = (index, changes) => {
     if (this.media[index]) {
       this.media = this.media.map((mediaObj, i) => i === index ? {...mediaObj, ...changes} : mediaObj);
+      this.syncMedia();
     } else {
       throw new Error(`Tried to replace media[${index}], but it doesn't exist`);
     }
@@ -35,6 +39,7 @@ export class VlogEditorStore {
 
   deleteMedia = i => {
     this.media = this.media.filter((value, index) => index !== i);
+    this.syncMedia();
   }
 
   saveMedia = index => changes => this.updateMedia(index, changes)

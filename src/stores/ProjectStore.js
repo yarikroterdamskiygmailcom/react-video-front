@@ -115,12 +115,12 @@ export class ProjectStore {
     renderProject = orientation => php.post(`/api/v1/vlog/render/${this.projectId}`, {orientation})
 
     shareWithTeam = () => this.access !== 'team'
-    && this.updateProject({access: 'team'})
+    && this.updateProject(JSON.stringify({access: 'team'}))
     .then(() => this.access = 'team')
 
-    updateTitle = () => this.updateProject({title: this.title})
+    updateTitle = () => this.updateProject(JSON.stringify({title: this.title}))
 
-    updateDescription = () => this.updateProject({description: this.description})
+    updateDescription = () => this.updateProject(JSON.stringify({description: this.description}))
 
     download = () => php.get(`/api/v1/vlog/download/${this.projectId}`)
 
