@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {NavLink} from 'react-router-dom';
 import {Icon} from '../../atoms';
+import {ConfirmProfessional} from '../';
 import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
 import styles from './styles.scss';
@@ -74,17 +75,6 @@ export default class NavBar extends Component {
     },
   ]
 
-  modalActions = [
-    {
-      label: 'Cancel',
-      func: this.setOverlay('main')
-    },
-    {
-      label: 'Confirm',
-      func: this.startProfessional
-    }
-  ]
-
   renderSpinner = () => (
     <div className={styles.option}>
       <FontAwesome className={styles.spinner} name="spinner" />
@@ -146,13 +136,7 @@ export default class NavBar extends Component {
         </div>
       );
 
-      case 'modal': return (
-        <Modal className={styles.modal} actions={this.modalActions}>
-          Are you sure you want to create a
-          <div className={styles.prof}>Professional Vlog?</div>
-          Additional charges apply.
-        </Modal>
-      );
+      case 'modal': return <ConfirmProfessional onCancel={this.setOverlay('main')} onConfirm={this.startProfessional}/>;
 
       default: return null;
     }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
 import {withRouter} from 'react-router';
-import {Arranger, Overlay, Toolbar, Hamburger, Modal} from '../../components';
+import {Arranger, Overlay, Toolbar, Hamburger, ConfirmProfessional} from '../../components';
 import classNames from 'classnames';
 import styles from './styles.scss';
 import {ProgressBar, Icon, Toast, Toggle, Segment} from '../../atoms';
@@ -34,7 +34,15 @@ export default class VlogEditor extends Component {
   }
 
   confirmProfessional = () => {
-    this.props.vlogEditor.setOverlay(this.renderConfirmProfessional());
+    this.props.vlogEditor.setOverlay(
+      <ConfirmProfessional
+        onCancel={this.props.vlogEditor.closeOverlay}
+        onConfirm={() => {
+          this.props.project.toggleProperty('customEdit');
+          this.props.vlogEditor.closeOverlay();
+        }}
+      />
+    );
   }
 
     showToast = text => {
@@ -82,28 +90,6 @@ export default class VlogEditor extends Component {
       <Icon className={styles.backdrop} name="backdrop" />
       <Icon className={styles.arrow} name="arrow"/>
     </React.Fragment>
-  )
-
-  modalActions = [
-    {
-      label: 'Cancel',
-      func: this.props.vlogEditor.closeOverlay
-    },
-    {
-      label: 'Confirm',
-      func: () => {
-        this.props.project.toggleProperty('customEdit');
-        this.props.vlogEditor.closeOverlay();
-      }
-    }
-  ]
-
-  renderConfirmProfessional = () => (
-    <Modal className={styles.modal} actions={this.modalActions}>
-    Are you sure you want to create a
-      <div className={styles.prof}>Professional Vlog?</div>
-    Additional charges apply.
-    </Modal>
   )
 
   render() {
