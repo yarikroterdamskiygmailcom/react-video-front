@@ -39,6 +39,12 @@ export default class ConfigureVlog extends Component {
       option: 'Portrait Mode',
       desc: 'Portrait',
       value: 'portrait'
+    },
+    {
+      icon: 'square',
+      option: 'Square Mode',
+      desc: 'Square',
+      value: 'square'
     }
   ].map(({icon, option, desc, value}) => ({
     render: (
@@ -54,7 +60,7 @@ export default class ConfigureVlog extends Component {
   })
   );
 
-  toggleOrientation = () => this.setState({orientation: this.state.orientation === 'landscape' ? 'portrait' : 'landscape'})
+  setOrientation = orientation => () => this.setState({orientation})
 
   grabThumb = () => head(this.props.vlogEditor.media).thumb;
 
@@ -127,7 +133,7 @@ export default class ConfigureVlog extends Component {
           <Toggle label="Logo Overlay" value={logoOverlay} onChange={() => toggleProperty('logoOverlay')} />
         </Segment>
         <Segment title="Orientation">
-          {this.orientationOptions.map(({render, value}) => <RadioButton key={value} render={render} active={value === orientation} onChange={this.toggleOrientation} />)}
+          {this.orientationOptions.map(({render, value}) => <RadioButton key={value} render={render} active={value === orientation} onChange={this.setOrientation(value)} />)}
         </Segment>
         <Segment title="Options">
           <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={() => toggleProperty('customSubs')} />

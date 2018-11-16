@@ -12,6 +12,7 @@ import lowerThird from './lowerThird.svg';
 import portrait from './portrait.svg';
 import profile from './profile.svg';
 import publish from './publish.svg';
+import square from './square.svg';
 import trim from './trim.svg';
 import template from './template.svg';
 import title from './title.svg';
@@ -32,6 +33,7 @@ export default {
   portrait,
   profile,
   publish,
+  square,
   trim,
   template,
   title,
