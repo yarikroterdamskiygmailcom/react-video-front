@@ -1,0 +1,25 @@
+.container {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #BCBCBF;
+
+}
+
+.ball {
+    position: absolute;
+    top: -10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+    background: white;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+.selection {
+    position: absolute;
+    width: 50px;
+    height: 100%;
+    background: $purple;
+}
