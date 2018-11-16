@@ -7,8 +7,8 @@ module.exports = {
   preset: {
     loaders: [
       setLoader('react'),
-      setLoader('css'),
-      setLoader('scss', {scssVariables}),
+      setLoader('css', {postcssOpts: require('autoprefixer')}),
+      setLoader('scss', {scssVariables, postcssOpts: require('autoprefixer')}),
     ],
     plugins: [
       setPlugin('css'),
