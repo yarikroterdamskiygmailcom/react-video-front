@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal} from '..';
 import styles from './styles.scss';
-import {Range} from 'rc-slider';
+import {Range} from '../../atoms';
 import '!style-loader!css-loader!rc-slider/assets/index.css';
 import FontAwesome from 'react-fontawesome';
 
@@ -82,15 +82,7 @@ export default class Trimmer extends Component {
           <div>{start}</div>
           <div>{stop}</div>
         </div>
-        <Range
-          value={[start, stop]}
-          onChange={this.setTrim}
-          onAfterChange={this.preview}
-          min={0}
-          max={max}
-          step={0.01}
-          allowCross={false}
-        />
+        <Range value={[start, stop]} limits={[0, max]} onChange={this.setTrim}/>
       </React.Fragment>
     );
     return noModal
