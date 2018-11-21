@@ -46,9 +46,9 @@ export default class Profile extends Component {
     return (
       <div className={styles.persona}>
         <div className={styles.avatar} style={{backgroundImage: `url(${avatar || placeholder})`}}>
-          <div className={styles.logoWrapper}>
+          {logo && <div className={styles.logoWrapper}>
             <img className={styles.logo} src={logo} />
-          </div>
+          </div>}
         </div>
         <div className={styles.fullName}>{`${first_name} ${last_name}`}</div>
         <div className={styles.companyName}>{team}</div>
