@@ -51,7 +51,10 @@ export class SessionStore {
       }
       this.initialize();
     }
-  });
+  }).catch(e => this.error = (e && e.message)
+    ? e.message
+    : 'Something went wrong. Please try again later.'
+  );
 
   logout = () => php.get('/api/v1/logout')
   .then(() => {
