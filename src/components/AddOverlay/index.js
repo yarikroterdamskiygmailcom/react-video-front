@@ -1,13 +1,89 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
 import {Modal, Trimmer} from '..';
-import {isEmpty, isNumber, isEqual} from 'lodash-es';
+import {isEmpty, isNumber, pick, isEqual} from 'lodash-es';
 import {Toggle, Icon} from '../../atoms';
 import {StylePicker} from '../';
 import Slider from 'rc-slider';
 import classNames from 'classnames';
 import '!style-loader!css-loader!rc-slider/assets/index.css';
 import {php} from '../../stores';
+
+class LowerThird extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidUpdate(prevProps) {
+    !isEqual(prevProps, this.props) && isEqual(prevProps.text && this.props.text) && this.updateLowerThird();
+  }
+
+  updateLowerThird = () => {
+    const {video, text, logo, side, style} = this.props;
+    php.post('api/v1/lowerthird', {
+      type: 'lowerthird',
+      video_id: video.video_id,
+      text,
+      logo,
+      placement: side,
+      style
+    }).then(res => this.setState({lowerThird: `${res.srcbase64}`, lowerThirdFile: res.file}));
+  }
+
+  onChange = changes => this.props.onChange(changes);
+
+  setText = e => this.props.onChange({text: e.target.value})
+
+  setStyle = style => this.onChange({style})
+
+  toggleSide = () => this.onChange({side: this.props.side === 'left' ? 'right' : 'left'})
+
+  toggleEmphasize = () => this.onChange({emphasize: !this.props.emphasize})
+
+  toggleLogo = () => this.onChange({logo: !this.props.logo})
+
+  renderRadio = value => (
+    <div
+      className={classNames(styles.radioButton, value === this.props.side && styles.active)}
+      onClick={this.toggleSide}
+    >
+      {value}
+    </div>
+  )
+
+  render() {
+    const {side, text, style, emphasize, logo, thumb} = this.props;
+    const {lowerThird} = this.state;
+    return (
+      <div className={styles.lowerThird}>
+        <div className={styles.lowerThirdBox}>
+          {thumb}
+          <img
+            className={styles.lowerThirdThumb}
+            style={side === 'left' ? {left: 0} : {right: 0}}
+            src={lowerThird}
+          />
+        </div>
+        <div className={styles.label}>Text</div>
+        <textarea className={styles.textarea} value={text} onChange={this.setText} onBlur={this.updateLowerThird}/>
+        <div className={styles.label}>Style</div>
+        <StylePicker
+          className={styles.stylePicker}
+          onSelect={this.setStyle}
+          selected={style}
+        />
+        <Toggle className={styles.toggle} label="Emphasize first line" value={emphasize} onChange={this.toggleEmphasize} />
+        <Toggle className={styles.toggle} label="Use Logo" value={logo} onChange={this.toggleLogo} />
+        <div>Lower Third side</div>
+        <div className={styles.radioRow}>
+          {this.renderRadio('left')}
+          {this.renderRadio('right')}
+        </div>
+      </div>
+    );
+  }
+}
 
 export default class AddOverlay extends Component {
   constructor(props) {
@@ -28,23 +104,7 @@ export default class AddOverlay extends Component {
     };
   }
 
-  updateLowerThird = () => {
-    php.post('api/v1/lowerthird', {
-      type: 'lowerthird',
-      video_id: this.props.video.video_id,
-      text: this.state.text,
-      logo: this.state.logo,
-      placement: this.state.side,
-      style: this.state.style
-
-      //Fuck you pepijn
-    }).then(res => this.setState({lowerThird: `${res.srcbase64}`, lowerThirdFile: res.file}));
-  }
-
-  goToStep = step => () => {
-    step === 'lowerThird' && this.updateLowerThird();
-    this.setState({step});
-  }
+  goToStep = step => () => this.setState({step});
 
   setSelectedType = type => () => this.setState({selectedType: type})
 
@@ -149,20 +209,6 @@ export default class AddOverlay extends Component {
     </div>
   )
 
-  renderRadio = value => (
-    <div
-      className={classNames(
-        styles.radioButton,
-        value === this.state.side && styles.active
-      )}
-      onClick={() =>
-        this.setState({side: this.state.side === 'left' ? 'right' : 'left'})
-        || this.updateLowerThird()}
-    >
-      {value}
-    </div>
-  )
-
   generateOverlay = () => {
     const {selectedType, vertical, emphasize, text} = this.state;
     const textLines = text.split(/\r?\n/);
@@ -193,15 +239,17 @@ export default class AddOverlay extends Component {
     fontFamily: this.state.style.font
   } : {}
 
-  toggleEmphasize = () => this.setState({emphasize: !this.state.emphasize}, this.updateLowerThird)
+  toggleEmphasize = () => this.setState({emphasize: !this.state.emphasize})
 
-  toggleLogo = () => this.setState({logo: !this.state.logo}, this.updateLowerThird)
+  toggleLogo = () => this.setState({logo: !this.state.logo})
 
   setVertical = val => this.setState({vertical: val})
 
   setStyle = style => this.setState({style})
 
   handleTrimmer = ([start, stop]) => this.setState({inpoint: start, outpoint: stop})
+
+  updateLowerThird = lowerThird => this.setState(lowerThird)
 
   generateContent = step => {
     const {video} = this.props;
@@ -244,31 +292,12 @@ export default class AddOverlay extends Component {
         </div>;
 
       case 'lowerThird':
-        return <div className={styles.lowerThird}>
-          <div className={styles.lowerThirdBox}>
-            {thumb}
-            <img
-              className={styles.lowerThirdThumb}
-              style={this.state.side === 'left' ? {left: 0} : {right: 0}}
-              src={this.state.lowerThird}
-            />
-          </div>
-          <div className={styles.label}>Text</div>
-          {textarea({onBlur: this.updateLowerThird})}
-          <div className={styles.label}>Style</div>
-          <StylePicker
-            className={styles.stylePicker}
-            onSelect={this.setStyle}
-            selected={this.state.style}
-          />
-          <Toggle className={styles.toggle} label="Emphasize first line" value={emphasize} onChange={this.toggleEmphasize} />
-          <Toggle className={styles.toggle} label="Use Logo" value={logo} onChange={this.toggleLogo} />
-          <div>Lower Third side</div>
-          <div className={styles.radioRow}>
-            {this.renderRadio('left')}
-            {this.renderRadio('right')}
-          </div>
-        </div>;
+        return <LowerThird
+          onChange={this.updateLowerThird}
+          video={video}
+          thumb={thumb}
+          {...pick(this.state, ['side', 'text', 'emphasize', 'logo', 'style'])}
+        />;
 
       case 'text':
         return <div className={styles.text}>
