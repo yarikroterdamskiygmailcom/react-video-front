@@ -72,8 +72,8 @@ export class VlogEditorStore {
       if (
         (mediaObj.mediatype === 'crossfade'
           && (
-            (media[i - 1].outpoint - media[i - 1].inpoint) < mediaObj.duration / 2
-            || (media[i + 1].outpoint - media[i + 1].inpoint) < mediaObj.duration / 2
+            (media[i - 1] && media[i - 1].outpoint - media[i - 1].inpoint) < mediaObj.duration / 2
+            || (media[i + 1] && media[i + 1].outpoint - media[i + 1].inpoint) < mediaObj.duration / 2
           )
         )
       ) {
