@@ -112,10 +112,17 @@ export default class Customize extends Component {
     }
   }
 
-  renderHeader = type => (
-    <div className={styles.header} onClick={this.toggleSegment(type)}>
-      <div>{`${type} Assets`}</div>
-      <div className={styles.upload} id={`${type.toLowerCase()}upload`}>Upload +</div>
+  renderPersonalHeader = () => (
+    <div className={styles.header} onClick={this.toggleSegment('personal')}>
+      <div>Personal Assets</div>
+      <div className={styles.upload} id="personalupload">Upload +</div>
+    </div>
+  )
+
+  renderTeamHeader = () => (
+    <div className={styles.header} onClick={this.toggleSegment('team')}>
+      <div>Team Assets</div>
+      {this.props.session.userType === 'teamManager' && <div className={styles.upload} id="teamupload">Upload +</div>}
     </div>
   )
 
@@ -222,7 +229,7 @@ export default class Customize extends Component {
 
     return (
       <div className={styles.container}>
-        <Segment title={this.renderHeader('personal')} hideChildren={!personalOpen}>
+        <Segment title={this.renderPersonalHeader()} hideChildren={!personalOpen}>
           <Carousel
             title="Personal Videos"
             items={personalVideos}
@@ -243,7 +250,7 @@ export default class Customize extends Component {
           />
           {this.renderStyles(personalStyles, 'personal')}
         </Segment>
-        <Segment title={this.renderHeader('team')} hideChildren={!teamOpen} condition={userType === 'teamManager'}>
+        <Segment title={this.renderTeamHeader()} hideChildren={!teamOpen} condition={userType === 'teamManager'}>
           <Carousel
             title="Team Videos"
             items={teamVideos}
