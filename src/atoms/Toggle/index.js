@@ -11,12 +11,12 @@ export default class Toggle extends Component {
     render() {
       const {label, desc, value, className} = this.props;
       return (
-        <div className={classNames(styles.container, className)}>
+        <div className={classNames(styles.container, className)} onClick={this.toggle}>
           <div>
             <div className={styles.label}>{label}</div>
             {desc && <div className={styles.desc}>{desc}</div>}
           </div>
-          <div className={classNames(styles.slider, value && styles.active)} onClick={this.toggle}>
+          <div className={classNames(styles.slider, value && styles.active)}>
             <div className={classNames(styles.ball, value && styles.active)}/>
           </div>
         </div>
