@@ -41,7 +41,6 @@ export default class Range extends Component {
     render() {
       const {value: [start, stop], limits: [min, max]} = this.props;
       const {width} = this.state;
-      console.log(start, stop);
       return (
         <div ref={this.ref} className={styles.container}>
           <div

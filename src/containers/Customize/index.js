@@ -9,6 +9,7 @@ import FontAwesome from 'react-fontawesome';
 import trash from '../../../assets/trash.png';
 
 @inject('assets')
+@inject('session')
 @observer
 export default class Customize extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export default class Customize extends Component {
   }
 
   componentDidMount() {
-    this.props.assets.initResumables();
+    this.props.assets.initResumables(this.props.session.userType === 'teamManager');
   }
 
   deleteAsset = id => this.props.assets.deleteAsset(id)
@@ -204,6 +205,7 @@ export default class Customize extends Component {
 
   render() {
     const {assetList, styleList} = this.props.assets;
+    const {userType} = this.props.session;
     const {overlayOpen, overlayContent, teamOpen, personalOpen} = this.state;
 
     const personalAssets = assetList.filter(asset => asset.access === 'personal');
@@ -241,7 +243,7 @@ export default class Customize extends Component {
           />
           {this.renderStyles(personalStyles, 'personal')}
         </Segment>
-        <Segment title={this.renderHeader('team')} hideChildren={!teamOpen}>
+        <Segment title={this.renderHeader('team')} hideChildren={!teamOpen} condition={userType === 'teamManager'}>
           <Carousel
             title="Team Videos"
             items={teamVideos}

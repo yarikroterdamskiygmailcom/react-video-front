@@ -24,7 +24,7 @@ export class ProfileStore {
 
   getTeam = () => userDB.post('api/v1/team/', {
     id: this.teamId
-  }).then(res => console.log(res))
+  })
 
 }
 

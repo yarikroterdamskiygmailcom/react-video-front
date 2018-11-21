@@ -4,25 +4,32 @@ import styles from './styles.scss';
 
 export default class Segment extends Component {
 
-    renderElement = child => (
-      ((child.props && child.props.noRender) || this.props.hideChildren)
-        ? null
-        : (
-          <div className={styles.element}>
-            {child}
-          </div>
-        )
-    )
+  static defaultProps = {
+    condition: true
+  }
 
-    render() {
-      const {title, hideChildren, children, className} = this.props;
-      return (
+  renderElement = child => {
+    if (!child || (child.props && child.props.noRender) || this.props.hideChildren) {
+      return null;
+    }
+    return (
+      <div className={styles.element}>
+        {child}
+      </div>
+    );
+  }
+
+  render() {
+    const {title, hideChildren, children, condition, className} = this.props;
+    return condition
+      ? (
         <div className={classNames(styles.container, className)}>
           <div className={styles.title}>{title}</div>
           <div className={classNames(styles.content, hideChildren && styles.hidden)}>
             {React.Children.map(children, this.renderElement)}
           </div>
         </div>
-      );
-    }
+      )
+      : null;
+  }
 }

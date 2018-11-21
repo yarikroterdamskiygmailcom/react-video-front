@@ -27,6 +27,7 @@ export default class Home extends Component {
 
   componentDidMount() {
     this.props.vlogs.loadVlogs().then(() => this.setState({pending: false}));
+    this.props.session.getUser();
   }
 
   viewDetails = vlog => {

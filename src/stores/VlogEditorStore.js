@@ -117,7 +117,6 @@ export class VlogEditorStore {
       const properties = ['duration', 'inpoint', 'outpoint', 'mediatype',
         'overlay', 'seconds', 'src', 'thumb', 'thumbbase64', 'video_id', 'videoname'];
       this.addMedia(pick(JSON.parse(response), properties));
-      console.log(this.media);
       this.uploading = false;
       this.resumable.cancel();
       this.progress = 0;

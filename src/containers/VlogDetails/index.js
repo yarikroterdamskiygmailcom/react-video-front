@@ -12,6 +12,7 @@ import classNames from 'classnames';
 @withRouter
 @inject('vlogEditor')
 @inject('project')
+@inject('session')
 @observer
 export default class VlogDetails extends Component {
 
@@ -61,6 +62,7 @@ export default class VlogDetails extends Component {
       status, access,
       exportUrl, download, shareWithTeam, setProperty
     } = this.props.project;
+    const {userType} = this.props.session;
     const {overlayActive, overlayContent} = this.state;
     return (
       <div className={styles.container}>
@@ -80,11 +82,11 @@ export default class VlogDetails extends Component {
             onChange={e => setProperty('description', e.target.value)}
             onBlur={updateDescription}
           />
-          {this.renderInfo('Shared with Team', access === 'team' ? 'Yes' : 'No')}
+          {userType !== 'regularUser' && this.renderInfo('Shared with Team', access === 'team' ? 'Yes' : 'No')}
         </Segment>
         <Segment title="Actions">
           {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right" />, this.editVlog)}
-          {this.renderInfo('Share with Team', <FontAwesome name="users" />, shareWithTeam, access === 'team')}
+          {userType !== 'regularUser' && this.renderInfo('Share with Team', <FontAwesome name="users" />, shareWithTeam, access === 'team')}
           {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exportUrl)}
           {this.renderInfo('Download', <FontAwesome name="download" />, download, !exportUrl)}
         </Segment>

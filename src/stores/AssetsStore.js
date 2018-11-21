@@ -29,33 +29,35 @@ export class AssetsStore {
 
   deleteAsset = id => php.delete(`/api/v1/assets/${id}`)
 
-  initResumables = () => {
+  initResumables = (includeTeam = true) => {
 
-    const teamResumable = new Resumable({
-      target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
-      query: {
-        SessionID: sessionStore.token,
-        action: 'uploadasset',
-        access: 'team'
-      },
-      filetype: ['mp4']
-    });
+    includeTeam && (() => {
+      const teamResumable = new Resumable({
+        target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
+        query: {
+          SessionID: sessionStore.token,
+          action: 'uploadasset',
+          access: 'team'
+        },
+        filetype: ['mp4']
+      });
 
-    teamResumable.assignBrowse(document.getElementById('teamupload'));
+      teamResumable.assignBrowse(document.getElementById('teamupload'));
 
-    teamResumable.on('fileAdded', () => {
-      teamResumable.upload();
-      this.uploading = true;
-    });
+      teamResumable.on('fileAdded', () => {
+        teamResumable.upload();
+        this.uploading = true;
+      });
 
-    teamResumable.on('fileSuccess', () => {
-      this.uploading = false;
-      this.loadAssets();
-      teamResumable.cancel();
-      this.progress = 0;
-    });
+      teamResumable.on('fileSuccess', () => {
+        this.uploading = false;
+        this.loadAssets();
+        teamResumable.cancel();
+        this.progress = 0;
+      });
 
-    teamResumable.on('progress', () => this.progress = teamResumable.progress() * 100);
+      teamResumable.on('progress', () => this.progress = teamResumable.progress() * 100);
+    })();
 
     const personalResumable = new Resumable({
       target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',

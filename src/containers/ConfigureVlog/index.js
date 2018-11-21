@@ -11,6 +11,7 @@ import {withRouter} from 'react-router';
 @withRouter
 @inject('vlogEditor')
 @inject('project')
+@inject('session')
 @observer
 export default class ConfigureVlog extends Component {
 
@@ -120,6 +121,7 @@ export default class ConfigureVlog extends Component {
 
   render() {
     const {title, description, filter, logoOverlay, customSubs, customEdit, access, setProperty, toggleProperty} = this.props.project;
+    const {userType} = this.props.session;
     const {orientation, renderUrl, rendering} = this.state;
     return (
       <div className={styles.container}>
@@ -138,7 +140,7 @@ export default class ConfigureVlog extends Component {
         <Segment title="Options">
           <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={() => toggleProperty('customSubs')} />
           <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={() => toggleProperty('customEdit')} />
-          <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={access === 'team'} onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')}/>
+          {userType !== 'regularUser' && <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={access === 'team'} onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')}/>}
         </Segment>
         <Segment className={classNames(styles.preview, renderUrl && styles.active)} title={renderUrl ? 'Preview' : ''}>
           {renderUrl && <Preview src={`${renderUrl}?${Math.random()}`} />}

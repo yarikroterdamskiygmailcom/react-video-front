@@ -8,6 +8,7 @@ export class SessionStore {
   @observable password = ''
   @observable error = null
   @observable token = null
+  @observable userType = null
 
   changeEmail = e => this.email = e.target.value
   changePassword = e => this.password = e.target.value
@@ -16,6 +17,9 @@ export class SessionStore {
     this.error = text;
     setTimeout(() => this.error = null, 5000);
   }
+
+  getUser = () => userDB.get('/api/v1/auth/user/')
+  .then(({user_type}) => this.userType = this.convertUserType(user_type))
 
   initialize = () => {
     this.token = localStorage.getItem('token') || Cookies.get('token') || null;
@@ -34,7 +38,7 @@ export class SessionStore {
     password: this.password,
     saveLogin: false
   }).then(res => {
-    const {access_token, error} = res;
+    const {access_token, error, user_type} = res;
     if (error) {
       this.error = error;
     } else {
@@ -59,4 +63,13 @@ export class SessionStore {
     }
     history.push('/');
   })
+
+  convertUserType = typeNumber => {
+    switch(typeNumber) {
+      case 1: return 'regularUser';
+      case 2: return 'teamManager';
+      case 3: return 'teamMember';
+      default: throw new Error();
+    }
+  }
 }
