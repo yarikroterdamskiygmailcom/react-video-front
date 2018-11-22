@@ -19,6 +19,10 @@ class LowerThird extends Component {
     !isEqual(prevProps, this.props) && isEqual(prevProps.text && this.props.text) && this.updateLowerThird();
   }
 
+  componentDidMount() {
+    this.updateLowerThird();
+  }
+
   updateLowerThird = () => {
     const {video, text, logo, side, style} = this.props;
     php.post('api/v1/lowerthird', {
