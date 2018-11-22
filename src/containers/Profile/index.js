@@ -7,12 +7,14 @@ import classNames from 'classnames';
 import {Overlay, Preview, Modal} from '../../components';
 import {withRouter} from 'react-router';
 import FontAwesome from 'react-fontawesome';
-import placeholder from './profile-placeholder.png';
+import avatarPlaceholder from './avatarPlaceholder.png';
+import iconPlaceholder from './iconPlaceholder.png';
 import GoogleLogin from 'react-google-login';
 import youtube from './youtube.png';
 
 @withRouter
 @inject('profile')
+@inject('session')
 @observer
 export default class Profile extends Component {
 
@@ -42,13 +44,16 @@ export default class Profile extends Component {
 
   renderPersona = () => {
     const {first_name, last_name, team} = this.props.profile.user;
-    const {avatar, logo} = this.props.profile;
+    const {avatar, logo, uploadAvatar, uploadIcon} = this.props.profile;
+    const {userType} = this.props.session;
     return (
       <div className={styles.persona}>
-        <div className={styles.avatar} style={{backgroundImage: `url(${avatar || placeholder})`}}>
-          {logo && <div className={styles.logoWrapper}>
-            <img className={styles.logo} src={logo} />
-          </div>}
+        <div className={styles.avatar} style={{backgroundImage: `url(${avatar || avatarPlaceholder})`}}>
+          <input className={styles.imageUpload} type="file" accept="image/*" onChange={uploadAvatar} />
+          <div className={styles.logoWrapper}>
+            {userType === 'teamManager' && <input className={styles.imageUpload} type="file" accept="image/*" onChange={uploadIcon}/>}
+            <img className={styles.logo} src={logo || iconPlaceholder} />
+          </div>
         </div>
         <div className={styles.fullName}>{`${first_name} ${last_name}`}</div>
         <div className={styles.companyName}>{team}</div>
