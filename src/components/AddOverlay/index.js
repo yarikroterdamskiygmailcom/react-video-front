@@ -270,7 +270,7 @@ export default class AddOverlay extends Component {
     switch (step) {
       case 'overview':
         return <div className={styles.overview}>
-          {!isEmpty(overlay) ? overlay.map(this.renderItem) : 'No overlay on this vid yet'}
+          {!isEmpty(overlay) ? overlay.map(this.renderItem) : 'No overlays on this video. Press "Add New..." to add one!'}
         </div>;
 
       case 'chooseType':
