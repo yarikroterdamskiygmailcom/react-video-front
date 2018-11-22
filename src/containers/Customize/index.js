@@ -193,7 +193,7 @@ export default class Customize extends Component {
   renderStyles = (styleList, group) => (
     <div className={styles.styleList}>
       <div className={styles.subHeader}>
-        <div>{`${group} Styles`}</div>
+        <div className={styles.header}>{`${group} Styles`}</div>
         <div className={styles.upload} onClick={this.openStyleEditor(group)}>Add +</div>
       </div>
       {!isEmpty(styleList) && <div className={styles.style}>
