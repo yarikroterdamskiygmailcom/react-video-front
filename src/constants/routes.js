@@ -74,7 +74,8 @@ const settings = {
   component: Settings,
   header: {
     left: backButton
-  }
+  },
+  navBar: true
 };
 
 const profile = {
@@ -141,7 +142,8 @@ const customize = {
   component: Customize,
   header: {
     left: backButton
-  }
+  },
+  navBar: true
 };
 
 const share = {
