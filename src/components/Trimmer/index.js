@@ -78,10 +78,6 @@ export default class Trimmer extends Component {
           <FontAwesome name="pause" onClick={this.pause}/>
           <FontAwesome name="play" onClick={this.play}/>
         </div>
-        <div className={styles.timestamps}>
-          <div>{start}</div>
-          <div>{stop}</div>
-        </div>
         <Range value={[start, stop]} limits={[0, max]} onChange={this.setTrim}/>
       </React.Fragment>
     );
