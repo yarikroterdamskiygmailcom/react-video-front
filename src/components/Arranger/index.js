@@ -46,7 +46,7 @@ export default class Arranger extends Component {
       func: this.props.vlogEditor.openTrimmer(i)
     }),
     lowerThird: i => ({
-      label: this.renderActionLabel('Ovelay', 'lowerThird'),
+      label: this.renderActionLabel('Overlay', 'lowerThird'),
       func: this.props.vlogEditor.openLowerThird(i)
     }),
     delete: i => ({

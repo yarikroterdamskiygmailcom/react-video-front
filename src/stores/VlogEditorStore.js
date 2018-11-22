@@ -207,7 +207,7 @@ export class VlogEditorStore {
     this.overlayContent = (
       <AddOverlay
         onClose={this.closeOverlay}
-        onSave={overlay => this.saveMedia(index)({overlay})}
+        onSave={this.saveMedia(index)}
         video={this.media[index]}
       />
     );

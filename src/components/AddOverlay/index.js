@@ -90,8 +90,9 @@ export default class AddOverlay extends Component {
     super(props);
     this.state = {
       step: 'overview',
+      overlay: props.video.overlay || [],
       selectedType: null,
-      editing: false,
+      editing: null,
       text: '',
       emphasize: false,
       logo: false,
@@ -102,6 +103,10 @@ export default class AddOverlay extends Component {
       inpoint: props.video.inpoint,
       outpoint: props.video.outpoint
     };
+  }
+
+  componentWillUnmount() {
+    this.props.onSave({overlay: this.state.overlay});
   }
 
   goToStep = step => () => this.setState({step});
@@ -152,10 +157,11 @@ export default class AddOverlay extends Component {
   }
   save = () => {
     if (isNumber(this.state.editing)) {
-      this.props.onSave(this.props.video.overlay.map((x, i) => i === this.state.editing ? this.buildOverlay() : x));
+      this.setState({overlay: this.state.overlay.map((x, i) => i === this.state.editing ? this.buildOverlay() : x)});
     } else {
-      this.props.onSave([...this.props.video.overlay.toJS(), this.buildOverlay()]);
+      this.setState({overlay: [this.buildOverlay()]});
     }
+    this.setState({editing: null});
     this.goToStep('overview')();
   }
 
@@ -176,13 +182,13 @@ export default class AddOverlay extends Component {
       case 'lowerThird':
       case 'text':
         return [
-          {label: 'Back', func: this.goToStep('chooseType')},
+          {label: 'Back', func: isNumber(this.state.editing) ? this.goToStep('overview') : this.goToStep('chooseType')},
           {label: 'Next', func: this.goToStep('preview')}
         ];
 
       case 'custom':
         return [
-          {label: 'Back', func: this.goToStep('chooseType')},
+          {label: 'Back', func: isNumber(this.state.editing) ? this.goToStep('overview') : this.goToStep('chooseType')},
           {label: '///', func: null}
         ];
 
@@ -196,16 +202,16 @@ export default class AddOverlay extends Component {
     }
   }
 
-  deleteOverview = index => e => {
+  deleteOverlay = index => e => {
     e.stopPropagation();
-    this.props.onSave(this.props.video.overlay.filter((x, i) => i !== index));
+    this.setState({overlay: this.state.overlay.filter((x, i) => index !== i)});
     this.forceUpdate();
   }
 
   renderItem = (item, i) => (
     <div key={item.text} className={styles.item} onClick={this.loadExisting(item, i)}>
       <div>{`${item.type} overlay`}</div>
-      <Icon className={styles.icon} name="trash" onClick={this.deleteOverview(i)}/>
+      <Icon className={styles.icon} name="trash" onClick={this.deleteOverlay(i)}/>
     </div>
   )
 
@@ -253,14 +259,14 @@ export default class AddOverlay extends Component {
 
   generateContent = step => {
     const {video} = this.props;
-    const {selectedType, text, emphasize, logo, vertical, horizontal, style} = this.state;
+    const {selectedType, text, emphasize, logo, vertical, horizontal, style, overlay} = this.state;
     const textarea = (props = {}) => <textarea className={styles.textarea} value={text} wrap="off" onChange={e => this.setState({text: e.target.value})} {...props} />;
     const thumb = <img className={styles.thumb} src={video.thumb} />;
 
     switch (step) {
       case 'overview':
         return <div className={styles.overview}>
-          {!isEmpty(video.overlay) ? video.overlay.map(this.renderItem) : 'No overlay on this vid yet'}
+          {!isEmpty(overlay) ? overlay.map(this.renderItem) : 'No overlay on this vid yet'}
         </div>;
 
       case 'chooseType':
