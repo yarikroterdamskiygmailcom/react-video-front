@@ -77,7 +77,7 @@ renderItem = (item, i) =>
   renderHint = () => (
     <div className={styles.hint}>
       <div>Start creating your first vlog here!</div>
-      <Icon className={styles.arrow} name="arrow"/>
+      <Icon className={styles.arrow} name="arrowDown"/>
     </div>
   )
 

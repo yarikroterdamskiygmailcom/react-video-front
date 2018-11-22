@@ -1,5 +1,6 @@
 import addVlog from './addVlog.svg';
-import arrow from './arrow.svg';
+import arrowCurved from './arrowCurved.svg';
+import arrowDown from './arrowDown.svg';
 import backdrop from './backdrop.svg';
 import branding from './branding.svg';
 import camera from './camera.svg';
@@ -20,7 +21,8 @@ import trash from './trash.svg';
 
 export default {
   addVlog,
-  arrow,
+  arrowCurved,
+  arrowDown,
   backdrop,
   branding,
   camera,

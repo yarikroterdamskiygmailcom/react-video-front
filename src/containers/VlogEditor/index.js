@@ -88,7 +88,7 @@ export default class VlogEditor extends Component {
   renderHint = () => (
     <React.Fragment>
       <Icon className={styles.backdrop} name="backdrop" />
-      <Icon className={styles.arrow} name="arrow"/>
+      <Icon className={styles.arrow} name="arrowCurved"/>
     </React.Fragment>
   )
 
