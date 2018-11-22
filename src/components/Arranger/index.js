@@ -145,6 +145,7 @@ export default class Arranger extends Component {
   SortableItem = SortableElement(({value, revealIndex}) => (
     <SwipeItem
       actions={{left: this.generateActions(value, revealIndex), right: [this.actions.delete(revealIndex)]}}
+      afterAction={this.resetReveal}
       onSwipe={this.setReveal(revealIndex)}
       reveal={revealIndex === this.state.revealIndex && this.state.revealSide}
       className={styles.item}

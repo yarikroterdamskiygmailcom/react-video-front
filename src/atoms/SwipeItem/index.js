@@ -5,12 +5,17 @@ import classNames from 'classnames';
 
 export default class SwipeItem extends Component {
 
+  callAction = func => () => {
+    func();
+    this.props.afterAction && this.props.afterAction();
+  }
+
     getActionsWidth = side => side === this.props.reveal
       ? `${this.props.actions[side].length * 80}px`
       : '0px'
 
       renderAction = (action, i) => (
-        <div key={i} className={styles.action} onClick={action.func}>
+        <div key={i} className={styles.action} onClick={this.callAction(action.func)}>
           {action.label}
         </div>
       )
