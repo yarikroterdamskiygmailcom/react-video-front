@@ -24,7 +24,7 @@ export default class Settings extends Component {
     return (
       <div className={styles.container}>
         {settings.map(group => (
-          <Segment title={group.title}>
+          <Segment key={group.title} title={group.title}>
             {group.settings.map(this.renderSetting)}
           </Segment>
         ))}
