@@ -13,3 +13,5 @@ export {default as Seperator} from './Seperator';
 export {default as SwipeItem} from './SwipeItem';
 export {default as Toast} from './Toast';
 export {default as Toggle} from './Toggle';
+export {default as VerticalRange} from './VerticalRange';
+export {default as VerticalSlider} from './VerticalSlider';

@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import styles from './styles.scss';
 import {Modal, Trimmer} from '..';
 import {isEmpty, isNumber, pick, isEqual} from 'lodash-es';
-import {Toggle, Icon} from '../../atoms';
+import {Toggle, Icon, VerticalSlider} from '../../atoms';
 import {StylePicker} from '../';
-import Slider from 'rc-slider';
 import classNames from 'classnames';
-import '!style-loader!css-loader!rc-slider/assets/index.css';
 import {php} from '../../stores';
 
 class LowerThird extends Component {
@@ -317,7 +315,8 @@ export default class AddOverlay extends Component {
               <div className={styles.textBar} style={{...this.generateStyles(), bottom: `${vertical}%`}}>
                 {text.split(/\r?\n/).map((line, i) => <div key={line} className={classNames(styles.textLine, (emphasize && i === 0) && styles.emphasizeFirst)}>{line}</div>)}
               </div>
-              <Slider className={styles.textSlider} value={vertical} min={0} max={100} step={1} vertical onChange={this.setVertical} />
+              {/* <Slider className={styles.textSlider} value={vertical} min={0} max={100} step={1} vertical onChange={this.setVertical} /> */}
+              <VerticalSlider className={styles.textSlider} value={vertical} limits={[0, 100]} onChange={this.setVertical}/>
             </div>
           </div>
           {textarea()}

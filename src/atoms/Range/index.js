@@ -9,7 +9,6 @@ export default class Range extends Component {
     super(props);
     this.ref = React.createRef();
     this.state = {
-      dragging: null,
       width: 1,
       startOffset: 0,
       stopOffset: 0
@@ -50,8 +49,6 @@ export default class Range extends Component {
   render() {
     const {value: [start, stop], limits: [min, max]} = this.props;
     const {width, startOffset, stopOffset} = this.state;
-    console.log('max', max);
-    console.log(start, stop);
     return (
       <div ref={this.ref} className={styles.container}>
         <div className={styles.timestamps}>
