@@ -18,10 +18,13 @@
         right: 0;
         background: black;
         pointer-events: none;
-        transition: width 0.2s;
+        transition: width 0.2s, border 0.2s;
+        border: none;
+        box-sizing: border-box;
     
         &.active {
             width: 100vw;
+            border: $grey solid 1px;
         }
     }
 }
