@@ -122,8 +122,6 @@ export class ProjectStore {
 
     updateDescription = () => this.updateProject(JSON.stringify({description: this.description}))
 
-    download = () => php.get(`/api/v1/vlog/download/${this.projectId}`)
-
 }
 
 export default ProjectStore;

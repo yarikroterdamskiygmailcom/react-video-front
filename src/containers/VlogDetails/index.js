@@ -49,6 +49,8 @@ export default class VlogDetails extends Component {
     overlayContent: null
   })
 
+  download = () => window.location = this.props.project.exportUrl
+
   renderInfo = (left, right, func, disabled) =>
     <div className={classNames(styles.row, disabled && styles.disabled)} onClick={func || noop}>
       <div className={styles.left}>{left}</div>
@@ -60,7 +62,7 @@ export default class VlogDetails extends Component {
       title, updateTitle,
       description, updateDescription,
       status, access,
-      exportUrl, download, shareWithTeam, setProperty
+      exportUrl, shareWithTeam, setProperty
     } = this.props.project;
     const {userType} = this.props.session;
     const {overlayActive, overlayContent} = this.state;
@@ -88,7 +90,7 @@ export default class VlogDetails extends Component {
           {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right" />, this.editVlog)}
           {userType !== 'regularUser' && this.renderInfo('Share with Team', <FontAwesome name="users" />, shareWithTeam, access === 'team')}
           {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exportUrl)}
-          {this.renderInfo('Download', <FontAwesome name="download" />, download, !exportUrl)}
+          {this.renderInfo('Download', <FontAwesome name="download" />, this.download, !exportUrl)}
         </Segment>
         <img className={styles.delete} src={trash} onClick={this.confirmDelete} />
         <Overlay active={overlayActive} onClose={this.closeOverlay}>
