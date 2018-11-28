@@ -49,6 +49,10 @@ export default class Arranger extends Component {
       label: this.renderActionLabel('Overlay', 'lowerThird'),
       func: this.props.vlogEditor.openLowerThird(i)
     }),
+    configure: i => ({
+      label: this.renderActionLabel('Configure', 'fade'),
+      func: this.props.vlogEditor.openConfigure(i)
+    }),
     delete: i => ({
       label: this.renderActionLabel('Delete', 'trash'),
       func: () => {
@@ -60,7 +64,7 @@ export default class Arranger extends Component {
 
   generateActions = (mediaObj, i) => {
     const actions = {
-      video: [this.actions.trim(i), this.actions.lowerThird(i)],
+      video: [this.actions.trim(i), this.actions.lowerThird(i), this.actions.configure(i)],
       fadein: [],
       fadeout: [],
       fadeoutin: [],
@@ -194,7 +198,8 @@ export default class Arranger extends Component {
         items={media}
         onSortEnd={onSortEnd}
         onSortStart={this.resetReveal}
-        useDragHandle={true}
+        useDragHandle
+        lockAxis="y"
       />
     );
   }

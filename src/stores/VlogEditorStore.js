@@ -1,5 +1,5 @@
 import React from 'react';
-import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Preview, EditFade} from '../components';
+import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Preview, EditFade, Configure} from '../components';
 import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
@@ -219,20 +219,31 @@ export class VlogEditorStore {
     );
   }
 
-  //Preview stuff
+  //Configure stuff
 
-  openPreview = i => () => {
-    const currentVideo = this.media[i];
+  openConfigure = index => () => {
     this.overlayActive = true;
     this.overlayContent = (
-      <Preview
-        src={currentVideo.src}
-        start={currentVideo.inpoint}
-        stop={currentVideo.outpoint}
+      <Configure
+        onClose={this.closeOverlay}
+        onSave={this.saveMedia(index)}
+        video={this.media[index]}
       />
     );
   }
 
+  //Preview stuff
+
+  openPreview = i => () => {
+    this.overlayActive = true;
+    this.overlayContent = (
+      <Preview
+        src={this.media[i].src}
+        start={this.media[i].inpoint}
+        stop={this.media[i].outpoint}
+      />
+    );
+  }
 }
 
 export default VlogEditorStore;

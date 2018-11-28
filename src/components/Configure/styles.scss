@@ -1,0 +1,22 @@
+.options {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $grey;
+}
+
+.option {
+    background: white;
+    border-top: 1px solid $grey;
+
+    .name {
+        color: $purple;
+    }
+
+    .desc {
+        
+    }
+
+    &:first-child {
+        border-top: none;
+    }
+}
