@@ -124,6 +124,12 @@ export class VlogEditorStore {
 
     this.resumable.on('progress', () => this.progress = this.resumable.progress() * 100);
 
+    this.resumable.on('error', () => {
+      sessionStore.showError('There was a problem during upload. Please check your internet connection or try again later.');
+      this.progress = 0;
+      this.resumable.cancel();
+    });
+
   }
 
   //fade stuff
