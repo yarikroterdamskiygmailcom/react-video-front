@@ -20,12 +20,9 @@
 
 .ball {
     position: absolute;
-    top: -10px;
-    width: 26px;
-    height: 26px;
-    border-radius: 13px;
-    background: white;
-    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    top: -22px;
+    width: 50px;
+    height: 50px;
 
     &.left {
         left: -13px;
@@ -33,6 +30,21 @@
 
     &.right {
         left: -26px;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        width: 25px;
+        height: 25px;
+        background: white;
+        border-radius: 13px;
+        box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
     }
 }
 
