@@ -70,6 +70,7 @@ renderItem = (item, i) =>
       src={item.thumb}
       onError={e => e.target.src = placeholder}
     />
+    <div className={styles.gradient}/>
     <div className={styles.title}>{item.title || 'Untitled'}</div>
     <div className={styles.duration}>{item.duration}</div>
   </div>
