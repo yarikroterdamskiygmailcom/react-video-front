@@ -65,6 +65,16 @@ export class TemplatesStore {
   next = () => {
     editor.media = this.media;
   }
+
+  getAsset = id => php.get(`/api/v1/assets/${id}`).then(res => res.asset)
+
+  handleAssets = () => {
+    Promise.all(this.activeTemplate.fields.map(field =>
+      field.type === 'asset'
+        ? this.getAsset(field.asset_id)
+        : null
+    )).then(resolved => this.media = resolved);
+  }
 }
 
 export default TemplatesStore;

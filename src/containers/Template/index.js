@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment, ProgressBar} from '../../atoms';
+import {Segment} from '../../atoms';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
@@ -17,6 +17,10 @@ export default class Template extends Component {
     this.resumableRefs = props.templates.activeTemplate.fields.map(() => React.createRef());
   }
 
+  componentWillMount() {
+    this.props.templates.handleAssets();
+  }
+
   componentDidMount() {
     this.props.templates.initResumables();
     this.resumableRefs.forEach(ref => ref.current.children[1].accept = 'video/*');
@@ -29,8 +33,9 @@ export default class Template extends Component {
 
   clearField = i => () => this.props.templates.media[i] = null
 
-  renderField = ({title, type, description, short_description}, i) => {
+  renderField = ({title, type, description, short_description, asset_id}, i) => {
     const progress = this.props.templates.uploading[i];
+    console.log(this.props.templates.media);
     return (
       <div key={title} className={classNames(styles.field)}>
         <div
@@ -45,7 +50,10 @@ export default class Template extends Component {
             ? <img
               className={styles.thumb}
               src={this.props.templates.media[i].thumb}
-              onClick={this.clearField(i)}
+              onClick={this.props.templates.media[i].mediatype === 'asset'
+                ? noop
+                : this.clearField(i)
+              }
             />
             : progress
               ? <div
