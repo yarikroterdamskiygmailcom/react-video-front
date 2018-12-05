@@ -114,14 +114,24 @@ export default class Customize extends Component {
 
   renderPersonalHeader = () => (
     <div className={styles.header} onClick={this.toggleSegment('personal')}>
-      <div>Personal Assets</div>
+      <div>
+        <div className={styles.collapser}>
+          <FontAwesome className={styles.icon} name={this.state.personalOpen ? 'minus' : 'plus'}/>
+        </div>
+        Personal Assets
+      </div>
       <div className={styles.upload} id="personalupload">Upload +</div>
     </div>
   )
 
   renderTeamHeader = () => (
     <div className={styles.header} onClick={this.toggleSegment('team')}>
-      <div>Team Assets</div>
+      <div>
+        <div className={styles.collapser}>
+          <FontAwesome className={styles.icon} name={this.state.teamOpen ? 'minus' : 'plus'}/>
+        </div>
+        Team Assets
+      </div>
       {this.props.session.userType === 'teamManager' && <div className={styles.upload} id="teamupload">Upload +</div>}
     </div>
   )

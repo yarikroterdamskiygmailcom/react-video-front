@@ -9,6 +9,29 @@
     justify-content: space-between;
     align-items: center;
     text-transform: capitalize;
+
+    > * {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .collapser {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 1px $grey solid;
+        background: white;
+        margin-right: 5px;
+    
+    
+        .icon {
+            color: $purple;
+        }
+    }
 }
 
 .upload {
@@ -143,6 +166,8 @@
         animation: wiggle 1s infinite;
     }
 }
+
+
 
 @keyframes wiggle {
     0% {transform: rotate(10deg);}
