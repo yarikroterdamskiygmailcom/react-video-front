@@ -28,12 +28,12 @@ export default class Trimmer extends Component {
 
   setTrim = ([start, stop]) => {
     this.props.noModal && this.props.onChange([start, stop]);
+    const lastChanged = start === this.state.start ? 'stop' : 'start';
+    this.videoRef.current.currentTime = lastChanged === 'start' ? start : stop;
     this.setState({
       start,
       stop,
-      lastChanged: start === this.state.start ? 'stop' : 'start'
     });
-
   }
 
   modalActions = [
@@ -47,22 +47,14 @@ export default class Trimmer extends Component {
     }
   ]
 
-  preview = () => {
-    const {start, stop, lastChanged} = this.state;
-    if (lastChanged === 'start') {
-      this.videoRef.current.currentTime = start;
-      this.videoRef.current.play();
-    }
-
-    if (lastChanged === 'stop') {
-      this.videoRef.current.currentTime = stop;
-      this.videoRef.current.pause();
-    }
-  }
-
   pause = () => this.videoRef.current.pause()
 
-  play = () => this.videoRef.current.play()
+  play = () => {
+    this.videoRef.current.currentTime = this.state.start;
+    this.videoRef.current.play();
+  }
+
+  limitVideo = e => e.target.currentTime >= this.state.stop && this.pause()
 
   render() {
     const {video, noModal} = this.props;
@@ -71,7 +63,7 @@ export default class Trimmer extends Component {
     const content = (
       <React.Fragment>
         <div className={styles.videoContainer}>
-          <video className={styles.video} ref={this.videoRef} src={`${video.src}#t=${start},${stop}`} playsInline/>
+          <video className={styles.video} ref={this.videoRef} src={video.src} playsInline onTimeUpdate={this.limitVideo}/>
           {this.props.children}
         </div>
         <div className={styles.controls}>
