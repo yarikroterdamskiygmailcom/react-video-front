@@ -22,15 +22,34 @@ export default class Range extends Component {
   clearOffsets = () => this.setState({startOffset: 0, stopOffset: 0})
 
   swiping = index => (e, deltaX) => {
+    const {value: [start, stop], limits: [min, max]} = this.props;
+    const {startOffset, stopOffset, width} = this.state;
+    const adjustedDeltaX = deltaX / width * max;
+
     index === 0
-      ? this.setState({startOffset: deltaX})
-      : this.setState({stopOffset: deltaX});
+
+      ? start - adjustedDeltaX < stop
+      && start - adjustedDeltaX > min
+      && start - adjustedDeltaX < max
+      && this.setState({startOffset:  deltaX})
+
+      : stop - adjustedDeltaX > start
+      && stop - adjustedDeltaX > min
+      && stop - adjustedDeltaX < max
+      && this.setState({stopOffset: deltaX});
   }
 
   onChange = index => (e, deltaX) => {
     const {value: [start, stop], limits: [min, max]} = this.props;
     const {width} = this.state;
     const adjustedDeltaX = deltaX / width * max;
+
+    this.clearOffsets();
+
+    if (index === 0 && start - adjustedDeltaX > stop
+      || index === 1 && stop - adjustedDeltaX < start) {
+      return;
+    }
 
     if (index === 0 && start - adjustedDeltaX < min) {
       this.props.onChange([min, stop]);
@@ -41,8 +60,6 @@ export default class Range extends Component {
     } else if (index === 1) {
       this.props.onChange([start, stop - adjustedDeltaX]);
     }
-
-    this.clearOffsets();
 
   }
 
