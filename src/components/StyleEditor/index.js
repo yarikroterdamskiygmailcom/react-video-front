@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Modal} from '../';
 import styles from './styles.scss';
 import {Dropdown, Input} from '../../atoms';
-import {SketchPicker} from 'react-color';
+import {ColorPicker} from '../../components';
 import {pick} from 'lodash-es';
 
 const fonts = [
@@ -28,9 +28,9 @@ export default class StyleEditor extends Component {
 
   setName = e => this.setState({name: e.target.value})
 
-  setTextColor = e => this.setState({textColor: e.hex})
+  setTextColor = color => this.setState({textColor: color})
 
-  setBackgroundColor = e => this.setState({backgroundColor: e.hex})
+  setBackgroundColor = color => this.setState({backgroundColor: color})
 
   setFont = font => () => this.setState({font})
 
@@ -83,10 +83,8 @@ export default class StyleEditor extends Component {
           >
             {fonts.map(this.renderFont)}
           </Dropdown>
-          <div className={styles.label}>Text Color</div>
-          <SketchPicker color={textColor} onChange={this.setTextColor} width="calc(100% - 20px)"/>
-          <div className={styles.label}>Background Color</div>
-          <SketchPicker color={backgroundColor} onChange={this.setBackgroundColor} width="calc(100% - 20px)"/>
+          <ColorPicker className={styles.colorPicker} name="Text Color" value={textColor} onChange={this.setTextColor}/>
+          <ColorPicker className={styles.colorPicker} name="Background Color" value={backgroundColor} onChange={this.setBackgroundColor}/>
         </Modal>
       );
     }

@@ -1,7 +1,6 @@
 export {default as Button} from './Button';
 export {default as Carousel} from './Carousel';
 export {default as Checkbox} from './Checkbox';
-export {default as ColorPicker} from './ColorPicker';
 export {default as Dropdown} from './Dropdown';
 export {default as Icon} from './Icon';
 export {default as Input} from './Input';
