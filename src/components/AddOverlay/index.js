@@ -14,7 +14,10 @@ class LowerThird extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    !isEqual(prevProps, this.props) && isEqual(prevProps.text && this.props.text) && this.updateLowerThird();
+    if(!isEqual(prevProps.text, this.props.text)) {
+      return;
+    }
+    prevProps.logo !== this.props.logo && this.updateLowerThird();
   }
 
   componentDidMount() {
