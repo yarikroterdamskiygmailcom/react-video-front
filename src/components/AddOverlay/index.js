@@ -45,17 +45,19 @@ class LowerThird extends Component {
 
   toggleLogo = () => this.onChange({logo: !this.props.logo})
 
-  renderRadio = value => (
+  toggleAnimation = () => this.onChange({animation: this.props.animation === 'fade' ? 'slide' : 'fade'})
+
+  renderRadio = (label, condition, func) => (
     <div
-      className={classNames(styles.radioButton, value === this.props.side && styles.active)}
-      onClick={this.toggleSide}
+      className={classNames(styles.radioButton, condition && styles.active)}
+      onClick={func}
     >
-      {value}
+      {label}
     </div>
   )
 
   render() {
-    const {side, text, style, emphasize, logo, thumb} = this.props;
+    const {side, animation, text, style, emphasize, logo, thumb} = this.props;
     const {lowerThird} = this.state;
     return (
       <div className={styles.lowerThird}>
@@ -68,7 +70,7 @@ class LowerThird extends Component {
           />
         </div>
         <div className={styles.label}>Text</div>
-        <textarea className={styles.textarea} value={text} onChange={this.setText} onBlur={this.updateLowerThird}/>
+        <textarea className={styles.textarea} value={text} onChange={this.setText} onBlur={this.updateLowerThird} />
         <div className={styles.label}>Style</div>
         <StylePicker
           className={styles.stylePicker}
@@ -79,8 +81,13 @@ class LowerThird extends Component {
         <Toggle className={styles.toggle} label="Use Logo" value={logo} onChange={this.toggleLogo} />
         <div>Lower Third side</div>
         <div className={styles.radioRow}>
-          {this.renderRadio('left')}
-          {this.renderRadio('right')}
+          {this.renderRadio('left', side === 'left', this.toggleSide)}
+          {this.renderRadio('right', side === 'right', this.toggleSide)}
+        </div>
+        <div>Animation</div>
+        <div className={styles.radioRow}>
+          {this.renderRadio('fade', animation === 'fade', this.toggleAnimation)}
+          {this.renderRadio('slide', animation === 'slide', this.toggleAnimation)}
         </div>
       </div>
     );
@@ -102,6 +109,7 @@ export default class AddOverlay extends Component {
       vertical: 50,
       horizontal: 50,
       side: 'right',
+      animation: 'fade',
       inpoint: props.video.inpoint,
       outpoint: props.video.outpoint
     };
@@ -125,7 +133,9 @@ export default class AddOverlay extends Component {
   }
 
   buildOverlay = () => {
-    const {selectedType, text, emphasize, side, logo, vertical, horizontal, inpoint, outpoint, lowerThirdFile} = this.state;
+    const {selectedType, text, emphasize, side, animation,
+      logo, vertical, horizontal, inpoint, outpoint, lowerThirdFile} = this.state;
+
     switch (selectedType) {
       case 'lowerThird':
         return {
@@ -133,6 +143,7 @@ export default class AddOverlay extends Component {
           text,
           emphasize,
           placement: side,
+          animation,
           logo,
           inpoint,
           outpoint,
@@ -213,7 +224,7 @@ export default class AddOverlay extends Component {
   renderItem = (item, i) => (
     <div key={item.text} className={styles.item} onClick={this.loadExisting(item, i)}>
       <div>{`${item.type} overlay`}</div>
-      <Icon className={styles.icon} name="trash" onClick={this.deleteOverlay(i)}/>
+      <Icon className={styles.icon} name="trash" onClick={this.deleteOverlay(i)} />
     </div>
   )
 
@@ -304,7 +315,7 @@ export default class AddOverlay extends Component {
           onChange={this.updateLowerThird}
           video={video}
           thumb={thumb}
-          {...pick(this.state, ['side', 'text', 'emphasize', 'logo', 'style'])}
+          {...pick(this.state, ['side', 'animation', 'text', 'emphasize', 'logo', 'style'])}
         />;
 
       case 'text':
@@ -316,7 +327,7 @@ export default class AddOverlay extends Component {
                 {text.split(/\r?\n/).map((line, i) => <div key={line} className={classNames(styles.textLine, (emphasize && i === 0) && styles.emphasizeFirst)}>{line}</div>)}
               </div>
               {/* <Slider className={styles.textSlider} value={vertical} min={0} max={100} step={1} vertical onChange={this.setVertical} /> */}
-              <VerticalSlider className={styles.textSlider} value={vertical} limits={[0, 100]} onChange={this.setVertical}/>
+              <VerticalSlider className={styles.textSlider} value={vertical} limits={[0, 100]} onChange={this.setVertical} />
             </div>
           </div>
           {textarea()}
