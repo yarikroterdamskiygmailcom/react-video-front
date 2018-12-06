@@ -19,7 +19,7 @@ export class SessionStore {
   }
 
   getUser = () => userDB.get('/api/v1/auth/user/')
-  .then(({user_type}) => this.userType = this.convertUserType(user_type))
+  .then(user => this.userType = this.convertUserType(user.user_type))
 
   initialize = () => {
     this.token = localStorage.getItem('token') || Cookies.get('token') || null;

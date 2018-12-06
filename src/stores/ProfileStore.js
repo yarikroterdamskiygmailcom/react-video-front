@@ -12,7 +12,7 @@ export class ProfileStore {
   changeFirstName = e => this.firstName = e.target.value
   changelastName = e => this.lastName = e.target.value
 
-  loadPersona = () => php.get('/api/v1/styles')
+  loadPersona = () => php.get('/api/v1/user/me')
   .then(res => {
     this.avatar = res.avatar;
     this.logo = res.logo;
@@ -44,6 +44,8 @@ export class ProfileStore {
       .then(this.loadPersona);
     }
   }
+
+  getAvatar = userId => php.get(`/api/v1/user/avatar/${userId}`).then(res => res.avatar)
 
 }
 

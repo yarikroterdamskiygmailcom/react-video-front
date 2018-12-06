@@ -108,14 +108,14 @@ export class ProjectStore {
           : mediaObj))
     })
 
-    updateProject = changes => php.post(`/api/v1/vlog/${this.projectId}`, {...changes})
+    updateProject = changes => php.post(`/api/v1/vlog/${this.projectId}`, changes)
 
     deleteProject = () => php.delete(`/api/v1/vlog/${this.projectId}`).then(this.clearProject)
 
     renderProject = orientation => php.post(`/api/v1/vlog/render/${this.projectId}`, {orientation})
 
     shareWithTeam = () => this.access !== 'team'
-    && this.updateProject(JSON.stringify({access: 'team'}))
+    && this.updateProject({access: 'team'})
     .then(() => this.access = 'team')
 
     updateTitle = () => this.updateProject(JSON.stringify({title: this.title}))
