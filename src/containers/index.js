@@ -1,6 +1,9 @@
+export {default as About} from './About';
 export {default as App} from './App';
 export {default as ConfigureVlog} from './ConfigureVlog';
+export {default as Contact} from './Contact';
 export {default as Customize} from './Customize';
+export {default as FAQ} from './FAQ';
 export {default as ForgotPassword} from './ForgotPassword';
 export {default as Home} from './Home';
 export {default as Login} from './Login';
@@ -12,5 +15,7 @@ export {default as RenderVlog} from './RenderVlog';
 export {default as Settings} from './Settings';
 export {default as Share} from './Share';
 export {default as Template} from './Template';
+export {default as TemplateEditor} from './TemplateEditor';
+export {default as TemplateManager} from './TemplateManager';
 export {default as VlogEditor} from './VlogEditor';
 export {default as VlogDetails} from './VlogDetails';

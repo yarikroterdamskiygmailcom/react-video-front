@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink, Redirect} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import FontAwesome from 'react-fontawesome';
-import {Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template, Customize, Share} from '../containers';
+import {Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template, Customize, Share, TemplateManager, TemplateEditor, FAQ, About, Contact} from '../containers';
 import {DeleteVlog} from '../components';
 import styles from './styles.scss';
 
@@ -155,8 +155,53 @@ const share = {
   }
 };
 
+const templateManager = {
+  name: 'Template Manager',
+  path: '/template-manager',
+  component: TemplateManager,
+  header: {
+    left: backButton
+  }
+};
+
+const templateEditor = {
+  name: 'Template Editor',
+  path: '/template-editor',
+  component: TemplateEditor,
+  header: {
+    left: backButton
+  }
+};
+
+const faq = {
+  name: 'FAQ',
+  path: '/faq',
+  component: FAQ,
+  header: {
+    left: backButton
+  }
+};
+
+const about = {
+  name: 'About Us',
+  path: '/about',
+  component: About,
+  header: {
+    left: backButton
+  }
+};
+
+const contact = {
+  name: 'Contact Us',
+  path: '/contact',
+  component: Contact,
+  header: {
+    left: backButton
+  }
+};
+
 export const navBarRoutes = [home, editVlog, profile];
 
-const allRoutes = [notFound, login, logout, forgotPassword, home, editVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails, template, customize, share];
+const allRoutes = [notFound, login, logout, forgotPassword, home, editVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails, template, customize, share, templateManager, templateEditor, faq, about, contact];
 
 export default allRoutes;
