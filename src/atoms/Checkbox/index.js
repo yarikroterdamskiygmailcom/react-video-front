@@ -5,10 +5,12 @@ import FontAwesome from 'react-fontawesome';
 
 export default class Checkbox extends Component {
 
+  onChange = () => this.props.onChange()
+
   render() {
-    const {value, onChange, className} = this.props;
+    const {value, className, ...props} = this.props;
     return (
-      <div className={classNames(styles.container, value && styles.active, className)} onClick={onChange}>
+      <div className={classNames(styles.container, value && styles.active, className)} onClick={this.onChange} {...props}>
         <FontAwesome className={classNames(styles.check, value && styles.active)} name="check"/>
       </div>
     );
