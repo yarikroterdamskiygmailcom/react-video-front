@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink, Redirect} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import FontAwesome from 'react-fontawesome';
-import {Home, ForgotPassword, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template, Customize, Share, TemplateManager, TemplateEditor, FAQ, About, Contact} from '../containers';
+import {Home, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template, Customize, Share, TemplateManager, TemplateEditor, FAQ, About, Contact} from '../containers';
 import {DeleteVlog} from '../components';
 import styles from './styles.scss';
 
@@ -28,15 +28,6 @@ const logout = {
   name: 'Logout',
   path: '/logout',
   component: Logout
-};
-
-const forgotPassword = {
-  name: 'Forgot Password',
-  path: '/forgot-password',
-  component: ForgotPassword,
-  header: {
-    left: backButton
-  }
 };
 
 const home = {
@@ -202,6 +193,6 @@ const contact = {
 
 export const navBarRoutes = [home, editVlog, profile];
 
-const allRoutes = [notFound, login, logout, forgotPassword, home, editVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails, template, customize, share, templateManager, templateEditor, faq, about, contact];
+const allRoutes = [notFound, login, logout, home, editVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails, template, customize, share, templateManager, templateEditor, faq, about, contact];
 
 export default allRoutes;

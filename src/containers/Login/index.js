@@ -25,7 +25,7 @@ class Login extends Component {
         <Input auth modal type="password" name="Password" value={password} onChange={changePassword}/>
         <Button className={styles.button} onClick={login} text="Login"/>
         {error && <div>{error}</div>}
-        <NavLink className={styles.link} to="/forgot-password">Forgot your password?</NavLink>
+        <a href="https://userdb.vlogahead.cloud/accounts/password/reset/">Forgot password?</a>
       </div>
     );
   }
