@@ -45,6 +45,10 @@ export default class Arranger extends Component {
       label: this.renderActionLabel('Trim', 'trim'),
       func: this.props.vlogEditor.openTrimmer(i)
     }),
+    split: i => ({
+      label: 'Split',
+      func: this.props.vlogEditor.openSplitter(i)
+    }),
     lowerThird: i => ({
       label: this.renderActionLabel('Overlay', 'lowerThird'),
       func: this.props.vlogEditor.openLowerThird(i)
@@ -64,7 +68,7 @@ export default class Arranger extends Component {
 
   generateActions = (mediaObj, i) => {
     const actions = {
-      video: [this.actions.trim(i), this.actions.lowerThird(i), this.actions.configure(i)],
+      video: [this.actions.trim(i), this.actions.lowerThird(i), this.actions.configure(i), this.actions.split(i)],
       fadein: [],
       fadeout: [],
       fadeoutin: [],
@@ -87,7 +91,7 @@ export default class Arranger extends Component {
             <div className={styles.fileMeta}>
               <div className={styles.fileName}>{videoname}</div>
               <div className={styles.fileProp}>
-                <div className={classNames(styles.duration, trimmed && styles.strike)}>{duration}</div>
+                <div className={classNames(styles.duration, trimmed && styles.strike)}>{formatTime(outpoint - inpoint)}</div>
                 {trimmed &&
                   <div className={styles.row}>
                     <div className={styles.duration}>{formatTime(outpoint - inpoint)}</div>

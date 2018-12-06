@@ -9,6 +9,7 @@ export {default as RadioButton} from './RadioButton';
 export {default as Range} from './Range';
 export {default as Segment} from './Segment';
 export {default as Seperator} from './Seperator';
+export {default as Slider} from './Slider';
 export {default as SwipeItem} from './SwipeItem';
 export {default as Toast} from './Toast';
 export {default as Toggle} from './Toggle';

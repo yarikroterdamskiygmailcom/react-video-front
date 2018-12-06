@@ -14,6 +14,7 @@ export {default as Modal} from './Modal';
 export {default as NavBar} from './NavBar';
 export {default as Overlay} from './Overlay';
 export {default as Preview} from './Preview';
+export {default as Splitter} from './Splitter';
 export {default as StyleEditor} from './StyleEditor';
 export {default as StylePicker} from './StylePicker';
 export {default as Toolbar} from './Toolbar';

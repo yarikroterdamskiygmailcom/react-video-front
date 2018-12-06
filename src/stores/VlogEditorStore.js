@@ -1,11 +1,11 @@
 import React from 'react';
-import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Preview, EditFade, Configure} from '../components';
+import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Preview, EditFade, Configure, Splitter} from '../components';
 import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
 import {sessionStore} from '../';
 import {php} from '.';
-import {head, last, pick} from 'lodash-es';
+import {head, last, pick, flatten} from 'lodash-es';
 
 export class VlogEditorStore {
   @observable media = []
@@ -43,6 +43,17 @@ export class VlogEditorStore {
   }
 
   saveMedia = index => changes => this.updateMedia(index, changes)
+
+  @action splitVideo = index => splitPoint => {
+    const video = this.media[index];
+    const newVideos = [
+      {...video, outpoint: splitPoint},
+      {...video, inpoint: splitPoint}
+    ];
+    this.media = flatten(
+      this.media.map((mediaObj, i) => i === index ? newVideos : mediaObj)
+    );
+  }
 
   setOverlay = overlay => {
     this.overlayActive = true;
@@ -186,6 +197,19 @@ export class VlogEditorStore {
       <Trimmer
         onClose={this.closeOverlay}
         onSave={this.saveMedia(index)}
+        video={this.media[index]}
+      />
+    );
+  }
+
+  //Splitter stuff
+
+  openSplitter = index => () => {
+    this.overlayActive = true;
+    this.overlayContent = (
+      <Splitter
+        onClose={this.closeOverlay}
+        onSave={this.splitVideo(index)}
         video={this.media[index]}
       />
     );
