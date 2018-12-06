@@ -54,7 +54,7 @@ export default class Arranger extends Component {
       func: this.props.vlogEditor.openLowerThird(i)
     }),
     configure: i => ({
-      label: this.renderActionLabel('Configure', 'fade'),
+      label: this.renderActionLabel('More...', 'fade'),
       func: this.props.vlogEditor.openConfigure(i)
     }),
     delete: i => ({
@@ -68,7 +68,7 @@ export default class Arranger extends Component {
 
   generateActions = (mediaObj, i) => {
     const actions = {
-      video: [this.actions.trim(i), this.actions.lowerThird(i), this.actions.configure(i), this.actions.split(i)],
+      video: [this.actions.trim(i), this.actions.split(i), this.actions.configure(i)],
       fadein: [],
       fadeout: [],
       fadeoutin: [],

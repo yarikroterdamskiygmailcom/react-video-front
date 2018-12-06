@@ -1,5 +1,5 @@
 import React from 'react';
-import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Preview, EditFade, Configure, Splitter} from '../components';
+import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Blurring, Preview, EditFade, Configure, Splitter} from '../components';
 import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
@@ -232,10 +232,23 @@ export class VlogEditorStore {
 
   //Lower third stuff
 
-  openLowerThird = index => () => {
+  openAddOverlay = index => () => {
     this.overlayActive = true;
     this.overlayContent = (
       <AddOverlay
+        onClose={this.closeOverlay}
+        onSave={this.saveMedia(index)}
+        video={this.media[index]}
+      />
+    );
+  }
+
+  //Blurring
+
+  openBlurring = index => () => {
+    this.overlayActive = true;
+    this.overlayContent = (
+      <Blurring
         onClose={this.closeOverlay}
         onSave={this.saveMedia(index)}
         video={this.media[index]}
@@ -250,8 +263,7 @@ export class VlogEditorStore {
     this.overlayContent = (
       <Configure
         onClose={this.closeOverlay}
-        onSave={this.saveMedia(index)}
-        video={this.media[index]}
+        videoIndex={index}
       />
     );
   }

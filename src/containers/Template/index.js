@@ -35,7 +35,6 @@ export default class Template extends Component {
 
   renderField = ({title, type, description, short_description, asset_id}, i) => {
     const progress = this.props.templates.uploading[i];
-    console.log(this.props.templates.media);
     return (
       <div key={title} className={classNames(styles.field)}>
         <div

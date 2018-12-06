@@ -4,7 +4,7 @@ export {default as Hamburger} from './Hamburger';
 export {default as AddOverlay} from './AddOverlay';
 export {default as AddTitle} from './AddTitle';
 export {default as Arranger} from './Arranger';
-export {default as Blur} from './Blur';
+export {default as Blurring} from './Blurring';
 export {default as ColorPicker} from './ColorPicker';
 export {default as Configure} from './Configure';
 export {default as ConfirmationPrompt} from './ConfirmationPrompt';

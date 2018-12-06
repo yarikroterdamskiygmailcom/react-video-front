@@ -23,10 +23,8 @@ export default class Slider extends Component {
     const deltaPerPixel = (max - min) / width;
     const newOffset = -deltaX * deltaPerPixel;
     const newValue = newOffset + value;
-    console.log(newOffset, value, newValue);
 
     if(newValue > max || newValue < min) {
-      console.log('past limit');
       return;
     }
 
