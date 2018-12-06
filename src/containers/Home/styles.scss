@@ -1,6 +1,5 @@
 .container {
     background: white;
-    margin-bottom: $navbar-height;
 
     .searchButton {
         position: fixed;
@@ -36,6 +35,10 @@
     padding: 0 10px;
     background: #f9f9f9;
     padding-top: 10px;
+
+    &.noRender {
+        display: none;
+    }
 }
 
 .carousel {

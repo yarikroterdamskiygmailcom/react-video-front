@@ -7,11 +7,19 @@
 }
 
 .content {
-    height: 100%;
-    flex-grow: 1;
+    height: calc(100% - 102px);
     background: $background;
     overflow-y: auto;
     overflow-x: hidden;
+
+    > * {
+        position: relative;
+        min-height: 100%;
+    }
+    
+    &.noNavBar {
+        height: calc(100% - 51px);
+    }
 }
 
 .bottom {

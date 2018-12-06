@@ -4,6 +4,7 @@ import {Header, NavBar, Toolbar} from '../../components';
 import routes, {navBarRoutes} from '../../constants/routes';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
+import classNames from 'classnames';
 
 @withRouter
 @inject('session')
@@ -26,7 +27,7 @@ class App extends Component {
       <div className={styles.container}>
         {currentRouteObj.header && <Header routeObj={currentRouteObj} />}
         {error && <div className={styles.error}>{error}</div>}
-        <div className={styles.content}>
+        <div className={classNames(styles.content, !currentRouteObj.navBar && styles.noNavBar)}>
           {!authenticated && <Redirect to="/"/>}
           {this.renderAllRoutes()}
         </div>

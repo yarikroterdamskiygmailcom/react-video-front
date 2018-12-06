@@ -1,6 +1,5 @@
 .container {
     overflow: visible;
-    padding-bottom: 50px;
 }
 
 .header {
@@ -157,7 +156,7 @@
 }
 
 .trash {
-    position: absolute;
+    position: fixed;
     top: 10px;
     right: 10px;
     height: 25px;

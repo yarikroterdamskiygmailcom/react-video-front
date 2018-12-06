@@ -92,7 +92,7 @@ renderItem = (item, i) =>
         {/* Geen highlight voor nu */}
         {/* {!isEmpty(this.props.vlogEditor.media) && this.renderHighlight()} */}
         {this.state.pending && <FontAwesome className={styles.spinner} name="spinner"/>}
-        <div className={styles.carousels}>
+        <div className={classNames(styles.carousels, isEmpty(vlogs) && styles.noRender)}>
           <Carousel
             title="Saved Vlogs"
             items={vlogs.filter(vlog => ['new', 'saved'].includes(vlog.status))}
