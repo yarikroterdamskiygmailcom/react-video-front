@@ -1,0 +1,87 @@
+.tools {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.add {
+    background: $purple;
+    color: white;
+}
+
+.tool {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.options {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+
+    .option {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 10px;
+        background: white;
+        box-sizing: border-box;
+    }
+}
+
+.field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    box-sizing: border-box;
+    background: white;
+    border-bottom: 1px solid $grey;
+    width: 100%;
+    overflow-x: auto;
+
+    .icon {
+        display: flex;
+        justify-content: flex-start;
+        width: 8%;
+    }
+
+    .title {
+        width: 30%;
+        overflow: hidden;
+    }
+
+    .description {
+        width: 55%;
+        overflow: hidden;
+    }
+}
+
+.header {
+    @extend .field;
+    background: none;
+}
+
+.column {
+    text-transform: capitalize;
+}
+
+.swipeAction {
+    display: flex;
+    flex-direction: column;
+}

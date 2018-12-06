@@ -33,7 +33,7 @@ export default class Profile extends Component {
     });
   }
 
-  goToCustomize = () => this.props.history.push('/customize')
+  goTo = path => () => this.props.history.push(path)
 
   renderField = (left, right, func) => (
     <div className={styles.field} onClick={func || noop}>
@@ -63,11 +63,13 @@ export default class Profile extends Component {
 
   renderFields = () => {
     const {email, team} = this.props.profile.user;
+    const {userType} = this.props.session;
     return (
       <Segment>
         {this.renderField('E-mail', email)}
         {this.renderField('Account Type', team ? 'Team' : 'Personal')}
-        {this.renderField('Customize', <FontAwesome className={styles.icon} name="chevron-right" />, this.goToCustomize)}
+        {this.renderField('Customize', <FontAwesome className={styles.icon} name="chevron-right" />, this.goTo('/customize'))}
+        {userType === 'teamManager' && this.renderField('Manage Templates', <FontAwesome className={styles.icon} name="chevron-right" />, this.goTo('/template-manager'))}
       </Segment>
     );
   }
@@ -101,7 +103,6 @@ export default class Profile extends Component {
         {user && this.renderPersona()}
         {user && this.renderFields()}
         {user && this.renderLinks()}
-
       </div>
     );
   }

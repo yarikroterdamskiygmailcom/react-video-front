@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'mobx-react';
 import {Router} from 'react-router';
-import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, TemplatesStore, SettingsStore, ProjectStore} from './stores';
+import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, TemplateEditorStore, TemplatesStore, SettingsStore, ProjectStore} from './stores';
 import App from './containers/App';
 import {history} from './constants/routes';
 import './scss/main.scss';
 
 export const sessionStore = new SessionStore();
 const assetsStore = new AssetsStore();
+const templateEditorStore = new TemplateEditorStore();
 const profileStore = new ProfileStore();
 export const vlogEditorStore = new VlogEditorStore();
 const vlogsStore = new VlogsStore();
@@ -24,6 +25,7 @@ const stores = {
   session: sessionStore,
   vlogEditor: vlogEditorStore,
   vlogs: vlogsStore,
+  templateEditor: templateEditorStore,
   templates: templatesStore,
   settings: settingsStore,
   project: projectStore

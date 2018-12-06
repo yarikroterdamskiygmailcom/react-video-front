@@ -7,6 +7,7 @@ export {ProjectStore} from './ProjectStore';
 export {SessionStore} from './SessionStore';
 export {SettingsStore} from './SettingsStore';
 export {TemplatesStore} from './TemplatesStore';
+export {TemplateEditorStore} from './TemplateEditorStore';
 export {VlogEditorStore} from './VlogEditorStore';
 export {VlogsStore} from './VlogsStore';
 
