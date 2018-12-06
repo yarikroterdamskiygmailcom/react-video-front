@@ -51,6 +51,8 @@ export default class VlogDetails extends Component {
 
   download = () => window.location = this.props.project.exportUrl
 
+  sendDownload = () => this.props.project.sendDownload()
+
   renderInfo = (left, right, func, disabled) =>
     <div className={classNames(styles.row, disabled && styles.disabled)} onClick={func || noop}>
       <div className={styles.left}>{left}</div>
@@ -91,6 +93,7 @@ export default class VlogDetails extends Component {
           {userType !== 'regularUser' && this.renderInfo('Share with Team', <FontAwesome name="users" />, shareWithTeam, access === 'team')}
           {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exportUrl)}
           {this.renderInfo('Download', <FontAwesome name="download" />, this.download, !exportUrl)}
+          {this.renderInfo('Send me a download link', <FontAwesome name="envelope"/>, this.sendDownload, !exportUrl)}
         </Segment>
         <img className={styles.delete} src={trash} onClick={this.confirmDelete} />
         <Overlay active={overlayActive} onClose={this.closeOverlay}>
