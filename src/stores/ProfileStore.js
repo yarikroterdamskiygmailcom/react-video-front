@@ -39,8 +39,8 @@ export class ProfileStore {
 
   uploadIcon = e => {
     if(e.target.files) {
-      const icon = head(e.target.files);
-      php.post('/api/v1/team/icon', {icon})
+      const logo = head(e.target.files);
+      php.post('/api/v1/team/icon', {logo})
       .then(this.loadPersona);
     }
   }

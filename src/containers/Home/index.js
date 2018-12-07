@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {Carousel, Icon, Input} from '../../atoms';
-import {isEmpty} from 'lodash-es';
+import {isEmpty, uniq} from 'lodash-es';
 import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
 import placeholder from '../../../assets/placeholder.png';
@@ -29,12 +29,11 @@ export default class Home extends Component {
   componentDidMount() {
     this.props.vlogs.loadVlogs().then(() => {
       this.setState({pending: false});
-      this.props.vlogs.list.forEach(vlog => {
-        if(vlog.owner_id) {
-          this.props.profile.getAvatar(vlog.owner_id)
-          .then(avatar => this.setState({[`avatar-${vlog.owner_id}`]: avatar}));
-        }
-      });
+      const ids = this.props.vlogs.list.map(vlog => vlog.owner_id)
+      .filter(id => Boolean(id));
+      const uniqueIds = uniq(ids);
+      uniqueIds.forEach(id => this.props.profile.getAvatar(id)
+      .then(avatar => this.setState({[`avatar-${id}`]: avatar})));
     });
 
     this.props.session.getUser();
@@ -95,7 +94,7 @@ export default class Home extends Component {
       <div className={styles.gradient} />
       <div className={styles.title}>{item.title || 'Untitled'}</div>
       <div className={styles.duration}>{item.duration}</div>
-      <img className={styles.owner} src={this.state[`avatar-${item.owner_id}`]} />
+      <img className={styles.owner} src={this.state[`avatar-${item.owner_id}`] || placeholder} />
     </div>
   )
   renderHint = () => (
