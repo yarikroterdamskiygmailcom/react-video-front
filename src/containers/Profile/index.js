@@ -61,13 +61,19 @@ export default class Profile extends Component {
     );
   }
 
+  prettyUserType = userType => ({
+    regularUser: 'Regular User',
+    teamManager: 'Team Manager',
+    teamMember: 'Team Member'
+  })[userType]
+
   renderFields = () => {
-    const {email, team} = this.props.profile.user;
+    const {email} = this.props.profile.user;
     const {userType} = this.props.session;
     return (
       <Segment>
         {this.renderField('E-mail', email)}
-        {this.renderField('Account Type', team ? 'Team' : 'Personal')}
+        {this.renderField('Account Type', this.prettyUserType(userType))}
         {this.renderField('Customize', <FontAwesome className={styles.icon} name="chevron-right" />, this.goTo('/customize'))}
         {userType === 'teamManager' && this.renderField('Manage Templates', <FontAwesome className={styles.icon} name="chevron-right" />, this.goTo('/template-manager'))}
       </Segment>
