@@ -21,10 +21,12 @@
 .template {
     position: relative;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: space-evenly;
     background: white;
     width: 100%;
     overflow-x: auto;
+    padding: 10px;
 }
 
 .element {

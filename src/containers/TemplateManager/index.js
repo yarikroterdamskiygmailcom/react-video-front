@@ -58,7 +58,7 @@ export default class TemplateManager extends Component {
       afterAction={this.resetReveal}
     >
       <div>{template.title}</div>
-      {/* <div>Created by: {template.owner.name}</div> */}
+      <div>{`Created by: ${template.owner.first_name} ${template.owner.last_name}`}</div>
     </SwipeItem>
   )
 
