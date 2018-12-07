@@ -239,7 +239,10 @@ export default class Customize extends Component {
 
     return (
       <div className={styles.container}>
-        <Segment title={this.renderPersonalHeader()} hideChildren={!personalOpen}>
+        <Segment
+          title={this.renderPersonalHeader()}
+          hideChildren={!personalOpen}
+        >
           <Carousel
             title="Personal Videos"
             items={personalVideos}
@@ -260,7 +263,11 @@ export default class Customize extends Component {
           />
           {this.renderStyles(personalStyles, 'personal')}
         </Segment>
-        <Segment title={this.renderTeamHeader()} hideChildren={!teamOpen} condition={userType === 'teamManager'}>
+        <Segment
+          title={this.renderTeamHeader()}
+          hideChildren={!teamOpen}
+          condition={userType === 'teamManager'}
+        >
           <Carousel
             title="Team Videos"
             items={teamVideos}

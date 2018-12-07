@@ -62,6 +62,9 @@ export class TemplatesStore {
     project_id: this.projectId,
   }).then(res => res.templates);
 
+  deleteTemplate = id => php.delete(`/api/v1/templates/${id}`)
+  .then(this.loadTemplates)
+
   next = () => {
     editor.media = this.media;
   }

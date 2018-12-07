@@ -1,5 +1,32 @@
 .header {
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
+}
+
+.add {
+    padding: 5px;
+    color: white;
+    background: $purple;
+    border-radius: 5px;
+}
+
+.icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.template {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    background: white;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.element {
+    padding: 0;
 }

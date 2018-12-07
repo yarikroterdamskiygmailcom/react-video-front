@@ -13,7 +13,7 @@ export default class Segment extends Component {
       return null;
     }
     return (
-      <div className={styles.element}>
+      <div className={classNames(styles.element, this.props.elementClassName)}>
         {child}
       </div>
     );

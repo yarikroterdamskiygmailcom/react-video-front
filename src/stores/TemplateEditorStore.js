@@ -1,6 +1,6 @@
 import {observable, action} from 'mobx';
 import {omit} from 'lodash-es';
-import {php} from '.';
+import {php, userDB} from '.';
 
 export class TemplateEditorStore {
     @observable template = []
@@ -13,10 +13,12 @@ export class TemplateEditorStore {
 
     @action deleteField = index => this.template = this.template.filter((field, i) => i !== index)
 
-    saveTemplate = () => {
+    saveTemplate = async () => {
+      const me = await userDB.get('api/v1/auth/user/');
       const template = {
         title: 'New Template',
         fields: JSON.stringify(this.template.toJS().map(field => omit(field, ['icon']))),
+        owner: JSON.stringify(me)
       };
       return php.post('api/v1/templates', template).then(res => res.template_id);
     }
