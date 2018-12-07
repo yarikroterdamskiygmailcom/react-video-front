@@ -21,7 +21,7 @@ export default class Trimmer extends Component {
       ...this.props.video,
       inpoint: this.state.start,
       outpoint: this.state.stop,
-      trimmed: true
+      trimmed: this.state.stop < this.props.video.seconds
     });
     this.props.onClose();
   }
