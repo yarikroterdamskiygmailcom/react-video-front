@@ -14,10 +14,15 @@ export class VlogEditorStore {
   @observable overlayContent = null
   @observable uploading = false
   @observable progress = 0
+  @observable syncing = false
 
   //Editor stuff
 
-  syncMedia = () => php.post(`/api/v1/vlog/${this.projectId}`, {media: JSON.stringify(this.media.toJS())})
+  syncMedia = () => {
+    this.syncing = true;
+    return php.post(`/api/v1/vlog/${this.projectId}`, {media: JSON.stringify(this.media.toJS())})
+    .then(() => this.syncing = false);
+  }
 
   setMedia = media => this.media = media;
 

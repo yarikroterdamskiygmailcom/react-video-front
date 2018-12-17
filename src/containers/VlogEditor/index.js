@@ -5,7 +5,7 @@ import {Arranger, Overlay, Toolbar, Hamburger, ConfirmProfessional} from '../../
 import classNames from 'classnames';
 import styles from './styles.scss';
 import {ProgressBar, Icon, Toast, Toggle, Segment} from '../../atoms';
-import {isEmpty} from 'lodash-es';
+import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
 
 @withRouter
@@ -20,7 +20,8 @@ export default class VlogEditor extends Component {
       pending: false,
       showToast: false,
       toastContent: '',
-      hamburgerActive: false
+      hamburgerActive: false,
+      syncing: false
     };
   }
 
@@ -47,14 +48,16 @@ export default class VlogEditor extends Component {
     );
   }
 
-    showToast = text => {
-      this.setState({showToast: true, toastContent: text});
-      setTimeout(this.hideToast, 5000);
-    }
+  showToast = text => {
+    this.setState({showToast: true, toastContent: text});
+    setTimeout(this.hideToast, 5000);
+  }
 
   hideToast = () => this.setState({showToast: false})
 
   toggleHamburger = () => this.setState({hamburgerActive: !this.state.hamburgerActive})
+
+  sync = () => this.props.vlogEditor.syncMedia();
 
   getActions = () => [
     {
@@ -90,19 +93,23 @@ export default class VlogEditor extends Component {
   renderHint = () => (
     <React.Fragment>
       <Icon className={styles.backdrop} name="backdrop" />
-      <Icon className={styles.arrow} name="arrowCurved"/>
+      <Icon className={styles.arrow} name="arrowCurved" />
     </React.Fragment>
   )
 
   render() {
-    const {uploading, progress, media, overlayActive, overlayContent, closeOverlay} = this.props.vlogEditor;
+    const {uploading, progress, media, overlayActive, overlayContent, closeOverlay, syncing} = this.props.vlogEditor;
     const {projectId, customEdit, toggleProperty} = this.props.project;
     const {showToast, toastContent, hamburgerActive} = this.state;
     return (
       <div className={styles.container}>
         {isEmpty(media) && this.renderHint()}
         <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} />
-        <FontAwesome className={styles.icon} name="bars" onClick={this.toggleHamburger}/>
+        <FontAwesome className={styles.hamburger} name="bars" onClick={this.toggleHamburger} />
+        <div className={styles.sync} onClick={syncing ? noop : this.sync}>
+          <FontAwesome className={classNames(styles.syncIcon, syncing && styles.syncing)} name="save" />
+          <div className={styles.syncLabel}>{syncing ? 'Syncing' : 'Synced'}</div>
+        </div>
         <Arranger />
         <Toolbar
           className={styles.toolbar}
