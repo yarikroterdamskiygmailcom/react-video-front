@@ -109,6 +109,7 @@ export default class Home extends Component {
     const vlogs = this.state.searchValue
       ? this.props.vlogs.list.filter(vlog => vlog.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
       : this.props.vlogs.list;
+    const {user} = this.props.session;
     return (
       <div className={styles.container}>
         {/* Geen highlight voor nu */}
@@ -132,8 +133,8 @@ export default class Home extends Component {
             className={styles.carousel}
           />
           <Carousel
-            title="Shared Vlogs"
-            items={vlogs.filter(vlog => vlog.access === 'team')}
+            title="Shared with You"
+            items={vlogs.filter(vlog => vlog.access === 'team').filter(vlog => user ? user.id != vlog.owner_id : true)}
             renderFunction={this.renderSharedItem}
             scrollStep={310}
             onClick={this.viewDetails}

@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 export class SessionStore {
   @observable error = null
   @observable token = null
+  @observable user = null
   @observable userType = null
 
   showError = text => {
@@ -14,7 +15,10 @@ export class SessionStore {
   }
 
   getUser = () => userDB.get('/api/v1/auth/user/')
-  .then(user => this.userType = this.convertUserType(user.user_type))
+  .then(user => {
+    this.userType = this.convertUserType(user.user_type);
+    this.user = user;
+  })
 
   initialize = () => {
     this.token = localStorage.getItem('token') || Cookies.get('token') || null;
@@ -24,7 +28,8 @@ export class SessionStore {
         error => error
       );
       userDB.defaults.headers.common.Authorization = `Token ${this.token}`;
-      history.push('/home');
+      this.getUser()
+      .then(() => history.push('/home'));
     }
   }
 
