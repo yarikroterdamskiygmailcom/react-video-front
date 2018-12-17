@@ -22,6 +22,7 @@ const login = {
   icon: 'sign-in-alt',
   path: '/',
   component: Login,
+  fullscreen: true
 };
 
 const logout = {

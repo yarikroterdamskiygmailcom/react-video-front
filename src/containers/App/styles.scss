@@ -19,6 +19,10 @@
     &.noNavBar {
         height: calc(100% - 51px);
     }
+
+    &.fullscreen {
+        height: 100vh;
+    }
 }
 
 .bottom {

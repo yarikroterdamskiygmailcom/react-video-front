@@ -27,7 +27,7 @@ class App extends Component {
       <div className={styles.container}>
         {currentRouteObj.header && <Header routeObj={currentRouteObj} />}
         {error && <div className={styles.error}>{error}</div>}
-        <div className={classNames(styles.content, !currentRouteObj.navBar && styles.noNavBar)}>
+        <div className={classNames(styles.content, !currentRouteObj.navBar && styles.noNavBar, currentRouteObj.fullscreen && styles.fullscreen)}>
           {!authenticated && <Redirect to="/"/>}
           {this.renderAllRoutes()}
         </div>
