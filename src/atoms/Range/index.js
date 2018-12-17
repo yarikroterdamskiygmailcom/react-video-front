@@ -26,6 +26,11 @@ export default class Range extends Component {
     const {startOffset, stopOffset, width} = this.state;
     const adjustedDeltaX = deltaX / width * max;
 
+    if (index === 0 && start - adjustedDeltaX > (stop - max * 0.2)
+      || index === 1 && stop - adjustedDeltaX < (start + max * 0.2)) {
+      return;
+    }
+
     index === 0
 
       ? start - adjustedDeltaX < stop
@@ -46,8 +51,8 @@ export default class Range extends Component {
 
     this.clearOffsets();
 
-    if (index === 0 && start - adjustedDeltaX > stop
-      || index === 1 && stop - adjustedDeltaX < start) {
+    if (index === 0 && start - adjustedDeltaX > (stop - max * 0.2)
+      || index === 1 && stop - adjustedDeltaX < (start + max * 0.2)) {
       return;
     }
 
