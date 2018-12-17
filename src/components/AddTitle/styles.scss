@@ -4,7 +4,7 @@
     justify-content: center;
     background: $white;
     width: 100%;
-    height: 50px; 
+    height: 75px; 
 }
 
 .preset {
@@ -48,8 +48,9 @@
     }
 }
 
-.dropdown {
 
+.stylePicker {
+    margin-bottom: 5px;
 }
 
 .textarea {
@@ -58,4 +59,36 @@
 
 .label {
     margin: 5px 0;
+}
+
+.asset {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-top: 1px solid $grey;
+    border-bottom: 1px solid $grey;
+
+    .thumb {
+        width: 80px;
+        height: 80px;
+    }
+
+    .meta {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        max-width: calc(100% - 100px);
+        margin-left: 10px;
+
+        > * {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+}
+
+.toggle {
+    margin-bottom: 5px;
 }

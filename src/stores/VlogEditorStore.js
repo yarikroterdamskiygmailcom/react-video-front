@@ -225,15 +225,12 @@ export class VlogEditorStore {
 
   openAddBrandingElement = () => {
     this.overlayActive = true;
-    this.overlayContent = <AddBrandingElement />;
-  }
-
-  AddBrandingElement = asset => {
-    this.addMedia({
-      ...asset,
-      mediatype: 'asset'
-    });
-    this.closeOverlay();
+    this.overlayContent = (
+      <AddBrandingElement
+        onClose={this.closeOverlay}
+        onSave={this.addMedia}
+      />
+    );
   }
 
   //Lower third stuff

@@ -18,16 +18,19 @@ export default class AddBrandingElement extends Component {
     };
   }
 
-  addAsset = () => this.props.vlogEditor.AddBrandingElement(this.props.assets.assetList[this.state.currentAsset])
+  save = () => {
+    this.props.onSave(this.props.assets.assetList[this.state.currentAsset]);
+    this.props.onClose();
+  }
 
   modalActions = [
     {
       label: 'Cancel',
-      func: this.props.vlogEditor.closeOverlay
+      func: this.props.onClose
     },
     {
-      label: 'Place',
-      func: this.addAsset
+      label: 'Save',
+      func: this.save
     }
   ]
 
