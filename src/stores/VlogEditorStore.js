@@ -120,6 +120,7 @@ export class VlogEditorStore {
         action: 'uploadvideo',
         project_id: this.projectId
       },
+      chunkRetryInterval: 1000
     });
 
     this.resumable.assignBrowse(document.getElementById('input'));
@@ -138,13 +139,9 @@ export class VlogEditorStore {
       this.progress = 0;
     });
 
-    this.resumable.on('progress', () => this.progress = this.resumable.progress() * 100);
+    this.resumable.on('fileRetry', () => sessionStore.showError('Upload interrupted. Retrying...'));
 
-    this.resumable.on('error', () => {
-      sessionStore.showError('There was a problem during upload. Please check your internet connection or try again later.');
-      this.progress = 0;
-      this.resumable.cancel();
-    });
+    this.resumable.on('fileProgress', file => this.progress = file.progress() * 100);
 
   }
 
