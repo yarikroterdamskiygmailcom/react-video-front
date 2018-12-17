@@ -30,7 +30,9 @@ export default class VlogEditor extends Component {
   }
 
   componentWillUnmount() {
-    this.props.project.updateProject({media: JSON.stringify(this.props.vlogEditor.media.toJS())});
+    this.props.project.updateProject({
+      media: JSON.stringify(this.props.vlogEditor.media.toJS().map(this.props.project.reduceMediaObj))
+    });
   }
 
   confirmProfessional = () => {
