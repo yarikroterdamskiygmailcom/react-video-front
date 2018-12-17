@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
 import {StylePicker, Modal, Overlay, AddBrandingElement} from '../';
-import {Toggle} from '../../atoms';
+import {Toggle, Input} from '../../atoms';
+import {clamp} from 'lodash-es';
 
 export default class AddTitle extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export default class AddTitle extends Component {
       mediatype: 'title',
       text: this.state.text,
       style: this.state.style,
+      duration: this.state.duration || 'auto',
       ...this.state.asset ? {asset: this.state.asset} : {}
     });
     this.props.onClose();
@@ -37,6 +39,8 @@ export default class AddTitle extends Component {
   setText = e => this.setState({text: e.target.value})
 
   setSelection = style => this.setState({style})
+
+  setDuration = e => this.setState({duration: clamp(e.target.value, 2, 10)})
 
   selectAsset = asset => this.setState({asset})
 
@@ -72,7 +76,7 @@ export default class AddTitle extends Component {
   )
 
   render() {
-    const {text, asset, overlayActive} = this.state;
+    const {text, asset, duration, overlayActive} = this.state;
     return (
       <Modal className={styles.modal} actions={this.modalActions}>
         {this.renderExample()}
@@ -86,6 +90,7 @@ export default class AddTitle extends Component {
         />
         <Toggle className={styles.toggle} label="Asset Background" value={asset} onChange={asset ? this.clearAsset : this.openOverlay} />
         {asset && this.renderAsset(asset)}
+        <Input modal value={duration} onChange={this.setDuration} type="number" name="Duration" placeholder="(Leave blank for auto)"/>
         <Overlay active={overlayActive}>
           <AddBrandingElement onClose={this.closeOverlay} onSave={this.selectAsset} />
         </Overlay>
