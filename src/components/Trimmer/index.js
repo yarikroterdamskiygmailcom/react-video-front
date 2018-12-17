@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Modal} from '..';
 import styles from './styles.scss';
 import {Range} from '../../atoms';
-import '!style-loader!css-loader!rc-slider/assets/index.css';
 import FontAwesome from 'react-fontawesome';
 
 export default class Trimmer extends Component {
@@ -16,36 +15,18 @@ export default class Trimmer extends Component {
     };
   }
 
-  save = () => {
-    this.props.onSave({
-      ...this.props.video,
-      inpoint: this.state.start,
-      outpoint: this.state.stop,
-      trimmed: this.state.stop < this.props.video.seconds
-    });
-    this.props.onClose();
+  componentDidMount() {
+    this.props.onChange(this.state.start, this.state.stop);
   }
 
   setTrim = ([start, stop]) => {
-    this.props.noModal && this.props.onChange([start, stop]);
     const lastChanged = start === this.state.start ? 'stop' : 'start';
     this.videoRef.current.currentTime = lastChanged === 'start' ? start : stop;
     this.setState({
       start,
       stop,
-    });
+    }, this.props.onChange(start, stop));
   }
-
-  modalActions = [
-    {
-      label: 'Cancel',
-      func: this.props.onClose
-    },
-    {
-      label: 'Save',
-      func: this.save
-    }
-  ]
 
   pause = () => this.videoRef.current.pause()
 
@@ -57,10 +38,10 @@ export default class Trimmer extends Component {
   limitVideo = e => e.target.currentTime >= this.state.stop && this.pause()
 
   render() {
-    const {video, noModal} = this.props;
+    const {video} = this.props;
     const {start, stop} = this.state;
     const max = video.seconds;
-    const content = (
+    return (
       <React.Fragment>
         <div className={styles.videoContainer}>
           <video className={styles.video} ref={this.videoRef} src={video.src} playsInline onTimeUpdate={this.limitVideo}/>
@@ -73,8 +54,5 @@ export default class Trimmer extends Component {
         <Range value={[start, stop]} limits={[0, max]} onChange={this.setTrim}/>
       </React.Fragment>
     );
-    return noModal
-      ? content
-      : <Modal className={styles.modal} actions={this.modalActions}>{content}</Modal>;
   }
 }

@@ -16,35 +16,23 @@ export default class Splitter extends Component {
     };
   }
 
-  split = () => {
-    this.props.onSave(this.state.split);
-    this.props.onClose();
+  componentDidMount() {
+    this.props.onChange(this.state.split);
   }
 
   setOffset = offset => this.setState({offset}, () => this.videoRef.current.currentTime = this.state.split + offset);
 
-  commitSplit = () => this.setState({split: this.state.split + this.state.offset, offset: 0});
-
-  modalActions = [
-    {
-      label: 'Cancel',
-      func: this.props.onClose
-    },
-    {
-      label: 'Split',
-      func: this.split
-    }
-  ]
+  commitSplit = () => this.setState({split: this.state.split + this.state.offset, offset: 0}, () => this.props.onChange(this.state.split));
 
   render() {
     const {video} = this.props;
     const {inpoint, outpoint} = video;
     const {split, offset} = this.state;
     return (
-      <Modal className={styles.modal} actions={this.modalActions}>
+      <React.Fragment>
         <video className={styles.video} ref={this.videoRef} src={video.src} playsInline/>
         <Slider value={split} offset={offset} min={inpoint} max={outpoint} onSwiping={this.setOffset} onSwiped={this.commitSplit}/>
-      </Modal>
+      </React.Fragment>
     );
   }
 }

@@ -19,3 +19,5 @@ export {default as StyleEditor} from './StyleEditor';
 export {default as StylePicker} from './StylePicker';
 export {default as Toolbar} from './Toolbar';
 export {default as Trimmer} from './Trimmer';
+export {default as TrimmerSplitter} from './TrimmerSplitter';
+

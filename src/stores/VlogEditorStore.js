@@ -1,5 +1,5 @@
 import React from 'react';
-import {Trimmer, AddTitle, AddBrandingElement, AddOverlay, Blurring, Preview, EditFade, Configure, Splitter} from '../components';
+import {AddTitle, AddBrandingElement, AddOverlay, Blurring, Preview, EditFade, Configure, TrimmerSplitter} from '../components';
 import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
@@ -191,12 +191,13 @@ export class VlogEditorStore {
 
   //Trimmer stuff
 
-  openTrimmer = index => () => {
+  openTrimmerSplitter = index => () => {
     this.overlayActive = true;
     this.overlayContent = (
-      <Trimmer
+      <TrimmerSplitter
         onClose={this.closeOverlay}
-        onSave={this.saveMedia(index)}
+        onTrim={this.saveMedia(index)}
+        onSplit={this.splitVideo(index)}
         video={this.media[index]}
       />
     );

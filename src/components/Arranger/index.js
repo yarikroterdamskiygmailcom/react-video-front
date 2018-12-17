@@ -41,13 +41,9 @@ export default class Arranger extends Component {
   )
 
   actions = {
-    trim: i => ({
-      label: this.renderActionLabel('Trim', 'trim'),
-      func: this.props.vlogEditor.openTrimmer(i)
-    }),
-    split: i => ({
-      label: 'Split',
-      func: this.props.vlogEditor.openSplitter(i)
+    trimSplit: i => ({
+      label: this.renderActionLabel('Trim / Split', 'trim'),
+      func: this.props.vlogEditor.openTrimmerSplitter(i)
     }),
     lowerThird: i => ({
       label: this.renderActionLabel('Overlay', 'lowerThird'),
@@ -68,7 +64,7 @@ export default class Arranger extends Component {
 
   generateActions = (mediaObj, i) => {
     const actions = {
-      video: [this.actions.trim(i), this.actions.split(i), this.actions.configure(i)],
+      video: [this.actions.trimSplit(i), this.actions.configure(i)],
       fadein: [],
       fadeout: [],
       fadeoutin: [],
