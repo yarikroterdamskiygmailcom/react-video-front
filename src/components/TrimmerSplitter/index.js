@@ -19,7 +19,7 @@ export default class TrimmerSplitter extends Component {
       ...this.props.video,
       inpoint: this.state.trimStart,
       outpoint: this.state.trimEnd,
-      trimmed: this.state.trimEnd < this.props.video.seconds
+      trimmed: this.state.trimStart !== this.props.video.inpoint || this.state.trimEnd !== this.props.video.outpoint
     });
     this.props.onClose();
   }
