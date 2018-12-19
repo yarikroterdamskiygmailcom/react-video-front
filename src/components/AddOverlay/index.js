@@ -7,6 +7,15 @@ import {StylePicker} from '../';
 import classNames from 'classnames';
 import {php} from '../../stores';
 
+const getLowerThird = ({video, text, logo, side, style}) => php.post('api/v1/lowerthird', {
+  type: 'lowerthird',
+  video_id: video.video_id,
+  text,
+  logo,
+  placement: side,
+  style
+});
+
 class LowerThird extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +23,7 @@ class LowerThird extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(!isEqual(prevProps.text, this.props.text)) {
+    if (!isEqual(prevProps.text, this.props.text)) {
       return;
     }
     prevProps.logo !== this.props.logo && this.updateLowerThird();
@@ -24,17 +33,12 @@ class LowerThird extends Component {
     this.updateLowerThird();
   }
 
-  updateLowerThird = () => {
-    const {video, text, logo, side, style} = this.props;
-    php.post('api/v1/lowerthird', {
-      type: 'lowerthird',
-      video_id: video.video_id,
-      text,
-      logo,
-      placement: side,
-      style
-    }).then(res => this.setState({lowerThird: `${res.srcbase64}`, lowerThirdFile: res.file}));
+  componentWillUnmount() {
+    this.props.onExit(this.state.lowerThird);
   }
+
+  updateLowerThird = () => getLowerThird(pick(this.props, ['video', 'text', 'logo', 'side', 'style']))
+  .then(res => this.setState({lowerThird: `${res.srcbase64}`, lowerThirdFile: res.file}));
 
   onChange = changes => this.props.onChange(changes);
 
@@ -232,11 +236,13 @@ export default class AddOverlay extends Component {
   )
 
   generateOverlay = () => {
-    const {selectedType, vertical, emphasize, text} = this.state;
+    const {selectedType, vertical, emphasize, text, lowerThird} = this.state;
+    const {video} = this.props;
     const textLines = text.split(/\r?\n/);
     switch (selectedType) {
       case 'lowerThird':
-        break;
+        return <img className={styles.lowerThirdOverlay} src={lowerThird}/>;
+
       case 'text':
         return (
           <div className={styles.textPreview} style={{bottom: `${vertical}%`}}>
@@ -247,6 +253,7 @@ export default class AddOverlay extends Component {
               </div>)}
           </div>
         );
+
       case 'custom':
         break;
 
@@ -268,6 +275,8 @@ export default class AddOverlay extends Component {
   setVertical = val => this.setState({vertical: val})
 
   setStyle = style => this.setState({style})
+
+  setLowerThird = lowerThird => this.setState({lowerThird})
 
   handleTrimmer = ([start, stop]) => this.setState({inpoint: start, outpoint: stop})
 
@@ -319,6 +328,7 @@ export default class AddOverlay extends Component {
           video={video}
           thumb={thumb}
           {...pick(this.state, ['side', 'animation', 'text', 'emphasize', 'logo', 'style'])}
+          onExit={this.setLowerThird}
         />;
 
       case 'text':
@@ -348,11 +358,11 @@ export default class AddOverlay extends Component {
         </div>;
 
       case 'preview':
-        return <div className={styles.preview}>
-          <Trimmer noModal video={this.props.video} onChange={this.handleTrimmer}>
+        return (
+          <Trimmer video={this.props.video} onChange={this.handleTrimmer}>
             {this.generateOverlay()}
           </Trimmer>
-        </div>;
+        );
 
       default: throw new Error(`No content found for ${step}`);
     }
