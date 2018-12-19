@@ -4,57 +4,112 @@ import {NavLink} from 'react-router-dom';
 import {Icon} from '../../atoms';
 import {ConfirmProfessional} from '../';
 import {inject, observer} from 'mobx-react';
-import classNames from 'classnames';
 import styles from './styles.scss';
-import Overlay from '../Overlay';
-import {Modal} from '../';
 import FontAwesome from 'react-fontawesome';
+import {isEmpty} from 'lodash-es';
+import {php} from '../../stores';
+
+const renderSpinner = () => (
+  <div className={styles.option}>
+    <FontAwesome className={styles.spinner} name="spinner" />
+  </div>
+);
+
+class VlogTypePicker extends Component {
+
+  render() {
+    const {onSelect, onClose} = this.props;
+    return (
+      <div className={styles.options}>
+        <div className={styles.optionsGroup}>
+          <div className={styles.optionsHeader}>Create Vlog</div>
+          <div className={styles.option} onClick={onSelect('template')}>From template</div>
+          <div className={styles.option} onClick={onSelect('scratch')}>From scratch</div>
+          <div className={styles.option} onClick={onSelect('professional')}>
+            <div className={styles.prof}>Professional Vlog</div>
+          </div>
+        </div>
+        <div className={styles.optionsGroup}>
+          <div className={styles.option} onClick={onClose}>Cancel</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+class TemplatePicker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pending: true,
+      templates: []
+    };
+  }
+
+  componentWillMount() {
+    php.get('/api/v1/templates')
+    .then(res => this.setState({pending: false, templates: res.templates}));
+  }
+
+  onSelect = template => () => this.props.onSelect(template)
+
+  renderTemplate = (template, i) => (
+    <div
+      key={`${template.title}-${i}`}
+      className={styles.option}
+      onClick={this.onSelect(template)}
+    >
+      {template.title}
+    </div>
+  );
+
+  render() {
+    const {onClose} = this.props;
+    const {pending, templates} = this.state;
+    return (
+      <div className={styles.options}>
+        <div className={styles.optionsGroup}>
+          <div className={styles.optionsHeader}>
+            {isEmpty(templates) ? 'No templates available' : 'Choose template'}
+          </div>
+          {pending
+            ? renderSpinner()
+            : templates.map(this.renderTemplate)
+          }
+        </div>
+        <div className={styles.optionsGroup}>
+          <div className={styles.option} onClick={onClose}>Cancel</div>
+        </div>
+      </div>
+    );
+  }
+}
 
 @withRouter
-@inject('templates')
+@inject('overlay')
+@inject('template')
 @inject('project')
 @observer
 export default class NavBar extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      overlayOpen: false,
-      overlay: 'main',
-    };
+  start = selection => template => {
+    ({
+      scratch: () => this.props.project.startFromScratch().then(() => this.props.history.push('/edit-vlog')),
+      template: () => this.props.project.startFromTemplate(template).then(() => this.props.history.push('/template')),
+      professional: () => this.props.project.startProfessional().then(() => this.props.history.push('/edit-vlog'))
+    })[selection]();
+    this.props.overlay.closeOverlay();
   }
 
-  openOverlay = () => this.setState({overlayOpen: true})
-
-  closeOverlay = () => {
-    this.setState({overlayOpen: false});
-    setTimeout(() => this.setState({overlay: 'main'}), 200);
-  }
-
-  setOverlay = overlay => () => {
-    overlay === 'template' && this.loadTemplates();
-    this.setState({overlay});
-  }
-
-  startFromScratch = () => {
-    this.props.project.startFromScratch()
-    .then(() => this.props.history.push('/edit-vlog'));
-  }
-
-  startProfessional = () => {
-    this.props.project.startProfessional()
-    .then(() => this.props.history.push('/edit-vlog'));
-  }
-
-  startFromTemplate = i => () => {
-    this.props.project.startFromTemplate(i)
-    .then(() => this.props.history.push('/template'));
-  }
-
-  loadTemplates = () => {
-    this.setState({pending: true});
-    this.props.templates.loadTemplates()
-    .then(() => this.setState({pending: false}));
+  handleSelection = selection => () => {
+    if (selection === 'scratch') {
+      this.start('scratch')();
+    } else {
+      this.props.overlay.openOverlay({
+        template: TemplatePicker,
+        professional: ConfirmProfessional
+      }[selection])({onSelect: this.start(selection)})();
+    }
   }
 
   routes = [
@@ -65,8 +120,8 @@ export default class NavBar extends Component {
     },
     {
       name: 'Add Vlog',
-      icon: 'camera',
-      onClick: this.openOverlay
+      icon: 'video',
+      onClick: this.props.overlay.openOverlay(VlogTypePicker)({onSelect: this.handleSelection})
     },
     {
       name: 'Profile',
@@ -74,18 +129,6 @@ export default class NavBar extends Component {
       path: '/profile'
     },
   ]
-
-  renderSpinner = () => (
-    <div className={styles.option}>
-      <FontAwesome className={styles.spinner} name="spinner" />
-    </div>
-  )
-
-  renderTemplate = ({title}, i) => (
-    <div key={title} className={styles.option} onClick={this.startFromTemplate(i)}>
-      {title}
-    </div>
-  );
 
   renderRoute = ({name, icon, path, onClick}) => path
     ? (
@@ -102,54 +145,10 @@ export default class NavBar extends Component {
       </div>
     )
 
-  renderOverlay = () => {
-    const {overlay, pending} = this.state;
-    switch (overlay) {
-      case 'main': return (
-        <div className={classNames(styles.options, this.state.overlayOpen && styles.active)}>
-          <div className={styles.optionsGroup}>
-            <div className={styles.optionsHeader}>Create Vlog</div>
-            <div className={styles.option} onClick={this.setOverlay('template')}>From template</div>
-            <div className={styles.option} onClick={this.startFromScratch}>From scratch</div>
-            <div className={styles.option} onClick={this.setOverlay('modal')}>
-              <div className={styles.prof}>Professional Vlog</div>
-            </div>
-          </div>
-          <div className={styles.optionsGroup}>
-            <div className={styles.option} onClick={this.closeOverlay}>Cancel</div>
-          </div>
-        </div>
-      );
-
-      case 'template': return (
-        <div className={classNames(styles.options, this.state.overlayOpen && styles.active)}>
-          <div className={styles.optionsGroup}>
-            <div className={styles.optionsHeader}>Choose template</div>
-            {pending
-              ? this.renderSpinner()
-              : this.props.templates.templates.map(this.renderTemplate)
-            }
-          </div>
-          <div className={styles.optionsGroup}>
-            <div className={styles.option} onClick={this.closeOverlay}>Cancel</div>
-          </div>
-        </div>
-      );
-
-      case 'modal': return <ConfirmProfessional onCancel={this.setOverlay('main')} onConfirm={this.startProfessional}/>;
-
-      default: return null;
-    }
-  }
-
   render() {
-    const {overlayOpen} = this.state;
     return (
       <div className={styles.container}>
         {this.routes.map(this.renderRoute)}
-        <Overlay active={overlayOpen} onClose={this.closeOverlay}>
-          {this.renderOverlay()}
-        </Overlay>
       </div>
     );
   }
