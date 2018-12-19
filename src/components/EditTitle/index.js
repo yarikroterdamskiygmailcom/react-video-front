@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
-import {StylePicker, Modal, Overlay, AddBrandingElement} from '../';
+import {StylePicker, Modal, SelectAsset} from '../';
 import {Toggle, Input} from '../../atoms';
 import {clamp} from 'lodash-es';
+import {observer, inject} from 'mobx-react';
 
-export default class AddTitle extends Component {
+@inject('overlay')
+@observer
+export default class EditTitle extends Component {
   constructor(props) {
     super(props);
     this.state = this.props.title ? {...this.props.title} : {
       text: '',
       asset: null,
-      overlayActive: false
     };
   }
 
@@ -38,7 +40,7 @@ export default class AddTitle extends Component {
 
   setText = e => this.setState({text: e.target.value})
 
-  setSelection = style => this.setState({style})
+  setStyle = style => this.setState({style})
 
   setDuration = e => this.setState({duration: clamp(e.target.value, 2, 10)})
 
@@ -46,15 +48,11 @@ export default class AddTitle extends Component {
 
   clearAsset = () => this.setState({asset: null})
 
-  closeOverlay = () => this.setState({overlayActive: false})
-
   generateExampleStyle = ({textcolor, backgroundcolor, font}) => ({
     color: textcolor,
     background: this.state.asset ? `url(${this.state.asset.thumb})` : backgroundcolor,
     fontFamily: font
   })
-
-  openOverlay = () => this.setState({overlayActive: true});
 
   renderExample = () => {
     const {text, style} = this.state;
@@ -76,7 +74,8 @@ export default class AddTitle extends Component {
   )
 
   render() {
-    const {text, asset, duration, overlayActive} = this.state;
+    const {text, asset, duration} = this.state;
+    const {openOverlay} = this.props.overlay;
     return (
       <Modal className={styles.modal} actions={this.modalActions}>
         {this.renderExample()}
@@ -85,15 +84,19 @@ export default class AddTitle extends Component {
         <div className={styles.label}>Style</div>
         <StylePicker
           className={styles.stylePicker}
-          onSelect={this.setSelection}
+          onSelect={this.setStyle}
           selected={this.state.style}
         />
-        <Toggle className={styles.toggle} label="Asset Background" value={asset} onChange={asset ? this.clearAsset : this.openOverlay} />
+        <Toggle
+          className={styles.toggle}
+          label="Asset Background"
+          value={asset}
+          onChange={asset
+            ? this.clearAsset
+            : openOverlay(SelectAsset)({onSave: this.selectAsset})}
+        />
         {asset && this.renderAsset(asset)}
         <Input modal value={duration} onChange={this.setDuration} type="number" name="Duration" placeholder="(Leave blank for auto)"/>
-        <Overlay active={overlayActive}>
-          <AddBrandingElement onClose={this.closeOverlay} onSave={this.selectAsset} />
-        </Overlay>
       </Modal>
     );
   }

@@ -9,7 +9,7 @@ import {observer, inject} from 'mobx-react';
 @inject('vlogEditor')
 @inject('assets')
 @observer
-export default class AddBrandingElement extends Component {
+export default class SelectAsset extends Component {
 
   constructor(props) {
     super(props);
@@ -59,7 +59,7 @@ export default class AddBrandingElement extends Component {
   render() {
     const {assetList} = this.props.assets;
     return (
-      <Modal actions={this.modalActions}className={styles.modal}>
+      <Modal actions={this.modalActions} className={styles.modal}>
         {assetList.map(this.renderAsset)}
       </Modal>
     );
