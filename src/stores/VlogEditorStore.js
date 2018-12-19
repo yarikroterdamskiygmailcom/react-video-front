@@ -112,7 +112,7 @@ export class VlogEditorStore {
 
   //Upload stuff
 
-  initResumable = () => {
+  initResumable = domNode => {
     this.resumable = new Resumable({
       target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
       query: {
@@ -123,7 +123,7 @@ export class VlogEditorStore {
       chunkRetryInterval: 1000
     });
 
-    this.resumable.assignBrowse(document.getElementById('input'));
+    this.resumable.assignBrowse(domNode);
 
     this.resumable.on('fileAdded', () => {
       this.resumable.upload();

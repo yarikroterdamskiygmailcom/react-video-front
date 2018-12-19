@@ -24,10 +24,10 @@ export default class VlogEditor extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.props.vlogEditor.initResumable();
-  //   this.resumableRef.current.children[0].accept = 'video/*';
-  // }
+  componentDidMount() {
+    this.props.vlogEditor.initResumable(this.resumableRef.current);
+    this.resumableRef.current.children[0].accept = 'video/*';
+  }
 
   componentWillUnmount() {
     this.props.project.updateProject({

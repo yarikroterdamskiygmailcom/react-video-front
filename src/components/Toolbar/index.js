@@ -20,9 +20,9 @@ class Menu extends Component {
     </div>
 
   render() {
-    const {actions} = this.props;
+    const {actions, active} = this.props;
     return (
-      <div className={styles.menu}>
+      <div className={classNames(styles.menu, active && styles.active)}>
         <div className={styles.menuInner}>
           <div className={styles.menuHeader}>Add</div>
           {actions.map(this.renderAction)}
@@ -33,20 +33,29 @@ class Menu extends Component {
   }
 }
 
-@inject('overlay')
-@observer
 class Toolbar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuActive: false
+    };
+  }
+
+  toggleMenu = () => this.setState({menuActive: !this.state.menuActive})
 
   render() {
     const {className, allowNext, next, actions} = this.props;
-    const {openOverlay} = this.props.overlay;
+    const {menuActive} = this.state;
     return (
       <div className={classNames(styles.container, className)}>
-        <div className={styles.left} onClick={openOverlay(Menu)({actions})}>
+        <div className={styles.left} onClick={this.toggleMenu}>
           <FontAwesome name="plus" />
         </div>
         <div className={classNames(styles.right, !allowNext && styles.disabled)} onClick={allowNext ? next : noop}>
           <FontAwesome name="angle-right" />
+        </div>
+        <div className={classNames(styles.overlay, menuActive && styles.active)}>
+          <Menu active={menuActive} actions={actions} onClose={this.toggleMenu}/>
         </div>
       </div>
     );
