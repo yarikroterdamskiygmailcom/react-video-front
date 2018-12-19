@@ -94,6 +94,7 @@ export default class Profile extends Component {
         buttonText={this.renderYoutube()}
         clientId="814043436795-k11mvtqeal0rmj7dob63c092lmlit08l.apps.googleusercontent.com"
         scope="https://www.googleapis.com/auth/youtube"
+        accessType="offline"
         responseType="code"
         onSuccess={console.log}
         onFailure={console.log}
