@@ -10,13 +10,18 @@ export default class ConfirmProfessional extends Component {
     modalActions = [
       {
         label: 'Cancel',
-        func: this.props.onCancel
+        func: this.props.onClose
       },
       {
         label: 'Confirm',
-        func: this.props.onConfirm
+        func: this.onSelect
       }
     ]
+
+    onSelect = () => {
+      this.props.onSelect();
+      this.props.onClose();
+    }
 
     render() {
       return (

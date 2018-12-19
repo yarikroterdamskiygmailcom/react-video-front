@@ -4,14 +4,19 @@ import styles from './styles.scss';
 
 export default class ConfirmationPrompt extends Component {
 
+    onSelect = () => {
+      this.props.onSelect();
+      this.props.onClose();
+    }
+
     modalActions = [
       {
         label: 'Cancel',
-        func: this.props.onCancel
+        func: this.props.onClose
       },
       {
         label: 'Proceed',
-        func: this.props.onProceed
+        func: this.onSelect
       }
     ]
 
