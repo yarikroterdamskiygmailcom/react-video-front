@@ -10,11 +10,11 @@
 .font {
     background: $white;
     padding: 10px;
-    border: 1px $grey solid;
+    border: 1px $border solid;
     border-top: none;
 
     &:first-child {
-        border-top: 1px $grey solid;
+        border-top: 1px $border solid;
     }
 }
 

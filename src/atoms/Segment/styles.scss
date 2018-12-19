@@ -6,7 +6,7 @@
     padding: 15px;
     background: $background;
     color: $text-grey;
-    border-bottom:  #D8D7DA solid 1px;
+    border-bottom: $border solid 1px;
 }
 
 .content {
@@ -23,7 +23,7 @@
 
 .element {
     background: white;
-    border-bottom: #D8D7DA solid 1px;
+    border-bottom: $border solid 1px;
     padding: 15px;
     max-height: 1000px;
     opacity: 1;

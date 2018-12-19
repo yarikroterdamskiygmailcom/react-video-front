@@ -1,12 +1,12 @@
 .options {
     display: flex;
     flex-direction: column;
-    border: 1px solid $grey;
+    border: 1px solid $border;
 }
 
 .option {
     background: white;
-    border-top: 1px solid $grey;
+    border-top: 1px solid $border;
 
     .name {
         color: $purple;
