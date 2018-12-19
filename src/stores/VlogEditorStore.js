@@ -1,5 +1,5 @@
 import React from 'react';
-import {AddTitle, AddBrandingElement, AddOverlay, Blurring, Preview, EditFade, Configure, TrimmerSplitter} from '../components';
+import {EditTitle, SelectAsset, AddOverlay, Blurring, Preview, EditFade, Configure, TrimmerSplitter} from '../components';
 import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
@@ -173,7 +173,7 @@ export class VlogEditorStore {
   openAddTitle = () => {
     this.overlayActive = true;
     this.overlayContent = (
-      <AddTitle
+      <EditTitle
         onClose={this.closeOverlay}
         onSave={this.addMedia}
       />
@@ -183,7 +183,7 @@ export class VlogEditorStore {
   openEditTitle = index => () => {
     this.overlayActive = true;
     this.overlayContent = (
-      <AddTitle
+      <EditTitle
         onClose={this.closeOverlay}
         onSave={this.saveMedia(index)}
         title={this.media[index]}
@@ -220,10 +220,10 @@ export class VlogEditorStore {
 
   //Add Branding Element stuff
 
-  openAddBrandingElement = () => {
+  openSelectAsset = () => {
     this.overlayActive = true;
     this.overlayContent = (
-      <AddBrandingElement
+      <SelectAsset
         onClose={this.closeOverlay}
         onSave={this.addMedia}
       />
