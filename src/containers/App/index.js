@@ -1,26 +1,30 @@
 import React, {Component} from 'react';
 import {Switch, Route, withRouter, Redirect} from 'react-router';
-import {Header, NavBar, Toolbar} from '../../components';
+import {Header, NavBar, Toolbar, Toast, Overlay} from '../../components';
 import routes, {navBarRoutes} from '../../constants/routes';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import classNames from 'classnames';
+import {last} from 'lodash-es';
 
 @withRouter
 @inject('session')
+@inject('overlay')
 @observer
 class App extends Component {
 
-  renderRoute = route => <Route key={route.path} exact path={route.path} component={() => <route.component {...route.props}/>} name={route.name} exact/>
+  renderRoute = route => <Route key={route.path} exact path={route.path} component={() => <route.component {...route.props} />} name={route.name} exact />
 
   renderAllRoutes = () =>
     <Switch>
       {routes.map(this.renderRoute)}
-      <Redirect to={'/not-found'}/>
+      <Redirect to={'/not-found'} />
     </Switch>
 
   render() {
     const {token, error} = this.props.session;
+    const {overlayActive, overlayContent, closeOverlay,
+      toastActive, toastContent, hideToast} = this.props.overlay;
     const authenticated = Boolean(token);
     const currentRouteObj = routes.find(routeObj => routeObj.path === this.props.location.pathname) || {};
     return (
@@ -28,13 +32,19 @@ class App extends Component {
         {currentRouteObj.header && <Header routeObj={currentRouteObj} />}
         {error && <div className={styles.error}>{error}</div>}
         <div className={classNames(styles.content, !currentRouteObj.navBar && styles.noNavBar, currentRouteObj.fullscreen && styles.fullscreen)}>
-          {!authenticated && <Redirect to="/"/>}
+          {!authenticated && <Redirect to="/" />}
           {this.renderAllRoutes()}
         </div>
         <div className={styles.bottom}>
           {currentRouteObj.toolbar && <Toolbar />}
           {currentRouteObj.navBar && <NavBar routes={navBarRoutes} />}
         </div>
+        <Toast active={toastActive} onClose={hideToast}>
+          {toastContent}
+        </Toast>
+        <Overlay active={overlayActive} onClose={closeOverlay}>
+          {overlayContent}
+        </Overlay>
       </div>
     );
   }

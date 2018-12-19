@@ -12,17 +12,30 @@ export default class Overlay extends Component {
 
   onClose = () => this.props.onClose()
 
-  handleClick = e => e.target.isEqualNode(this.ref.current) && this.props.onClose()
+  handleClick = e => e.target.isEqualNode(this.ref.current) && this.onClose()
+
+  renderContent = (content, i) => (
+    <div ref={this.ref} className={classNames(styles.content)}>
+      {content}
+    </div>
+  )
 
   render() {
-    const {children, active, className} = this.props;
+    const {children, className} = this.props;
+    const length = React.Children.count(children);
+    const active = length > 0;
     return (
-      <div className={classNames(styles.container, !active && styles.closed, className)} onClick={this.handleClick}>
-        <div ref={this.ref} className={classNames(styles.content, !active && styles.closed)}>
-          {children}
+      <div className={classNames(styles.container, !active && styles.closed, className)}
+        onClick={this.handleClick}
+      >
+        <div
+          className={styles.contents}
+          style={{transform: `translateY(-${(length - 1) * 100}vh)`}}
+        >
+          {React.Children.map(children, this.renderContent)}
         </div>
         <div className={styles.close} onClick={this.onClose}>
-          <FontAwesome name="times"/>
+          <FontAwesome name="times" />
         </div>
       </div>
     );
