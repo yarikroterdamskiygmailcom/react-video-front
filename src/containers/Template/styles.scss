@@ -1,77 +1,79 @@
-.container {
-    position: relative;
-    height: 100%;
-}
-
-.field {
-    display: flex;
-    flex-direction: row;
-
-    .button {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 50px;
-        max-width: 50px;
-        height: 50px;
-        background: $pink;
-        color: $purple;
-        border-radius: 5px;
-        margin-right: 15px;
-        font-size: 25px;
-
-    }
-
-    
-}
-
-.title {
-    color: $text;
-}
-
-.descShort {
-    color: $grey;
-}
-
-.stack {
+.fields {
     display: flex;
     flex-direction: column;
 }
 
+.field {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    background: white;
+}
+
 .next {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    border-radius: 5px;
     width: 50px;
     height: 50px;
-    bottom: 20px;
-    right: 20px;
-    background: $grey;
-    color: $white;
+    border-radius: 5px;
+    color: white;
+    background: $pink;
+    transition: background 0.2s, box-shadow 0.2s;
 
     &.active {
-        background: $pink;
-        color: $purple;
+        background: $purple;
+        box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
     }
 }
 
-.thumb {
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 100%;
-    max-height: 100%;
-    border-radius: 5px;
+.item {
+    box-sizing: border-box;
+    border-bottom: 1px solid $border;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
-.progressBar {
-    position: absolute;
-    height: 100%;
-    left: 0;
-    top: 0;
-    background: $purple;
-    border-radius: 5px;
-    font-size: 12px;
+.field {
+    @extend .item;
+    display: grid;
+    grid-template-columns: 60px 10fr 60px;
+    align-items: center;
+    justify-items: center;
+    height: 80px;
+    text-align: left;
+    padding: 10px;
+    background: white;
+
+    .addButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-self: right;
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        background: $purple;
+    
+        .icon {
+            color: white;
+        }
+    
+        &.disabled {
+            background: $pink;
+        }
+    }
+
+    .name {
+        width: 100%;
+
+    }
+}
+
+.fieldContent {
+    @extend .item;
+    background: #efefef;
 }

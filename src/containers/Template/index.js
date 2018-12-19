@@ -1,90 +1,131 @@
 import React, {Component} from 'react';
-import {Segment} from '../../atoms';
-import FontAwesome from 'react-fontawesome';
-import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
+import {isEmpty, isNumber, noop} from 'lodash-es';
+import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
+import {Icon, Checkbox, Input, SwipeItem, SortableCollection, UploadButton} from '../../atoms';
+import {SortableHandle} from 'react-sortable-hoc';
+import {SelectAsset, EditTitle, MediaObject, SaveTemplate} from '../../components';
 import {withRouter} from 'react-router';
-import {noop, isNumber} from 'lodash-es';
+import styles from './styles.scss';
+
+const getOverlay = mediatype => ({
+  asset: SelectAsset,
+  title: EditTitle
+}[mediatype]);
+
+const DragHandle = SortableHandle(() =>
+  <div className={styles.handle}>
+    <FontAwesome name="bars" />
+  </div>
+);
 
 @withRouter
-@inject('templates')
+@inject('template')
+@inject('overlay')
 @observer
 export default class Template extends Component {
-
   constructor(props) {
     super(props);
-    this.resumableRefs = props.templates.activeTemplate.fields.map(() => React.createRef());
+    this.state = {
+      fieldRevealIndex: null,
+      contentRevealIndex: null,
+      revealSide: null
+    };
   }
 
-  componentWillMount() {
-    this.props.templates.handleAssets();
+  addContent = index => content => this.props.template.addContent(index, content);
+
+  setReveal = (fieldIndex, contentIndex) => side => () => this.setState(
+    isNumber(contentIndex)
+      ? {fieldRevealIndex: fieldIndex, contentRevealIndex: contentIndex, revealSide: side}
+      : {fieldRevealIndex: fieldIndex, revealSide: side}
+  )
+
+  resetReveal = () => {
+    this.setState({
+      fieldRevealIndex: null,
+      contentRevealIndex: null,
+      revealSide: null
+    });
   }
 
-  componentDidMount() {
-    this.props.templates.initResumables();
-    this.resumableRefs.forEach(ref => ref.current.children[1].accept = 'video/*');
+  isRevealed = (fieldIndex, contentIndex) => (
+    fieldIndex === this.state.fieldRevealIndex && contentIndex === this.state.contentRevealIndex
+  )
+
+  getSwipeActions = (fieldIndex, contentIndex) => ({
+    right: [
+      {
+        label: <div className={styles.swipeAction}><Icon name="trash" />Delete</div>,
+        func: this.props.template.deleteContent(fieldIndex, contentIndex)
+      }
+    ]
+  })
+
+  renderAddButton = (mediatype, fieldIndex, fixed) => (
+    <div
+      className={classNames(styles.addButton, fixed && styles.disabled)}
+      onClick={fixed ? noop : this.props.overlay.openOverlay(getOverlay(mediatype))({onSave: this.addContent(fieldIndex)})}
+    >
+      <FontAwesome className={styles.icon} name="plus" />
+    </div>
+  )
+
+  renderAddContent = ({type, fixed}, fieldIndex) => {
+    const {projectId} = this.props.template;
+    if (type === 'video') {
+      return <UploadButton projectId={projectId} onChange={this.addContent(fieldIndex)}/>;
+    }
+
+    return this.renderAddButton(type, fieldIndex, fixed);
   }
 
-  next = () => {
-    this.props.templates.next();
-    this.props.history.push('/configure-vlog');
-  }
+  renderFieldContent = (field, fieldIndex) => (mediaObj, contentIndex) => (
+    field.fixed
+      ? (
+        <div className={styles.fieldContent}>
+          <MediaObject value={mediaObj} immutable />
+        </div>
+      )
 
-  clearField = i => () => this.props.templates.media[i] = null
-
-  renderField = ({title, type, description, short_description, asset_id}, i) => {
-    const progress = this.props.templates.uploading[i];
-    return (
-      <div key={title} className={classNames(styles.field)}>
-        <div
-          ref={this.resumableRefs[i]}
-          className={classNames(
-            styles.button,
-            isNumber(progress) && styles.uploading
-          )}
-          id={`fieldTarget-${i}`}
+      : (
+        <SwipeItem
+          className={styles.fieldContent}
+          actions={this.getSwipeActions(fieldIndex, contentIndex)}
+          afterAction={this.resetReveal}
+          onSwipe={this.setReveal(fieldIndex, contentIndex)}
+          reveal={this.isRevealed(fieldIndex, contentIndex) && this.state.revealSide}
         >
-          {this.props.templates.media[i]
-            ? <img
-              className={styles.thumb}
-              src={this.props.templates.media[i].thumb}
-              onClick={this.props.templates.media[i].mediatype === 'asset'
-                ? noop
-                : this.clearField(i)
-              }
-            />
-            : progress
-              ? <div
-                className={styles.progressBar}
-                style={{width: `${progress}%`}}
-              />
-              : <FontAwesome name="plus" />}
-        </div>
-        <div className={styles.stack}>
-          <div className={styles.title}>{title}</div>
-          <div className={styles.descShort}>{short_description}</div>
-        </div>
-      </div>
-    );
-  }
+          <MediaObject value={mediaObj} onChange={this.props.template.replaceContent(fieldIndex, contentIndex)} />
+        </SwipeItem>
+      )
+  )
 
-  allowNext = () => {
-    const {media, activeTemplate} = this.props.templates;
-    return media.length === activeTemplate.fields.length;
-  }
+  renderField = (field, fieldIndex) => (
+    <React.Fragment>
+      <div className={styles.field}>
+        <Icon className={styles.icon} name={field.type} />
+        <div className={styles.name}>{field.name}</div>
+        {this.renderAddContent(field, fieldIndex)}
+      </div>
+      {!isEmpty(field.contents)
+        && <SortableCollection
+          items={field.contents}
+          renderFunc={this.renderFieldContent(field, fieldIndex)}
+          onChange={this.props.template.rearrangeContents(fieldIndex)}
+        />}
+    </React.Fragment>
+  )
 
   render() {
-    const template = this.props.templates.activeTemplate;
+    const {activeTemplate, isValid, next} = this.props.template;
     return (
       <div className={styles.container}>
-        <Segment title={template.title}>
-          {template.fields.map(this.renderField)}
-        </Segment>
-        <div
-          className={classNames(styles.next, this.allowNext() && styles.active)}
-          onClick={this.allowNext() ? this.next : noop}
-        >
+        <div className={styles.fields}>
+          {activeTemplate.map(this.renderField)}
+        </div>
+        <div className={classNames(styles.next, isValid() && styles.active)} onClick={next}>
           <FontAwesome name="chevron-right" />
         </div>
       </div>

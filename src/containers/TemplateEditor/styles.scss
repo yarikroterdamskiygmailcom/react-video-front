@@ -1,5 +1,5 @@
 .tools {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     display: flex;
     flex-direction: row;
@@ -7,11 +7,25 @@
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-}
 
-.add {
-    background: $purple;
+   .add {
+    @extend .tool;
+    background: $pink;
+    color: $purple;   
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+   }
+
+   .next {
+    @extend .tool;
+    background: $pink;
     color: white;
+    transition: background 0.2s;
+
+    &.active {
+        background: $purple;
+        box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    }
+   }
 }
 
 .tool {
@@ -21,9 +35,10 @@
     width: 50px;
     height: 50px;
     border-radius: 5px;
+
 }
 
-.options {
+.menu {
     position: absolute;
     bottom: 0;
     display: flex;
@@ -32,42 +47,48 @@
     padding: 10px;
     box-sizing: border-box;
 
-    .option {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 10px;
-        background: white;
-        box-sizing: border-box;
+    .menuInner {
+        border-radius: 15px;
+        overflow: hidden;
+
+        .option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            background: white;
+            box-sizing: border-box;
+            border-top: 1px solid $border;
+    
+    
+            &:first-child {
+                border-top: none;
+            }
+        }
     }
 }
 
-.field {
+.item {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
     box-sizing: border-box;
-    background: white;
-    border-bottom: 1px solid $grey;
+    border-bottom: 1px solid $border;
     width: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
+}
 
-    .icon {
-        display: flex;
-        justify-content: flex-start;
-        width: 8%;
-    }
+.field {
+    @extend .item;
+    background: white;
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 2fr) 1fr 1fr 0.5fr;
+    justify-items: center;
 
-    .title {
-        width: 30%;
-        overflow: hidden;
-    }
-
-    .description {
-        width: 55%;
+    .name {
         overflow: hidden;
     }
 }
@@ -75,6 +96,17 @@
 .header {
     @extend .field;
     background: none;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 0.5fr;
+    justify-items: center;
+    padding: 5px;
+    text-transform: capitalize;
+
+    .name {
+        justify-self: left;
+    }
+
+
 }
 
 .column {
@@ -84,4 +116,38 @@
 .swipeAction {
     display: flex;
     flex-direction: column;
+}
+
+.addButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background: $purple;
+
+    .icon {
+        color: white;
+    }
+}
+
+.uploadButton {
+    @extend .addButton;
+}
+
+.fieldContent {
+    @extend .item;
+    background: #efefef;
+}
+
+.handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.contentsWrapper {
+    width: 100%;
 }

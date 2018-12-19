@@ -1,69 +1,84 @@
 import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
-import {isEmpty} from 'lodash-es';
+import {isEmpty, isNumber} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
-import {Icon, Checkbox, Input, SwipeItem} from '../../atoms';
-import {Overlay} from '../../components';
+import {Icon, Checkbox, Input, SwipeItem, SortableCollection} from '../../atoms';
+import {SortableHandle} from 'react-sortable-hoc';
+import {SelectAsset, EditTitle, MediaObject, SaveTemplate} from '../../components';
+import {withRouter} from 'react-router';
 import styles from './styles.scss';
 
 const fieldOptions = [
   {
     type: 'video',
-    icon: 'camera',
+    icon: 'video',
   },
   {
     type: 'asset',
-    icon: 'branding'
+    icon: 'asset'
   },
   {
     type: 'title',
     icon: 'title'
   },
-
-];
+].map(option => ({...option, contents: []}));
 
 const columns = [
-  {
-    name: 'type',
-    width: '8%'
-  },
-  {
-    name: 'title',
-    width: '30%'
-  },
-  {
-    name: 'description',
-    width: '55%'
-  },
-  {
-    name: 'fixed',
-    width: '10%'
-  }
+  'type',
+  'name',
+  'contents',
+  'fixed',
+  '', //the handle
 ];
 
+const DragHandle = SortableHandle(() =>
+  <div className={styles.handle}>
+    <FontAwesome name="bars" />
+  </div>
+);
+
+class Menu extends Component {
+
+  onSelect = option => () => {
+    this.props.onSelect(option);
+    this.props.onClose();
+  }
+
+  renderOption = option => (
+    <div className={styles.option} onClick={this.onSelect(option)}>
+      {option.type}
+    </div>
+  )
+
+  render() {
+    return (
+      <div className={styles.menu}>
+        <div className={styles.menuInner}>
+          {fieldOptions.map(this.renderOption)}
+        </div>
+      </div>
+    );
+  }
+}
+
+@withRouter
 @inject('templateEditor')
+@inject('overlay')
 @observer
 export default class TemplateEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
-      revealIndex: null,
+      fieldRevealIndex: null,
+      contentRevealIndex: null,
       revealSide: null
     };
   }
 
-  openMenu = () => this.setState({isOpen: true})
-
-  closeMenu = () => this.setState({isOpen: false})
-
-  addField = field => () => {
+  addField = field => {
     this.props.templateEditor.addField(field);
-    this.closeMenu();
   }
-
-  deleteField = i => () => this.props.templateEditor.deleteField(i);
 
   updateField = (index, changes) => e => {
     if (e) {
@@ -73,75 +88,130 @@ export default class TemplateEditor extends Component {
     }
   }
 
-  setReveal = i => side => () => this.setState({revealIndex: i, revealSide: side})
+  addContent = index => content => this.props.templateEditor.addContent(index, content);
+
+  setReveal = (fieldIndex, contentIndex) => side => () => this.setState(
+    isNumber(contentIndex)
+      ? {fieldRevealIndex: fieldIndex, contentRevealIndex: contentIndex, revealSide: side}
+      : {fieldRevealIndex: fieldIndex, revealSide: side}
+  )
 
   resetReveal = () => {
     this.setState({
-      revealIndex: null,
+      fieldRevealIndex: null,
+      contentRevealIndex: null,
       revealSide: null
     });
   }
 
-    getSwipeActions = i => ({
-      right: [
-        {
-          label: <div className={styles.swipeAction}><Icon name="trash"/>Delete</div>,
-          func: this.deleteField(i)
-        }
-      ]
-    })
+  isRevealed = (fieldIndex, contentIndex) => isNumber(contentIndex)
+    ? fieldIndex === this.state.fieldRevealIndex && contentIndex === this.state.contentRevealIndex
+    : fieldIndex === this.state.fieldRevealIndex && this.state.contentRevealIndex === null;
+
+  getFieldSwipeActions = fieldIndex => ({
+    right: [
+      {
+        label: <div className={styles.swipeAction}><Icon name="trash" />Delete</div>,
+        func: this.props.templateEditor.deleteField(fieldIndex)
+      }
+    ]
+  })
+
+  getContentSwipeActions = (fieldIndex, contentIndex) => ({
+    right: [
+      {
+        label: <div className={styles.swipeAction}><Icon name="trash" />Delete</div>,
+        func: this.props.templateEditor.deleteContent(fieldIndex, contentIndex)
+      }
+    ]
+  })
+
+  onSave = meta => this.props.templateEditor.saveTemplate(meta)
+  .then(this.props.history.goBack);
 
   renderColumn = column => (
-    <div className={styles.column} style={{width: column.width}}>
-      {column.name}
+    <div className={styles[column]}>
+      {column}
     </div>
   )
 
-  renderField = (field, i) => (
+  renderAddButton = () => (
+    <div className={styles.addButton}>
+      <FontAwesome className={styles.icon} name="plus" />
+    </div>
+  )
+
+  renderAddContent = (type, fieldIndex) => ({
+    asset: (
+      <div
+        onClick={this.props.overlay.openOverlay(SelectAsset)({onSave: this.addContent(fieldIndex)})}
+      >
+        {this.renderAddButton()}
+      </div>
+    ),
+    title: <div onClick={this.props.overlay.openOverlay(EditTitle)({onSave: this.addContent(fieldIndex)})}>Add...</div>,
+
+  }[type]
+  )
+
+  renderFieldContent = fieldIndex => (mediaObj, contentIndex) => (
     <SwipeItem
-      className={styles.field}
-      actions={this.getSwipeActions(i)}
+      className={styles.fieldContent}
+      actions={this.getContentSwipeActions(fieldIndex, contentIndex)}
       afterAction={this.resetReveal}
-      onSwipe={this.setReveal(i)}
-      reveal={i === this.state.revealIndex && this.state.revealSide}
+      onSwipe={this.setReveal(fieldIndex, contentIndex)}
+      reveal={this.isRevealed(fieldIndex, contentIndex) && this.state.revealSide}
     >
-      <Icon className={styles.icon} name={field.icon} />
-      <Input field className={styles.title} value={field.title} placeholder="What?" onChange={this.updateField(i, 'title')} />
-      <Input field className={styles.description} value={field.description} placeholder="Short desc" onChange={this.updateField(i, 'description')} />
-      <Checkbox className={styles.fixed} value={field.fixed} onChange={this.updateField(i, {fixed: !field.fixed})} />
+      <MediaObject value={mediaObj} onChange={this.props.templateEditor.replaceContent(fieldIndex, contentIndex)} />
     </SwipeItem>
   )
 
-  renderOption = option => (
-    <div className={styles.option} onClick={this.addField(option)}>
-      {option.type}
-    </div>
+  renderField = (field, fieldIndex) => (
+    <React.Fragment>
+      <SwipeItem
+        className={styles.field}
+        actions={this.getFieldSwipeActions(fieldIndex)}
+        afterAction={this.resetReveal}
+        onSwipe={this.setReveal(fieldIndex)}
+        reveal={this.isRevealed(fieldIndex) && this.state.revealSide}
+      >
+        <Icon className={styles.icon} name={field.icon} />
+        <Input field className={styles.name} value={field.name} placeholder="What?" onChange={this.updateField(fieldIndex, 'name')} />
+        {this.renderAddContent(field.type, fieldIndex)}
+        <Checkbox className={styles.fixed} value={field.fixed} onChange={this.updateField(fieldIndex, {fixed: !field.fixed})} />
+        <DragHandle />
+      </SwipeItem>
+      {!isEmpty(field.contents)
+        && <SortableCollection
+          items={field.contents}
+          renderFunc={this.renderFieldContent(fieldIndex)}
+          onChange={this.props.templateEditor.rearrangeContents(fieldIndex)}
+        />}
+    </React.Fragment>
   )
 
   render() {
-    const {template, saveTemplate} = this.props.templateEditor;
-    const {isOpen} = this.state;
+    const {template, rearrangeFields, getErrors} = this.props.templateEditor;
+    const {openOverlay, closeOverlay, showToast} = this.props.overlay;
     return (
       <div className={styles.container}>
         <div className={styles.header}>
           {columns.map(this.renderColumn)}
         </div>
-        <div className={styles.fields}>
-          {template.map(this.renderField)}
-        </div>
+        <SortableCollection items={template} renderFunc={this.renderField} onChange={rearrangeFields} />
         <div className={styles.tools}>
-          <div className={classNames(styles.tool, styles.add)} onClick={this.openMenu}>
+          <div className={styles.add} onClick={openOverlay(Menu)({onSelect: this.addField})}>
             <FontAwesome name="plus" />
           </div>
-          <div onClick={saveTemplate}>
-            save
+          <div
+            className={classNames(styles.next, template.length > 0 && styles.active)}
+            onClick={getErrors()
+              ? showToast(getErrors())
+              : openOverlay(SaveTemplate)({onSave: this.onSave})}
+          >
+            <FontAwesome name="chevron-right" />
           </div>
         </div>
-        <Overlay className={styles.overlay} active={isOpen} onClose={this.closeMenu}>
-          <div className={styles.options}>
-            {fieldOptions.map(this.renderOption)}
-          </div>
-        </Overlay>
       </div>
     );
   }

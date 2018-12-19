@@ -5,7 +5,7 @@ import {observer, inject} from 'mobx-react';
 import {withRouter} from 'react-router';
 
 @withRouter
-@inject('templates')
+@inject('template')
 @observer
 export default class TemplateManager extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class TemplateManager extends Component {
   }
 
   componentDidMount() {
-    this.props.templates.loadTemplates();
+    this.props.template.loadTemplates();
   }
 
   getSwipeActions = id => ({
@@ -40,12 +40,12 @@ export default class TemplateManager extends Component {
 
   goToEditor = () => this.props.history.push('/template-editor')
 
-  deleteTemplate = id => () => this.props.templates.deleteTemplate(id)
+  deleteTemplate = id => () => this.props.template.deleteTemplate(id)
 
   renderHeader = () => (
     <div className={styles.header}>
       <div>Your Templates</div>
-      <div className={styles.add} onClick={this.goToEditor}>Add</div>
+      <div className={styles.add} onClick={this.goToEditor}>+ Add</div>
     </div>
   )
 
@@ -63,7 +63,7 @@ export default class TemplateManager extends Component {
   )
 
   render() {
-    const {templates} = this.props.templates;
+    const {templates} = this.props.template;
     return (
       <div className={styles.container}>
         <Segment elementClassName={styles.element} title={this.renderHeader()}>
