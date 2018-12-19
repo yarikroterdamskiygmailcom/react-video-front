@@ -1,6 +1,6 @@
 import {observable} from 'mobx';
 import {php} from '.';
-import {vlogEditorStore as editor, templatesStore as templates} from '../';
+import {vlogEditorStore as editor, templateStore as templates} from '../';
 import {pick} from 'lodash-es';
 
 export class ProjectStore {
@@ -84,9 +84,9 @@ export class ProjectStore {
     editor.setProjectId(this.projectId);
   }
 
-  startFromTemplate = async i => {
+  startFromTemplate = async template => {
     await this.startFromScratch();
-    templates.setActiveTemplate(i);
+    templates.setActiveTemplate(template);
     templates.setProjectId(this.projectId);
   }
 
