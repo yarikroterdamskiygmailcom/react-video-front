@@ -1,9 +1,8 @@
 import addVlog from './addVlog.svg';
 import arrowCurved from './arrowCurved.svg';
 import arrowDown from './arrowDown.svg';
+import asset from './asset.svg';
 import backdrop from './backdrop.svg';
-import branding from './branding.svg';
-import camera from './camera.svg';
 import fade from './fade.svg';
 import emptyVlog from './emptyVlog.svg';
 import eye from './eye.svg';
@@ -18,14 +17,15 @@ import trim from './trim.svg';
 import template from './template.svg';
 import title from './title.svg';
 import trash from './trash.svg';
+import video from './video.svg';
 
 export default {
   addVlog,
   arrowCurved,
   arrowDown,
+  asset,
   backdrop,
-  branding,
-  camera,
+  video,
   fade,
   emptyVlog,
   eye,
