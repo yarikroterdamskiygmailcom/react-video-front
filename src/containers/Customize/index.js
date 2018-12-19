@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
 import {Segment, Carousel, SwipeItem, Icon} from '../../atoms';
-import {Overlay, Preview, StyleEditor, ConfirmationPrompt} from '../../components';
+import {Preview, StyleEditor, ConfirmationPrompt} from '../../components';
 import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
 import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
 import trash from '../../../assets/trash.png';
 
+@inject('overlay')
 @inject('assets')
 @inject('session')
 @observer
@@ -17,7 +18,6 @@ export default class Customize extends Component {
     this.state = {
       teamOpen: false,
       personalOpen: false,
-      overlayOpen: false,
       deleteMode: false,
       assetsToDelete: [],
       reveal: {
@@ -38,54 +38,44 @@ export default class Customize extends Component {
 
   deleteAsset = id => this.props.assets.deleteAsset(id)
 
-  deleteAssets = () => isEmpty(this.state.assetsToDelete)
-    ? this.toggleDeleteMode()
-    : this.setState({
-      overlayOpen: true,
-      overlayContent: (
-        <ConfirmationPrompt
-          onCancel={() => {
-            this.toggleDeleteMode();
-            this.setState({assetsToDelete: []});
-            this.closeOverlay();
-          }}
-          onProceed={() => {
-            this.toggleDeleteMode();
-            Promise.all(this.state.assetsToDelete.map(id => this.deleteAsset(id)))
-            .then(this.props.assets.loadAssets);
-            this.setState({assetsToDelete: []});
-            this.closeOverlay();
+  deleteAssets = () => {
+    this.toggleDeleteMode();
+    Promise.all(this.state.assetsToDelete.map(id => this.deleteAsset(id)))
+    .then(this.props.assets.loadAssets);
+    this.setState({assetsToDelete: []});
+  }
 
-          }}
-          body={`Are you sure you want to delete ${this.state.assetsToDelete.length} assets? This can not be undone.`}
-        />
-      )
-    })
+  cancelDelete = () => {
+    this.toggleDeleteMode();
+    this.setState({assetsToDelete: []});
+  }
+
+  handleDelete = () => {
+    isEmpty(this.state.assetsToDelete)
+      ? this.toggleDeleteMode()
+      : this.props.overlay.openOverlay(ConfirmationPrompt)({
+        onSelect: this.deleteAssets,
+        onClose: this.cancelDelete,
+        body: `Are you sure you want to delete ${this.state.assetsToDelete.length} assets? This can not be undone.`
+      })();
+  }
 
   uploadStyle = group => style => this.props.assets.uploadStyle(group, style)
   .then(this.props.assets.loadStyles)
 
-  openStyleEditor = group => () => this.setState({
-    overlayOpen: true,
-    overlayContent: <StyleEditor onClose={this.closeOverlay} onSave={this.uploadStyle(group)} />
-  })
+  openStyleEditor = group => this.props.overlay.openOverlay(StyleEditor)({onSave: this.uploadStyle(group)});
 
   toggleSegment = type => () => this.setState({[`${type}Open`]: !this.state[`${type}Open`]})
 
   openPreview = (type, src) => () => {
     const content = (type => {
       switch (type) {
-        case 'image': return <img className={styles.imagePreview} src={src} />;
-        case 'video': return <Preview src={src} />;
+        case 'image': return props => <img className={styles.imagePreview} src={props.src} />;
+        case 'video': return Preview;
         default: throw new Error();
       }
     })(type);
-    this.setState({overlayOpen: true, overlayContent: content});
-  }
-
-  closeOverlay = () => {
-    this.setState({overlayOpen: false});
-    setTimeout(() => this.setState({overlayContent: null}), 200);
+    this.props.overlay.openOverlay(content)({src})();
   }
 
   scheduleAssetDeletion = id => () => this.setState({
@@ -116,7 +106,7 @@ export default class Customize extends Component {
     <div className={styles.header} onClick={this.toggleSegment('personal')}>
       <div>
         <div className={styles.collapser}>
-          <FontAwesome className={styles.icon} name={this.state.personalOpen ? 'minus' : 'plus'}/>
+          <FontAwesome className={styles.icon} name={this.state.personalOpen ? 'minus' : 'plus'} />
         </div>
         Personal Assets
       </div>
@@ -128,7 +118,7 @@ export default class Customize extends Component {
     <div className={styles.header} onClick={this.toggleSegment('team')}>
       <div>
         <div className={styles.collapser}>
-          <FontAwesome className={styles.icon} name={this.state.teamOpen ? 'minus' : 'plus'}/>
+          <FontAwesome className={styles.icon} name={this.state.teamOpen ? 'minus' : 'plus'} />
         </div>
         Team Assets
       </div>
@@ -223,7 +213,7 @@ export default class Customize extends Component {
   render() {
     const {assetList, styleList} = this.props.assets;
     const {userType} = this.props.session;
-    const {overlayOpen, overlayContent, teamOpen, personalOpen} = this.state;
+    const {teamOpen, personalOpen} = this.state;
 
     const personalAssets = assetList.filter(asset => asset.access === 'personal');
     const personalVideos = personalAssets.filter(asset => asset.type === 'video');
@@ -291,13 +281,10 @@ export default class Customize extends Component {
         <img
           className={classNames(styles.trash, this.state.deleteMode && styles.active)}
           onClick={this.state.deleteMode
-            ? this.deleteAssets
+            ? this.handleDelete
             : this.toggleDeleteMode}
           src={trash}
         />
-        <Overlay active={overlayOpen} onClose={this.closeOverlay}>
-          {overlayContent}
-        </Overlay>
       </div>
     );
   }

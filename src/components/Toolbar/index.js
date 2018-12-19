@@ -1,34 +1,15 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
 import {Icon} from '../../atoms';
-import {Overlay} from '../../components';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {noop} from 'lodash-es';
 
-@inject('session')
-@observer
-class Toolbar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: false
-    };
-  }
+class Menu extends Component {
 
-  openMenu = () => {
-    this.setState({isOpen: true});
-  }
-
-  closeMenu = e => {
-    e && e.stopPropagation();
-    this.setState({isOpen: false});
-  }
-
-  handleClick = func => e => {
-    e.stopPropagation();
-    this.closeMenu();
+  handleClick = func => () => {
+    this.props.onClose();
     func();
   }
 
@@ -38,28 +19,35 @@ class Toolbar extends Component {
       {action.render}
     </div>
 
-  renderMenu = () =>
-    <div className={styles.menu}>
-      <div className={styles.menuInner}>
-        <div className={styles.menuHeader}>Add</div>
-        {this.props.actions.map(this.renderAction)}
+  render() {
+    const {actions} = this.props;
+    return (
+      <div className={styles.menu}>
+        <div className={styles.menuInner}>
+          <div className={styles.menuHeader}>Add</div>
+          {actions.map(this.renderAction)}
+        </div>
+        <div className={styles.menuClose} onClick={this.props.onClose}>Cancel</div>
       </div>
-      <div className={styles.menuClose} onClick={this.closeMenu}>Cancel</div>
-    </div>
+    );
+  }
+}
+
+@inject('overlay')
+@observer
+class Toolbar extends Component {
 
   render() {
-    const {className, allowNext, next, session} = this.props;
+    const {className, allowNext, next, actions} = this.props;
+    const {openOverlay} = this.props.overlay;
     return (
       <div className={classNames(styles.container, className)}>
-        <div className={styles.left} onClick={this.openMenu}>
+        <div className={styles.left} onClick={openOverlay(Menu)({actions})}>
           <FontAwesome name="plus" />
         </div>
         <div className={classNames(styles.right, !allowNext && styles.disabled)} onClick={allowNext ? next : noop}>
           <FontAwesome name="angle-right" />
         </div>
-        <Overlay active={this.state.isOpen} onClose={this.closeMenu}>
-          {this.renderMenu()}
-        </Overlay>
       </div>
     );
   }

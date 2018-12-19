@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
 import {withRouter} from 'react-router';
-import {Arranger, Overlay, Toolbar, Hamburger, ConfirmProfessional} from '../../components';
+import {Arranger, Toolbar, Hamburger, ConfirmProfessional, EditTitle, EditFade, SelectAsset} from '../../components';
 import classNames from 'classnames';
 import styles from './styles.scss';
-import {ProgressBar, Icon, Toast, Toggle, Segment} from '../../atoms';
+import {ProgressBar, Icon, Toggle, Segment} from '../../atoms';
 import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
 
 @withRouter
+@inject('overlay')
 @inject('vlogEditor')
 @inject('project')
 @observer
@@ -18,17 +19,15 @@ export default class VlogEditor extends Component {
     this.resumableRef = React.createRef();
     this.state = {
       pending: false,
-      showToast: false,
-      toastContent: '',
       hamburgerActive: false,
       syncing: false
     };
   }
 
-  componentDidMount() {
-    this.props.vlogEditor.initResumable();
-    this.resumableRef.current.children[0].accept = 'video/*';
-  }
+  // componentDidMount() {
+  //   this.props.vlogEditor.initResumable();
+  //   this.resumableRef.current.children[0].accept = 'video/*';
+  // }
 
   componentWillUnmount() {
     this.props.project.updateProject({
@@ -37,23 +36,10 @@ export default class VlogEditor extends Component {
   }
 
   confirmProfessional = () => {
-    this.props.vlogEditor.setOverlay(
-      <ConfirmProfessional
-        onCancel={this.props.vlogEditor.closeOverlay}
-        onConfirm={() => {
-          this.props.project.toggleProperty('customEdit');
-          this.props.vlogEditor.closeOverlay();
-        }}
-      />
-    );
+    this.props.overlay.openOverlay(ConfirmProfessional)({onSelect: () => {
+      this.props.project.toggleProperty('customEdit');
+    }});
   }
-
-  showToast = text => {
-    this.setState({showToast: true, toastContent: text});
-    setTimeout(this.hideToast, 5000);
-  }
-
-  hideToast = () => this.setState({showToast: false})
 
   toggleHamburger = () => this.setState({hamburgerActive: !this.state.hamburgerActive})
 
@@ -61,7 +47,7 @@ export default class VlogEditor extends Component {
 
   getActions = () => [
     {
-      icon: 'camera',
+      icon: 'video',
       render: <div
         ref={this.resumableRef}
         className={classNames(styles.vidinput, this.props.vlogEditor.uploading && styles.disabled)}
@@ -74,23 +60,23 @@ export default class VlogEditor extends Component {
     {
       icon: 'fade',
       render: <div>Fade</div>,
-      fn: this.props.vlogEditor.openAddFade
+      fn: this.props.overlay.openOverlay(EditFade)({onSave: this.props.vlogEditor.addMedia})
     },
     {
       icon: 'title',
       render: <div>Title</div>,
-      fn: this.props.vlogEditor.openAddTitle
+      fn: this.props.overlay.openOverlay(EditTitle)({onSave: this.props.vlogEditor.addMedia})
     },
     {
-      icon: 'branding',
+      icon: 'asset',
       render: <div>Branding</div>,
-      fn: this.props.vlogEditor.openAddBrandingElement
+      fn: this.props.overlay.openOverlay(SelectAsset)({onSave: this.props.vlogEditor.addMedia})
     }
   ]
 
   nextStep = () => {
     if (this.props.vlogEditor.getErrors()) {
-      this.showToast(this.props.vlogEditor.getErrors());
+      this.props.Overlay.showToast(this.props.vlogEditor.getErrors());
     } else {
       this.props.history.push('/configure-vlog');
     }
@@ -104,9 +90,9 @@ export default class VlogEditor extends Component {
   )
 
   render() {
-    const {uploading, progress, media, overlayActive, overlayContent, closeOverlay, syncing} = this.props.vlogEditor;
+    const {uploading, progress, media, syncing} = this.props.vlogEditor;
     const {projectId, customEdit, toggleProperty} = this.props.project;
-    const {showToast, toastContent, hamburgerActive} = this.state;
+    const {hamburgerActive} = this.state;
     return (
       <div className={styles.container}>
         {isEmpty(media) && this.renderHint()}
@@ -123,12 +109,6 @@ export default class VlogEditor extends Component {
           allowNext={media.some(mediaObj => ['video', 'title', 'asset'].includes(mediaObj.mediatype))}
           next={this.nextStep}
         />
-        <Toast active={showToast} onClose={this.hideToast}>
-          {toastContent}
-        </Toast>
-        <Overlay active={overlayActive} onClose={closeOverlay}>
-          {overlayContent}
-        </Overlay>
         <Hamburger active={hamburgerActive} onClose={this.toggleHamburger}>
           <Segment title="Vlog Data">
             <div className={styles.option}>
