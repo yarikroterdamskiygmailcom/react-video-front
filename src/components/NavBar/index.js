@@ -105,6 +105,7 @@ export default class NavBar extends Component {
     if (selection === 'scratch') {
       this.start('scratch')();
     } else {
+      this.props.overlay.closeOverlay();
       this.props.overlay.openOverlay({
         template: TemplatePicker,
         professional: ConfirmProfessional
