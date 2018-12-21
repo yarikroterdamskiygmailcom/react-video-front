@@ -1,5 +1,3 @@
-import React from 'react';
-import {EditTitle, SelectAsset, AddOverlay, Blurring, Preview, EditFade, Configure, TrimmerSplitter} from '../components';
 import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
@@ -10,8 +8,6 @@ import {head, last, pick, flatten} from 'lodash-es';
 export class VlogEditorStore {
   @observable media = []
   @observable projectId = null
-  @observable overlayActive = false
-  @observable overlayContent = null
   @observable uploading = false
   @observable progress = 0
   @observable syncing = false
@@ -145,141 +141,6 @@ export class VlogEditorStore {
 
   }
 
-  //fade stuff
-
-  openAddFade = () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <EditFade
-        onClose={this.closeOverlay}
-        onSave={this.addMedia}
-      />
-    );
-  }
-
-  openEditFade = index => () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <EditFade
-        fade={this.media[index]}
-        onClose={this.closeOverlay}
-        onSave={this.saveMedia(index)}
-      />
-    );
-  }
-
-  //Add Title stuff
-
-  openAddTitle = () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <EditTitle
-        onClose={this.closeOverlay}
-        onSave={this.addMedia}
-      />
-    );
-  }
-
-  openEditTitle = index => () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <EditTitle
-        onClose={this.closeOverlay}
-        onSave={this.saveMedia(index)}
-        title={this.media[index]}
-      />
-    );
-  }
-
-  //Trimmer stuff
-
-  openTrimmerSplitter = index => () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <TrimmerSplitter
-        onClose={this.closeOverlay}
-        onTrim={this.saveMedia(index)}
-        onSplit={this.splitVideo(index)}
-        video={this.media[index]}
-      />
-    );
-  }
-
-  //Splitter stuff
-
-  openSplitter = index => () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <Splitter
-        onClose={this.closeOverlay}
-        onSave={this.splitVideo(index)}
-        video={this.media[index]}
-      />
-    );
-  }
-
-  //Add Branding Element stuff
-
-  openSelectAsset = () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <SelectAsset
-        onClose={this.closeOverlay}
-        onSave={this.addMedia}
-      />
-    );
-  }
-
-  //Lower third stuff
-
-  openAddOverlay = index => () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <AddOverlay
-        onClose={this.closeOverlay}
-        onSave={this.saveMedia(index)}
-        video={this.media[index]}
-      />
-    );
-  }
-
-  //Blurring
-
-  openBlurring = index => () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <Blurring
-        onClose={this.closeOverlay}
-        onSave={this.saveMedia(index)}
-        video={this.media[index]}
-      />
-    );
-  }
-
-  //Configure stuff
-
-  openConfigure = index => () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <Configure
-        onClose={this.closeOverlay}
-        videoIndex={index}
-      />
-    );
-  }
-
-  //Preview stuff
-
-  openPreview = i => () => {
-    this.overlayActive = true;
-    this.overlayContent = (
-      <Preview
-        src={this.media[i].src}
-        start={this.media[i].inpoint}
-        stop={this.media[i].outpoint}
-      />
-    );
-  }
 }
 
 export default VlogEditorStore;

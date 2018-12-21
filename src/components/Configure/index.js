@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Modal, Blur, AddOverlay} from '../';
+import {Modal, Blurring, AddOverlay} from '../';
 import {pick} from 'lodash-es';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 
-@inject('vlogEditor')
+@inject('overlay')
 @observer
 export default class Configure extends Component {
 
@@ -23,12 +23,12 @@ export default class Configure extends Component {
     {
       name: 'Facial Blurring',
       desc: '',
-      func: this.props.vlogEditor.openBlurring(this.props.videoIndex)
+      func: this.props.overlay.openOverlay(Blurring)({video: this.props.video})
     },
     {
       name: 'Overlay',
       desc: '',
-      func: this.props.vlogEditor.openAddOverlay(this.props.videoIndex)
+      func: this.props.overlay.openOverlay(AddOverlay)({video: this.props.video})
     }
   ]
 
