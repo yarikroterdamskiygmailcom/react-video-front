@@ -91,6 +91,10 @@
     .name {
         overflow: hidden;
     }
+
+    .handle {
+        grid-column: 5;
+    }
 }
 
 .header {
@@ -139,6 +143,16 @@
 .fieldContent {
     @extend .item;
     background: #efefef;
+    margin-left: 70px;
+
+
+
+    &::after {
+        content: '-';
+        position: absolute;
+        left: 30px;
+        font-size: 40px;
+    }
 }
 
 .handle {
@@ -148,6 +162,6 @@
     height: 100%;
 }
 
-.contentsWrapper {
-    width: 100%;
+.fieldContents {
+    background: $pink;
 }

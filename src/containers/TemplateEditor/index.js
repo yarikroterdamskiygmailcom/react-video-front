@@ -12,14 +12,17 @@ import styles from './styles.scss';
 const fieldOptions = [
   {
     type: 'video',
+    label: 'Video field',
     icon: 'video',
   },
   {
     type: 'asset',
+    label: 'Asset field',
     icon: 'asset'
   },
   {
     type: 'title',
+    label: 'Asset field',
     icon: 'title'
   },
 ].map(option => ({...option, contents: []}));
@@ -47,7 +50,7 @@ class Menu extends Component {
 
   renderOption = option => (
     <div className={styles.option} onClick={this.onSelect(option)}>
-      {option.type}
+      {option.label}
     </div>
   )
 
@@ -135,24 +138,18 @@ export default class TemplateEditor extends Component {
     </div>
   )
 
-  renderAddButton = () => (
-    <div className={styles.addButton}>
-      <FontAwesome className={styles.icon} name="plus" />
-    </div>
-  )
-
-  renderAddContent = (type, fieldIndex) => ({
-    asset: (
-      <div
-        onClick={this.props.overlay.openOverlay(SelectAsset)({onSave: this.addContent(fieldIndex)})}
-      >
-        {this.renderAddButton()}
+  renderAddContent = (type, fieldIndex) => {
+    const {openOverlay} = this.props.overlay;
+    const Content = {
+      asset: SelectAsset,
+      title: EditTitle
+    }[type];
+    return (
+      <div className={styles.addButton} onClick={openOverlay(Content)({onSave: this.addContent(fieldIndex)})}>
+        <FontAwesome className={styles.icon} name="plus" />
       </div>
-    ),
-    title: <div onClick={this.props.overlay.openOverlay(EditTitle)({onSave: this.addContent(fieldIndex)})}>Add...</div>,
-
-  }[type]
-  )
+    );
+  }
 
   renderFieldContent = fieldIndex => (mediaObj, contentIndex) => (
     <SwipeItem
@@ -176,13 +173,14 @@ export default class TemplateEditor extends Component {
         reveal={this.isRevealed(fieldIndex) && this.state.revealSide}
       >
         <Icon className={styles.icon} name={field.icon} />
-        <Input field className={styles.name} value={field.name} placeholder="What?" onChange={this.updateField(fieldIndex, 'name')} />
-        {this.renderAddContent(field.type, fieldIndex)}
-        <Checkbox className={styles.fixed} value={field.fixed} onChange={this.updateField(fieldIndex, {fixed: !field.fixed})} />
+        <Input field className={styles.name} value={field.sname} placeholder="What?" onChange={this.updateField(fieldIndex, 'name')} />
+        {field.type !== 'video' && this.renderAddContent(field.type, fieldIndex)}
+        {field.type !== 'video' && <Checkbox className={styles.fixed} value={field.fixed} onChange={this.updateField(fieldIndex, {fixed: !field.fixed})} />}
         <DragHandle />
       </SwipeItem>
       {!isEmpty(field.contents)
         && <SortableCollection
+          className={styles.fieldContents}
           items={field.contents}
           renderFunc={this.renderFieldContent(fieldIndex)}
           onChange={this.props.templateEditor.rearrangeContents(fieldIndex)}
@@ -192,7 +190,7 @@ export default class TemplateEditor extends Component {
 
   render() {
     const {template, rearrangeFields, getErrors} = this.props.templateEditor;
-    const {openOverlay, closeOverlay, showToast} = this.props.overlay;
+    const {openOverlay, showToast} = this.props.overlay;
     return (
       <div className={styles.container}>
         <div className={styles.header}>
