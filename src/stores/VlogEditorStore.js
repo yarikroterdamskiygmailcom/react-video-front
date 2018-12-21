@@ -56,16 +56,6 @@ export class VlogEditorStore {
     );
   }
 
-  setOverlay = overlay => {
-    this.overlayActive = true;
-    this.overlayContent = overlay;
-  };
-
-  closeOverlay = () => {
-    this.overlayActive = false;
-    setTimeout(() => this.overlayContent = null, 200);
-  }
-
   getErrors = () => {
     const media = this.media.toJS();
 
