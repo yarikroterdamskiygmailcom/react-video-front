@@ -5,7 +5,7 @@ import {php, userDB} from '.';
 export class TemplateEditorStore {
   @observable template = []
 
-  @action addField = field => this.template = [...this.template.toJS(), field]
+  @action addField = field => this.template = [...this.template.toJS(), {...field, name: ''}]
 
   @action updateField = (index, changes) => {
     this.template = this.template.map((field, i) => i === index ? {...field, ...changes} : field);
