@@ -7,29 +7,29 @@ import styles from './styles.scss';
 @observer
 export default class ConfirmProfessional extends Component {
 
-    modalActions = [
-      {
-        label: 'Cancel',
-        func: this.props.onClose
-      },
-      {
-        label: 'Confirm',
-        func: this.onSelect
-      }
-    ]
+  onSelect = () => {
+    this.props.onSelect();
+    this.props.onClose();
+  }
 
-    onSelect = () => {
-      this.props.onSelect();
-      this.props.onClose();
+  modalActions = [
+    {
+      label: 'Cancel',
+      func: this.props.onClose
+    },
+    {
+      label: 'Confirm',
+      func: this.onSelect
     }
+  ]
 
-    render() {
-      return (
-        <Modal className={styles.modal} actions={this.modalActions}>
-                Are you sure you want to create a
-          <div className={styles.prof}>Professional Vlog?</div>
-                Additional charges apply.
-        </Modal>
-      );
-    }
+  render() {
+    return (
+      <Modal className={styles.modal} actions={this.modalActions}>
+        Are you sure you want to create a
+        <div className={styles.prof}>Professional Vlog?</div>
+        Additional charges apply.
+      </Modal>
+    );
+  }
 }

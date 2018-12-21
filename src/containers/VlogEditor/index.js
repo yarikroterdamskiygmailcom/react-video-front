@@ -36,9 +36,7 @@ export default class VlogEditor extends Component {
   }
 
   confirmProfessional = () => {
-    this.props.overlay.openOverlay(ConfirmProfessional)({onSelect: () => {
-      this.props.project.toggleProperty('customEdit');
-    }});
+    this.props.overlay.openOverlay(ConfirmProfessional)({onSelect: () => this.props.project.toggleProperty('customEdit')})();
   }
 
   toggleHamburger = () => this.setState({hamburgerActive: !this.state.hamburgerActive})
