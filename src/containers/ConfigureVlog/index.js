@@ -63,7 +63,7 @@ export default class ConfigureVlog extends Component {
 
   setOrientation = orientation => () => this.setState({orientation})
 
-  grabThumb = () => head(this.props.vlogEditor.media).thumb;
+  grabThumb = () => head(this.props.vlogEditor.media.filter(mediaObj => mediaObj.mediatype === 'video')).thumb;
 
   filters = [
     {
