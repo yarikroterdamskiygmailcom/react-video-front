@@ -29,7 +29,7 @@ class PreviewSelector extends Component {
     const shouldRender = this.props.renders.map(renderObj => renderObj.orientation).includes(orientation);
     return shouldRender
       ? (
-        <div className={orientation === this.state.selectedType && styles.active} onClick={this.selectType(orientation)}>
+        <div className={classNames(orientation === this.state.selectedType && styles.active)} onClick={this.selectType(orientation)}>
           {orientation}
         </div>
       )
