@@ -101,9 +101,10 @@ export default class VlogDetails extends Component {
       renders, shareWithTeam, setProperty
     } = this.props.project;
     const {userType} = this.props.session;
+    const exported = status === 'exported';
     return (
       <div className={styles.container}>
-        {status === 'exported' && <PreviewSelector renders={renders} />}
+        {exported && <PreviewSelector renders={renders} />}
         <Segment title="Details">
           <Input
             field
@@ -124,9 +125,9 @@ export default class VlogDetails extends Component {
         <Segment title="Actions">
           {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right" />, this.editVlog)}
           {userType !== 'regularUser' && this.renderInfo('Share with Team', <FontAwesome name="users" />, shareWithTeam, access === 'team')}
-          {/* {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exportUrl)} */}
-          {/* {this.renderInfo('Download', <FontAwesome name="download" />, this.download, !exportUrl)} */}
-          {/* {this.renderInfo('Send me a download link', <FontAwesome name="envelope" />, this.sendDownload, !exportUrl)} */}
+          {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exported)}
+          {this.renderInfo('Download', <FontAwesome name="download" />, this.download, !exported)}
+          {this.renderInfo('Send me a download link', <FontAwesome name="envelope" />, this.sendDownload, !exported)}
         </Segment>
         <img
           className={styles.delete}
