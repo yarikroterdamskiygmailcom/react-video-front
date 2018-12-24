@@ -181,7 +181,7 @@ export default class Customize extends Component {
     >
       <div className={styles.styleGroup}>
         <div>{name}</div>
-        <div>{font}</div>
+        <div style={{fontFamily: font}}>{font}</div>
       </div>
       <div className={styles.styleGroup}>
         <div className={styles.color} style={{background: textcolor}} />
