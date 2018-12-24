@@ -1,5 +1,5 @@
 import {observable, action} from 'mobx';
-import {omit} from 'lodash-es';
+import {omit, isEmpty} from 'lodash-es';
 import {php, userDB} from '.';
 
 export class TemplateEditorStore {
@@ -51,6 +51,11 @@ export class TemplateEditorStore {
     if (template.some(field => !field.name)) {
       return 'All fields should have a name.';
     }
+
+    if(template.some(field => field.fixed && isEmpty(field.contents))) {
+      return 'Fields without content may not be fixed, as this would make the field useless.';
+    }
+
     return null;
   }
 
