@@ -3,16 +3,14 @@ import {Modal} from '../';
 import styles from './styles.scss';
 import {Dropdown, Input} from '../../atoms';
 import {ColorPicker} from '../../components';
-import {pick} from 'lodash-es';
+import {pick, head} from 'lodash-es';
 
 const fonts = [
-  'Arial',
-  'Helvetica',
-  'Courier',
-  'Comic Sans',
-  'Times New Roman',
-  'Georgia',
-  'Impact'
+  'Roboto',
+  'Anton',
+  'Indie Flower',
+  'Tinos',
+  'Cousine',
 ];
 
 export default class StyleEditor extends Component {
@@ -22,7 +20,7 @@ export default class StyleEditor extends Component {
       name: 'New style',
       textColor: '#FFFFFF',
       backgroundColor: '#000000',
-      font: 'Arial'
+      font: head(fonts)
     };
   }
 
