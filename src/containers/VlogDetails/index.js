@@ -19,7 +19,7 @@ class PreviewSelector extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedType: 'landscape'
+      selectedType: head(props.renders).orientation
     };
   }
 
