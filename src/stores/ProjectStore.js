@@ -14,7 +14,7 @@ export class ProjectStore {
   @observable logoOverlay = null;
   @observable customSubs = null;
   @observable customEdit = null;
-  @observable exportUrl = null;
+  @observable renders = null;
 
   setProperty = (property, value) => this[property] = value;
 
@@ -30,7 +30,7 @@ export class ProjectStore {
     this.logoOverlay = null;
     this.customSubs = null;
     this.customEdit = null;
-    this.exportUrl = null;
+    this.renders = null;
 
     editor.setMedia([]);
     editor.setProjectId(null);
@@ -46,7 +46,7 @@ export class ProjectStore {
     this.logoOverlay = project.watermark;
     this.customSubs = project.custom_subs;
     this.customEdit = project.custom_edit;
-    this.exportUrl = project.exporturl;
+    this.renders = project.renders;
 
     editor.setMedia(project.video);
     editor.setProjectId(this.projectId);
@@ -62,7 +62,7 @@ export class ProjectStore {
     this.logoOverlay = false;
     this.customSubs = false;
     this.customEdit = false;
-    this.exportUrl = null;
+    this.renders = null;
 
     editor.setMedia([]);
     editor.setProjectId(this.projectId);
@@ -78,7 +78,7 @@ export class ProjectStore {
     this.logoOverlay = false;
     this.customSubs = false;
     this.customEdit = true;
-    this.exportUrl = null;
+    this.renders = null;
 
     editor.setMedia([]);
     editor.setProjectId(this.projectId);

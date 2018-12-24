@@ -5,9 +5,62 @@ import FontAwesome from 'react-fontawesome';
 import {withRouter} from 'react-router';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
-import {assign, isEmpty, noop} from 'lodash-es';
+import {assign, isEmpty, noop, head} from 'lodash-es';
 import trash from '../../../assets/trash.png';
 import classNames from 'classnames';
+
+const orientations = [
+  'landscape',
+  'portrait',
+  'square'
+];
+
+class PreviewSelector extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedType: 'landscape'
+    };
+  }
+
+  selectType = type => () => this.setState({selectedType: type})
+
+  renderOrientation = orientation => {
+    const shouldRender = this.props.renders.map(renderObj => renderObj.orientation).includes(orientation);
+    return shouldRender
+      ? (
+        <div className={orientation === this.state.selectedType && styles.active} onClick={this.selectType(orientation)}>
+          {orientation}
+        </div>
+      )
+      : null;
+  }
+
+  renderSelector = () => (
+    <div className={styles.selector}>
+      {orientations.map(this.renderOrientation)}
+    </div>
+  )
+
+  render() {
+    const {renders} = this.props;
+    const rendersObj = {
+      landscape: renders.filter(({orientation}) => orientation === 'landscape'),
+      portrait: renders.filter(({orientation}) => orientation === 'portrait'),
+      square: renders.filter(({orientation}) => orientation === 'square')
+    };
+    const renderObj = head(rendersObj[this.state.selectedType]);
+    return (
+      <div className={styles.previewSelector}>
+        {this.renderSelector()}
+        {renderObj
+          ? <Preview src={renderObj.exporturl} />
+          : <div className={styles.warning}>No renders with this orientation</div>}
+      </div>
+    );
+  }
+
+}
 
 @withRouter
 @inject('overlay')
@@ -45,12 +98,12 @@ export default class VlogDetails extends Component {
       title, updateTitle,
       description, updateDescription,
       status, access,
-      exportUrl, shareWithTeam, setProperty
+      renders, shareWithTeam, setProperty
     } = this.props.project;
     const {userType} = this.props.session;
     return (
       <div className={styles.container}>
-        {status === 'exported' && <Preview src={exportUrl} />}
+        {status === 'exported' && <PreviewSelector renders={renders} />}
         <Segment title="Details">
           <Input
             field
@@ -71,9 +124,9 @@ export default class VlogDetails extends Component {
         <Segment title="Actions">
           {this.renderInfo('Edit Vlog', <FontAwesome name="chevron-right" />, this.editVlog)}
           {userType !== 'regularUser' && this.renderInfo('Share with Team', <FontAwesome name="users" />, shareWithTeam, access === 'team')}
-          {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exportUrl)}
-          {this.renderInfo('Download', <FontAwesome name="download" />, this.download, !exportUrl)}
-          {this.renderInfo('Send me a download link', <FontAwesome name="envelope" />, this.sendDownload, !exportUrl)}
+          {/* {this.renderInfo('Share on Social Media', <FontAwesome name="share" />, this.share, !exportUrl)} */}
+          {/* {this.renderInfo('Download', <FontAwesome name="download" />, this.download, !exportUrl)} */}
+          {/* {this.renderInfo('Send me a download link', <FontAwesome name="envelope" />, this.sendDownload, !exportUrl)} */}
         </Segment>
         <img
           className={styles.delete}
