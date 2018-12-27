@@ -10,6 +10,7 @@ import FontAwesome from 'react-fontawesome';
 import avatarPlaceholder from './avatarPlaceholder.png';
 import iconPlaceholder from './iconPlaceholder.png';
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 import youtube from './youtube.png';
 
 @withRouter
@@ -80,25 +81,19 @@ export default class Profile extends Component {
     );
   }
 
-  renderYoutube = () => (
-    <div className={styles.youtubeButton}>
-      <div>Link with</div>
-      <img className={styles.youtube} src={youtube} />
-    </div>
-  )
-
   renderLinks = () => (
     <Segment title="Links">
       <GoogleLogin
-        className={styles.googleLogin}
-        buttonText={this.renderYoutube()}
         clientId="814043436795-k11mvtqeal0rmj7dob63c092lmlit08l.apps.googleusercontent.com"
         scope="https://www.googleapis.com/auth/youtube"
         accessType="offline"
         responseType="code"
-        onSuccess={console.log}
-        onFailure={console.log}
-        redirectUri="http://google.com"
+        onSuccess={this.props.profile.link('google')}
+      />
+      <FacebookLogin
+        appId="828036484033691"
+        scope="manage_pages,publish_pages"
+        callback={console.log}
       />
     </Segment>
   )

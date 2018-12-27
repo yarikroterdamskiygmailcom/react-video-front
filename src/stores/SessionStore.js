@@ -28,8 +28,8 @@ export class SessionStore {
         error => error
       );
       userDB.defaults.headers.common.Authorization = `Token ${this.token}`;
-      this.getUser()
-      .then(() => history.push('/home'));
+      this.getUser();
+      // .then(() => history.push('/home'));
     }
   }
 

@@ -8,6 +8,7 @@ export class ProfileStore {
   @observable teamId = null
   @observable avatar = null
   @observable logo = null
+  @observable links = {}
 
   changeFirstName = e => this.firstName = e.target.value
   changelastName = e => this.lastName = e.target.value
@@ -16,6 +17,7 @@ export class ProfileStore {
   .then(res => {
     this.avatar = res.avatar;
     this.logo = res.logo;
+    this.links = res.links;
   })
 
   loadProfile = () => userDB.get('/api/v1/auth/user/')
@@ -46,6 +48,8 @@ export class ProfileStore {
   }
 
   getAvatar = userId => php.get(`/api/v1/user/avatar/${userId}`).then(res => res.avatar)
+
+  link = platform => response => console.log(response.code) || php.post(`/api/v1/links/${platform}`, {code: response.code});
 
 }
 
