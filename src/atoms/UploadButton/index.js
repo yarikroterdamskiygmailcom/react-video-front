@@ -26,7 +26,7 @@ export default class UploadButton extends Component {
 
   resetResumable = () => {
     this.resumable = new Resumable({
-      target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
+      target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
       query: {
         SessionID: this.props.session.token,
         action: 'uploadvideo',

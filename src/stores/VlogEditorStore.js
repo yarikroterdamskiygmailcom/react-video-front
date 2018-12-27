@@ -100,7 +100,7 @@ export class VlogEditorStore {
 
   initResumable = domNode => {
     this.resumable = new Resumable({
-      target: 'https://intranet.sonicvoyage.nl/fileuploader/web/resumableuploader.php',
+      target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
       query: {
         SessionID: sessionStore.token,
         action: 'uploadvideo',
