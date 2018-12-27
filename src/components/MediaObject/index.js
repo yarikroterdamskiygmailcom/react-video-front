@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {Preview, SelectAsset, EditTitle, EditFade} from '../';
+import fallback from './fallback.png';
 
 const formatTime = number => {
   const minutes = Math.floor(number / 60);
@@ -48,7 +49,7 @@ export default class MediaObject extends Component {
       : {onClick: this.props.overlay.openOverlay(getOverlay(mediaObj.mediatype))(this.getOverlayProps(mediaObj))};
 
     if (['video', 'asset'].includes(mediaObj.mediatype)) {
-      return <img className={styles.thumb} src={mediaObj.thumb} {...onClick}/>;
+      return <img className={styles.thumb} src={mediaObj.thumb} onError={e => e.target.src = fallback} {...onClick}/>;
     }
 
     if(isFade(mediaObj.mediatype)) {
