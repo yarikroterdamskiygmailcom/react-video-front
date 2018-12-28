@@ -1,12 +1,10 @@
 .container {
     z-index: 10;
-    position: fixed;
     display: flex;
     flex-direction: row; 
     justify-content: space-around;
     width: 100%;
     height: $navbar-height;
-    bottom: 0;
     background: $white;
     border-top: #e8e8e8 solid 1px;
     .route {

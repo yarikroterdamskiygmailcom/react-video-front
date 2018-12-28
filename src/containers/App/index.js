@@ -4,16 +4,32 @@ import {Header, NavBar, Toolbar, Toast, Overlay} from '../../components';
 import routes, {navBarRoutes} from '../../constants/routes';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
-import classNames from 'classnames';
-import {last} from 'lodash-es';
 
 @withRouter
 @inject('session')
-@inject('overlay')
 @observer
 class App extends Component {
 
-  renderRoute = route => <Route key={route.path} exact path={route.path} component={() => <route.component {...route.props} />} name={route.name} exact />
+  componentWillMount() {
+    if(!this.props.session.token) {
+      this.props.history.replace('/');
+    }
+  }
+
+  renderRoute = route => <Route
+    key={route.path}
+    exact
+    path={route.path}
+    component={() =>
+      <div className={styles.route}>
+        {route.header && <Header routeObj={route}/>}
+        <route.component className={styles.content} {...route.props} />
+        {route.navBar && <NavBar/>}
+      </div>
+    }
+    name={route.name}
+    exact
+  />
 
   renderAllRoutes = () =>
     <Switch>
@@ -22,29 +38,9 @@ class App extends Component {
     </Switch>
 
   render() {
-    const {token, error} = this.props.session;
-    const {overlayActive, overlayContent, closeOverlay,
-      toastActive, toastContent, hideToast} = this.props.overlay;
-    const authenticated = Boolean(token);
-    const currentRouteObj = routes.find(routeObj => routeObj.path === this.props.location.pathname) || {};
     return (
       <div className={styles.container}>
-        {currentRouteObj.header && <Header routeObj={currentRouteObj} />}
-        {error && <div className={styles.error}>{error}</div>}
-        <div className={classNames(styles.content, !currentRouteObj.navBar && styles.noNavBar, currentRouteObj.fullscreen && styles.fullscreen)}>
-          {!authenticated && <Redirect to="/" />}
-          {this.renderAllRoutes()}
-        </div>
-        <div className={styles.bottom}>
-          {currentRouteObj.toolbar && <Toolbar />}
-          {currentRouteObj.navBar && <NavBar routes={navBarRoutes} />}
-        </div>
-        <Toast active={toastActive} onClose={hideToast}>
-          {toastContent}
-        </Toast>
-        <Overlay active={overlayActive} onClose={closeOverlay}>
-          {overlayContent}
-        </Overlay>
+        {this.renderAllRoutes()}
       </div>
     );
   }

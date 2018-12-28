@@ -6,13 +6,13 @@ import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, Te
 import App from './containers/App';
 import {history} from './constants/routes';
 import './scss/main.scss';
+import {Toast, Overlay} from './components';
 
 export const sessionStore = new SessionStore();
 const assetsStore = new AssetsStore();
 const templateEditorStore = new TemplateEditorStore();
 const profileStore = new ProfileStore();
 export const vlogEditorStore = new VlogEditorStore();
-const vlogsStore = new VlogsStore();
 export const templateStore = new TemplateStore();
 const settingsStore = new SettingsStore();
 const projectStore = new ProjectStore();
@@ -25,7 +25,6 @@ const stores = {
   profile: profileStore,
   session: sessionStore,
   vlogEditor: vlogEditorStore,
-  vlogs: vlogsStore,
   templateEditor: templateEditorStore,
   template: templateStore,
   settings: settingsStore,
@@ -36,9 +35,13 @@ const stores = {
 const renderApp = () =>
   ReactDOM.render(
     <Provider {...stores}>
-      <Router history={history}>
-        <App />
-      </Router>
+      <React.Fragment>
+        <Router history={history}>
+          <App />
+        </Router>
+        <Overlay />
+        <Toast />
+      </React.Fragment>
     </Provider>,
     document.getElementById('app')
   );

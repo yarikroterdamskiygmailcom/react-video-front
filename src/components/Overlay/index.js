@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import styles from './styles.scss';
+import {observer, inject} from 'mobx-react';
 
+@inject('overlay')
+@observer
 export default class Overlay extends Component {
 
   constructor(props) {
@@ -21,7 +24,8 @@ export default class Overlay extends Component {
   )
 
   render() {
-    const {children, className} = this.props;
+    const {className} = this.props;
+    const children = this.props.overlay.overlayContent;
     const length = React.Children.count(children);
     const active = length > 0;
     return (

@@ -1,39 +1,14 @@
 .container {
+    width: 100vw;
+}
+
+.route {
     display: flex;
     flex-direction: column;
-    width: 100vw;
+    background: black;
     height: 100vh;
-    font-size: 15px;
-}
-
-.content {
-    height: calc(100% - 102px);
-    background: $background;
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    > * {
-        position: relative;
-    }
     
-    &.noNavBar {
-        height: calc(100% - 51px);
+    .content {
+        flex-grow: 2;
     }
-
-    &.fullscreen {
-        height: 100vh;
-    }
-}
-
-.bottom {
-    position: absolute;
-    bottom: 0;
-}
-
-.error {
-    position: absolute;
-    width: 100vw;
-    background: red;
-    color: white;
-    text-align: center;
 }
