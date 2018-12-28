@@ -10,7 +10,6 @@ export {SettingsStore} from './SettingsStore';
 export {TemplateStore} from './TemplateStore';
 export {TemplateEditorStore} from './TemplateEditorStore';
 export {VlogEditorStore} from './VlogEditorStore';
-export {VlogsStore} from './VlogsStore';
 
 export const php = axios.create({
   baseURL: 'https://videodb.vlogahead.cloud',

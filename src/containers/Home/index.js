@@ -7,9 +7,9 @@ import styles from './styles.scss';
 import placeholder from '../../../assets/placeholder.png';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
+import {php} from '../../stores';
 
 @withRouter
-@inject('vlogs')
 @inject('project')
 @inject('vlogEditor')
 @inject('profile')
@@ -20,29 +20,29 @@ export default class Home extends Component {
     super(props);
     this.searchRef = React.createRef();
     this.state = {
+      vlogs: [],
       pending: true,
       searchActive: false,
       searchValue: ''
     };
   }
 
+  loadVlogs = () => php.get('/api/v1/vlogs')
+  .then(res => this.setState({vlogs: res}))
+
   componentDidMount() {
-    this.props.vlogs.loadVlogs().then(() => {
+    this.loadVlogs().then(() => {
       this.setState({pending: false});
-      const ids = this.props.vlogs.list.map(vlog => vlog.owner_id)
+      const ids = this.state.vlogs.map(vlog => vlog.owner_id)
       .filter(id => Boolean(id));
       const uniqueIds = uniq(ids);
       uniqueIds.forEach(id => this.props.profile.getAvatar(id)
       .then(avatar => this.setState({[`avatar-${id}`]: avatar})));
     });
-
     this.props.session.getUser();
   }
 
-  viewDetails = vlog => {
-    this.props.project.setProject(vlog);
-    this.props.history.push('/vlog-details');
-  }
+  viewDetails = vlog => this.props.history.push(`/vlog-details/${vlog.id}`);
 
   enableSearch = () => {
     this.searchRef.current.focus();
@@ -107,11 +107,12 @@ export default class Home extends Component {
   render() {
     const {searchActive, searchValue} = this.state;
     const vlogs = this.state.searchValue
-      ? this.props.vlogs.list.filter(vlog => vlog.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-      : this.props.vlogs.list;
+      ? this.state.vlogs.filter(vlog => vlog.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+      : this.state.vlogs;
     const {user} = this.props.session;
+    const {className} = this.props;
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         {/* Geen highlight voor nu */}
         {/* {!isEmpty(this.props.vlogEditor.media) && this.renderHighlight()} */}
         {this.state.pending && <FontAwesome className={styles.spinner} name="spinner" />}
@@ -141,7 +142,7 @@ export default class Home extends Component {
             className={styles.carousel}
           />
         </div>
-        {isEmpty(this.props.vlogs.list) && !this.state.pending && this.renderHint()}
+        {isEmpty(vlogs) && !this.state.pending && this.renderHint()}
         <FontAwesome className={styles.searchButton} name="search" onClick={this.enableSearch} />
         <Input
           className={classNames(styles.search, searchActive && styles.active)}
