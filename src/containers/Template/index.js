@@ -34,6 +34,11 @@ export default class Template extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.template.setTemplate(this.props.match.params.id);
+    this.props.template.assignProjectId();
+  }
+
   addContent = index => content => this.props.template.addContent(index, content);
 
   setReveal = (fieldIndex, contentIndex) => side => () => this.setState(
@@ -119,11 +124,11 @@ export default class Template extends Component {
   )
 
   render() {
-    const {activeTemplate, isValid, next} = this.props.template;
+    const {fields, isValid, next} = this.props.template;
     return (
       <div className={styles.container}>
         <div className={styles.fields}>
-          {activeTemplate.map(this.renderField)}
+          {fields.map(this.renderField)}
         </div>
         <div className={classNames(styles.next, isValid() && styles.active)} onClick={next}>
           <FontAwesome name="chevron-right" />

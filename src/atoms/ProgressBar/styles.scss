@@ -22,3 +22,16 @@
     color: $white;
     z-index: 1;
 }
+
+.cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    position: absolute;
+    right: 5px;
+    bottom: -50px;
+    border-radius: 5px;
+    background: $purple;
+    color: white;
+}

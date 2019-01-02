@@ -10,11 +10,8 @@ export class ProjectStore {
   @observable description = null;
   @observable access = null;
   @observable status = null;
-  @observable filter = null;
-  @observable logoOverlay = null;
-  @observable customSubs = null;
-  @observable customEdit = null;
   @observable renders = null;
+  @observable options = null;
 
   setProperty = (property, value) => this[property] = value;
 
@@ -26,63 +23,29 @@ export class ProjectStore {
     this.description = null;
     this.access = null;
     this.status = null;
-    this.filter = null;
-    this.logoOverlay = null;
-    this.customSubs = null;
-    this.customEdit = null;
     this.renders = null;
+    this.options = null;
 
     editor.setMedia([]);
     editor.setProjectId(null);
   }
 
-  setProject = project => {
-    this.projectId = project.project_id;
-    this.title = project.title;
-    this.description = project.description;
-    this.access = project.access;
-    this.status = project.status;
-    this.filter = project.filter;
-    this.logoOverlay = project.watermark;
-    this.customSubs = project.custom_subs;
-    this.customEdit = project.custom_edit;
-    this.renders = project.renders;
+  setProject = id =>
+    php.get(`/api/v1/vlog/${id}`).then(project => {
+      this.projectId = project.id;
+      this.title = project.title;
+      this.description = project.description;
+      this.access = project.access;
+      this.status = project.status;
+      this.renders = project.renders;
+      this.options = project.options;
 
-    editor.setMedia(project.video);
-    editor.setProjectId(this.projectId);
-  }
+      editor.setMedia(project.video);
+      editor.setProjectId(this.projectId);
+    });
 
-  startFromScratch = async () => {
-    this.projectId = await php.get('/api/v1/vlog/new').then(res => res.project_id);
-    this.title = '';
-    this.description = '';
-    this.access = 'personal';
-    this.status = 'saved';
-    this.filter = null;
-    this.logoOverlay = false;
-    this.customSubs = false;
-    this.customEdit = false;
-    this.renders = null;
-
-    editor.setMedia([]);
-    editor.setProjectId(this.projectId);
-  }
-
-  startProfessional = async () => {
-    this.projectId = await php.get('/api/v1/vlog/new').then(res => res.project_id);
-    this.title = '';
-    this.description = '';
-    this.access = 'personal';
-    this.status = 'saved';
-    this.filter = null;
-    this.logoOverlay = false;
-    this.customSubs = false;
-    this.customEdit = true;
-    this.renders = null;
-
-    editor.setMedia([]);
-    editor.setProjectId(this.projectId);
-  }
+  createProject = professional => php.get(`/api/v1/vlog/new${professional === 'true' ? '?professional=true' : ''}`)
+  .then(res => res.project_id)
 
   startFromTemplate = async template => {
     await this.startFromScratch();
@@ -122,6 +85,8 @@ export class ProjectStore {
   updateTitle = () => this.updateProject({title: this.title})
 
   updateDescription = () => this.updateProject({description: this.description})
+
+  download = () => php.get(`/vlog/download/${this.projectId}`)
 
   sendDownload = () => php.get(`/api/v1/vlog/mail/${this.projectId}`)
 

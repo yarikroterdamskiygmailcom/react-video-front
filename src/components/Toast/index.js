@@ -9,10 +9,11 @@ import {observer, inject} from 'mobx-react';
 export default class Toast extends Component {
 
   render() {
-    const {className, active, onClose} = this.props;
+    const active = this.props.overlay.toastActive;
+    const onClose = this.props.overlay.hideToast;
     const children = this.props.overlay.toastContent;
     return (
-      <div className={classNames(styles.container, active && styles.active, className)}>
+      <div className={classNames(styles.container, active && styles.active)}>
         <div className={styles.content}>
           {children}
         </div>

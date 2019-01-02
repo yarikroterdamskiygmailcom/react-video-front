@@ -214,6 +214,7 @@ export default class Customize extends Component {
     const {assetList, styleList} = this.props.assets;
     const {userType} = this.props.session;
     const {teamOpen, personalOpen} = this.state;
+    const {className} = this.props;
 
     const personalAssets = assetList.filter(asset => asset.access === 'personal');
     const personalVideos = personalAssets.filter(asset => asset.type === 'video');
@@ -228,7 +229,7 @@ export default class Customize extends Component {
     const teamStyles = styleList.filter(style => style.access === 'team');
 
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         <Segment
           title={this.renderPersonalHeader()}
           hideChildren={!personalOpen}

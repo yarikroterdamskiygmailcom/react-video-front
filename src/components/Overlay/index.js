@@ -13,7 +13,7 @@ export default class Overlay extends Component {
     this.ref = React.createRef();
   }
 
-  onClose = () => this.props.onClose()
+  onClose = () => this.props.overlay.closeOverlay()
 
   handleClick = e => e.target.isEqualNode(this.ref.current) && this.onClose()
 

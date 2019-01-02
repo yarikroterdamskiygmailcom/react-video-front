@@ -49,14 +49,14 @@ export default class ColorPicker extends Component {
   }
 
   renderColor = color =>
-    <div
+    <div key={color}
       className={classNames(styles.color, this.props.value === color && styles.active)}
       onClick={this.setColor(color)}
       style={{background: color}}
     />
 
-  renderColorRow = colors =>
-    <div className={styles.colorRow}>
+  renderColorRow = (colors, i) =>
+    <div key={`colorgroup-${i}`} className={styles.colorRow}>
       {colors.map(this.renderColor)}
     </div>
 

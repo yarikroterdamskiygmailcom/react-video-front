@@ -17,6 +17,7 @@ export class OverlayStore {
   }
 
   @action showToast = content => () => {
+    console.log('kaching');
     this.toastContent = content;
     this.toastActive = true;
     setTimeout(this.hideToast, 5000);

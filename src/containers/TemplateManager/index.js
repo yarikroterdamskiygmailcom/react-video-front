@@ -3,21 +3,24 @@ import {Segment, SwipeItem, Icon} from '../../atoms';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {withRouter} from 'react-router';
+import {php} from '../../stores';
 
 @withRouter
-@inject('template')
-@observer
 export default class TemplateManager extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      templates: [],
       revealIndex: null,
       revealSide: null
     };
   }
 
+  loadTemplates = () => php.get('/api/v1/templates')
+  .then(({templates}) => this.setState({templates}));
+
   componentDidMount() {
-    this.props.template.loadTemplates();
+    this.loadTemplates();
   }
 
   getSwipeActions = id => ({
@@ -40,7 +43,8 @@ export default class TemplateManager extends Component {
 
   goToEditor = () => this.props.history.push('/template-editor')
 
-  deleteTemplate = id => () => this.props.template.deleteTemplate(id)
+  deleteTemplate = id => () => php.delete(`/api/v1/templates/${id}`)
+  .then(this.loadTemplates)
 
   renderHeader = () => (
     <div className={styles.header}>
@@ -51,6 +55,7 @@ export default class TemplateManager extends Component {
 
   renderTemplate = (template, i) => (
     <SwipeItem
+      key={template.id}
       className={styles.template}
       reveal={this.state.revealIndex === i && this.state.revealSide}
       onSwipe={this.setReveal(i)}
@@ -63,7 +68,7 @@ export default class TemplateManager extends Component {
   )
 
   render() {
-    const {templates} = this.props.template;
+    const {templates} = this.state;
     return (
       <div className={styles.container}>
         <Segment elementClassName={styles.element} title={this.renderHeader()}>

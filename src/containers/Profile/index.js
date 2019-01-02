@@ -7,11 +7,12 @@ import classNames from 'classnames';
 import {Overlay, Preview, Modal} from '../../components';
 import {withRouter} from 'react-router';
 import FontAwesome from 'react-fontawesome';
-import avatarPlaceholder from './avatarPlaceholder.png';
-import iconPlaceholder from './iconPlaceholder.png';
+import profile from '../../../assets/profile.png';
+import placeholder from '../../../assets/placeholder.png';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
-import youtube from './youtube.png';
+import InstagramLogin from 'react-instagram-login';
+import axios from 'axios';
 
 @withRouter
 @inject('profile')
@@ -49,11 +50,11 @@ export default class Profile extends Component {
     const {userType} = this.props.session;
     return (
       <div className={styles.persona}>
-        <div className={styles.avatar} style={{backgroundImage: `url(${avatar || avatarPlaceholder})`}}>
+        <div className={styles.avatar} style={{backgroundImage: `url(${avatar || profile})`}}>
           <input className={styles.imageUpload} type="file" accept="image/*" onChange={uploadAvatar} />
           <div className={styles.logoWrapper}>
-            {userType === 'teamManager' && <input className={styles.imageUpload} type="file" accept="image/*" onChange={uploadIcon}/>}
-            <img className={styles.logo} src={logo || iconPlaceholder} />
+            {userType === 'teamManager' && <input className={styles.imageUpload} type="file" accept="image/*" onChange={uploadIcon} />}
+            <img className={styles.logo} src={logo || placeholder} />
           </div>
         </div>
         <div className={styles.fullName}>{`${first_name} ${last_name}`}</div>
@@ -76,32 +77,50 @@ export default class Profile extends Component {
         {this.renderField('E-mail', email)}
         {this.renderField('Account Type', this.prettyUserType(userType))}
         {this.renderField('Customize', <FontAwesome className={styles.icon} name="chevron-right" />, this.goTo('/customize'))}
-        {userType === 'teamManager' && this.renderField('Manage Templates', <FontAwesome className={styles.icon} name="chevron-right" />, this.goTo('/template-manager'))}
+        {['teamManager', 'regularUser'].includes(userType) && this.renderField('Manage Templates', <FontAwesome className={styles.icon} name="chevron-right" />, this.goTo('/template-manager'))}
       </Segment>
     );
   }
 
-  renderLinks = () => (
-    <Segment title="Links">
+  links = {
+    google: (
       <GoogleLogin
+        className={styles.linkButton}
         clientId="814043436795-k11mvtqeal0rmj7dob63c092lmlit08l.apps.googleusercontent.com"
         scope="https://www.googleapis.com/auth/youtube"
         accessType="offline"
         responseType="code"
         onSuccess={this.props.profile.link('google')}
+        buttonText="Google"
       />
-      <FacebookLogin
-        appId="828036484033691"
-        scope="manage_pages,publish_pages"
-        callback={console.log}
-      />
+    ),
+    linkedIn: (
+      <div
+        className={styles.linkButton}
+        onClick={() => window.open(`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86gdun5hcweh46&redirect_uri=https%3A%2F%2Fintranet.sonicvoyage.nl`)}>
+        LinkedIn
+      </div>
+    )
+  }
+
+  renderLink = platform => (
+    <div className={styles.link}>
+      {this.links[platform]}
+      {this.props.profile.links[platform] && <FontAwesome name="check" />}
+    </div>
+  )
+
+  renderLinks = () => (
+    <Segment title="Links">
+      {Object.keys(this.links).map(this.renderLink)}
     </Segment>
   )
 
   render() {
     const {user} = this.props.profile;
+    const {className} = this.props;
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         {user && this.renderPersona()}
         {user && this.renderFields()}
         {user && this.renderLinks()}

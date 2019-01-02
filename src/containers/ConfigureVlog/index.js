@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {Input, Toggle, Segment, Carousel, RadioButton, Icon, Checkbox} from '../../atoms';
+import {Input, Toggle, Segment, Carousel, RadioButton, Icon} from '../../atoms';
 import {Preview} from '../../components';
-import {isEmpty, head, noop} from 'lodash-es';
+import {head, noop} from 'lodash-es';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import FontAwesome from 'react-fontawesome';
@@ -24,9 +24,14 @@ export default class ConfigureVlog extends Component {
     };
   }
 
+  componentWillMount() {
+    const id = this.props.match.params.id;
+    this.props.project.setProject(id);
+  }
+
   goHome = () => this.props.history.push('/home')
 
-  share = noop
+  share = () => this.props.history.push(`/share/${this.props.project.projectId}`)
 
   orientationOptions = [
     {
@@ -150,7 +155,7 @@ export default class ConfigureVlog extends Component {
             <div className={classNames(styles.renderButton, styles.active, !renderUrl && styles.invisible)} onClick={this.goHome}>
               <FontAwesome name="chevron-left"/> Home
             </div>
-            <div className={classNames(styles.renderButton, !renderUrl && styles.invisible)} onClick={this.share}>
+            <div className={classNames(styles.renderButton, !renderUrl && styles.invisible, styles.active)} onClick={this.share}>
             Share!
             </div>
             {!renderUrl && <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={this.renderVlog}>

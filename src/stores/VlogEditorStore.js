@@ -22,7 +22,9 @@ export class VlogEditorStore {
 
   setMedia = media => this.media = media;
 
-  setProjectId = id => this.projectId = id;
+  setProjectId = id => {
+    this.projectId = id;
+  }
 
   @action addMedia = mediaObj => {
     this.media = [...this.media.toJS(), mediaObj];
@@ -98,13 +100,15 @@ export class VlogEditorStore {
 
   //Upload stuff
 
-  initResumable = domNode => {
+  initResumable = (id, domNode) => {
     this.resumable = new Resumable({
       target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
       query: {
-        SessionID: sessionStore.token,
         action: 'uploadvideo',
         project_id: this.projectId
+      },
+      headers: {
+        Authorization: `Token ${sessionStore.token}`
       },
       chunkRetryInterval: 1000
     });

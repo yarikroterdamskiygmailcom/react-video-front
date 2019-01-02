@@ -1,14 +1,25 @@
 .container {
     width: 100vw;
+    height: 100vh;
 }
 
 .route {
     display: flex;
     flex-direction: column;
-    background: black;
+    width: 100vw;
     height: 100vh;
+
+    .header {
+        flex-shrink: 0;
+    }
     
     .content {
         flex-grow: 2;
+        overflow-y: auto;
+        background: $background;
+    }
+
+    .navBar {
+        flex-shrink: 0;
     }
 }

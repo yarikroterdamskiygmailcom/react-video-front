@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {Preview, SelectAsset, EditTitle, EditFade} from '../';
-import fallback from './fallback.png';
+import fallback from '../../../assets/placeholder.png';
 
 const formatTime = number => {
   const minutes = Math.floor(number / 60);

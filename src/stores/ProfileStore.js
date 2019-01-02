@@ -1,6 +1,7 @@
 import {observable} from 'mobx';
 import {head} from 'lodash-es';
 import {userDB, php} from '.';
+import {history} from '../constants/routes';
 
 export class ProfileStore {
 
@@ -49,7 +50,16 @@ export class ProfileStore {
 
   getAvatar = userId => php.get(`/api/v1/user/avatar/${userId}`).then(res => res.avatar)
 
-  link = platform => response => console.log(response.code) || php.post(`/api/v1/links/${platform}`, {code: response.code});
+  link = platform => response => {
+    if(platform === 'google') {
+      php.post('/api/v1/links/google', {code: response.code});
+    }
+
+    if(platform === 'facebook') {
+      php.post('/api/v1/links/facebook', {token: response.accessToken})
+      .then(() => history.replace('/profile'));
+    }
+  }
 
 }
 

@@ -8,6 +8,7 @@ import styles from './styles.scss';
 import FontAwesome from 'react-fontawesome';
 import {isEmpty} from 'lodash-es';
 import {php} from '../../stores';
+import classNames from 'classnames';
 
 const renderSpinner = () => (
   <div className={styles.option}>
@@ -87,16 +88,15 @@ class TemplatePicker extends Component {
 
 @withRouter
 @inject('overlay')
-@inject('template')
 @inject('project')
 @observer
 export default class NavBar extends Component {
 
   start = selection => template => {
     ({
-      scratch: () => this.props.project.startFromScratch().then(() => this.props.history.push('/edit-vlog')),
-      template: () => this.props.project.startFromTemplate(template).then(() => this.props.history.push('/template')),
-      professional: () => this.props.project.startProfessional().then(() => this.props.history.push('/edit-vlog'))
+      scratch: () => this.props.history.push('/edit-vlog?professional=false'),
+      template: () => this.props.history.push(`/template/${template.id}`),
+      professional: () => this.props.history.push('/edit-vlog?professional=true')
     })[selection]();
     this.props.overlay.closeOverlay();
   }
@@ -147,8 +147,9 @@ export default class NavBar extends Component {
     )
 
   render() {
+    const {className} = this.props;
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         {this.routes.map(this.renderRoute)}
       </div>
     );

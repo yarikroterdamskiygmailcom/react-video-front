@@ -29,7 +29,11 @@ class PreviewSelector extends Component {
     const shouldRender = this.props.renders.map(renderObj => renderObj.orientation).includes(orientation);
     return shouldRender
       ? (
-        <div className={classNames(orientation === this.state.selectedType && styles.active)} onClick={this.selectType(orientation)}>
+        <div
+          key={orientation}
+          className={classNames(orientation === this.state.selectedType && styles.active)}
+          onClick={this.selectType(orientation)}
+        >
           {orientation}
         </div>
       )
@@ -50,6 +54,7 @@ class PreviewSelector extends Component {
       square: renders.filter(({orientation}) => orientation === 'square')
     };
     const renderObj = head(rendersObj[this.state.selectedType]);
+    console.log(rendersObj);
     return (
       <div className={styles.previewSelector}>
         {this.renderSelector()}
@@ -69,13 +74,24 @@ class PreviewSelector extends Component {
 @inject('session')
 @observer
 export default class VlogDetails extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pending: true
+    };
+  }
+
+  componentWillMount() {
+    this.props.project.setProject(this.props.match.params.id)
+    .then(() => this.setState({pending: false}));
+  }
 
   editVlog = () => {
-    this.props.history.push('/edit-vlog');
+    this.props.history.push(`/edit-vlog/${this.props.match.params.id}`);
   }
 
   share = () => {
-    this.props.history.push('/share');
+    this.props.history.push(`/share/${this.props.match.params.id}`);
   }
 
   deleteProject = () => {
@@ -83,7 +99,7 @@ export default class VlogDetails extends Component {
     .then(() => this.props.history.push('/home'));
   }
 
-  download = () => window.location = this.props.project.exportUrl
+  download = () => this.props.project.download()
 
   sendDownload = () => this.props.project.sendDownload()
 
@@ -94,6 +110,7 @@ export default class VlogDetails extends Component {
     </div>
 
   render() {
+    const {className} = this.props;
     const {
       title, updateTitle,
       description, updateDescription,
@@ -102,8 +119,13 @@ export default class VlogDetails extends Component {
     } = this.props.project;
     const {userType} = this.props.session;
     const exported = status === 'exported';
+
+    if(this.state.pending) {
+      return null;
+    }
+
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         {exported && <PreviewSelector renders={renders} />}
         <Segment title="Details">
           <Input

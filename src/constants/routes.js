@@ -1,10 +1,10 @@
 import React from 'react';
-import {NavLink, Redirect} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import FontAwesome from 'react-fontawesome';
 import {Home, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template, Customize, Share, TemplateManager, TemplateEditor, FAQ, About, Contact} from '../containers';
-import {DeleteVlog} from '../components';
 import styles from './styles.scss';
+import logo from '../../assets/logo-transparent.png';
 
 export const history = createBrowserHistory();
 
@@ -37,14 +37,23 @@ const home = {
   path: '/home',
   component: Home,
   header: {
-    center: <div className={styles.homeHeader}></div>
+    center: <img className={styles.logo} src={logo}/>
   },
   navBar: true
 };
 
-const editVlog = {
+const createVlog = {
   name: 'Vlog Editor',
   path: '/edit-vlog',
+  component: VlogEditor,
+  header: {
+    left: backButton
+  }
+};
+
+const editVlog = {
+  name: 'Vlog Editor',
+  path: '/edit-vlog/:id',
   component: VlogEditor,
   header: {
     left: backButton
@@ -82,18 +91,9 @@ const profile = {
   navBar: true
 };
 
-const vlogEditor = {
-  name: 'Edit Vlog',
-  path: '/edit-vlog',
-  component: VlogEditor,
-  header: {
-    left: backButton
-  }
-};
-
 const configureVlog = {
   name: 'Configure Vlog',
-  path: '/configure-vlog',
+  path: '/configure-vlog/:id',
   component: ConfigureVlog,
   header: {
     left: backButton
@@ -102,7 +102,7 @@ const configureVlog = {
 
 const renderVlog = {
   name: 'Render Vlog',
-  path: '/render-vlog',
+  path: '/render-vlog/:id',
   component: RenderVlog,
   header: {
     left: backButton
@@ -112,7 +112,7 @@ const renderVlog = {
 
 const vlogDetails = {
   name: 'Vlog details',
-  path: '/vlog-details',
+  path: '/vlog-details/:id',
   component: VlogDetails,
   header: {
     left: backButton,
@@ -121,7 +121,7 @@ const vlogDetails = {
 
 const template = {
   name: 'Template',
-  path: '/template',
+  path: '/template/:id',
   component: Template,
   header: {
     left: backButton
@@ -140,7 +140,7 @@ const customize = {
 
 const share = {
   name: 'Share',
-  path: '/share',
+  path: '/share/:id',
   component: Share,
   header: {
     left: backButton
@@ -194,6 +194,6 @@ const contact = {
 
 export const navBarRoutes = [home, editVlog, profile];
 
-const allRoutes = [notFound, login, logout, home, editVlog, settings, profile, publish, vlogEditor, configureVlog, renderVlog, vlogDetails, template, customize, share, templateManager, templateEditor, faq, about, contact];
+const allRoutes = [notFound, login, logout, home, editVlog, settings, profile, publish, createVlog, editVlog, configureVlog, renderVlog, vlogDetails, template, customize, share, templateManager, templateEditor, faq, about, contact];
 
 export default allRoutes;

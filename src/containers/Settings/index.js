@@ -4,6 +4,7 @@ import settings from '../../constants/settings';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {withRouter} from 'react-router';
+import classNames from 'classnames';
 
 @withRouter
 @inject('settings')
@@ -33,8 +34,9 @@ export default class Settings extends Component {
   )
 
   render() {
+    const {className} = this.props;
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         {settings.map(group => (
           <Segment key={group.title} title={group.title}>
             {group.settings.map(this.renderSetting)}

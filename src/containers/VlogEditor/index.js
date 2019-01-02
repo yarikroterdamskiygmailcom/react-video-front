@@ -7,6 +7,8 @@ import styles from './styles.scss';
 import {ProgressBar, Icon, Toggle, Segment} from '../../atoms';
 import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
+import queryString from 'query-string';
+import backdrop from '../../../assets/editor-backdrop.png';
 
 @withRouter
 @inject('overlay')
@@ -18,17 +20,29 @@ export default class VlogEditor extends Component {
     super(props);
     this.resumableRef = React.createRef();
     this.state = {
-      pending: false,
       hamburgerActive: false,
       syncing: false
     };
   }
 
-  componentDidMount() {
-    this.props.vlogEditor.initResumable(this.resumableRef.current);
-    this.resumableRef.current.children[0].accept = 'video/*';
+  componentWillMount() {
+    const {id} = this.props.match.params;
+    const {professional} = queryString.parse(this.props.location.search);
+    if (!id) {
+      this.props.project.createProject(professional)
+      .then(id => this.props.history.replace(`/edit-vlog/${id}`));
+    } else {
+      this.props.project.setProject(id);
+    }
   }
 
+  componentDidMount() {
+    const {id} = this.props.match.params;
+    if(id) {
+      this.props.vlogEditor.initResumable(id, this.resumableRef.current);
+      this.resumableRef.current.children[0].accept = 'video/*';
+    }
+  }
   componentWillUnmount() {
     this.props.project.updateProject({
       media: JSON.stringify(this.props.vlogEditor.media.toJS().map(this.props.project.reduceMediaObj))
@@ -74,15 +88,15 @@ export default class VlogEditor extends Component {
 
   nextStep = () => {
     if (this.props.vlogEditor.getErrors()) {
-      this.props.Overlay.showToast(this.props.vlogEditor.getErrors());
+      this.props.overlay.showToast(this.props.vlogEditor.getErrors());
     } else {
-      this.props.history.push('/configure-vlog');
+      this.props.history.push(`/configure-vlog/${this.props.match.params.id}`);
     }
   }
 
   renderHint = () => (
     <React.Fragment>
-      <Icon className={styles.backdrop} name="backdrop" />
+      <img src={backdrop} className={styles.backdrop}/>
       <Icon className={styles.arrow} name="arrowCurved" />
     </React.Fragment>
   )
@@ -91,8 +105,9 @@ export default class VlogEditor extends Component {
     const {uploading, progress, media, syncing} = this.props.vlogEditor;
     const {projectId, customEdit, toggleProperty} = this.props.project;
     const {hamburgerActive} = this.state;
+    const {className} = this.props;
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         {isEmpty(media) && this.renderHint()}
         <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} />
         <FontAwesome className={styles.hamburger} name="bars" onClick={this.toggleHamburger} />

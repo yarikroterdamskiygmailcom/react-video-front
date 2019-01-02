@@ -4,6 +4,8 @@ import {withRouter} from 'react-router';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {first} from 'lodash-es';
+import classNames from 'classnames';
+import logo from '../../../assets/logo-transparent.png';
 
 @withRouter
 @inject('session')
@@ -36,10 +38,11 @@ export default class Login extends Component {
   }
 
   render() {
+    const {className} = this.props;
     const {email, password, error} = this.state;
     return (
-      <div className={styles.container} onKeyPress={this.submit}>
-        <div className={styles.logo}/>
+      <div className={classNames(styles.container, className)} onKeyPress={this.submit}>
+        <img className={styles.logo} src={logo}/>
         <Input auth modal type="email" name="Email" value={email} onChange={this.setProperty('email')}/>
         <Input auth modal type="password" name="Password" value={password} onChange={this.setProperty('password')}/>
         <Button className={styles.button} onClick={this.login} text="Login"/>

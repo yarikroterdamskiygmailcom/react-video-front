@@ -22,9 +22,9 @@ class App extends Component {
     path={route.path}
     component={() =>
       <div className={styles.route}>
-        {route.header && <Header routeObj={route}/>}
+        {route.header && <Header className={styles.header} routeObj={route}/>}
         <route.component className={styles.content} {...route.props} />
-        {route.navBar && <NavBar/>}
+        {route.navBar && <NavBar className={styles.navBar}/>}
       </div>
     }
     name={route.name}
@@ -34,7 +34,7 @@ class App extends Component {
   renderAllRoutes = () =>
     <Switch>
       {routes.map(this.renderRoute)}
-      <Redirect to={'/not-found'} />
+      <Redirect to="/home" />
     </Switch>
 
   render() {
