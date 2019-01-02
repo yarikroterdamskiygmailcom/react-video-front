@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import FontAwesome from 'react-fontawesome';
-import {Home, Publish, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template, Customize, Share, TemplateManager, TemplateEditor, FAQ, About, Contact} from '../containers';
+import {Home, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template, Customize, Share, TemplateManager, TemplateEditor, FAQ, About, Contact} from '../containers';
 import styles from './styles.scss';
 import logo from '../../assets/logo-transparent.png';
 
@@ -58,15 +58,6 @@ const editVlog = {
   header: {
     left: backButton
   }
-};
-
-const publish = {
-  name: 'Publish',
-  icon: 'publish',
-  path: '/publish',
-  component: Publish,
-  header: true,
-  navBar: true
 };
 
 const settings = {
@@ -194,6 +185,6 @@ const contact = {
 
 export const navBarRoutes = [home, editVlog, profile];
 
-const allRoutes = [notFound, login, logout, home, editVlog, settings, profile, publish, createVlog, editVlog, configureVlog, renderVlog, vlogDetails, template, customize, share, templateManager, templateEditor, faq, about, contact];
+const allRoutes = [notFound, login, logout, home, editVlog, settings, profile, createVlog, editVlog, configureVlog, renderVlog, vlogDetails, template, customize, share, templateManager, templateEditor, faq, about, contact];
 
 export default allRoutes;

@@ -9,7 +9,6 @@ export {default as Login} from './Login';
 export {default as Logout} from './Logout';
 export {default as NotFound} from './NotFound';
 export {default as Profile} from './Profile';
-export {default as Publish} from './Publish';
 export {default as RenderVlog} from './RenderVlog';
 export {default as Settings} from './Settings';
 export {default as Share} from './Share';
