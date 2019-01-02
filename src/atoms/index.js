@@ -11,6 +11,7 @@ export {default as Segment} from './Segment';
 export {default as Seperator} from './Seperator';
 export {default as Slider} from './Slider';
 export {default as SortableCollection} from './SortableCollection';
+export {default as Spinner} from './Spinner';
 export {default as SwipeItem} from './SwipeItem';
 export {default as Toggle} from './Toggle';
 export {default as UploadButton} from './UploadButton';
