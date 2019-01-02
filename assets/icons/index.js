@@ -2,7 +2,6 @@ import addVlog from './addVlog.svg';
 import arrowCurved from './arrowCurved.svg';
 import arrowDown from './arrowDown.svg';
 import asset from './asset.svg';
-import backdrop from './backdrop.svg';
 import fade from './fade.svg';
 import emptyVlog from './emptyVlog.svg';
 import eye from './eye.svg';
@@ -24,7 +23,6 @@ export default {
   arrowCurved,
   arrowDown,
   asset,
-  backdrop,
   video,
   fade,
   emptyVlog,

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
 import styles from './styles.scss';
-import svgs from './icons';
+import svgs from '../../../assets/icons';
 
 export default class Icon extends Component {
 
