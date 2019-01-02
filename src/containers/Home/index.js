@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
-import {Carousel, Icon, Input} from '../../atoms';
+import {Carousel, Icon, Input, Spinner} from '../../atoms';
 import {isEmpty, uniq} from 'lodash-es';
 import {observer, inject} from 'mobx-react';
 import styles from './styles.scss';
@@ -105,17 +105,14 @@ export default class Home extends Component {
   )
 
   render() {
-    const {searchActive, searchValue} = this.state;
+    const {searchActive, searchValue, pending} = this.state;
     const vlogs = this.state.searchValue
       ? this.state.vlogs.filter(vlog => vlog.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
       : this.state.vlogs;
     const {user} = this.props.session;
     const {className} = this.props;
-    return (
+    return pending ? <Spinner/> : (
       <div className={classNames(styles.container, className)}>
-        {/* Geen highlight voor nu */}
-        {/* {!isEmpty(this.props.vlogEditor.media) && this.renderHighlight()} */}
-        {this.state.pending && <FontAwesome className={styles.spinner} name="spinner" />}
         <div className={classNames(styles.carousels, isEmpty(vlogs) && styles.noRender)}>
           <Carousel
             title="Saved Vlogs"
@@ -142,7 +139,8 @@ export default class Home extends Component {
             className={styles.carousel}
           />
         </div>
-        {isEmpty(vlogs) && !this.state.pending && this.renderHint()}
+        {isEmpty(vlogs) && <div className={styles.empty}>No vlogs found matching your search.</div>}
+        {isEmpty(this.state.vlogs) && !this.state.pending && this.renderHint()}
         <FontAwesome className={styles.searchButton} name="search" onClick={this.enableSearch} />
         <Input
           className={classNames(styles.search, searchActive && styles.active)}
