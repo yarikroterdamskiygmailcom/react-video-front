@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Segment, SwipeItem, Icon} from '../../atoms';
+import {Segment, SwipeItem, Icon, Spinner} from '../../atoms';
 import styles from './styles.scss';
-import {observer, inject} from 'mobx-react';
 import {withRouter} from 'react-router';
 import {php} from '../../stores';
 
@@ -10,6 +9,7 @@ export default class TemplateManager extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pending: true,
       templates: [],
       revealIndex: null,
       revealSide: null
@@ -17,7 +17,7 @@ export default class TemplateManager extends Component {
   }
 
   loadTemplates = () => php.get('/api/v1/templates')
-  .then(({templates}) => this.setState({templates}));
+  .then(({templates}) => this.setState({templates, pending: false}));
 
   componentDidMount() {
     this.loadTemplates();
@@ -68,8 +68,8 @@ export default class TemplateManager extends Component {
   )
 
   render() {
-    const {templates} = this.state;
-    return (
+    const {pending, templates} = this.state;
+    return pending ? <Spinner/> : (
       <div className={styles.container}>
         <Segment elementClassName={styles.element} title={this.renderHeader()}>
           {templates.map(this.renderTemplate)}

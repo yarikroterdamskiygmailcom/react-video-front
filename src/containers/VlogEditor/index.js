@@ -4,7 +4,7 @@ import {withRouter} from 'react-router';
 import {Arranger, Toolbar, Hamburger, ConfirmProfessional, EditTitle, EditFade, SelectAsset} from '../../components';
 import classNames from 'classnames';
 import styles from './styles.scss';
-import {ProgressBar, Icon, Toggle, Segment} from '../../atoms';
+import {ProgressBar, Icon, Toggle, Segment, Spinner} from '../../atoms';
 import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
 import queryString from 'query-string';
@@ -19,6 +19,7 @@ export default class VlogEditor extends Component {
     super(props);
     this.resumableRef = React.createRef();
     this.state = {
+      pending: true,
       hamburgerActive: false,
       syncing: false
     };
@@ -31,17 +32,15 @@ export default class VlogEditor extends Component {
       this.props.project.createProject(professional)
       .then(id => this.props.history.replace(`/edit-vlog/${id}`));
     } else {
-      this.props.project.setProject(id);
+      this.props.project.setProject(id)
+      .then(() => this.setState({pending: false}, () => {
+        this.props.vlogEditor.initResumable(id, this.resumableRef.current);
+        this.resumableRef.current.children[0].accept = 'video/*';
+      }
+      ));
     }
   }
 
-  componentDidMount() {
-    const {id} = this.props.match.params;
-    if(id) {
-      this.props.vlogEditor.initResumable(id, this.resumableRef.current);
-      this.resumableRef.current.children[0].accept = 'video/*';
-    }
-  }
   componentWillUnmount() {
     this.props.project.updateProject({
       media: JSON.stringify(this.props.vlogEditor.media.toJS().map(this.props.project.reduceMediaObj))
@@ -95,7 +94,7 @@ export default class VlogEditor extends Component {
 
   renderHint = () => (
     <React.Fragment>
-      <Icon className={styles.backdrop} name="backdrop"/>
+      <Icon className={styles.backdrop} name="backdrop" />
       <Icon className={styles.arrow} name="arrowCurved" />
     </React.Fragment>
   )
@@ -103,12 +102,12 @@ export default class VlogEditor extends Component {
   render() {
     const {uploading, progress, media, syncing, cancelUpload} = this.props.vlogEditor;
     const {projectId, customEdit, toggleProperty} = this.props.project;
-    const {hamburgerActive} = this.state;
+    const {hamburgerActive, pending} = this.state;
     const {className} = this.props;
-    return (
+    return pending ? <Spinner /> : (
       <div className={classNames(styles.container, className)}>
         {isEmpty(media) && this.renderHint()}
-        <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} onCancel={cancelUpload}/>
+        <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} onCancel={cancelUpload} />
         <FontAwesome className={styles.hamburger} name="bars" onClick={this.toggleHamburger} />
         <div className={styles.sync} onClick={syncing ? noop : this.sync}>
           <FontAwesome className={classNames(styles.syncIcon, syncing && styles.syncing)} name="save" />

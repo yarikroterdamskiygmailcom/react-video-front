@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment, Icon, Input} from '../../atoms';
+import {Segment, Icon, Input, Spinner} from '../../atoms';
 import {Preview, ConfirmationPrompt} from '../../components';
 import FontAwesome from 'react-fontawesome';
 import {withRouter} from 'react-router';
@@ -54,7 +54,6 @@ class PreviewSelector extends Component {
       square: renders.filter(({orientation}) => orientation === 'square')
     };
     const renderObj = head(rendersObj[this.state.selectedType]);
-    console.log(rendersObj);
     return (
       <div className={styles.previewSelector}>
         {this.renderSelector()}
@@ -121,7 +120,7 @@ export default class VlogDetails extends Component {
     const exported = status === 'exported';
 
     if(this.state.pending) {
-      return null;
+      return <Spinner/>;
     }
 
     return (
