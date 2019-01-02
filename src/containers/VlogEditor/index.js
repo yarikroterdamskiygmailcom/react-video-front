@@ -8,7 +8,6 @@ import {ProgressBar, Icon, Toggle, Segment} from '../../atoms';
 import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
 import queryString from 'query-string';
-import backdrop from '../../../assets/editor-backdrop.png';
 
 @withRouter
 @inject('overlay')
@@ -96,20 +95,20 @@ export default class VlogEditor extends Component {
 
   renderHint = () => (
     <React.Fragment>
-      <img src={backdrop} className={styles.backdrop}/>
+      <Icon className={styles.backdrop} name="backdrop"/>
       <Icon className={styles.arrow} name="arrowCurved" />
     </React.Fragment>
   )
 
   render() {
-    const {uploading, progress, media, syncing} = this.props.vlogEditor;
+    const {uploading, progress, media, syncing, cancelUpload} = this.props.vlogEditor;
     const {projectId, customEdit, toggleProperty} = this.props.project;
     const {hamburgerActive} = this.state;
     const {className} = this.props;
     return (
       <div className={classNames(styles.container, className)}>
         {isEmpty(media) && this.renderHint()}
-        <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} />
+        <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} onCancel={cancelUpload}/>
         <FontAwesome className={styles.hamburger} name="bars" onClick={this.toggleHamburger} />
         <div className={styles.sync} onClick={syncing ? noop : this.sync}>
           <FontAwesome className={classNames(styles.syncIcon, syncing && styles.syncing)} name="save" />
