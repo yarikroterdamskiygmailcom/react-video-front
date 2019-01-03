@@ -25,7 +25,6 @@ export default class UploadButton extends Component {
   resetProgress = () => this.setState({progress: null})
 
   resetResumable = () => {
-    console.log(this.props);
     this.resumable = new Resumable({
       target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
       query: {
