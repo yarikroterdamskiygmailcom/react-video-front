@@ -42,7 +42,7 @@ export default class VlogEditor extends Component {
   }
 
   componentWillUnmount() {
-    this.props.project.updateProject({
+    this.props.match.params.id && this.props.project.updateProject({
       media: JSON.stringify(this.props.vlogEditor.media.toJS().map(this.props.project.reduceMediaObj))
     });
   }
@@ -53,7 +53,7 @@ export default class VlogEditor extends Component {
 
   toggleHamburger = () => this.setState({hamburgerActive: !this.state.hamburgerActive})
 
-  sync = () => this.props.vlogEditor.syncMedia();
+  sync = () => !this.state.syncing && this.props.vlogEditor.syncMedia();
 
   getActions = () => [
     {
@@ -109,7 +109,7 @@ export default class VlogEditor extends Component {
         {isEmpty(media) && this.renderHint()}
         <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} onCancel={cancelUpload} />
         <FontAwesome className={styles.hamburger} name="bars" onClick={this.toggleHamburger} />
-        <div className={styles.sync} onClick={syncing ? noop : this.sync}>
+        <div className={styles.sync} onClick={this.sync}>
           <FontAwesome className={classNames(styles.syncIcon, syncing && styles.syncing)} name="save" />
           <div className={styles.syncLabel}>{syncing ? 'Syncing' : 'Synced'}</div>
         </div>
