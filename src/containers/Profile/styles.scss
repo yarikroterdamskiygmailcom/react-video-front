@@ -169,13 +169,12 @@
 }
 
 .link {
+    position: relative;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    color: green;
 
     .linkButton {
+        width: 100%;
+        text-align: left;
         background: none;
         border: none;
         color: black;
@@ -183,5 +182,11 @@
         font-family: 'Open Sans';
         padding: 0;
         margin: 0;
+    }
+
+    .check {
+        position: absolute;
+        right: 0;
+        color: green;
     }
 }

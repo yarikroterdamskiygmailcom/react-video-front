@@ -106,7 +106,7 @@ export default class Profile extends Component {
   renderLink = platform => (
     <div className={styles.link}>
       {this.links[platform]}
-      {this.props.profile.links[platform] && <FontAwesome name="check" />}
+      {this.props.profile.links[platform] && <FontAwesome className={styles.check} name="check" />}
     </div>
   )
 
