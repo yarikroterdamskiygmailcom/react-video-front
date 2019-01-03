@@ -3,6 +3,7 @@ import {Segment, SwipeItem, Icon, Spinner} from '../../atoms';
 import styles from './styles.scss';
 import {withRouter} from 'react-router';
 import {php} from '../../stores';
+import {isEmpty} from 'lodash-es';
 
 @withRouter
 export default class TemplateManager extends Component {
@@ -74,6 +75,7 @@ export default class TemplateManager extends Component {
         <Segment elementClassName={styles.element} title={this.renderHeader()}>
           {templates.map(this.renderTemplate)}
         </Segment>
+        {isEmpty(templates) && <div className={styles.empty}>No templates found.</div>}
       </div>
     );
   }
