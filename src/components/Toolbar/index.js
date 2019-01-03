@@ -41,21 +41,23 @@ class Toolbar extends Component {
     };
   }
 
-  toggleMenu = () => this.setState({menuActive: !this.state.menuActive})
+  openMenu = () => this.setState({menuActive: true})
+
+  closeMenu = () => this.setState({menuActive: false})
 
   render() {
     const {className, allowNext, next, actions} = this.props;
     const {menuActive} = this.state;
     return (
       <div className={classNames(styles.container, className)}>
-        <div className={styles.left} onClick={this.toggleMenu}>
+        <div className={styles.left} onClick={this.openMenu}>
           <FontAwesome name="plus" />
         </div>
         <div className={classNames(styles.right, !allowNext && styles.disabled)} onClick={allowNext ? next : noop}>
           <FontAwesome name="angle-right" />
         </div>
         <div className={classNames(styles.overlay, menuActive && styles.active)}>
-          <Menu active={menuActive} actions={actions} onClose={this.toggleMenu}/>
+          <Menu active={menuActive} actions={actions} onClose={this.closeMenu}/>
         </div>
       </div>
     );
