@@ -167,7 +167,19 @@
     }
 }
 
-
+.progressBar {
+    width: 100vw;
+    height: 0;
+    transition: height 0.8s;
+    opacity: 0;
+    pointer-events: none;
+    &.active {
+        height: 60px;
+        opacity: 1;
+        margin-bottom: 60px;
+        pointer-events: all;
+    }
+}
 
 @keyframes wiggle {
     0% {transform: rotate(10deg);}

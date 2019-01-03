@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
-import {Segment, Carousel, SwipeItem, Icon} from '../../atoms';
+import {Segment, Carousel, SwipeItem, Icon, ProgressBar} from '../../atoms';
 import {Preview, StyleEditor, ConfirmationPrompt} from '../../components';
 import {inject, observer} from 'mobx-react';
 import classNames from 'classnames';
@@ -211,7 +211,7 @@ export default class Customize extends Component {
   );
 
   render() {
-    const {assetList, styleList} = this.props.assets;
+    const {assetList, styleList, uploading, progress, cancelUpload} = this.props.assets;
     const {userType} = this.props.session;
     const {teamOpen, personalOpen} = this.state;
     const {className} = this.props;
@@ -230,6 +230,7 @@ export default class Customize extends Component {
 
     return (
       <div className={classNames(styles.container, className)}>
+        <ProgressBar className={classNames(styles.progressBar, uploading && styles.active)} progress={progress} onCancel={cancelUpload} />
         <Segment
           title={this.renderPersonalHeader()}
           hideChildren={!personalOpen}
