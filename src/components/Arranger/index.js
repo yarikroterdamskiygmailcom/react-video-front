@@ -74,7 +74,11 @@ export default class Arranger extends Component {
       reveal={revealIndex === this.state.revealIndex && this.state.revealSide}
       className={styles.item}
     >
-      <MediaObject value={value} onChange={this.props.vlogEditor.saveMedia(revealIndex)}/>
+      <MediaObject
+        value={value}
+        onChange={this.props.vlogEditor.saveMedia(revealIndex)}
+        chronoIndex={value.mediatype === 'video' && this.props.vlogEditor.getChronoIndex(value)}
+      />
     </SwipeItem>
   ));
 

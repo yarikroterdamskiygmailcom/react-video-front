@@ -3,7 +3,7 @@ import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
 import {sessionStore} from '../';
 import {php} from '.';
-import {head, last, pick, flatten} from 'lodash-es';
+import {head, last, pick, flatten, sortBy, findIndex} from 'lodash-es';
 
 export class VlogEditorStore {
   @observable media = []
@@ -140,6 +140,14 @@ export class VlogEditorStore {
     this.uploading = false;
     this.resumable.cancel();
     this.progress = 0;
+  }
+
+  getChronoIndex = targetVideo => {
+    const videos = this.media.toJS().filter(mediaObj => mediaObj.mediatype === 'video');
+    const equalVideos = videos.filter(video => video.video_id === targetVideo.video_id);
+    const sorted = sortBy(equalVideos, 'inpoint');
+    const chronoIndex = findIndex(sorted, targetVideo);
+    return chronoIndex + 1;
   }
 
 }
