@@ -23,9 +23,7 @@ export class AssetsStore {
   deleteStyle = id => php.delete(`/api/v1/styles/${id}`)
 
   loadAssets = () => php.get('/api/v1/assets')
-  .then(res => {
-    this.assetList = !isEmpty(res.asset) ? res.asset : [];
-  });
+  .then(res => this.assetList = res.asset);
 
   deleteAsset = id => php.delete(`/api/v1/assets/${id}`)
 

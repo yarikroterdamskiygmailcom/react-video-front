@@ -61,6 +61,13 @@ export default class SelectAsset extends Component {
     return (
       <Modal actions={this.modalActions} className={styles.modal}>
         {assetList.map(this.renderAsset)}
+        {isEmpty(assetList)
+          && <div className={styles.empty}>
+            <div>No assets found.</div>
+            <div>Add assets easily through the "Customize" panel!</div>
+          </div>
+
+        }
       </Modal>
     );
   }

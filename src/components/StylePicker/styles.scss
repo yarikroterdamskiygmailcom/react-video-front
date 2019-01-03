@@ -64,3 +64,18 @@
     padding: 5px;
     border: 1px $border solid;
 }
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+
+    > * {
+        text-align: center;
+
+        &:first-child {
+            font-weight: bold;
+        }
+    }
+
+}

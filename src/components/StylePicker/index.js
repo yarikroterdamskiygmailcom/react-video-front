@@ -3,7 +3,7 @@ import {Dropdown} from '../../atoms';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import classNames from 'classnames';
-import {head} from 'lodash-es';
+import {head, isEmpty} from 'lodash-es';
 
 @inject('assets')
 @observer
@@ -51,13 +51,18 @@ export default class StylePicker extends Component {
   render() {
     const {selected, className} = this.props;
     const {styleList} = this.props.assets;
-    return (
+    return !isEmpty(styleList) ? (
       <Dropdown
         className={classNames(styles.dropdown, className)}
         selected={selected && this.renderSelected(selected)}
       >
         {styleList.map(this.renderStyle)}
       </Dropdown>
+    ) : (
+      <div className={styles.empty}>
+        <div>No styles found.</div>
+        <div>Create styles easily through the "Customize" panel!</div>
+      </div>
     );
   }
 }
