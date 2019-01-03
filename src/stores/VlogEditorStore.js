@@ -50,12 +50,13 @@ export class VlogEditorStore {
   @action splitVideo = index => splitPoint => {
     const video = this.media[index];
     const newVideos = [
-      {...video, outpoint: splitPoint, seconds: splitPoint},
-      {...video, inpoint: splitPoint, seconds: video.outpoint - splitPoint}
+      {...video, outpoint: splitPoint},
+      {...video, inpoint: splitPoint}
     ];
     this.media = flatten(
       this.media.map((mediaObj, i) => i === index ? newVideos : mediaObj)
     );
+    this.syncMedia();
   }
 
   getErrors = () => {

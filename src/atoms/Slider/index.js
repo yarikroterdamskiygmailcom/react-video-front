@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {isNumber} from 'lodash-es';
 import Swipeable from 'react-swipeable';
-import classNames from 'classnames';
 import styles from './styles.scss';
 
 export default class Slider extends Component {
@@ -36,17 +34,24 @@ export default class Slider extends Component {
   render() {
     const {value, offset, min, max} = this.props;
     const {width} = this.state;
+    const pixelsPerUnit = width / (max - min);
+    const transform = pixelsPerUnit * (value + offset) - (min * pixelsPerUnit);
     return (
       <div ref={this.ref} className={styles.container}>
-        <div className={styles.timestamp}>{(value + offset).toFixed(2)}s</div>
+        <div className={styles.timestamps}>
+          <div className={styles.timestamp}>{min.toFixed(2)}s</div>
+          <div className={styles.timestamp}>{max.toFixed(2)}s</div>
+        </div>
         <div className={styles.wrapper}>
           <Swipeable
             trackMouse
             className={styles.ball}
             onSwiping={this.onSwiping}
             onSwiped={this.onSwiped}
-            style={{transform: `translateX(${(width * (value + offset) / (max - min) - 22)}px)`}}
-          />
+            style={{transform: `translateX(${transform - 22}px)`}}
+          >
+            <div className={styles.ballLabel}>{(value + offset).toFixed(2)}s</div>
+          </Swipeable>
         </div>
       </div>
     );

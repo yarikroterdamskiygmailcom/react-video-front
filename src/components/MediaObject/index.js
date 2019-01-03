@@ -38,7 +38,7 @@ export default class MediaObject extends Component {
 
   getOverlayProps = mediaObj => ({
     onSave: this.props.onChange,
-    ...{src: mediaObj.mediatype === 'video' ? mediaObj.src : undefined},
+    ...{video: mediaObj.mediatype === 'video' ? mediaObj : undefined},
     ...{title: mediaObj.mediatype === 'title' ? mediaObj : undefined},
     ...{fade: isFade(mediaObj.mediatype) ? mediaObj : undefined}
   })
