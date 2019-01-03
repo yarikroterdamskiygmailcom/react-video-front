@@ -27,6 +27,7 @@ export default class Login extends Component {
   login = () => {
     const {email, password} = this.state;
     this.props.session.login(email, password)
+    .then(() => this.props.history.push('/home'))
     .catch(e => this.setState({error: e}));
   }
 
