@@ -28,7 +28,7 @@ export default class Home extends Component {
   }
 
   loadVlogs = () => php.get('/api/v1/vlogs')
-  .then(res => this.setState({vlogs: res}))
+  .then(({vlogs}) => this.setState({vlogs}))
 
   componentDidMount() {
     this.loadVlogs().then(() => {
@@ -139,7 +139,7 @@ export default class Home extends Component {
             className={styles.carousel}
           />
         </div>
-        {isEmpty(vlogs) && <div className={styles.empty}>No vlogs found matching your search.</div>}
+        {isEmpty(vlogs) && searchActive && <div className={styles.empty}>No vlogs found matching your search.</div>}
         {isEmpty(this.state.vlogs) && !this.state.pending && this.renderHint()}
         <FontAwesome className={styles.searchButton} name="search" onClick={this.enableSearch} />
         <Input
