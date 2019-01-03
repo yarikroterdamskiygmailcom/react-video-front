@@ -105,7 +105,7 @@ export class VlogEditorStore {
       target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
       query: {
         action: 'uploadvideo',
-        project_id: this.projectId
+        project_id: id
       },
       headers: {
         Authorization: `Token ${sessionStore.token}`
@@ -122,7 +122,7 @@ export class VlogEditorStore {
 
     this.resumable.on('fileSuccess', (resumableFile, response) => {
       const properties = ['duration', 'inpoint', 'outpoint', 'mediatype',
-        'overlay', 'seconds', 'src', 'thumb', 'thumbbase64', 'video_id', 'videoname'];
+        'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname'];
       this.addMedia(pick(JSON.parse(response), properties));
       this.uploading = false;
       this.resumable.cancel();
@@ -133,6 +133,12 @@ export class VlogEditorStore {
 
     this.resumable.on('fileProgress', file => this.progress = file.progress() * 100);
 
+  }
+
+  cancelUpload = () => {
+    this.uploading = false;
+    this.resumable.cancel();
+    this.progress = 0;
   }
 
 }

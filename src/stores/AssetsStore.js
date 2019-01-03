@@ -32,58 +32,69 @@ export class AssetsStore {
   initResumables = (includeTeam = true) => {
 
     includeTeam && (() => {
-      const teamResumable = new Resumable({
+      this.teamResumable = new Resumable({
         target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
         query: {
-          SessionID: sessionStore.token,
           action: 'uploadasset',
           access: 'team'
+        },
+        headers: {
+          Authorization: `Token ${sessionStore.token}`
         },
         filetype: ['mp4']
       });
 
-      teamResumable.assignBrowse(document.getElementById('teamupload'));
+      this.teamResumable.assignBrowse(document.getElementById('teamupload'));
 
-      teamResumable.on('fileAdded', () => {
-        teamResumable.upload();
+      this.teamResumable.on('fileAdded', () => {
+        this.teamResumable.upload();
         this.uploading = true;
       });
 
-      teamResumable.on('fileSuccess', () => {
+      this.teamResumable.on('fileSuccess', () => {
         this.uploading = false;
         this.loadAssets();
-        teamResumable.cancel();
+        this.teamResumable.cancel();
         this.progress = 0;
       });
 
-      teamResumable.on('progress', () => this.progress = teamResumable.progress() * 100);
+      this.teamResumable.on('progress', () => this.progress = this.teamResumable.progress() * 100);
     })();
 
-    const personalResumable = new Resumable({
+    this.personalResumable = new Resumable({
       target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
       query: {
-        SessionID: sessionStore.token,
         action: 'uploadasset',
         access: 'personal'
+      },
+      headers: {
+        Authorization: `Token ${sessionStore.token}`
       },
       filetype: ['mp4']
     });
 
-    personalResumable.assignBrowse(document.getElementById('personalupload'));
+    this.personalResumable.assignBrowse(document.getElementById('personalupload'));
 
-    personalResumable.on('fileAdded', () => {
-      personalResumable.upload();
+    this.personalResumable.on('fileAdded', () => {
+      this.personalResumable.upload();
       this.uploading = true;
     });
 
-    personalResumable.on('fileSuccess', () => {
+    this.personalResumable.on('fileSuccess', () => {
       this.uploading = false;
       this.loadAssets();
-      personalResumable.cancel();
+      this.personalResumable.cancel();
       this.progress = 0;
     });
 
-    personalResumable.on('progress', () => this.progress = personalResumable.progress() * 100);
+    this.personalResumable.on('progress', () => this.progress = this.personalResumable.progress() * 100);
+  }
+
+  cancelUpload = () => {
+    this.uploading = false;
+    this.personalResumable.cancel();
+    this.teamResumable && this.teamResumable.cancel();
+    this.progress = 0;
   }
 
 }
