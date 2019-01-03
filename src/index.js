@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'mobx-react';
 import {Router} from 'react-router';
-import {VlogEditorStore, SessionStore, ProfileStore, VlogsStore, AssetsStore, TemplateEditorStore, TemplateStore, SettingsStore, ProjectStore, OverlayStore} from './stores';
+import {VlogEditorStore, SessionStore, ProfileStore, AssetsStore, TemplateEditorStore, TemplateStore, SettingsStore, ProjectStore, OverlayStore} from './stores';
 import App from './containers/App';
 import {history} from './constants/routes';
 import './scss/main.scss';
