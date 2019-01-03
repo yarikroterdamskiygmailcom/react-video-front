@@ -11,7 +11,7 @@ export class TemplateStore {
   @observable activeTemplate = null
 
   assignProjectId = () => php.get('/api/v1/vlog/new')
-  .then(id => this.projectId = id)
+  .then(({project_id}) => this.projectId = project_id)
 
   setTemplate = id => php.get(`/api/v1/templates/${id}`)
   .then(template => this.fields = template.fields)

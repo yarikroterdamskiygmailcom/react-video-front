@@ -47,12 +47,6 @@ export class ProjectStore {
   createProject = professional => php.get(`/api/v1/vlog/new${professional === 'true' ? '?professional=true' : ''}`)
   .then(res => res.project_id)
 
-  startFromTemplate = async template => {
-    await this.startFromScratch();
-    templates.setActiveTemplate(template);
-    templates.setProjectId(this.projectId);
-  }
-
   generateOptions = () => JSON.stringify({
     watermark: this.logoOverlay,
     subtitles: this.customSubs,
