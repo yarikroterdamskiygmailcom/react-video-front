@@ -116,17 +116,17 @@ export default class NavBar extends Component {
   routes = [
     {
       name: 'Home',
-      icon: 'home',
+      icon: <Icon className={styles.icon} name="home"/>,
       path: '/home'
     },
     {
       name: 'Add Vlog',
-      icon: 'video',
+      icon: <Icon className={styles.icon} name="video"/>,
       onClick: this.props.overlay.openOverlay(VlogTypePicker)({onSelect: this.handleSelection})
     },
     {
       name: 'Profile',
-      icon: 'profile',
+      icon: <Icon className={styles.icon} name="profile"/>,
       path: '/profile'
     },
   ]
@@ -134,14 +134,14 @@ export default class NavBar extends Component {
   renderRoute = ({name, icon, path, onClick}) => path
     ? (
       <NavLink key={name} to={path} className={styles.route} activeClassName={styles.active}>
-        <Icon className={styles.icon} name={icon} />
+        {icon}
         <div className={styles.routeName}>{name}</div>
       </NavLink>
     )
 
     : (
       <div key={name} className={styles.route} onClick={onClick}>
-        <Icon className={styles.icon} name={icon} />
+        {icon}
         <div className={styles.routeName}>{name}</div>
       </div>
     )

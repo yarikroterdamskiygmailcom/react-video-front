@@ -9,7 +9,7 @@ export default class Header extends Component {
 
   render() {
     const {routeObj, className} = this.props;
-    return (
+    return !routeObj.header ? null : (
       <div className={classNames(styles.container, className)}>
         <div className={styles.left}>{routeObj.header.left}</div>
         <div className={styles.title}>{routeObj.header.center || routeObj.name}</div>
