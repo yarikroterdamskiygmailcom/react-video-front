@@ -13,6 +13,7 @@ export default class EditTitle extends Component {
     this.state = this.props.title ? {...this.props.title} : {
       text: '',
       asset: null,
+      duration: ''
     };
   }
 
@@ -42,7 +43,7 @@ export default class EditTitle extends Component {
 
   setStyle = style => this.setState({style})
 
-  setDuration = e => this.setState({duration: clamp(e.target.value, 2, 10)})
+  setDuration = e => this.setState({duration: e.target.value ? clamp(e.target.value, 2, 10) : ''})
 
   selectAsset = asset => this.setState({asset})
 
