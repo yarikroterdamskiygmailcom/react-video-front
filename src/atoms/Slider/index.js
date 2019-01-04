@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import FontAwesome from 'react-fontawesome';
 import Swipeable from 'react-swipeable';
 import styles from './styles.scss';
 
@@ -12,13 +13,18 @@ export default class Slider extends Component {
   }
 
   componentDidMount() {
-    this.setState({width: this.ref.current.offsetWidth});
+    const {min, max} = this.props;
+    this.setState({width: this.ref.current.offsetWidth}, () =>
+      this.setState({
+        deltaPerPixel: (max - min) / this.state.width,
+        pixelsPerUnit: this.state.width / (max - min)
+      })
+    );
   }
 
   onSwiping = (e, deltaX) => {
     const {value, min, max} = this.props;
-    const {width} = this.state;
-    const deltaPerPixel = (max - min) / width;
+    const {deltaPerPixel} = this.state;
     const newOffset = -deltaX * deltaPerPixel;
     const newValue = newOffset + value;
 
@@ -31,16 +37,37 @@ export default class Slider extends Component {
 
   onSwiped = () => this.props.onSwiped()
 
+  increment = () => {
+    const {value, max, onChange} = this.props;
+    const {deltaPerPixel} = this.state;
+    if(value + 1 > max) {
+      return;
+    }
+    onChange(value + deltaPerPixel);
+  }
+
+  decrement = () => {
+    const {value, min, onChange} = this.props;
+    const {deltaPerPixel} = this.state;
+    if(value - 1 < min) {
+      return;
+    }
+    onChange(value - deltaPerPixel);
+  }
+
   render() {
     const {value, offset, min, max} = this.props;
-    const {width} = this.state;
-    const pixelsPerUnit = width / (max - min);
+    const {pixelsPerUnit} = this.state;
     const transform = pixelsPerUnit * (value + offset) - (min * pixelsPerUnit);
     return (
       <div ref={this.ref} className={styles.container}>
         <div className={styles.timestamps}>
           <div className={styles.timestamp}>{min.toFixed(2)}s</div>
           <div className={styles.timestamp}>{max.toFixed(2)}s</div>
+        </div>
+        <div className={styles.controls}>
+          <FontAwesome name="caret-left" onClick={this.decrement}/>
+          <FontAwesome name="caret-right" onClick={this.increment}/>
         </div>
         <div className={styles.wrapper}>
           <Swipeable

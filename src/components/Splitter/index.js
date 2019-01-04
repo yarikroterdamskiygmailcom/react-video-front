@@ -20,9 +20,17 @@ export default class Splitter extends Component {
     this.props.onChange(this.state.split);
   }
 
-  setOffset = offset => this.setState({offset}, () => this.videoRef.current.currentTime = this.state.split + offset);
+  setOffset = offset => this.setState({offset}, this.shiftVideo);
 
   commitSplit = () => this.setState({split: this.state.split + this.state.offset, offset: 0}, () => this.props.onChange(this.state.split));
+
+  onChange = value =>
+    this.setState({split: value}, () => {
+      this.shiftVideo();
+      this.props.onChange(this.state.split);
+    });
+
+  shiftVideo = () => this.videoRef.current.currentTime = this.state.split + this.state.offset
 
   render() {
     const {video} = this.props;
@@ -30,8 +38,16 @@ export default class Splitter extends Component {
     const {split, offset} = this.state;
     return (
       <React.Fragment>
-        <video className={styles.video} ref={this.videoRef} src={video.src} playsInline/>
-        <Slider value={split} offset={offset} min={inpoint} max={outpoint} onSwiping={this.setOffset} onSwiped={this.commitSplit}/>
+        <video className={styles.video} ref={this.videoRef} src={video.src} playsInline />
+        <Slider
+          value={split}
+          offset={offset}
+          min={inpoint}
+          max={outpoint}
+          onSwiping={this.setOffset}
+          onSwiped={this.commitSplit}
+          onChange={this.onChange}
+        />
       </React.Fragment>
     );
   }
