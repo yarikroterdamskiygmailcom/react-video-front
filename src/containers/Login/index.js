@@ -20,7 +20,7 @@ export default class Login extends Component {
     };
   }
 
-  submit = e => e.key === 'Enter' && this.props.session.login()
+  submit = e => e.key === 'Enter' && this.login();
 
   setProperty = property => e => this.setState({[property]: e.target.value})
 
@@ -33,9 +33,7 @@ export default class Login extends Component {
 
   formatError = e => {
     const error = e.response.data;
-    return error.error
-      ? first(error.error.email || error.error.password)
-      : 'Something went wrong.';
+    return JSON.stringify(error);
   }
 
   render() {
@@ -43,10 +41,10 @@ export default class Login extends Component {
     const {email, password, error} = this.state;
     return (
       <div className={classNames(styles.container, className)} onKeyPress={this.submit}>
-        <img className={styles.logo} src={logo}/>
-        <Input auth modal type="email" name="Email" value={email} onChange={this.setProperty('email')}/>
-        <Input auth modal type="password" name="Password" value={password} onChange={this.setProperty('password')}/>
-        <Button className={styles.button} onClick={this.login} text="Login"/>
+        <img className={styles.logo} src={logo} />
+        <Input auth modal type="email" name="Email" value={email} onChange={this.setProperty('email')} />
+        <Input auth modal type="password" name="Password" value={password} onChange={this.setProperty('password')} />
+        <Button className={styles.button} onClick={this.login} text="Login" />
         {error && <div>{this.formatError(error)}</div>}
         <a href="https://userdb.vlogahead.cloud/accounts/password/reset/">Forgot password?</a>
       </div>

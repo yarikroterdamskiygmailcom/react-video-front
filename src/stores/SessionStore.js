@@ -23,12 +23,12 @@ export class SessionStore {
   initialize = () => {
     this.token = localStorage.getItem('token') || Cookies.get('token') || null;
     if (this.token) {
-      history.location.pathname === '/' && history.push('/home');
       php.interceptors.request.use(
         config => ({...config, headers: {Authorization: `Token ${this.token}`}}),
         error => error
       );
       userDB.defaults.headers.common.Authorization = `Token ${this.token}`;
+      history.location.pathname === '/' && history.push('/home');
       this.getUser().catch(() => history.replace('/'));
     }
   }
