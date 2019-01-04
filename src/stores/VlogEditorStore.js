@@ -125,6 +125,9 @@ export class VlogEditorStore {
       const properties = ['duration', 'inpoint', 'outpoint', 'mediatype',
         'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname'];
       this.addMedia(pick(JSON.parse(response), properties));
+    });
+
+    this.resumable.on('complete', () => {
       this.uploading = false;
       this.resumable.cancel();
       this.progress = 0;
@@ -132,7 +135,7 @@ export class VlogEditorStore {
 
     this.resumable.on('fileRetry', () => sessionStore.showError('Upload interrupted. Retrying...'));
 
-    this.resumable.on('fileProgress', file => this.progress = file.progress() * 100);
+    this.resumable.on('progress', () => this.progress = this.resumable.progress() * 100);
 
   }
 
