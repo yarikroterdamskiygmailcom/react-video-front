@@ -3,6 +3,7 @@ import arrowCurved from './arrowCurved.svg';
 import arrowDown from './arrowDown.svg';
 import asset from './asset.svg';
 import backdrop from './backdrop.svg';
+import camcorder from './camcorder.svg';
 import fade from './fade.svg';
 import emptyVlog from './emptyVlog.svg';
 import eye from './eye.svg';
@@ -25,6 +26,7 @@ export default {
   arrowDown,
   asset,
   backdrop,
+  camcorder,
   video,
   fade,
   emptyVlog,

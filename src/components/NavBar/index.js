@@ -121,7 +121,7 @@ export default class NavBar extends Component {
     },
     {
       name: 'Add Vlog',
-      icon: <Icon className={styles.icon} name="video"/>,
+      icon: <Icon className={styles.icon} name="camcorder"/>,
       onClick: this.props.overlay.openOverlay(VlogTypePicker)({onSelect: this.handleSelection})
     },
     {
