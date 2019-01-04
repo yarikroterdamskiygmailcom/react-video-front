@@ -108,7 +108,7 @@ export default class Template extends Component {
   )
 
   renderField = (field, fieldIndex) => (
-    <React.Fragment>
+    <React.Fragment key={`field-${fieldIndex}`}>
       <div className={styles.field}>
         <Icon className={styles.icon} name={field.type} />
         <div className={styles.name}>{field.name}</div>

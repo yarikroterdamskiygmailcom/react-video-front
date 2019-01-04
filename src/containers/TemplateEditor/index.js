@@ -49,7 +49,7 @@ class Menu extends Component {
   }
 
   renderOption = option => (
-    <div className={styles.option} onClick={this.onSelect(option)}>
+    <div key={option.type} className={styles.option} onClick={this.onSelect(option)}>
       {option.label}
     </div>
   )
@@ -133,7 +133,7 @@ export default class TemplateEditor extends Component {
   .then(this.props.history.goBack);
 
   renderColumn = column => (
-    <div className={styles[column]}>
+    <div key={column} className={styles[column]}>
       {column}
     </div>
   )
