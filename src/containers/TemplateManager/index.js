@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Segment, SwipeItem, Icon, Spinner} from '../../atoms';
+import classNames from 'classnames';
 import styles from './styles.scss';
 import {withRouter} from 'react-router';
 import {php} from '../../stores';
@@ -69,9 +70,10 @@ export default class TemplateManager extends Component {
   )
 
   render() {
+    const {className} = this.props;
     const {pending, templates} = this.state;
     return pending ? <Spinner/> : (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         <Segment elementClassName={styles.element} title={this.renderHeader()}>
           {templates.map(this.renderTemplate)}
         </Segment>
