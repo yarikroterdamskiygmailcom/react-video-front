@@ -33,11 +33,15 @@ export default class Home extends Component {
   componentDidMount() {
     this.loadVlogs().then(() => {
       this.setState({pending: false});
-      const ids = this.state.vlogs.map(vlog => vlog.owner_id)
+      const ids = this.state.vlogs
+      .filter(vlog => vlog.status === 'shared')
+      .map(vlog => vlog.owner_id)
       .filter(id => Boolean(id));
       const uniqueIds = uniq(ids);
-      uniqueIds.forEach(id => this.props.profile.getAvatar(id)
-      .then(avatar => this.setState({[`avatar-${id}`]: avatar})));
+      !isEmpty(uniqueIds) && php.get(`/api/v1/avatars?ids=${JSON.stringify(uniqueIds)}`)
+      .then(avatarsObj => Object.entries(avatarsObj).forEach(([key, value]) =>
+        this.setState({[`avatar-${key}`]: value}))
+      );
     });
     this.props.session.getUser();
   }
