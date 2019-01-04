@@ -10,8 +10,10 @@ export class TemplateStore {
   @observable projectId = null;
   @observable activeTemplate = null
 
-  assignProjectId = () => php.get('/api/v1/vlog/new')
-  .then(({project_id}) => this.projectId = project_id)
+  getProjectId = () => php.get('/api/v1/vlog/new')
+  .then(({project_id}) => project_id)
+
+  setProjectId = id => this.projectId = id
 
   setTemplate = id => php.get(`/api/v1/templates/${id}`)
   .then(template => this.fields = template.fields)
@@ -51,8 +53,14 @@ export class TemplateStore {
   isValid = () => this.fields.every(field => !isEmpty(field.contents))
 
   next = () => {
-    editor.setMedia(flatten(this.fields.toJS().map(field => field.contents.toJS())));
-    history.push('/configure-vlog');
+    const flatMedia = flatten(this.fields.toJS().map(field => field.contents.toJS()));
+    php.post(`/api/v1/vlog/${this.projectId}`, {
+      media: JSON.stringify(flatMedia)
+    })
+    .then(() => {
+      editor.setMedia(flatMedia);
+      history.push(`/configure-vlog/${this.projectId}`);
+    });
   }
 }
 

@@ -110,9 +110,18 @@ const vlogDetails = {
   }
 };
 
+const partialTemplate = {
+  name: 'Template',
+  path: '/template/:templateId',
+  component: Template,
+  header: {
+    left: backButton
+  }
+};
+
 const template = {
   name: 'Template',
-  path: '/template/:id',
+  path: '/template/:templateId/:projectId',
   component: Template,
   header: {
     left: backButton
@@ -185,6 +194,6 @@ const contact = {
 
 export const navBarRoutes = [home, editVlog, profile];
 
-const allRoutes = [notFound, login, logout, home, editVlog, settings, profile, createVlog, editVlog, configureVlog, renderVlog, vlogDetails, template, customize, share, templateManager, templateEditor, faq, about, contact];
+const allRoutes = [notFound, login, logout, home, editVlog, settings, profile, createVlog, editVlog, configureVlog, renderVlog, vlogDetails, partialTemplate, template, customize, share, templateManager, templateEditor, faq, about, contact];
 
 export default allRoutes;

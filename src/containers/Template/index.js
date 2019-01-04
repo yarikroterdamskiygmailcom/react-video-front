@@ -3,7 +3,7 @@ import {observer, inject} from 'mobx-react';
 import {isEmpty, isNumber, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
-import {Icon, Checkbox, Input, SwipeItem, SortableCollection, UploadButton} from '../../atoms';
+import {Icon, Checkbox, Input, SwipeItem, SortableCollection, UploadButton, Spinner} from '../../atoms';
 import {SortableHandle} from 'react-sortable-hoc';
 import {SelectAsset, EditTitle, MediaObject, SaveTemplate} from '../../components';
 import {withRouter} from 'react-router';
@@ -28,6 +28,7 @@ export default class Template extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pending: true,
       fieldRevealIndex: null,
       contentRevealIndex: null,
       revealSide: null
@@ -35,8 +36,19 @@ export default class Template extends Component {
   }
 
   componentWillMount() {
-    this.props.template.setTemplate(this.props.match.params.id);
-    this.props.template.assignProjectId();
+    const {templateId, projectId} = this.props.match.params;
+    this.props.template.setTemplate(templateId);
+    if(!projectId) {
+      this.props.template.getProjectId()
+      .then(id => {
+        this.props.template.setProjectId(id);
+        this.setState({pending: false});
+        this.props.history.replace(`/template/${templateId}/${id}`);
+      });
+    } else {
+      this.props.template.setProjectId(projectId);
+      this.setState({pending: false});
+    }
   }
 
   addContent = index => content => this.props.template.addContent(index, content);
@@ -125,7 +137,8 @@ export default class Template extends Component {
 
   render() {
     const {fields, isValid, next} = this.props.template;
-    return (
+    const {pending} = this.state;
+    return pending ? <Spinner/> : (
       <div className={styles.container}>
         <div className={styles.fields}>
           {fields.map(this.renderField)}

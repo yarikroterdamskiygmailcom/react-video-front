@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {Input, Toggle, Segment, Carousel, RadioButton, Icon} from '../../atoms';
+import {Input, Toggle, Segment, Carousel, RadioButton, Icon, Spinner} from '../../atoms';
 import {Preview} from '../../components';
 import {head, noop} from 'lodash-es';
 import styles from './styles.scss';
@@ -18,6 +18,7 @@ export default class ConfigureVlog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pending: true,
       orientation: 'landscape',
       rendering: false,
       renderUrl: null
@@ -26,7 +27,8 @@ export default class ConfigureVlog extends Component {
 
   componentWillMount() {
     const id = this.props.match.params.id;
-    this.props.project.setProject(id);
+    this.props.project.setProject(id)
+    .then(() => this.setState({pending: false}));
   }
 
   goHome = () => this.props.history.push('/home')
@@ -127,8 +129,8 @@ export default class ConfigureVlog extends Component {
   render() {
     const {title, description, filter, logoOverlay, customSubs, customEdit, access, setProperty, toggleProperty} = this.props.project;
     const {userType} = this.props.session;
-    const {orientation, renderUrl, rendering} = this.state;
-    return (
+    const {orientation, renderUrl, rendering, pending} = this.state;
+    return pending ? <Spinner/> : (
       <div className={styles.container}>
         <Segment title="Info">
           <Input field name="Title" value={title} onChange={e => setProperty('title', e.target.value)}/>
