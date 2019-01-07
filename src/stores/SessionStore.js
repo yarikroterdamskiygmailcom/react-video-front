@@ -25,13 +25,12 @@ export class SessionStore {
     if (this.token) {
       php.interceptors.request.use(
         config => ({...config, headers: {Authorization: `Token ${this.token}`}}),
-        error => history.replace('/')
+        // error => history.replace('/')
       );
       userDB.interceptors.request.use(
         config => ({...config, headers: {Authorization: `Token ${this.token}`}}),
-        error => history.replace('/')
+        // error => history.replace('/')
       );
-      // userDB.defaults.headers.common.Authorization = `Token ${this.token}`;
       history.location.pathname === '/' && history.push('/home');
       this.getUser().catch(() => history.replace('/'));
     }

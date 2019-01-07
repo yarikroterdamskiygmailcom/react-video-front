@@ -1,5 +1,6 @@
 import axios from 'axios';
 import encode from 'object-to-formdata';
+import {history} from '../constants/routes';
 import {sessionStore} from '..';
 export {AssetsStore} from './AssetsStore';
 export {OverlayStore} from './OverlayStore';
@@ -27,7 +28,7 @@ php.interceptors.response.use(
     }
     return response.data;
   },
-  error => Promise.reject(error)
+  error => history.replace('/')
 );
 
 export const userDB = axios.create({
@@ -36,6 +37,6 @@ export const userDB = axios.create({
 
 userDB.interceptors.response.use(
   response => response.data,
-  error => Promise.reject(error)
+  error => history.replace('/')
 );
 
