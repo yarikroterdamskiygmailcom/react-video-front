@@ -35,18 +35,25 @@ export default class Preview extends Component {
   }
 
   render() {
-    const {video, src, start, stop, className} = this.props;
-    return (
-      <video
-        ref={this.videoRef}
-        className={classNames(styles.video, className)}
-        src={video ? video.src : src}
-        autoPlay
-        loop
-        controls
-        playsInline
-        onTimeUpdate={video ? this.limitVideo : (isNumber(start) && isNumber(stop)) ? this.limitSrc : noop}
-      />
-    );
+    const {image, video, src, start, stop, className} = this.props;
+    return image
+      ? (
+        <img
+          className={classNames(styles.image, className)}
+          src={src}
+        />
+      )
+      : (
+        <video
+          ref={this.videoRef}
+          className={classNames(styles.video, className)}
+          src={video ? video.src : src}
+          autoPlay
+          loop
+          controls
+          playsInline
+          onTimeUpdate={video ? this.limitVideo : (isNumber(start) && isNumber(stop)) ? this.limitSrc : noop}
+        />
+      );
   }
 }

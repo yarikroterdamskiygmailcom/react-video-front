@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {isEmpty} from 'lodash-es';
 import classNames from 'classnames';
-import {Modal} from '../';
+import {Modal, Preview} from '../';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 
-@inject('vlogEditor')
+@inject('overlay')
 @inject('assets')
 @observer
 export default class SelectAsset extends Component {
@@ -47,15 +47,18 @@ export default class SelectAsset extends Component {
     this.setState({currentAsset: i});
   }
 
-  renderAsset = ({id, thumb, title, type}, i) => (
-    <div key={id} className={classNames(styles.asset, this.state.currentAsset === i && styles.selected)} onClick={() => this.selectAsset(i)}>
-      <img className={styles.thumb} src={thumb} />
-      <div className={styles.assetData}>
-        <div className={styles.assetTitle}>{title}</div>
-        <div className={styles.assetType}>{type}</div>
+  renderAsset = (asset, i) => {
+    const {id, thumb, title, type, src} = asset;
+    return (
+      <div key={id} className={classNames(styles.asset, this.state.currentAsset === i && styles.selected)} onClick={() => this.selectAsset(i)}>
+        <img className={styles.thumb} src={thumb} onClick={this.props.overlay.openOverlay(Preview)({src, image: type === 'image'})} />
+        <div className={styles.assetData}>
+          <div className={styles.assetTitle}>{title}</div>
+          <div className={styles.assetType}>{type}</div>
+        </div>
       </div>
-    </div>
-  )
+    );
+  }
 
   render() {
     const {pending} = this.state;
