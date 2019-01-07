@@ -40,7 +40,7 @@
 .field {
     @extend .item;
     display: grid;
-    grid-template-columns: 60px 10fr 60px;
+    grid-template-columns: 60px auto 60px;
     align-items: center;
     justify-items: center;
     height: 80px;
@@ -68,8 +68,9 @@
     }
 
     .name {
-        width: 100%;
-
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow: hidden;
     }
 }
 

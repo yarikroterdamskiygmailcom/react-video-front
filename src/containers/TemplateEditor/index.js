@@ -173,7 +173,7 @@ export default class TemplateEditor extends Component {
         reveal={this.isRevealed(fieldIndex) && this.state.revealSide}
       >
         <Icon className={styles.icon} name={field.icon} />
-        <Input field className={styles.name} value={field.name} placeholder="What?" onChange={this.updateField(fieldIndex, 'name')} />
+        <textarea className={styles.name} value={field.name} placeholder="What?" onChange={this.updateField(fieldIndex, 'name')}/>
         {field.type !== 'video' && this.renderAddContent(field.type, fieldIndex)}
         {field.type !== 'video' && <Checkbox className={styles.fixed} value={field.fixed} onChange={this.updateField(fieldIndex, {fixed: !field.fixed})} />}
         <DragHandle />
