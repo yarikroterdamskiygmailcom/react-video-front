@@ -63,7 +63,7 @@ export class ProjectStore {
     description: this.description,
     access: this.access,
     options: this.generateOptions(),
-    media: JSON.stringify(editor.media.toJS().map(this.reduceMediaObj))
+    media: JSON.stringify(editor.media.map(this.reduceMediaObj))
   })
 
   updateProject = changes => php.post(`/api/v1/vlog/${this.projectId}`, changes)

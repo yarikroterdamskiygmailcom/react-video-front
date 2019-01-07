@@ -18,7 +18,7 @@ export class AssetsStore {
 
   uploadStyle = (access, style) => php.post('api/v1/styles', {...style, access})
 
-  updateStyle = (id, style) => php.put(`api/v1/styles/${id}`, style.toJS())
+  updateStyle = (id, style) => php.put(`api/v1/styles/${id}`, style)
 
   deleteStyle = id => php.delete(`/api/v1/styles/${id}`)
 
