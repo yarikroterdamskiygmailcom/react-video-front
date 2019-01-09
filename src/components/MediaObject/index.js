@@ -51,10 +51,7 @@ export default class MediaObject extends Component {
 
   renderThumb = mediaObj => {
     const openOverlay = this.props.overlay.openOverlay(getOverlay(mediaObj.mediatype));
-    console.log(openOverlay);
     const onClick = openOverlay(this.getProps(mediaObj));
-    console.log(JSON.stringify(this.getProps(mediaObj).title));
-    console.log(JSON.stringify(mediaObj));
 
     if (['video', 'asset'].includes(mediaObj.mediatype)) {
       return <img className={styles.thumb} src={mediaObj.thumb} onError={e => e.target.src = fallback} onClick={onClick}/>;
