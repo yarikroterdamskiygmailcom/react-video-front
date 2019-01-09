@@ -5,7 +5,7 @@ import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import {Icon, Checkbox, Input, SwipeItem, SortableCollection, UploadButton, Spinner} from '../../atoms';
 import {SortableHandle} from 'react-sortable-hoc';
-import {SelectAsset, EditTitle, MediaObject, SaveTemplate} from '../../components';
+import {SelectAsset, EditTitle, MediaObject, SaveTemplate, TrimmerSplitter} from '../../components';
 import {withRouter} from 'react-router';
 import styles from './styles.scss';
 
@@ -71,7 +71,17 @@ export default class Template extends Component {
     fieldIndex === this.state.fieldRevealIndex && contentIndex === this.state.contentRevealIndex
   )
 
-  getSwipeActions = (fieldIndex, contentIndex) => ({
+  getSwipeActions = (fieldIndex, contentIndex, mediaObj) => ({
+    left: mediaObj.mediatype === 'video' ? [
+      {
+        label: <div className={styles.swipeAction}><Icon name="trim"/>Trim / Split</div>,
+        func: this.props.overlay.openOverlay(TrimmerSplitter)({
+          video: mediaObj,
+          onTrim: this.props.template.replaceContent(fieldIndex, contentIndex),
+          onSplit: this.props.template.splitContent(fieldIndex, contentIndex)
+        })
+      },
+    ] : undefined,
     right: [
       {
         label: <div className={styles.swipeAction}><Icon name="trash" />Delete</div>,
@@ -109,7 +119,7 @@ export default class Template extends Component {
       : (
         <SwipeItem
           className={styles.fieldContent}
-          actions={this.getSwipeActions(fieldIndex, contentIndex)}
+          actions={this.getSwipeActions(fieldIndex, contentIndex, mediaObj)}
           afterAction={this.resetReveal}
           onSwipe={this.setReveal(fieldIndex, contentIndex)}
           reveal={this.isRevealed(fieldIndex, contentIndex) && this.state.revealSide}

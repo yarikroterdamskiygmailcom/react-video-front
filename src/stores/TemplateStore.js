@@ -46,6 +46,24 @@ export class TemplateStore {
     contents: this.fields[fieldIndex].contents.map((content, i) => i === contentIndex ? newContent : content)
   })
 
+  @action splitContent = (fieldIndex, contentIndex) => splitPoint => {
+    const original = this.fields[fieldIndex].contents[contentIndex];
+    const newContent = [
+      {...original, outpoint: splitPoint},
+      {...original, inpoint: splitPoint}
+    ];
+    this.fields = this.fields.map((field, fIndex) => fIndex === fieldIndex
+      ? {
+        ...field,
+        contents: flatten(field.contents.map((content, cIndex) =>
+          cIndex === contentIndex
+            ? newContent
+            : content
+        ))
+      }
+      : field);
+  }
+
   @action rearrangeContents = fieldIndex => newOrder => {
     this.fields = this.fields.map((field, i) => i === fieldIndex ? {...field, contents: newOrder} : field);
   }
