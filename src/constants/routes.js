@@ -76,7 +76,7 @@ const profile = {
   path: '/profile',
   component: Profile,
   header: {
-    // left: <NavLink to="/settings"><FontAwesome className={styles.icon} name="cog"/></NavLink>,
+    left: <NavLink to="/settings"><FontAwesome className={styles.icon} name="cog"/></NavLink>,
     right: <NavLink to="/logout"><FontAwesome className={styles.icon} name="sign-out"/></NavLink>
   },
   navBar: true

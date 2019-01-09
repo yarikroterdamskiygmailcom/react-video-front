@@ -27,7 +27,7 @@ export default class Settings extends Component {
 
   renderBottom = () => (
     <div className={styles.bottom}>
-      <div onClick={this.goTo('/faq')}>FAQ</div>
+      <div onClick={() => location.href = 'https://www.vlogahead.com/faq.html'}>FAQ</div>
       <div onClick={this.goTo('/about')}>About Us</div>
       <div onClick={this.goTo('/contact')}>Contact</div>
     </div>
