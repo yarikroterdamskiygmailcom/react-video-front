@@ -24,15 +24,16 @@ export class SessionStore {
     this.token = localStorage.getItem('token') || Cookies.get('token') || null;
     if (this.token) {
       php.interceptors.request.use(
-        config => ({...config, headers: {Authorization: `Token ${this.token}`}}),
-        // error => history.replace('/')
+        config => ({...config, headers: {Authorization: `Token ${this.token}`}})
       );
       userDB.interceptors.request.use(
-        config => ({...config, headers: {Authorization: `Token ${this.token}`}}),
-        // error => history.replace('/')
+        config => ({...config, headers: {Authorization: `Token ${this.token}`}})
       );
       history.location.pathname === '/' && history.push('/home');
-      this.getUser().catch(() => history.replace('/'));
+      this.getUser().catch(() => {
+        this.clearToken();
+        history.replace('/');
+      });
     }
   }
 
@@ -51,14 +52,18 @@ export class SessionStore {
 
   logout = () => php.get('/api/v1/logout')
   .then(() => {
+    this.clearToken();
+    history.replace('/');
+  })
+
+  clearToken = () => {
     this.token = null;
     try {
       localStorage.removeItem('token', null);
     } catch (e) {
       Cookies.remove('token');
     }
-    history.push('/');
-  })
+  }
 
   convertUserType = typeNumber => {
     switch (typeNumber) {

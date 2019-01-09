@@ -32,8 +32,8 @@ export default class Login extends Component {
   }
 
   formatError = e => {
-    const error = e.response.data;
-    return JSON.stringify(error);
+    const error = e.response.data.error;
+    return first(Object.values(error));
   }
 
   render() {

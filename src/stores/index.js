@@ -27,8 +27,7 @@ php.interceptors.response.use(
       sessionStore.showError(response.data.error);
     }
     return response.data;
-  },
-  error => history.replace('/')
+  }
 );
 
 export const userDB = axios.create({
@@ -36,7 +35,6 @@ export const userDB = axios.create({
 });
 
 userDB.interceptors.response.use(
-  response => response.data,
-  error => history.replace('/')
+  response => response.data
 );
 
