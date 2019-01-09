@@ -5,10 +5,6 @@ import svgs from '../../../assets/icons';
 
 export default class Icon extends Component {
 
-  shouldComponentUpdate() {
-    return false;
-  }
-
   render() {
     const {name, style, className, onClick} = this.props;
     return (
