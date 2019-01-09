@@ -6,7 +6,9 @@ export class OverlayStore {
 
   @action closeOverlay = () => this.overlayContent.pop();
 
-  @action openOverlay = Content => props => () => this.overlayContent.push(<Content {...props} onClose={this.closeOverlay} />)
+  @action openOverlay = Content => props => () => {
+    this.overlayContent.push(<Content onClose={this.closeOverlay} {...props} />);
+  }
 
   @observable toastActive = false;
   @observable toastContent = null;

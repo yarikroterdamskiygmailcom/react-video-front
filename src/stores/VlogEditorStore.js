@@ -40,12 +40,12 @@ export class VlogEditorStore {
     }
   }
 
-  deleteMedia = i => {
+  @action deleteMedia = i => {
     this.media = this.media.filter((value, index) => index !== i);
     this.syncMedia();
   }
 
-  saveMedia = index => changes => this.updateMedia(index, changes)
+  @action saveMedia = index => changes => this.updateMedia(index, changes)
 
   @action splitVideo = index => splitPoint => {
     const video = this.media[index];
