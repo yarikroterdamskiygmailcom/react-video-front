@@ -57,7 +57,7 @@ export class ProjectStore {
     title: this.title,
     description: this.description,
     access: this.access,
-    options: this.options,
+    options: JSON.stringify(this.options),
     media: JSON.stringify(editor.media.map(this.reduceMediaObj))
   })
 

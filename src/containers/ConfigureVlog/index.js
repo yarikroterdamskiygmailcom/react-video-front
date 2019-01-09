@@ -127,7 +127,7 @@ export default class ConfigureVlog extends Component {
   )
 
   render() {
-    const {title, description, access, setProperty, toggleOption} = this.props.project;
+    const {title, description, access, setProperty, toggleOption, saveProject} = this.props.project;
     const {logo_overlay, filter, custom_subs, custom_edit} = this.props.project.options;
     const {userType} = this.props.session;
     const {orientation, renderUrl, rendering, pending} = this.state;
@@ -155,8 +155,8 @@ export default class ConfigureVlog extends Component {
         </Segment>
         <Segment title="Finalize">
           <div className={styles.finalize}>
-            <div className={classNames(styles.renderButton, styles.active, !renderUrl && styles.invisible)} onClick={this.goHome}>
-              <FontAwesome name="chevron-left" /> Home
+            <div className={classNames(styles.renderButton, styles.active)} onClick={saveProject}>
+              Save
             </div>
             <div className={classNames(styles.renderButton, !renderUrl && styles.invisible, styles.active)} onClick={this.share}>
               Share!
