@@ -44,7 +44,7 @@ export default class Trimmer extends Component {
     return (
       <React.Fragment>
         <div className={styles.videoContainer}>
-          <video className={styles.video} ref={this.videoRef} src={video.src} playsInline onTimeUpdate={this.limitVideo}/>
+          <video className={styles.video} ref={this.videoRef} src={video.src} playsInline autoPlay onTimeUpdate={this.limitVideo}/>
           {this.props.children}
         </div>
         <div className={styles.controls}>

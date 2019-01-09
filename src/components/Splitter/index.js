@@ -59,7 +59,7 @@ export default class Splitter extends Component {
     const {split, offset} = this.state;
     return (
       <React.Fragment>
-        <video className={styles.video} ref={this.videoRef} src={video.src} playsInline onTimeUpdate={this.limitVideo}/>
+        <video className={styles.video} ref={this.videoRef} src={video.src} playsInline autoPlay onTimeUpdate={this.limitVideo}/>
         <div className={styles.controls}>
           <FontAwesome name="step-backward" onClick={this.decrement} />
           <FontAwesome name="pause" onClick={this.pause} />
