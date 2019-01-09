@@ -11,11 +11,13 @@ export class ProjectStore {
   @observable access = null;
   @observable status = null;
   @observable renders = null;
-  @observable options = null;
+  @observable options = {};
 
   setProperty = (property, value) => this[property] = value;
 
-  toggleProperty = property => this[property] = !this[property]
+  setOption = (option, value) => () => this.options = {...this.options, [option]: value}
+
+  toggleOption = option => () => this.options = {...this.options, [option]: !this.options[option]}
 
   clearProject = () => {
     this.projectId = null;
@@ -47,13 +49,6 @@ export class ProjectStore {
   createProject = professional => php.get(`/api/v1/vlog/new${professional === 'true' ? '?professional=true' : ''}`)
   .then(res => res.project_id)
 
-  generateOptions = () => JSON.stringify({
-    watermark: this.logoOverlay,
-    subtitles: this.customSubs,
-    customedit: this.customEdit,
-    filter: this.filter || undefined
-  });
-
   reduceMediaObj = mediaObj => mediaObj.mediatype === 'video'
     ? pick(mediaObj, ['mediatype', 'video_id', 'overlay', 'inpoint', 'outpoint'])
     : mediaObj
@@ -62,7 +57,7 @@ export class ProjectStore {
     title: this.title,
     description: this.description,
     access: this.access,
-    options: this.generateOptions(),
+    options: this.options,
     media: JSON.stringify(editor.media.map(this.reduceMediaObj))
   })
 

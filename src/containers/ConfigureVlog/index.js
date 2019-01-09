@@ -115,11 +115,11 @@ export default class ConfigureVlog extends Component {
   }
 
   renderFilter = ({name, style}) => (
-    <div key={name} className={classNames(styles.filter, this.props.project.filter === name && styles.active)}>
+    <div key={name} className={classNames(styles.filter, this.props.project.options.filter === name && styles.active)}>
       <img
         className={styles.filterPreview}
         style={style}
-        onClick={() => this.props.project.setProperty('filter', name)}
+        onClick={this.props.project.setOption('filter', name)}
         src={this.grabThumb()}
       />
       <div className={styles.filterName}>{name}</div>
@@ -127,27 +127,28 @@ export default class ConfigureVlog extends Component {
   )
 
   render() {
-    const {title, description, filter, logoOverlay, customSubs, customEdit, access, setProperty, toggleProperty} = this.props.project;
+    const {title, description, access, setProperty, toggleOption} = this.props.project;
+    const {logo_overlay, filter, custom_subs, custom_edit} = this.props.project.options;
     const {userType} = this.props.session;
     const {orientation, renderUrl, rendering, pending} = this.state;
-    return pending ? <Spinner/> : (
+    return pending ? <Spinner /> : (
       <div className={styles.container}>
         <Segment title="Info">
-          <Input field name="Title" value={title} onChange={e => setProperty('title', e.target.value)}/>
-          <Input field name="Description" value={description} onChange={e => setProperty('description', e.target.value)}/>
+          <Input field name="Title" value={title} onChange={e => setProperty('title', e.target.value)} />
+          <Input field name="Description" value={description} onChange={e => setProperty('description', e.target.value)} />
         </Segment>
         <Segment title="Styling">
           <Carousel className={classNames(styles.carousel, filter && styles.active)} noRender={!filter} title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter} />
-          <Toggle label="Use Filter" value={filter} onChange={() => toggleProperty('filter')} />
-          <Toggle label="Logo Overlay" value={logoOverlay} onChange={() => toggleProperty('logoOverlay')} />
+          <Toggle label="Use Filter" value={filter} onChange={toggleOption('filter')} />
+          <Toggle label="Logo Overlay" value={logo_overlay} onChange={toggleOption('logo_overlay')} />
         </Segment>
         <Segment title="Orientation">
           {this.orientationOptions.map(({render, value}) => <RadioButton key={value} render={render} active={value === orientation} onChange={this.setOrientation(value)} />)}
         </Segment>
         <Segment title="Options">
-          <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={customSubs} onChange={() => toggleProperty('customSubs')} />
-          <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={customEdit} onChange={() => toggleProperty('customEdit')} />
-          {userType !== 'regularUser' && <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={access === 'team'} onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')}/>}
+          <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={custom_subs} onChange={toggleOption('custom_subs')} />
+          <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={custom_edit} onChange={toggleOption('custom_edit')} />
+          {userType !== 'regularUser' && <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={access === 'team'} onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')} />}
         </Segment>
         <Segment className={classNames(styles.preview, renderUrl && styles.active)} title={renderUrl ? 'Preview' : ''}>
           {renderUrl && <Preview src={`${renderUrl}?${Math.random()}`} />}
@@ -155,13 +156,13 @@ export default class ConfigureVlog extends Component {
         <Segment title="Finalize">
           <div className={styles.finalize}>
             <div className={classNames(styles.renderButton, styles.active, !renderUrl && styles.invisible)} onClick={this.goHome}>
-              <FontAwesome name="chevron-left"/> Home
+              <FontAwesome name="chevron-left" /> Home
             </div>
             <div className={classNames(styles.renderButton, !renderUrl && styles.invisible, styles.active)} onClick={this.share}>
-            Share!
+              Share!
             </div>
             {!renderUrl && <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={this.renderVlog}>
-              <div>{rendering ? <FontAwesome className={styles.spinner} name="spinner"/> : 'Render'}</div>
+              <div>{rendering ? <FontAwesome className={styles.spinner} name="spinner" /> : 'Render'}</div>
               <FontAwesome className={styles.icon} name="chevron-right" />
             </div>}
           </div>
