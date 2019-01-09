@@ -7,6 +7,7 @@ import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import FontAwesome from 'react-fontawesome';
 import {withRouter} from 'react-router';
+import placeholder from '../../../assets/placeholder.png';
 
 @withRouter
 @inject('vlogEditor')
@@ -70,7 +71,10 @@ export default class ConfigureVlog extends Component {
 
   setOrientation = orientation => () => this.setState({orientation})
 
-  grabThumb = () => head(this.props.vlogEditor.media.filter(mediaObj => mediaObj.mediatype === 'video')).thumb;
+  grabThumb = () => {
+    const video = head(this.props.vlogEditor.media.filter(mediaObj => mediaObj.mediatype === 'video'));
+    return video ? video.thumb : placeholder;
+  }
 
   filters = [
     {
