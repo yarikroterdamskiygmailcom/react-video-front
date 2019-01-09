@@ -18,6 +18,7 @@ export default class Splitter extends Component {
 
   componentDidMount() {
     this.props.onChange(this.state.split);
+    this.shiftVideo();
   }
 
   setOffset = offset => this.setState({offset}, this.shiftVideo);
@@ -32,13 +33,39 @@ export default class Splitter extends Component {
 
   shiftVideo = () => this.videoRef.current.currentTime = this.state.split + this.state.offset
 
+  play = () => {
+    this.videoRef.current.currentTime = this.state.split;
+    this.videoRef.current.play();
+  }
+
+  pause = () => this.videoRef.current.pause()
+
+  limitVideo = () => {
+    const videoElem = this.videoRef.current;
+    const {video} = this.props;
+    const {split} = this.state;
+    if (videoElem.currentTime >= video.outpoint) {
+      videoElem.currentTime = split;
+    }
+  }
+
+  increment = () => this.state.split + 0.1 < this.props.video.outpoint && this.onChange(this.state.split + 0.1)
+
+  decrement = () => this.state.split - 0.1 > this.props.video.inpoint && this.onChange(this.state.split - 0.1)
+
   render() {
     const {video} = this.props;
     const {inpoint, outpoint} = video;
     const {split, offset} = this.state;
     return (
       <React.Fragment>
-        <video className={styles.video} ref={this.videoRef} src={video.src} playsInline />
+        <video className={styles.video} ref={this.videoRef} src={video.src} playsInline onTimeUpdate={this.limitVideo}/>
+        <div className={styles.controls}>
+          <FontAwesome name="step-backward" onClick={this.decrement} />
+          <FontAwesome name="pause" onClick={this.pause} />
+          <FontAwesome name="play" onClick={this.play} />
+          <FontAwesome name="step-forward" onClick={this.increment} />
+        </div>
         <Slider
           value={split}
           offset={offset}

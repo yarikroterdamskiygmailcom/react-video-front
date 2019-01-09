@@ -28,7 +28,7 @@ export default class Slider extends Component {
     const newOffset = -deltaX * deltaPerPixel;
     const newValue = newOffset + value;
 
-    if(newValue > max || newValue < min) {
+    if (newValue > max || newValue < min) {
       return;
     }
 
@@ -36,24 +36,6 @@ export default class Slider extends Component {
   }
 
   onSwiped = () => this.props.onSwiped()
-
-  increment = () => {
-    const {value, max, onChange} = this.props;
-    const {deltaPerPixel} = this.state;
-    if(value + 1 > max) {
-      return;
-    }
-    onChange(value + deltaPerPixel);
-  }
-
-  decrement = () => {
-    const {value, min, onChange} = this.props;
-    const {deltaPerPixel} = this.state;
-    if(value - 1 < min) {
-      return;
-    }
-    onChange(value - deltaPerPixel);
-  }
 
   render() {
     const {value, offset, min, max} = this.props;
@@ -64,10 +46,6 @@ export default class Slider extends Component {
         <div className={styles.timestamps}>
           <div className={styles.timestamp}>{min.toFixed(2)}s</div>
           <div className={styles.timestamp}>{max.toFixed(2)}s</div>
-        </div>
-        <div className={styles.controls}>
-          <FontAwesome name="caret-left" onClick={this.decrement}/>
-          <FontAwesome name="caret-right" onClick={this.increment}/>
         </div>
         <div className={styles.wrapper}>
           <Swipeable

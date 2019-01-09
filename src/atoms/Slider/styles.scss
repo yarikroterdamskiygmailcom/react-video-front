@@ -47,18 +47,3 @@
     justify-content: space-between;
     margin-bottom: 10px;
 }
-
-.controls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: 30px;
-    margin-bottom: 20px;
-    color: $purple;
-
-    > * {
-        margin: 10px;
-        font-size: 26px !important;
-    }
-}
