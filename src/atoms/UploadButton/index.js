@@ -18,6 +18,7 @@ export default class UploadButton extends Component {
 
   componentDidMount() {
     this.resetResumable();
+    this.targetRef.current.children[0].accept = 'video/*';
   }
 
   setProgress = progress => this.setState({progress})
