@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
 import {Input, Toggle, Segment, Carousel, RadioButton, Icon, Spinner} from '../../atoms';
-import {Preview} from '../../components';
+import {Preview, ConfirmationPrompt, ConfirmProfessional} from '../../components';
 import {head, noop} from 'lodash-es';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
@@ -10,6 +10,7 @@ import {withRouter} from 'react-router';
 import placeholder from '../../../assets/placeholder.png';
 
 @withRouter
+@inject('overlay')
 @inject('vlogEditor')
 @inject('project')
 @inject('session')
@@ -72,7 +73,8 @@ export default class ConfigureVlog extends Component {
   setOrientation = orientation => () => this.setState({orientation})
 
   grabThumb = () => {
-    const video = head(this.props.vlogEditor.media.filter(mediaObj => mediaObj.mediatype === 'video'));
+    const video = head(this.props.vlogEditor.media
+    .filter(mediaObj => mediaObj.mediatype === 'video'));
     return video ? video.thumb : placeholder;
   }
 
@@ -119,7 +121,11 @@ export default class ConfigureVlog extends Component {
   }
 
   renderFilter = ({name, style}) => (
-    <div key={name} className={classNames(styles.filter, this.props.project.options.filter === name && styles.active)}>
+    <div
+      key={name}
+      className={classNames(styles.filter,
+        this.props.project.options.filter === name && styles.active)}
+    >
       <img
         className={styles.filterPreview}
         style={style}
@@ -130,45 +136,119 @@ export default class ConfigureVlog extends Component {
     </div>
   )
 
-  render() {
-    const {title, description, access, setProperty, toggleOption, saveProject} = this.props.project;
-    const {logo_overlay, filter, custom_subs, custom_edit} = this.props.project.options;
+  renderOptionsSegment = () => {
+    const {toggleOption, setProperty, access} = this.props.project;
+    const {custom_subs, custom_edit} = this.props.project.options;
+    const {openOverlay} = this.props.overlay;
     const {userType} = this.props.session;
+    return (
+      <Segment title="Options">
+        <Toggle
+          label="Custom Subtitles"
+          desc="Our team will add subtitles to your video (in dutch or english only)"
+          value={custom_subs}
+          onChange={custom_subs
+            ? toggleOption('custom_subs')
+            : openOverlay(ConfirmationPrompt)({
+              onSelect: toggleOption('custom_subs'),
+              body: 'Are you sure you want to request custom subtitles? Additional charges apply.'
+            })}
+        />
+        <Toggle
+          label="Custom Edit"
+          desc="A professional editor will edit your vlog!"
+          value={custom_edit}
+          onChange={custom_edit
+            ? toggleOption('custom_edit')
+            : openOverlay(ConfirmProfessional)({onSelect: toggleOption('custom_edit')})}
+        />
+        {userType !== 'regularUser'
+          && <Toggle
+            label="Share with Team"
+            desc="This vlog will be accessible to members in your team"
+            value={access === 'team'}
+            onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')}
+          />}
+      </Segment>
+    );
+
+  }
+
+  render() {
+    const {title, description, setProperty, toggleOption, saveProject} = this.props.project;
+    const {logo_overlay, filter} = this.props.project.options;
     const {orientation, renderUrl, rendering, pending} = this.state;
     return pending ? <Spinner /> : (
       <div className={styles.container}>
         <Segment title="Info">
-          <Input field name="Title" value={title} onChange={e => setProperty('title', e.target.value)} />
-          <Input field name="Description" value={description} onChange={e => setProperty('description', e.target.value)} />
+          <Input
+            field
+            name="Title"
+            value={title}
+            onChange={e => setProperty('title', e.target.value)}
+          />
+          <Input
+            field
+            name="Description"
+            value={description}
+            onChange={e => setProperty('description', e.target.value)}
+          />
         </Segment>
         <Segment title="Styling">
-          <Carousel className={classNames(styles.carousel, filter && styles.active)} noRender={!filter} title="Filters" items={this.filters} renderFunction={this.renderFilter} active={filter} />
-          <Toggle label="Use Filter" value={filter} onChange={toggleOption('filter')} />
-          <Toggle label="Logo Overlay" value={logo_overlay} onChange={toggleOption('logo_overlay')} />
+          <Carousel
+            className={classNames(styles.carousel, filter && styles.active)}
+            noRender={!filter}
+            title="Filters"
+            items={this.filters}
+            renderFunction={this.renderFilter}
+            active={filter}
+          />
+          <Toggle
+            label="Use Filter"
+            value={filter}
+            onChange={toggleOption('filter')}
+          />
+          <Toggle
+            label="Logo Overlay"
+            value={logo_overlay}
+            onChange={toggleOption('logo_overlay')}
+          />
         </Segment>
         <Segment title="Orientation">
-          {this.orientationOptions.map(({render, value}) => <RadioButton key={value} render={render} active={value === orientation} onChange={this.setOrientation(value)} />)}
+          {this.orientationOptions.map(({render, value}) =>
+            <RadioButton
+              key={value}
+              render={render}
+              active={value === orientation}
+              onChange={this.setOrientation(value)}
+            />)}
         </Segment>
-        <Segment title="Options">
-          <Toggle label="Custom Subtitles" desc="Our team will add subtitles to your video (in dutch or english only)" value={custom_subs} onChange={toggleOption('custom_subs')} />
-          <Toggle label="Custom Edit" desc="A professional editor will edit your vlog!" value={custom_edit} onChange={toggleOption('custom_edit')} />
-          {userType !== 'regularUser' && <Toggle label="Share with Team" desc="This vlog will be accessible to members in your team" value={access === 'team'} onChange={() => setProperty('access', access === 'team' ? 'personal' : 'team')} />}
-        </Segment>
-        <Segment className={classNames(styles.preview, renderUrl && styles.active)} title={renderUrl ? 'Preview' : ''}>
+        {this.renderOptionsSegment()}
+        <Segment
+          className={classNames(styles.preview, renderUrl && styles.active)}
+          title={renderUrl ? 'Preview' : ''}
+        >
           {renderUrl && <Preview src={`${renderUrl}?${Math.random()}`} />}
         </Segment>
         <Segment title="Finalize">
           <div className={styles.finalize}>
-            <div className={classNames(styles.renderButton, styles.active)} onClick={saveProject}>
-              Save
+            <div className={styles.button} onClick={saveProject}>Save</div>
+            <div
+              className={classNames(styles.button,
+                !renderUrl && styles.disabled)}
+              onClick={this.share}
+            >
+              Share
             </div>
-            <div className={classNames(styles.renderButton, !renderUrl && styles.invisible, styles.active)} onClick={this.share}>
-              Share!
+            <div
+              className={classNames(styles.button,
+                (rendering || renderUrl) && styles.disabled)}
+              onClick={this.renderVlog}
+            >
+              <div>{rendering
+                ? <FontAwesome className={styles.spinner} name="spinner" />
+                : 'Render'}</div>
             </div>
-            {!renderUrl && <div className={classNames(styles.renderButton, !rendering && styles.active)} onClick={this.renderVlog}>
-              <div>{rendering ? <FontAwesome className={styles.spinner} name="spinner" /> : 'Render'}</div>
-              <FontAwesome className={styles.icon} name="chevron-right" />
-            </div>}
           </div>
         </Segment>
       </div>
