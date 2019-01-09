@@ -36,27 +36,32 @@ const getOverlay = mediatype => ({
 @observer
 export default class MediaObject extends Component {
 
-  getOverlayProps = mediaObj => ({
+  getProps = mediaObj => ({
     onSave: this.props.onChange,
-    ...{video: mediaObj.mediatype === 'video' ? mediaObj : undefined},
-    ...{title: mediaObj.mediatype === 'title' ? mediaObj : undefined},
-    ...{fade: isFade(mediaObj.mediatype) ? mediaObj : undefined}
-  })
+    ...{
+      video: {video: mediaObj},
+      asset: {},
+      title: {title: mediaObj},
+      fadein: {},
+      fadeout: {},
+      fadeoutin: {},
+      crossfade: {}
+    }[mediaObj.mediatype]
+  });
 
   renderThumb = mediaObj => {
-    const onClick = this.props.immutable
-      ? {}
-      : {onClick: this.props.overlay.openOverlay(getOverlay(mediaObj.mediatype))(this.getOverlayProps(mediaObj))};
+    const onClick = this.props.overlay.openOverlay(getOverlay(mediaObj.mediatype))(this.getProps(mediaObj, this.props.onChange));
+    // console.log(this.getProps(mediaObj).title.text);
 
     if (['video', 'asset'].includes(mediaObj.mediatype)) {
-      return <img className={styles.thumb} src={mediaObj.thumb} onError={e => e.target.src = fallback} {...onClick}/>;
+      return <img className={styles.thumb} src={mediaObj.thumb} onError={e => e.target.src = fallback} onClick={onClick}/>;
     }
 
     if(isFade(mediaObj.mediatype)) {
-      return <Icon className={styles.icon} name="fade" {...onClick}/>;
+      return <Icon className={styles.icon} name="fade" onClick={onClick}/>;
     }
 
-    return <Icon className={styles.icon} name={mediaObj.mediatype} {...onClick}/>;
+    return <Icon className={styles.icon} name={mediaObj.mediatype} onClick={onClick}/>;
   }
 
   renderVideoDesc = video => (
@@ -100,18 +105,12 @@ export default class MediaObject extends Component {
     );
   }
 
-  renderBody = () => (
-    <React.Fragment>
-      {this.renderThumb(this.props.value)}
-      {this.renderMeta(this.props.value)}
-    </React.Fragment>
-  )
-
   render() {
-    const {immutable, className} = this.props;
+    const {value, immutable, className} = this.props;
     return (
       <div className={classNames(styles.container, className)}>
-        {this.renderBody()}
+        {this.renderThumb(value)}
+        {this.renderMeta(value)}
         {!immutable && <DragHandle />}
       </div>
     );
