@@ -20,11 +20,11 @@ export default class Configure extends Component {
   ]
 
   options = [
-    {
-      name: 'Facial Blurring',
-      desc: '',
-      func: this.props.overlay.openOverlay(Blurring)({video: this.props.video})
-    },
+    // {
+    //   name: 'Facial Blurring',
+    //   desc: '',
+    //   func: this.props.overlay.openOverlay(Blurring)({video: this.props.video})
+    // },
     {
       name: 'Overlay',
       desc: '',
