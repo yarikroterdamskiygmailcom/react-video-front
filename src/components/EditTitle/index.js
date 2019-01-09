@@ -10,11 +10,14 @@ import {observer, inject} from 'mobx-react';
 export default class EditTitle extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props.title ? {...this.props.title} : {
-      text: '',
-      asset: null,
-      duration: ''
-    };
+    this.state = this.props.title
+      ? {...this.props.title}
+      : {
+        text: '',
+        style: null,
+        duration: 'auto',
+        asset: null
+      };
   }
 
   save = () => {
@@ -23,7 +26,7 @@ export default class EditTitle extends Component {
       text: this.state.text,
       style: this.state.style,
       duration: this.state.duration || 'auto',
-      ...this.state.asset ? {asset: this.state.asset} : {}
+      asset: this.state.asset
     });
     this.props.onClose();
   }
@@ -51,7 +54,7 @@ export default class EditTitle extends Component {
 
   generateExampleStyle = ({textcolor, backgroundcolor, font}) => ({
     color: textcolor,
-    background: this.state.asset ? `url(${this.state.asset.thumb})` : backgroundcolor,
+    backgroundImage: this.state.asset ? `url(${this.state.asset.thumb})` : backgroundcolor,
     fontFamily: font
   })
 
