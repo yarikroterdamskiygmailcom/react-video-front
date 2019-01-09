@@ -72,7 +72,7 @@ export default class MediaObject extends Component {
         <Icon className={styles.icon} name="trim"/>
         <div>{formatTime(video.outpoint - video.inpoint)}</div>
       </div>
-      <div className={styles.chronoIndex}>{this.props.chronoIndex}</div>
+      {this.props.chronoIndex && <div className={styles.chronoIndex}>{this.props.chronoIndex}</div>}
     </div>
   )
 
