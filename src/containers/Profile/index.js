@@ -52,10 +52,10 @@ export default class Profile extends Component {
       <div className={styles.persona}>
         <div className={styles.avatar} style={{backgroundImage: `url(${avatar || profile})`}}>
           <input className={styles.imageUpload} type="file" accept="image/*" onChange={uploadAvatar} />
-          <div className={styles.logoWrapper}>
+          {userType !== 'regularUser' && <div className={styles.logoWrapper}>
             {userType === 'teamManager' && <input className={styles.imageUpload} type="file" accept="image/*" onChange={uploadIcon} />}
             <img className={styles.logo} src={logo || placeholder} />
-          </div>
+          </div>}
         </div>
         <div className={styles.fullName}>{`${first_name} ${last_name}`}</div>
         <div className={styles.companyName}>{team}</div>
