@@ -55,7 +55,6 @@ export default class Slider extends Component {
             onSwiped={this.onSwiped}
             style={{transform: `translateX(${transform - 22}px)`}}
           >
-            <div className={styles.ballLabel}>{(value + offset).toFixed(2)}s</div>
           </Swipeable>
         </div>
       </div>
