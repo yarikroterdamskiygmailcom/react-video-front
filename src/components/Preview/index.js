@@ -28,7 +28,6 @@ export default class Preview extends Component {
   limitSrc = () => {
     const videoElem = this.videoRef.current;
     const {start, stop} = this.props;
-    console.log(start, stop);
     if (videoElem.current >= stop) {
       videoElem.currentTime = start;
     }
