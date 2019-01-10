@@ -28,7 +28,10 @@ export default class Home extends Component {
   }
 
   loadVlogs = () => php.get('/api/v1/vlogs')
-  .then(({vlogs}) => this.setState({vlogs}))
+  .then(
+    ({vlogs}) => this.setState({vlogs}),
+    () => this.props.session.logout()
+  )
 
   componentDidMount() {
     this.loadVlogs().then(() => {
