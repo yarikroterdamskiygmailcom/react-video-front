@@ -4,7 +4,7 @@ import FontAwesome from 'react-fontawesome';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
-import {MediaObject, TrimmerSplitter, Configure} from '../';
+import {MediaObject, TrimmerSplitter, AddOverlay} from '../';
 
 @inject('overlay')
 @inject('vlogEditor')
@@ -35,8 +35,8 @@ export default class Arranger extends Component {
         func: this.props.overlay.openOverlay(TrimmerSplitter)({...partialProps, onTrim: saveMedia(i), onSplit: splitVideo(i)})
       },
       configure: {
-        label: this.renderActionLabel('More...', 'fade'),
-        func: this.props.overlay.openOverlay(Configure)({...partialProps})
+        label: this.renderActionLabel('Overlay', 'fade'),
+        func: this.props.overlay.openOverlay(AddOverlay)({...partialProps, onSave: saveMedia(i)})
       },
       delete: {
         label: this.renderActionLabel('Delete', 'trash'),
@@ -50,7 +50,10 @@ export default class Arranger extends Component {
   generateActions = (mediaObj, i) => {
     const action = this.getAction(mediaObj, i);
     const actions = {
-      video: [action('trimSplit'), action('configure')],
+      video: [
+        action('trimSplit'),
+        // action('configure')
+      ],
       fadein: [],
       fadeout: [],
       fadeoutin: [],
