@@ -75,7 +75,7 @@ export class ProjectStore {
 
   updateDescription = () => this.updateProject({description: this.description})
 
-  download = () => php.get(`/vlog/download/${this.projectId}`)
+  download = () => window.open(`https://videodb.vlogahead.cloud/vlog/download/${this.projectId}`)
 
   sendDownload = () => php.get(`/api/v1/vlog/mail/${this.projectId}`)
 

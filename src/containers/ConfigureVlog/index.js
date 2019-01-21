@@ -35,7 +35,7 @@ export default class ConfigureVlog extends Component {
 
   goHome = () => this.props.history.push('/home')
 
-  share = () => this.props.history.push(`/share/${this.props.project.projectId}`)
+  download = () => this.props.project.download()
 
   orientationOptions = [
     {
@@ -236,9 +236,9 @@ export default class ConfigureVlog extends Component {
             <div
               className={classNames(styles.button,
                 !renderUrl && styles.disabled)}
-              onClick={this.share}
+              onClick={this.download}
             >
-              Share
+              Download
             </div>
             <div
               className={classNames(styles.button,
