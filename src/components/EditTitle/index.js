@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styles from './styles.scss';
 import {StylePicker, Modal, SelectAsset} from '../';
 import {Toggle, Input} from '../../atoms';
-import {clamp} from 'lodash-es';
+import {clamp, isNumber} from 'lodash-es';
 import {observer, inject} from 'mobx-react';
 
 @inject('overlay')
@@ -46,7 +46,7 @@ export default class EditTitle extends Component {
 
   setStyle = style => this.setState({style})
 
-  setDuration = e => this.setState({duration: e.target.value ? clamp(e.target.value, 2, 10) : ''})
+  setDuration = e => this.setState({duration: isNumber(e.target.value) ? clamp(e.target.value, 0, 10) : ''})
 
   selectAsset = asset => this.setState({asset})
 
