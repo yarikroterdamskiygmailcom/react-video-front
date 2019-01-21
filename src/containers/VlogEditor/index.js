@@ -88,7 +88,8 @@ export default class VlogEditor extends Component {
     if (this.props.vlogEditor.getErrors()) {
       this.props.overlay.showToast(this.props.vlogEditor.getErrors());
     } else {
-      this.props.history.push(`/configure-vlog/${this.props.match.params.id}`);
+      this.props.vlogEditor.syncMedia()
+      .then(() => this.props.history.push(`/configure-vlog/${this.props.match.params.id}`));
     }
   }
 
