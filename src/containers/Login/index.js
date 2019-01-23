@@ -44,11 +44,13 @@ export default class Login extends Component {
     return pending ? <Spinner/> : (
       <div className={classNames(styles.container, className)} onKeyPress={this.submit}>
         <img className={styles.logo} src={logo} />
-        <Input auth modal type="email" name="Email" value={email} onChange={this.setProperty('email')} />
-        <Input auth modal type="password" name="Password" value={password} onChange={this.setProperty('password')} />
-        <Button className={styles.button} onClick={this.login} text="Login" />
-        {error && <div className={styles.error}>{this.formatError(error)}</div>}
-        <a href="https://userdb.vlogahead.cloud/accounts/password/reset/">Forgot password?</a>
+        <div className={styles.content}>
+          <Input auth modal type="email" name="Email" value={email} onChange={this.setProperty('email')} />
+          <Input auth modal type="password" name="Password" value={password} onChange={this.setProperty('password')} />
+          <Button className={styles.button} onClick={this.login} text="Login" />
+          {error && <div className={styles.error}>{this.formatError(error)}</div>}
+          <a href="https://userdb.vlogahead.cloud/accounts/password/reset/">Forgot password?</a>
+        </div>
       </div>
     );
   }
