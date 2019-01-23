@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input, Button} from '../../atoms';
+import {Input, Button, Spinner} from '../../atoms';
 import {withRouter} from 'react-router';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
@@ -16,7 +16,8 @@ export default class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      error: null
+      error: null,
+      pending: false
     };
   }
 
@@ -26,9 +27,10 @@ export default class Login extends Component {
 
   login = () => {
     const {email, password} = this.state;
+    this.setState({pending: true});
     this.props.session.login(email, password)
     .then(() => this.props.history.push('/home'))
-    .catch(e => this.setState({error: e}));
+    .catch(e => this.setState({error: e, pending: false}));
   }
 
   formatError = e => {
@@ -38,14 +40,14 @@ export default class Login extends Component {
 
   render() {
     const {className} = this.props;
-    const {email, password, error} = this.state;
-    return (
+    const {email, password, error, pending} = this.state;
+    return pending ? <Spinner/> : (
       <div className={classNames(styles.container, className)} onKeyPress={this.submit}>
         <img className={styles.logo} src={logo} />
         <Input auth modal type="email" name="Email" value={email} onChange={this.setProperty('email')} />
         <Input auth modal type="password" name="Password" value={password} onChange={this.setProperty('password')} />
         <Button className={styles.button} onClick={this.login} text="Login" />
-        {error && <div>{this.formatError(error)}</div>}
+        {error && <div className={styles.error}>{this.formatError(error)}</div>}
         <a href="https://userdb.vlogahead.cloud/accounts/password/reset/">Forgot password?</a>
       </div>
     );
