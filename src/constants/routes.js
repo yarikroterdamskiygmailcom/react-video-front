@@ -4,11 +4,12 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import FontAwesome from 'react-fontawesome';
 import {Home, Login, Profile, Settings, VlogEditor, ConfigureVlog, RenderVlog, NotFound, Logout, VlogDetails, Template, Customize, Share, TemplateManager, TemplateEditor, FAQ, About, Contact} from '../containers';
 import styles from './styles.scss';
+import classNames from 'classnames';
 import logo from '../../assets/logo-transparent.png';
 
 export const history = createBrowserHistory();
 
-const backButton = <FontAwesome className={styles.icon} name="angle-left" onClick={history.goBack}/>;
+const backButton = <FontAwesome className={classNames(styles.icon, styles.backButton)} name="angle-left" onClick={history.goBack}/>;
 
 const notFound = {
   name: 'Not Found',
