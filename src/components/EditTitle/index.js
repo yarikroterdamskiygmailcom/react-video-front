@@ -15,7 +15,7 @@ export default class EditTitle extends Component {
       : {
         text: '',
         style: null,
-        duration: 'auto',
+        duration: '',
         asset: null
       };
   }
@@ -46,7 +46,11 @@ export default class EditTitle extends Component {
 
   setStyle = style => this.setState({style})
 
-  setDuration = e => this.setState({duration: isNumber(e.target.value) ? clamp(e.target.value, 0, 10) : ''})
+  setDuration = e => (!e.target.value || parseInt(e.target.value, 10)) && this.setState({
+    duration: e.target.value
+      ? clamp(parseInt(e.target.value, 10), 1, 10)
+      : ''
+  })
 
   selectAsset = asset => this.setState({asset})
 
@@ -100,7 +104,7 @@ export default class EditTitle extends Component {
             : openOverlay(SelectAsset)({onSave: this.selectAsset})}
         />
         {asset && this.renderAsset(asset)}
-        <Input modal value={duration} onChange={this.setDuration} type="number" name="Duration" placeholder="(Leave blank for auto)"/>
+        <Input modal value={duration} onChange={this.setDuration} name="Duration" placeholder="(Leave blank for auto)"/>
       </Modal>
     );
   }
