@@ -11,7 +11,8 @@ export default class Trimmer extends Component {
     this.videoRef = React.createRef();
     this.state = {
       start: props.video.inpoint,
-      stop: props.video.outpoint
+      stop: props.video.outpoint,
+      lastChanged: null
     };
   }
 
@@ -25,6 +26,7 @@ export default class Trimmer extends Component {
     this.setState({
       start,
       stop,
+      lastChanged
     }, this.props.onChange(start, stop));
   }
 
@@ -37,6 +39,24 @@ export default class Trimmer extends Component {
 
   limitVideo = e => e.target.currentTime >= this.state.stop && this.pause()
 
+  increment = () => {
+    const {start, stop, lastChanged} = this.state;
+    const {video} = this.props;
+    if(lastChanged) {
+      lastChanged === 'start' && start + 0.1 < stop && this.setTrim([start + 0.1, stop]);
+      lastChanged === 'stop' && stop + 0.1 < video.seconds && this.setTrim([start, stop + 0.1]);
+    }
+  }
+
+  decrement = () => {
+    const {start, stop, lastChanged} = this.state;
+    const {video} = this.props;
+    if(lastChanged) {
+      lastChanged === 'start' && start - 0.1 > 0 && this.setTrim([start - 0.1, stop]);
+      lastChanged === 'stop' && stop - 0.1 > start && this.setTrim([start, stop - 0.1]);
+    }
+  }
+
   render() {
     const {video} = this.props;
     const {start, stop} = this.state;
@@ -48,8 +68,10 @@ export default class Trimmer extends Component {
           {this.props.children}
         </div>
         <div className={styles.controls}>
+          <FontAwesome name="minus" onClick={this.decrement} />
           <FontAwesome name="pause" onClick={this.pause}/>
           <FontAwesome name="play" onClick={this.play}/>
+          <FontAwesome name="plus" onClick={this.increment} />
         </div>
         <Range value={[start, stop]} limits={[0, max]} onChange={this.setTrim}/>
       </React.Fragment>

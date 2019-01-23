@@ -61,10 +61,10 @@ export default class Splitter extends Component {
       <React.Fragment>
         <video className={styles.video} ref={this.videoRef} src={video.src} playsInline autoPlay onTimeUpdate={this.limitVideo}/>
         <div className={styles.controls}>
-          <FontAwesome name="step-backward" onClick={this.decrement} />
+          <FontAwesome name="minus" onClick={this.decrement} />
           <FontAwesome name="pause" onClick={this.pause} />
           <FontAwesome name="play" onClick={this.play} />
-          <FontAwesome name="step-forward" onClick={this.increment} />
+          <FontAwesome name="plus" onClick={this.increment} />
         </div>
         <Slider
           value={split}
