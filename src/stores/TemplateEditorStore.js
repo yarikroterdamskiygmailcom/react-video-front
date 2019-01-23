@@ -35,14 +35,14 @@ export class TemplateEditorStore {
   }
 
   saveTemplate = async meta => {
-    const me = await userDB.get('api/v1/auth/user/');
+    const me = await userDB.get('/auth/user/');
     const {title} = meta;
     const template = {
       title,
       owner: JSON.stringify(me),
       fields: JSON.stringify(this.template.map(field => omit(field, ['icon']))),
     };
-    return php.post('api/v1/templates', template).then(res => res.template_id);
+    return php.post('/templates', template).then(res => res.template_id);
   }
 
   getErrors = () => {

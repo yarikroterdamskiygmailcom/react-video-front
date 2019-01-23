@@ -17,7 +17,7 @@ export default class Blurring extends Component {
   }
 
   componentDidMount() {
-    php.get(`/api/v1/blurring/detectfaces/${this.props.video.id}`)
+    php.get(`/blurring/detectfaces/${this.props.video.id}`)
     .then(faces => this.setState({faces}));
     this.setState({
       faces: [

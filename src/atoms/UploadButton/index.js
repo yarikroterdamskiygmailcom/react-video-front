@@ -4,6 +4,7 @@ import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {isNumber} from 'lodash-es';
+import {videoDBbaseURL} from '../../stores';
 
 @inject('session')
 @observer
@@ -27,7 +28,7 @@ export default class UploadButton extends Component {
 
   resetResumable = () => {
     this.resumable = new Resumable({
-      target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
+      target: `${videoDBbaseURL}/video/upload`,
       query: {
         action: 'uploadvideo',
         project_id: this.props.projectId

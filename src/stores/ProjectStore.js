@@ -33,7 +33,7 @@ export class ProjectStore {
   }
 
   setProject = id =>
-    php.get(`/api/v1/vlog/${id}`).then(project => {
+    php.get(`/vlog/${id}`).then(project => {
       this.projectId = project.id;
       this.title = project.title;
       this.description = project.description;
@@ -46,14 +46,14 @@ export class ProjectStore {
       editor.setProjectId(this.projectId);
     });
 
-  createProject = professional => php.get(`/api/v1/vlog/new${professional === 'true' ? '?professional=true' : ''}`)
+  createProject = professional => php.get(`/vlog/new${professional === 'true' ? '?professional=true' : ''}`)
   .then(res => res.project_id)
 
   reduceMediaObj = mediaObj => mediaObj.mediatype === 'video'
     ? pick(mediaObj, ['mediatype', 'video_id', 'overlay', 'inpoint', 'outpoint'])
     : mediaObj
 
-  saveProject = () => php.post(`/api/v1/vlog/${this.projectId}`, {
+  saveProject = () => php.post(`/vlog/${this.projectId}`, {
     title: this.title,
     description: this.description,
     access: this.access,
@@ -61,11 +61,11 @@ export class ProjectStore {
     media: JSON.stringify(editor.media.map(this.reduceMediaObj))
   })
 
-  updateProject = changes => php.post(`/api/v1/vlog/${this.projectId}`, changes)
+  updateProject = changes => php.post(`/vlog/${this.projectId}`, changes)
 
-  deleteProject = () => php.delete(`/api/v1/vlog/${this.projectId}`).then(this.clearProject)
+  deleteProject = () => php.delete(`/vlog/${this.projectId}`).then(this.clearProject)
 
-  renderProject = orientation => php.post(`/api/v1/vlog/render/${this.projectId}`, {orientation})
+  renderProject = orientation => php.post(`/vlog/render/${this.projectId}`, {orientation})
 
   shareWithTeam = () => this.access !== 'team'
     && this.updateProject({access: 'team'})
@@ -77,7 +77,7 @@ export class ProjectStore {
 
   download = () => window.open(`https://videodb.vlogahead.cloud/vlog/download/${this.projectId}`)
 
-  sendDownload = () => php.get(`/api/v1/vlog/mail/${this.projectId}`)
+  sendDownload = () => php.get(`/vlog/mail/${this.projectId}`)
 
 }
 

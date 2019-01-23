@@ -14,7 +14,7 @@ export class SessionStore {
     setTimeout(() => this.error = null, 5000);
   }
 
-  getUser = () => userDB.get('/api/v1/auth/user/')
+  getUser = () => userDB.get('/auth/user/')
   .then(user => {
     this.userType = this.convertUserType(user.user_type);
     this.user = user;
@@ -37,7 +37,7 @@ export class SessionStore {
     }
   }
 
-  login = (email, password) => php.post('/api/v1/login', {
+  login = (email, password) => php.post('/login', {
     email, password, saveLogin: false
   }).then(res => {
     const {access_token} = res;
@@ -50,7 +50,7 @@ export class SessionStore {
     this.initialize();
   })
 
-  logout = () => php.get('/api/v1/logout')
+  logout = () => php.get('/logout')
   .then(() => {
     this.clearToken();
     history.replace('/');

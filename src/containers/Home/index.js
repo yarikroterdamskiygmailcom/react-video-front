@@ -27,7 +27,7 @@ export default class Home extends Component {
     };
   }
 
-  loadVlogs = () => php.get('/api/v1/vlogs')
+  loadVlogs = () => php.get('/vlogs')
   .then(
     ({vlogs}) => this.setState({vlogs}),
     () => this.props.session.logout()
@@ -41,7 +41,7 @@ export default class Home extends Component {
       .map(vlog => vlog.owner_id)
       .filter(id => Boolean(id));
       const uniqueIds = uniq(ids);
-      !isEmpty(uniqueIds) && php.get(`/api/v1/avatars?ids=${JSON.stringify(uniqueIds)}`)
+      !isEmpty(uniqueIds) && php.get(`/avatars?ids=${JSON.stringify(uniqueIds)}`)
       .then(avatarsObj => Object.entries(avatarsObj).forEach(([key, value]) =>
         this.setState({[`avatar-${key}`]: value}))
       );

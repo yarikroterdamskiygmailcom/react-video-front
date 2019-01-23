@@ -1,5 +1,5 @@
 import {observable} from 'mobx';
-import {php} from '.';
+import {php, videoDBbaseURL} from '.';
 import Resumable from 'resumablejs';
 import {sessionStore} from '../';
 import {isEmpty} from 'lodash-es';
@@ -11,27 +11,27 @@ export class AssetsStore {
   @observable progress = 0;
   @observable styleList = [];
 
-  loadStyles = () => php.get('/api/v1/styles')
+  loadStyles = () => php.get('/styles')
   .then(res => {
     this.styleList = !isEmpty(res.styles) ? res.styles : [];
   });
 
-  uploadStyle = (access, style) => php.post('api/v1/styles', {...style, access})
+  uploadStyle = (access, style) => php.post('/styles', {...style, access})
 
-  updateStyle = (id, style) => php.put(`api/v1/styles/${id}`, style)
+  updateStyle = (id, style) => php.put(`/styles/${id}`, style)
 
-  deleteStyle = id => php.delete(`/api/v1/styles/${id}`)
+  deleteStyle = id => php.delete(`/styles/${id}`)
 
-  loadAssets = () => php.get('/api/v1/assets')
+  loadAssets = () => php.get('/assets')
   .then(res => this.assetList = res.asset);
 
-  deleteAsset = id => php.delete(`/api/v1/assets/${id}`)
+  deleteAsset = id => php.delete(`/assets/${id}`)
 
   initResumables = (includeTeam = true) => {
 
     includeTeam && (() => {
       this.teamResumable = new Resumable({
-        target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
+        target: `${videoDBbaseURL}/video/upload`,
         query: {
           action: 'uploadasset',
           access: 'team'
@@ -60,7 +60,7 @@ export class AssetsStore {
     })();
 
     this.personalResumable = new Resumable({
-      target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
+      target: `${videoDBbaseURL}/video/upload`,
       query: {
         action: 'uploadasset',
         access: 'personal'

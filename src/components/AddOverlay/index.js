@@ -7,7 +7,7 @@ import {StylePicker} from '../';
 import classNames from 'classnames';
 import {php} from '../../stores';
 
-const getLowerThird = ({video, text, logo, side, style}) => php.post('api/v1/lowerthird', {
+const getLowerThird = ({video, text, logo, side, style}) => php.post('/lowerthird', {
   type: 'lowerthird',
   video_id: video.video_id,
   text,

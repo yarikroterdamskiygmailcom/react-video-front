@@ -12,8 +12,10 @@ export {TemplateStore} from './TemplateStore';
 export {TemplateEditorStore} from './TemplateEditorStore';
 export {VlogEditorStore} from './VlogEditorStore';
 
+export const videoDBbaseURL = process.env.videodb;
+
 export const php = axios.create({
-  baseURL: 'https://videodb.vlogahead.cloud',
+  baseURL: videoDBbaseURL,
 });
 
 php.interceptors.request.use(
@@ -30,8 +32,10 @@ php.interceptors.response.use(
   }
 );
 
+export const userDBbaseURL = process.env.userdb;
+
 export const userDB = axios.create({
-  baseURL: 'https://userdb.vlogahead.cloud',
+  baseURL: userDBbaseURL,
 });
 
 userDB.interceptors.response.use(

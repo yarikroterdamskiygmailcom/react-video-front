@@ -14,28 +14,28 @@ export class ProfileStore {
   changeFirstName = e => this.firstName = e.target.value
   changelastName = e => this.lastName = e.target.value
 
-  loadPersona = () => php.get('/api/v1/user/me')
+  loadPersona = () => php.get('/user/me')
   .then(res => {
     this.avatar = res.avatar;
     this.logo = res.logo;
     this.links = res.links;
   })
 
-  loadProfile = () => userDB.get('/api/v1/auth/user/')
+  loadProfile = () => userDB.get('/auth/user/')
   .then(res => {
     this.user = res;
     this.teamId = this.user.team_id;
   })
   .then(this.loadPersona)
 
-  getTeam = () => userDB.post('api/v1/team/', {
+  getTeam = () => userDB.post('/team/', {
     id: this.teamId
   })
 
   uploadAvatar = e => {
     if(e.target.files) {
       const avatar = head(e.target.files);
-      php.post('/api/v1/user/avatar', {avatar})
+      php.post('/user/avatar', {avatar})
       .then(this.loadPersona);
     }
   }
@@ -43,20 +43,20 @@ export class ProfileStore {
   uploadIcon = e => {
     if(e.target.files) {
       const logo = head(e.target.files);
-      php.post('/api/v1/team/icon', {logo})
+      php.post('/team/icon', {logo})
       .then(this.loadPersona);
     }
   }
 
-  getAvatar = userId => php.get(`/api/v1/user/avatar/${userId}`).then(res => res.avatar)
+  getAvatar = userId => php.get(`/user/avatar/${userId}`).then(res => res.avatar)
 
   link = platform => response => {
     if(platform === 'google') {
-      php.post('/api/v1/links/google', {code: response.code});
+      php.post('/links/google', {code: response.code});
     }
 
     if(platform === 'facebook') {
-      php.post('/api/v1/links/facebook', {token: response.accessToken})
+      php.post('/links/facebook', {token: response.accessToken})
       .then(() => history.replace('/profile'));
     }
   }

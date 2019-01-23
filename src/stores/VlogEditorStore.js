@@ -2,7 +2,7 @@ import Resumable from 'resumablejs';
 import {observable, action} from 'mobx';
 import {arrayMove} from 'react-sortable-hoc';
 import {sessionStore} from '../';
-import {php} from '.';
+import {php, videoDBbaseURL} from '.';
 import {head, last, pick, flatten, sortBy, findIndex} from 'lodash-es';
 
 export class VlogEditorStore {
@@ -16,7 +16,7 @@ export class VlogEditorStore {
 
   syncMedia = () => {
     this.syncing = true;
-    return php.post(`/api/v1/vlog/${this.projectId}`, {media: JSON.stringify(this.media)})
+    return php.post(`/vlog/${this.projectId}`, {media: JSON.stringify(this.media)})
     .then(() => this.syncing = false);
   }
 
@@ -103,7 +103,7 @@ export class VlogEditorStore {
 
   initResumable = (id, domNode) => {
     this.resumable = new Resumable({
-      target: 'https://videodb.vlogahead.cloud/api/v1/video/upload',
+      target: `${videoDBbaseURL}/video/upload`,
       query: {
         action: 'uploadvideo',
         project_id: id

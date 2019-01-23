@@ -48,7 +48,7 @@ class TemplatePicker extends Component {
   }
 
   componentWillMount() {
-    php.get('/api/v1/templates')
+    php.get('/templates')
     .then(res => this.setState({pending: false, templates: res.templates}));
   }
 

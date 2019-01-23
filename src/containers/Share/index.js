@@ -18,11 +18,11 @@ export default class Share extends Component {
   }
 
   componentWillMount() {
-    php.get('api/v1/user/me')
+    php.get('/user/me')
     .then(({links}) => this.setState({links, pending: false}));
   }
 
-  share = platform => () => php.get(`/api/v1/share/${platform}/${this.props.project.projectId}`)
+  share = platform => () => php.get(`/share/${platform}/${this.props.project.projectId}`)
 
   options = [
     {

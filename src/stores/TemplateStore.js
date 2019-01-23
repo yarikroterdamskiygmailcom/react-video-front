@@ -10,12 +10,12 @@ export class TemplateStore {
   @observable projectId = null;
   @observable activeTemplate = null
 
-  getProjectId = () => php.get('/api/v1/vlog/new')
+  getProjectId = () => php.get('/vlog/new')
   .then(({project_id}) => project_id)
 
   setProjectId = id => this.projectId = id
 
-  setTemplate = id => php.get(`/api/v1/templates/${id}`)
+  setTemplate = id => php.get(`/templates/${id}`)
   .then(template => this.fields = template.fields)
 
   setProjectId = id => this.projectId = id
@@ -24,7 +24,7 @@ export class TemplateStore {
     this.media[i] = mediaObj;
   }
 
-  deleteTemplate = id => php.delete(`/api/v1/templates/${id}`)
+  deleteTemplate = id => php.delete(`/templates/${id}`)
   .then(this.loadTemplates)
 
   @action updateField = (index, changes) => {
@@ -72,7 +72,7 @@ export class TemplateStore {
 
   next = () => {
     const flatMedia = flatten(this.fields.map(field => field.contents));
-    php.post(`/api/v1/vlog/${this.projectId}`, {
+    php.post(`/vlog/${this.projectId}`, {
       media: JSON.stringify(flatMedia)
     })
     .then(() => {

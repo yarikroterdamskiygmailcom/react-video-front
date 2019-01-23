@@ -1,5 +1,6 @@
 const path = require('path');
 const { setLoader, setPlugin } = require('webpacker/utils');
+const constants = require(`./config/${process.env.NODE_ENV || 'development'}`);
 const scssVariables = path.resolve(__dirname, './src/scss/_variables.scss');
 
 module.exports = {
@@ -14,6 +15,7 @@ module.exports = {
       setLoader('scss', { scssVariables, postcssOpts: require('autoprefixer') }),
     ],
     plugins: [
+      setPlugin('configure', {constants}),
       setPlugin('css'),
       setPlugin('html'),
     ],

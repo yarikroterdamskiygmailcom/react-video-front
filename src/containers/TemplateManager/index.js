@@ -18,7 +18,7 @@ export default class TemplateManager extends Component {
     };
   }
 
-  loadTemplates = () => php.get('/api/v1/templates')
+  loadTemplates = () => php.get('/templates')
   .then(({templates}) => this.setState({templates, pending: false}));
 
   componentDidMount() {
@@ -45,7 +45,7 @@ export default class TemplateManager extends Component {
 
   goToEditor = () => this.props.history.push('/template-editor')
 
-  deleteTemplate = id => () => php.delete(`/api/v1/templates/${id}`)
+  deleteTemplate = id => () => php.delete(`/templates/${id}`)
   .then(this.loadTemplates)
 
   renderHeader = () => (
