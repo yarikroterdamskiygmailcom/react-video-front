@@ -40,7 +40,7 @@ export default class MediaObject extends Component {
     onSave: this.props.onChange,
     ...{
       video: {video: mediaObj},
-      asset: {},
+      asset: {asset: mediaObj},
       title: {title: mediaObj},
       fadein: {},
       fadeout: {},

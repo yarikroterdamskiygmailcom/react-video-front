@@ -25,7 +25,7 @@ export default class EditTitle extends Component {
       mediatype: 'title',
       text: this.state.text,
       style: this.state.style,
-      duration: this.state.duration || 'auto',
+      duration: this.state.duration,
       asset: this.state.asset
     });
     this.props.onClose();
@@ -101,7 +101,7 @@ export default class EditTitle extends Component {
           value={asset}
           onChange={asset
             ? this.clearAsset
-            : openOverlay(SelectAsset)({onSave: this.selectAsset})}
+            : openOverlay(SelectAsset)({onSave: this.selectAsset, noDuration: true})}
         />
         {asset && this.renderAsset(asset)}
         <Input modal value={duration} onChange={this.setDuration} name="Duration" placeholder="(Leave blank for auto)"/>

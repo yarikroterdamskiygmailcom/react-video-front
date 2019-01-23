@@ -1,3 +1,9 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .asset {
     display: flex;
     flex-direction: row;
@@ -55,4 +61,9 @@
         }
     }
 
+}
+
+.assets {
+    overflow-y: auto;
+    flex-shrink: 2;
 }
