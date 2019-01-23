@@ -52,7 +52,7 @@ export default class Arranger extends Component {
     const actions = {
       video: [
         action('trimSplit'),
-        // action('configure')
+        action('configure')
       ],
       fadein: [],
       fadeout: [],

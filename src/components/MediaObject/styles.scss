@@ -31,10 +31,21 @@
 
     .title,
     .desc {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
         text-align: left;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+    
+    .desc {
+        .icon {
+            width: 40px;
+            height: 40px;
+        }
     }
 
 }
@@ -52,6 +63,7 @@
     height: 80px;
     padding: 10px;
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .videoDesc {
@@ -67,10 +79,6 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        .icon {
-            width: 40px;
-            height: 40px;
-        }
     }
 
     .chronoIndex {

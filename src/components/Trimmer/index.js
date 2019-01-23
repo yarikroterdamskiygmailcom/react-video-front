@@ -58,14 +58,14 @@ export default class Trimmer extends Component {
   }
 
   render() {
-    const {video} = this.props;
+    const {video, overlay} = this.props;
     const {start, stop} = this.state;
     const max = video.seconds;
     return (
       <React.Fragment>
         <div className={styles.videoContainer}>
           <video className={styles.video} ref={this.videoRef} src={video.src} playsInline autoPlay onTimeUpdate={this.limitVideo}/>
-          {this.props.children}
+          {overlay}
         </div>
         <div className={styles.controls}>
           <FontAwesome name="minus" onClick={this.decrement} />

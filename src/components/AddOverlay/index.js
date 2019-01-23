@@ -22,15 +22,15 @@ class LowerThird extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    this.updateLowerThird();
+  }
+
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.text, this.props.text)) {
       return;
     }
     prevProps.logo !== this.props.logo && this.updateLowerThird();
-  }
-
-  componentDidMount() {
-    this.updateLowerThird();
   }
 
   componentWillUnmount() {
@@ -106,7 +106,6 @@ export default class AddOverlay extends Component {
     super(props);
     this.state = {
       step: 'overview',
-      overlay: props.video.overlay || [],
       selectedType: null,
       editing: null,
       text: '',
@@ -120,10 +119,6 @@ export default class AddOverlay extends Component {
       inpoint: props.video.inpoint,
       outpoint: props.video.outpoint
     };
-  }
-
-  componentWillUnmount() {
-    this.props.onSave({overlay: this.state.overlay});
   }
 
   goToStep = step => () => this.setState({step});
@@ -177,12 +172,11 @@ export default class AddOverlay extends Component {
   }
   save = () => {
     if (isNumber(this.state.editing)) {
-      this.setState({overlay: this.state.overlay.map((x, i) => i === this.state.editing ? this.buildOverlay() : x)});
+      this.props.onSave({overlay: this.props.video.overlay.map((x, i) => i === this.state.editing ? this.buildOverlay() : x)});
     } else {
-      this.setState({overlay: [this.buildOverlay()]});
+      this.props.onSave({overlay: [...this.props.video.overlay, this.buildOverlay()]});
     }
-    this.setState({editing: null});
-    this.goToStep('overview')();
+    this.props.onClose();
   }
 
   getModalActions = step => {
@@ -224,8 +218,8 @@ export default class AddOverlay extends Component {
 
   deleteOverlay = index => e => {
     e.stopPropagation();
-    this.setState({overlay: this.state.overlay.filter((x, i) => index !== i)});
-    this.forceUpdate();
+    this.props.onSave({overlay: this.props.video.overlay.filter((x, i) => index !== i)});
+    this.props.onClose();
   }
 
   renderItem = (item, i) => (
@@ -284,7 +278,8 @@ export default class AddOverlay extends Component {
 
   generateContent = step => {
     const {video} = this.props;
-    const {selectedType, text, emphasize, logo, vertical, horizontal, style, overlay} = this.state;
+    const {overlay} = video;
+    const {selectedType, text, emphasize, logo, vertical, horizontal, style} = this.state;
     const textarea = (props = {}) => <textarea className={styles.textarea} value={text} wrap="off" onChange={e => this.setState({text: e.target.value})} {...props} />;
     const thumb = <img className={styles.thumb} src={video.thumb} />;
 
@@ -339,7 +334,6 @@ export default class AddOverlay extends Component {
               <div className={styles.textBar} style={{...this.generateStyles(), bottom: `${vertical}%`}}>
                 {text.split(/\r?\n/).map((line, i) => <div key={line} className={classNames(styles.textLine, (emphasize && i === 0) && styles.emphasizeFirst)}>{line}</div>)}
               </div>
-              {/* <Slider className={styles.textSlider} value={vertical} min={0} max={100} step={1} vertical onChange={this.setVertical} /> */}
               <VerticalSlider className={styles.textSlider} value={vertical} limits={[0, 100]} onChange={this.setVertical} />
             </div>
           </div>
@@ -359,9 +353,7 @@ export default class AddOverlay extends Component {
 
       case 'preview':
         return (
-          <Trimmer video={this.props.video} onChange={this.handleTrimmer}>
-            {this.generateOverlay()}
-          </Trimmer>
+          <Trimmer video={this.props.video} onChange={this.handleTrimmer} overlay={this.generateOverlay()}/>
         );
 
       default: throw new Error(`No content found for ${step}`);

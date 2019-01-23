@@ -7,6 +7,7 @@ import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {Preview, SelectAsset, EditTitle, EditFade} from '../';
 import fallback from '../../../assets/placeholder.png';
+import {isEmpty} from 'lodash-es';
 
 const formatTime = number => {
   const minutes = Math.floor(number / 60);
@@ -89,7 +90,10 @@ export default class MediaObject extends Component {
     }[mediatype];
 
     const chosenDesc = {
-      video: seconds > outpoint - inpoint ? this.renderVideoDesc(mediaObj) : duration,
+      video: <React.Fragment>
+        {!isEmpty(mediaObj.overlay) && <Icon className={styles.icon} name="lowerThird"/>}
+        {seconds > outpoint - inpoint ? this.renderVideoDesc(mediaObj) : duration}
+      </React.Fragment>,
       asset: '',
       title: duration,
       fadein: formatTime(duration),

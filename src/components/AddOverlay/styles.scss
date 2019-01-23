@@ -131,13 +131,18 @@ textarea {
 
         .lowerThirdThumb {
             position: absolute;
-            bottom: 25%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     }
 }
 
 .lowerThirdOverlay {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
 }
