@@ -40,13 +40,17 @@ export default class Customize extends Component {
 
   deleteAssets = () => {
     this.toggleDeleteMode();
-    Promise.all(this.state.assetsToDelete.map(id => this.deleteAsset(id)))
-    .then(this.props.assets.loadAssets);
-    this.setState({assetsToDelete: []});
+    return Promise.all(this.state.assetsToDelete.map(id => this.deleteAsset(id)))
+    .then(() => {
+      this.props.assets.loadAssets();
+      this.setState({assetsToDelete: []});
+      this.props.overlay.closeOverlay();
+    });
   }
 
   cancelDelete = () => {
     this.toggleDeleteMode();
+    this.props.overlay.closeOverlay();
     this.setState({assetsToDelete: []});
   }
 
