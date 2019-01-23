@@ -85,8 +85,9 @@ export default class VlogEditor extends Component {
   ]
 
   nextStep = () => {
-    if (this.props.vlogEditor.getErrors()) {
-      this.props.overlay.showToast(this.props.vlogEditor.getErrors());
+    const error = this.props.vlogEditor.getErrors();
+    if (error) {
+      this.props.overlay.showToast(error)();
     } else {
       this.props.vlogEditor.syncMedia()
       .then(() => this.props.history.push(`/configure-vlog/${this.props.match.params.id}`));

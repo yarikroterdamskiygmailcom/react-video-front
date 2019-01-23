@@ -66,7 +66,7 @@ export class VlogEditorStore {
     const interFades = ['crossfade', 'fadeoutin'];
 
     if (media.some((mediaObj, i) => {
-      if (fades.includes(mediaObj.mediatype) && media[i + 1] && fades.includes(media[i + 1].mediatype)) {
+      if (fades.includes(mediaObj.mediatype) && i + 1 < media.length && fades.includes(media[i + 1].mediatype)) {
         return true;
       }
     })) {
@@ -75,18 +75,18 @@ export class VlogEditorStore {
 
     if (media.some((mediaObj, i) => {
       if (
-        (mediaObj.mediatype === 'crossfade'
-          && (
-            (media[i - 1] && media[i - 1].outpoint - media[i - 1].inpoint) < mediaObj.duration / 2
+        (fades.includes(mediaObj.mediatype)
+          && i > 0 && i + 1 < media.length && (
+          (media[i - 1] && media[i - 1].outpoint - media[i - 1].inpoint) < mediaObj.duration / 2
             || (media[i + 1] && media[i + 1].outpoint - media[i + 1].inpoint) < mediaObj.duration / 2
-          )
+        )
         )
       ) {
         return true;
       }
       return false;
     })) {
-      return 'Videos can only be crossfaded if they are longer than half the crossfade duration';
+      return 'Videos can only be faded if they are longer than half the fade duration';
     }
 
     if (interFades.includes(head(media).mediatype)
