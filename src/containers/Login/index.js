@@ -21,6 +21,16 @@ export default class Login extends Component {
     };
   }
 
+  //sorry
+  componentDidMount() {
+    document.body.style.setProperty('overscroll-behavior-y', 'auto');
+  }
+
+  //meer sorry
+  componentWillUnmount() {
+    document.body.style.setProperty('overscroll-behavior-y', 'contain');
+  }
+
   submit = e => e.key === 'Enter' && this.login();
 
   setProperty = property => e => this.setState({[property]: e.target.value})
