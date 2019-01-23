@@ -4,7 +4,7 @@ import FontAwesome from 'react-fontawesome';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
-import {MediaObject, TrimmerSplitter, AddOverlay} from '../';
+import {MediaObject, TrimmerSplitter, Configure} from '../';
 
 @inject('overlay')
 @inject('vlogEditor')
@@ -36,7 +36,7 @@ export default class Arranger extends Component {
       },
       configure: {
         label: this.renderActionLabel('Overlay', 'fade'),
-        func: this.props.overlay.openOverlay(AddOverlay)({...partialProps, onSave: saveMedia(i)})
+        func: this.props.overlay.openOverlay(Configure)({...partialProps, onSave: saveMedia(i)})
       },
       delete: {
         label: this.renderActionLabel('Delete', 'trash'),

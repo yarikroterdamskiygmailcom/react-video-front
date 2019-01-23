@@ -6,6 +6,8 @@ export class OverlayStore {
 
   @action closeOverlay = () => this.overlayContent.pop();
 
+  @action destroyOverlay = () => this.overlayContent = [];
+
   @action openOverlay = Content => props => () => {
     this.overlayContent.push(<Content onClose={this.closeOverlay} {...props} />);
   }
