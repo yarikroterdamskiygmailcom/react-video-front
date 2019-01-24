@@ -79,6 +79,16 @@ export default class MediaObject extends Component {
 
   renderMeta = mediaObj => {
     const {mediatype, videoname, title, text, inpoint, outpoint, duration, seconds} = mediaObj;
+    const chosenIcon = {
+      video: 'camcorder',
+      asset: 'asset',
+      title: 'title',
+      fadein: 'fade',
+      fadeout: 'fade',
+      fadeoutin: 'fade',
+      crossfade: 'fade'
+    }[mediatype];
+
     const chosenTitle = {
       video: videoname,
       asset: title,
@@ -104,7 +114,10 @@ export default class MediaObject extends Component {
 
     return (
       <div className={styles.meta}>
-        <div className={styles.title}>{`(${mediatype}) ${chosenTitle}`}</div>
+        <div className={styles.title}>
+          <Icon className={classNames(styles.icon, styles.tiny)} name={chosenIcon}/>
+          <div>{chosenTitle}</div>
+        </div>
         <div className={styles.desc}>{chosenDesc}</div>
       </div>
     );
