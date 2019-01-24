@@ -28,14 +28,15 @@ export default class SelectAsset extends Component {
     this.props.onClose();
   }
 
-  modalActions = [
+  getModalActions = () => [
     {
       label: 'Cancel',
       func: this.props.onClose
     },
     {
-      label: 'Save',
-      func: this.save
+      label: this.props.asset ? 'Save' : 'Place',
+      func: this.save,
+      disable: !this.state.currentAsset
     }
   ]
 
@@ -82,7 +83,7 @@ export default class SelectAsset extends Component {
     const {pending, duration} = this.state;
     const {assetList} = this.props.assets;
     return (
-      <Modal actions={this.modalActions} className={styles.modal}>
+      <Modal className={styles.modal} actions={this.getModalActions()}>
         <div className={styles.content}>
           <div className={styles.assets}>
             {assetList.map(this.renderAsset)}

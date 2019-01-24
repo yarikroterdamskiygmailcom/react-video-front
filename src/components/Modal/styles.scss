@@ -21,9 +21,15 @@
         width: 50%;
         text-align: center;
         color: $purple;
+        transition: opacity 0.2s;
 
         &:first-child {
             border-right: 1px $grey solid;
+        }
+
+        &.disabled {
+            pointer-events: none;
+            opacity: 0.3;
         }
     }
 }
