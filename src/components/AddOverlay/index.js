@@ -19,11 +19,9 @@ const getLowerThird = ({video, text, logo, side, style}) => php.post('/lowerthir
 class LowerThird extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    this.updateLowerThird();
+    this.state = {
+      lowerThird: props.lowerThird || undefined
+    };
   }
 
   componentDidUpdate(prevProps) {
@@ -38,7 +36,7 @@ class LowerThird extends Component {
   }
 
   updateLowerThird = () => getLowerThird(pick(this.props, ['video', 'text', 'logo', 'side', 'style']))
-  .then(res => this.setState({lowerThird: `${res.srcbase64}`, lowerThirdFile: res.file}));
+  .then(res => this.setState({lowerThird: `${res.srcbase64}`}));
 
   onChange = changes => this.props.onChange(changes);
 
@@ -71,8 +69,8 @@ class LowerThird extends Component {
         <div className={styles.lowerThirdBox}>
           {thumb}
           <img
-            className={styles.lowerThirdThumb}
-            style={side === 'left' ? {left: 0} : {right: 0}}
+            className={styles.lowerThirdOverlay}
+            style={{[side]: 0}}
             src={lowerThird}
           />
         </div>
@@ -116,6 +114,7 @@ export default class AddOverlay extends Component {
       horizontal: 50,
       side: 'right',
       animation: 'fade',
+      lowerThird: null,
       inpoint: props.video.inpoint,
       outpoint: props.video.outpoint
     };
@@ -230,12 +229,12 @@ export default class AddOverlay extends Component {
   )
 
   generateOverlay = () => {
-    const {selectedType, vertical, emphasize, text, lowerThird} = this.state;
+    const {selectedType, vertical, emphasize, text, lowerThird, side} = this.state;
     const {video} = this.props;
     const textLines = text.split(/\r?\n/);
     switch (selectedType) {
       case 'lowerThird':
-        return <img className={styles.lowerThirdOverlay} src={lowerThird}/>;
+        return <img className={styles.lowerThirdOverlay} style={{[side]: 0}} src={lowerThird}/>;
 
       case 'text':
         return (
@@ -272,14 +271,14 @@ export default class AddOverlay extends Component {
 
   setLowerThird = lowerThird => this.setState({lowerThird})
 
-  handleTrimmer = ([start, stop]) => this.setState({inpoint: start, outpoint: stop})
+  handleTrimmer = (start, stop) => this.setState({inpoint: start, outpoint: stop})
 
-  updateLowerThird = lowerThird => this.setState(lowerThird)
+  updateLowerThird = changes => this.setState(changes)
 
   generateContent = step => {
     const {video} = this.props;
     const {overlay} = video;
-    const {selectedType, text, emphasize, logo, vertical, horizontal, style} = this.state;
+    const {selectedType, text, emphasize, logo, vertical, horizontal, style, editing} = this.state;
     const textarea = (props = {}) => <textarea className={styles.textarea} value={text} wrap="off" onChange={e => this.setState({text: e.target.value})} {...props} />;
     const thumb = <img className={styles.thumb} src={video.thumb} />;
 
@@ -322,7 +321,7 @@ export default class AddOverlay extends Component {
           onChange={this.updateLowerThird}
           video={video}
           thumb={thumb}
-          {...pick(this.state, ['side', 'animation', 'text', 'emphasize', 'logo', 'style'])}
+          {...pick(this.state, ['side', 'animation', 'text', 'emphasize', 'logo', 'style', 'lowerThird'])}
           onExit={this.setLowerThird}
         />;
 
@@ -353,7 +352,17 @@ export default class AddOverlay extends Component {
 
       case 'preview':
         return (
-          <Trimmer video={this.props.video} onChange={this.handleTrimmer} overlay={this.generateOverlay()}/>
+          <Trimmer
+            video={isNumber(editing)
+              ? {
+                ...this.props.video,
+                inpoint: this.props.video.overlay[editing].inpoint,
+                outpoint: this.props.video.overlay[editing].outpoint
+              }
+              : this.props.video}
+            onChange={this.handleTrimmer}
+            overlay={this.generateOverlay()}
+          />
         );
 
       default: throw new Error(`No content found for ${step}`);
