@@ -104,8 +104,8 @@ export default class MediaObject extends Component {
         {!isEmpty(mediaObj.overlay) && <Icon className={styles.icon} name="lowerThird"/>}
         {seconds > outpoint - inpoint ? this.renderVideoDesc(mediaObj) : duration}
       </React.Fragment>,
-      asset: '',
-      title: duration,
+      asset: formatTime(duration),
+      title: formatTime(duration),
       fadein: formatTime(duration),
       fadeout: formatTime(duration),
       fadeoutin: formatTime(duration),
