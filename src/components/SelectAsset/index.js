@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {isEmpty, clamp} from 'lodash-es';
+import {isEmpty, isNumber, clamp} from 'lodash-es';
 import classNames from 'classnames';
 import {Modal, Preview} from '../';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
-import {Input} from '../../atoms';
+import {Input, DurationPicker} from '../../atoms';
 
 @inject('overlay')
 @inject('assets')
@@ -16,7 +16,7 @@ export default class SelectAsset extends Component {
     this.state = {
       pending: true,
       currentAsset: null,
-      duration: this.props.asset ? this.props.asset.duration : ''
+      duration: this.props.asset ? this.props.asset.duration : 'auto'
     };
   }
 
@@ -36,7 +36,7 @@ export default class SelectAsset extends Component {
     {
       label: this.props.asset ? 'Save' : 'Place',
       func: this.save,
-      disable: !this.state.currentAsset
+      disable: !isNumber(this.state.currentAsset)
     }
   ]
 
@@ -55,11 +55,7 @@ export default class SelectAsset extends Component {
     (!this.state.currentAsset && !isEmpty(this.props.assets.assetList)) && this.selectAsset(0);
   }
 
-  setDuration = e => (!e.target.value || parseInt(e.target.value, 10)) && this.setState({
-    duration: e.target.value
-      ? clamp(parseInt(e.target.value, 10), 1, 10)
-      : ''
-  })
+  setDuration = duration => this.setState({duration})
 
   selectAsset = i => () => {
     this.setState({currentAsset: i});
@@ -88,7 +84,7 @@ export default class SelectAsset extends Component {
           <div className={styles.assets}>
             {assetList.map(this.renderAsset)}
           </div>
-          {!noDuration && <Input modal value={duration} onChange={this.setDuration} name="Duration" placeholder="(Leave blank for auto)"/>}
+          {!noDuration && <DurationPicker value={duration} onChange={this.setDuration}/>}
         </div>
         {isEmpty(assetList)
           && (pending

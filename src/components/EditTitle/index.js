@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
 import {StylePicker, Modal, SelectAsset} from '../';
-import {Toggle, Input} from '../../atoms';
+import {Toggle, Input, DurationPicker} from '../../atoms';
 import {clamp, isNumber} from 'lodash-es';
 import {observer, inject} from 'mobx-react';
 
@@ -15,7 +15,7 @@ export default class EditTitle extends Component {
       : {
         text: '',
         style: null,
-        duration: '',
+        duration: 'auto',
         asset: null
       };
   }
@@ -46,11 +46,7 @@ export default class EditTitle extends Component {
 
   setStyle = style => this.setState({style})
 
-  setDuration = e => (!e.target.value || parseInt(e.target.value, 10)) && this.setState({
-    duration: e.target.value
-      ? clamp(parseInt(e.target.value, 10), 1, 10)
-      : ''
-  })
+  setDuration = duration => this.setState({duration})
 
   selectAsset = asset => this.setState({asset})
 
@@ -104,7 +100,7 @@ export default class EditTitle extends Component {
             : openOverlay(SelectAsset)({onSave: this.selectAsset, noDuration: true})}
         />
         {asset && this.renderAsset(asset)}
-        <Input modal value={duration} onChange={this.setDuration} name="Duration" placeholder="(Leave blank for auto)"/>
+        <DurationPicker value={duration} onChange={this.setDuration}/>
       </Modal>
     );
   }
