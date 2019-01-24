@@ -74,19 +74,17 @@ export class VlogEditorStore {
     }
 
     if (media.some((mediaObj, i) => {
-      if (
-        (fades.includes(mediaObj.mediatype)
-          && i > 0 && i + 1 < media.length && (
-          (media[i - 1] && media[i - 1].outpoint - media[i - 1].inpoint) < mediaObj.duration / 2
-            || (media[i + 1] && media[i + 1].outpoint - media[i + 1].inpoint) < mediaObj.duration / 2
-        )
-        )
-      ) {
-        return true;
+      if(fades.includes(mediaObj.mediatype)) {
+        const previous = i > 0 && media[i - 1];
+        const next = i + 1 < media.length && media[i + 1];
+        if(next && previous) {
+          const previousDuration = previous.mediatype === 'video' ? previous.outpoint - previous.inpoint : previous.duration;
+          const nextDuration = next.mediatype === 'video' ? next.outpoint - next.inpoint : next.duration;
+          return (previousDuration < mediaObj.duration / 2) || (nextDuration < mediaObj.duration / 2);
+        }
       }
-      return false;
     })) {
-      return 'Videos can only be faded if they are longer than half the fade duration';
+      return 'Media can only be faded if it is longer than half the fade duration.';
     }
 
     if (interFades.includes(head(media).mediatype)
