@@ -57,7 +57,7 @@ export default class VlogEditor extends Component {
 
   getActions = () => [
     {
-      icon: 'video',
+      icon: 'camcorder',
       render: <div
         ref={this.resumableRef}
         className={classNames(styles.vidinput, this.props.vlogEditor.uploading && styles.disabled)}
