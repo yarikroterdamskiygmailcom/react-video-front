@@ -102,7 +102,7 @@ export default class Template extends Component {
   renderAddContent = ({type, fixed}, fieldIndex) => {
     const {projectId} = this.props.template;
     if (type === 'video') {
-      return <UploadButton projectId={projectId} onChange={this.addContent(fieldIndex)}/>;
+      return <UploadButton className={styles.uploadButton} projectId={projectId} onChange={this.addContent(fieldIndex)}/>;
     }
 
     return this.renderAddButton(type, fieldIndex, fixed);

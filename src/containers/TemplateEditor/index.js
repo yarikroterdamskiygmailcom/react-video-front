@@ -32,7 +32,7 @@ const columns = [
   'name',
   'contents',
   'fixed',
-  '', //the handle
+  'handle'
 ];
 
 const DragHandle = SortableHandle(() =>
@@ -138,14 +138,14 @@ export default class TemplateEditor extends Component {
     </div>
   )
 
-  renderAddContent = (type, fieldIndex) => {
+  renderAddContent = (type, fieldIndex, disabled) => {
     const {openOverlay} = this.props.overlay;
     const Content = {
       asset: SelectAsset,
       title: EditTitle
     }[type];
     return (
-      <div className={styles.addButton} onClick={openOverlay(Content)({onSave: this.addContent(fieldIndex)})}>
+      <div className={classNames(styles.addButton, styles.contents, disabled && styles.disabled)} onClick={openOverlay(Content)({onSave: this.addContent(fieldIndex)})}>
         <FontAwesome className={styles.icon} name="plus" />
       </div>
     );
@@ -172,10 +172,10 @@ export default class TemplateEditor extends Component {
         onSwipe={this.setReveal(fieldIndex)}
         reveal={this.isRevealed(fieldIndex) && this.state.revealSide}
       >
-        <Icon className={styles.icon} name={field.icon} />
+        <Icon className={styles.type} name={field.icon} />
         <textarea className={styles.name} value={field.name} placeholder="What?" onChange={this.updateField(fieldIndex, 'name')}/>
-        {field.type !== 'video' && this.renderAddContent(field.type, fieldIndex)}
-        {field.type !== 'video' && <Checkbox className={styles.fixed} value={field.fixed} onChange={this.updateField(fieldIndex, {fixed: !field.fixed})} />}
+        {this.renderAddContent(field.type, fieldIndex, field.type === 'video')}
+        <Checkbox className={classNames(styles.fixed, field.type === 'video' && styles.disabled)} value={field.fixed} onChange={this.updateField(fieldIndex, {fixed: !field.fixed})} />
         <DragHandle />
       </SwipeItem>
       {!isEmpty(field.contents)

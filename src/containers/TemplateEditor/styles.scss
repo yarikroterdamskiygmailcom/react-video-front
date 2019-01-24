@@ -70,51 +70,30 @@
 }
 
 .item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
     box-sizing: border-box;
     border-bottom: 1px solid $border;
     width: 100%;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
+}
+
+.header {
+    @extend .item;
+    text-transform: capitalize;
+
+    .handle {
+        opacity: 0;
+    }
 }
 
 .field {
     @extend .item;
     background: white;
-    display: grid;
-    grid-template-columns: 1fr minmax(0, 2fr) 1fr 1fr 0.5fr;
-    justify-items: center;
-
-    .name {
-        overflow: hidden;
-    }
-
-    .handle {
-        grid-column: 5;
-    }
 }
 
-.header {
-    @extend .field;
-    background: none;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr 0.5fr;
-    justify-items: center;
-    padding: 5px;
-    text-transform: capitalize;
-
-    .name {
-        justify-self: left;
-    }
-
-
-}
-
-.column {
-    text-transform: capitalize;
+.fieldContent {
+    @extend .item;
+    background: #efefef;
 }
 
 .swipeAction {
@@ -142,21 +121,6 @@
     @extend .addButton;
 }
 
-.fieldContent {
-    @extend .item;
-    background: #efefef;
-    margin-left: 70px;
-
-
-
-    &::after {
-        content: '-';
-        position: absolute;
-        left: 30px;
-        font-size: 40px;
-    }
-}
-
 .handle {
     display: flex;
     align-items: center;
@@ -164,10 +128,45 @@
     height: 100%;
 }
 
-.fieldContents {
-    background: $pink;
-}
-
 .container {
     margin-bottom: 100px;
+}
+
+.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.header,
+.field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+
+    > * {
+        text-align: center;
+    }
+
+    .type {
+        width: 35px;
+    }
+
+    .name {
+        width: 100px;
+        text-align: left;
+    }
+
+    .contents {
+        width: 50px;
+    }
+
+    .fixed {
+        width: 50px;
+    }
+
+    .handle {
+        width: 10px;
+    }
 }
