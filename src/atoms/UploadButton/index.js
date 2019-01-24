@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Resumable from 'resumablejs';
 import FontAwesome from 'react-fontawesome';
+import classNames from 'classnames';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
 import {isNumber} from 'lodash-es';
@@ -51,9 +52,10 @@ export default class UploadButton extends Component {
   }
 
   render() {
+    const {className} = this.props;
     const {progress} = this.state;
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)}>
         <FontAwesome className={styles.icon} name="plus" />
         {isNumber(progress) && <div className={styles.progress} style={{width: `${progress}%`}}/>}
         <div className={styles.target} ref={this.targetRef} />
