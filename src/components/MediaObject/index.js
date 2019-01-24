@@ -12,6 +12,9 @@ import {isEmpty, isNumber} from 'lodash-es';
 const formatTime = number => {
   const minutes = Math.floor(number / 60);
   const seconds = Math.floor(number % 60);
+  if(minutes === 0 && seconds === 0 && number > 0) {
+    return `< 0:01`;
+  }
   return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
 };
 
