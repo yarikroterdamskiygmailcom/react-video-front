@@ -21,7 +21,11 @@ export class SessionStore {
   })
 
   initialize = () => {
-    this.token = localStorage.getItem('token') || Cookies.get('token') || null;
+    try {
+      this.token = localStorage.getItem('token');
+    } catch (error) {
+      this.token = Cookies.get('token');
+    }
     if (this.token) {
       php.interceptors.request.use(
         config => ({...config, headers: {Authorization: `Token ${this.token}`}})
