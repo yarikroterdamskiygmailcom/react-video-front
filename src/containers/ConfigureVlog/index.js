@@ -176,6 +176,7 @@ export default class ConfigureVlog extends Component {
 
   render() {
     const {title, description, setProperty, toggleOption, saveProject} = this.props.project;
+    const {userType} = this.props.session;
     const {logo_overlay, filter} = this.props.project.options;
     const {orientation, renderUrl, rendering, pending} = this.state;
     return pending ? <Spinner /> : (
@@ -208,11 +209,11 @@ export default class ConfigureVlog extends Component {
             value={filter}
             onChange={toggleOption('filter')}
           />
-          <Toggle
+          {userType !== 'regularUser' && <Toggle
             label="Logo Overlay"
             value={logo_overlay}
             onChange={toggleOption('logo_overlay')}
-          />
+          />}
         </Segment>
         <Segment title="Orientation">
           {this.orientationOptions.map(({render, value}) =>

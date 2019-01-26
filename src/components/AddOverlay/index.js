@@ -6,6 +6,7 @@ import {Toggle, Icon, VerticalSlider} from '../../atoms';
 import {StylePicker} from '../';
 import classNames from 'classnames';
 import {php} from '../../stores';
+import {inject, observer} from 'mobx-react';
 
 const getLowerThird = ({video, text, logo, side, style}) => php.post('/lowerthird', {
   type: 'lowerthird',
@@ -16,6 +17,8 @@ const getLowerThird = ({video, text, logo, side, style}) => php.post('/lowerthir
   style
 });
 
+@inject('session')
+@observer
 class LowerThird extends Component {
   constructor(props) {
     super(props);
@@ -63,6 +66,7 @@ class LowerThird extends Component {
 
   render() {
     const {side, animation, text, style, emphasize, logo, thumb} = this.props;
+    const {userType} = this.props.session;
     const {lowerThird} = this.state;
     return (
       <div className={styles.lowerThird}>
@@ -83,7 +87,7 @@ class LowerThird extends Component {
           selected={style}
         />
         <Toggle className={styles.toggle} label="Emphasize first line" value={emphasize} onChange={this.toggleEmphasize} />
-        <Toggle className={styles.toggle} label="Use Logo" value={logo} onChange={this.toggleLogo} />
+        {userType !== 'regularUser' && <Toggle className={styles.toggle} label="Use Logo" value={logo} onChange={this.toggleLogo} />}
         <div>Lower Third side</div>
         <div className={styles.radioRow}>
           {this.renderRadio('left', side === 'left', this.toggleSide)}
