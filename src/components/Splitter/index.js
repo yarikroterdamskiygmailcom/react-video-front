@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Modal} from '..';
 import styles from './styles.scss';
 import {Slider} from '../../atoms';
 import '!style-loader!css-loader!rc-slider/assets/index.css';

@@ -207,3 +207,10 @@ textarea {
 .label {
     margin: 5px 0; 
 }
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: hidden;
+}

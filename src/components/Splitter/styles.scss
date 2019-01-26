@@ -1,10 +1,8 @@
-.modal {
-    height: fit-content;
-}
-
 .video {
+    flex-shrink: 10 !important;
+    min-width: 0;
+    min-height: 0;
     width: 100%;
-    max-height: 60%;
 }
 
 .controls {

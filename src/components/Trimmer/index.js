@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Modal} from '..';
 import styles from './styles.scss';
 import {Range} from '../../atoms';
 import FontAwesome from 'react-fontawesome';

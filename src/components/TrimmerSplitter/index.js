@@ -51,7 +51,7 @@ export default class TrimmerSplitter extends Component {
     const {video} = this.props;
     const trimming = mode === 'trim';
     return (
-      <Modal className={styles.modal} actions={this.getModalActions()}>
+      <Modal className={styles.modal} contentClassName={styles.content} actions={this.getModalActions()}>
         <div className={styles.modeSelector} onClick={this.toggleMode}>
           <div className={classNames(styles.trimMode, trimming && styles.active)}>Trim</div>
           <div className={classNames(styles.splitMode, !trimming && styles.active)}>Split</div>

@@ -356,17 +356,19 @@ export default class AddOverlay extends Component {
 
       case 'preview':
         return (
-          <Trimmer
-            video={isNumber(editing)
-              ? {
-                ...this.props.video,
-                inpoint: this.props.video.overlay[editing].inpoint,
-                outpoint: this.props.video.overlay[editing].outpoint
-              }
-              : this.props.video}
-            onChange={this.handleTrimmer}
-            overlay={this.generateOverlay()}
-          />
+          <div className={styles.preview}>
+            <Trimmer
+              video={isNumber(editing)
+                ? {
+                  ...this.props.video,
+                  inpoint: this.props.video.overlay[editing].inpoint,
+                  outpoint: this.props.video.overlay[editing].outpoint
+                }
+                : this.props.video}
+              onChange={this.handleTrimmer}
+              overlay={this.generateOverlay()}
+            />
+          </div>
         );
 
       default: throw new Error(`No content found for ${step}`);
