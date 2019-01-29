@@ -82,8 +82,11 @@ export class VlogEditorStore {
           const nextDuration = next.mediatype === 'video' ? next.outpoint - next.inpoint : next.duration;
           return (previousDuration < mediaObj.duration / 2) || (nextDuration < mediaObj.duration / 2);
         }
+        return false;
       }
-    })) {
+      return false;
+    }
+    )) {
       return 'Media can only be faded if it is longer than half the fade duration.';
     }
 
