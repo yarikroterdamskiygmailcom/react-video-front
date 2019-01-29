@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import styles from './styles.scss';
 import {Range} from '../../atoms';
 import FontAwesome from 'react-fontawesome';
+import {noop} from 'lodash-es';
 
 export default class Trimmer extends Component {
 
   constructor(props) {
     super(props);
-    this.videoRef = React.createRef();
+    this.videoRef = props.videoRef || React.createRef();
     this.state = {
       start: props.video.inpoint,
       stop: props.video.outpoint,
@@ -57,13 +58,20 @@ export default class Trimmer extends Component {
   }
 
   render() {
-    const {video, overlay} = this.props;
+    const {video, overlay, onVideoLoaded} = this.props;
     const {start, stop} = this.state;
     const max = video.seconds;
     return (
       <React.Fragment>
         <div className={styles.videoContainer}>
-          <video className={styles.video} ref={this.videoRef} src={video.src} playsInline autoPlay onTimeUpdate={this.limitVideo}/>
+          <video
+            className={styles.video}
+            ref={this.videoRef}
+            src={video.src}
+            playsInline
+            autoPlay
+            onTimeUpdate={this.limitVideo}
+            onCanPlayThrough={onVideoLoaded || noop}/>
           {overlay}
         </div>
         <div className={styles.controls}>

@@ -103,9 +103,92 @@ class LowerThird extends Component {
   }
 }
 
+class Preview extends Component {
+  constructor(props) {
+    super(props);
+    this.videoRef = React.createRef();
+    this.thumbRef = React.createRef();
+    this.state = {
+      thumbWidth: null,
+      thumbHeight: null
+    };
+  }
+
+  generateOverlay = () => {
+    const {selectedType, vertical, emphasize, text, lowerThird, side} = this.props.upperState;
+    const {video} = this.props;
+    const {thumbWidth, thumbHeight} = this.state;
+    const textLines = text.split(/\r?\n/);
+    switch (selectedType) {
+      case 'lowerThird':
+        return <img
+          ref={this.thumbRef}
+          className={styles.lowerThirdOverlay}
+          style={{
+            [side]: 0,
+            ...(thumbWidth || thumbHeight) ? {width: `${thumbWidth}px`, height: `${thumbHeight}px`} : {}
+          }}
+          src={lowerThird}
+        />;
+
+      case 'text':
+        return (
+          <div className={styles.textPreview} style={{bottom: `${vertical}%`}}>
+            {textLines.map((line, i) =>
+              <div key={line} className={classNames(styles.textLine,
+                (emphasize && i === 0) && styles.bold)}>
+                {line}
+              </div>)}
+          </div>
+        );
+
+      case 'custom':
+        break;
+
+      default: throw new Error('Blaarb');
+
+    }
+  }
+
+  getInnerSize = () => {
+    const videoRef = this.videoRef.current;
+    const thumbRef = this.thumbRef.current;
+    if(videoRef && thumbRef) {
+      const factor = videoRef.clientHeight / this.props.video.height;
+      this.setState({
+        thumbWidth: thumbRef.clientWidth * factor,
+        thumbHeight: thumbRef.clientHeight * factor
+      });
+    }
+  }
+
+  render() {
+    const {handleTrimmer} = this.props;
+    const {editing} = this.props.upperState;
+    return (
+      <div className={styles.preview}>
+        <Trimmer
+          videoRef={this.videoRef}
+          onVideoLoaded={this.getInnerSize}
+          video={isNumber(editing)
+            ? {
+              ...this.props.video,
+              inpoint: this.props.video.overlay[editing].inpoint,
+              outpoint: this.props.video.overlay[editing].outpoint
+            }
+            : this.props.video}
+          onChange={handleTrimmer}
+          overlay={this.generateOverlay()}
+        />
+      </div>
+    );
+  }
+}
+
 export default class AddOverlay extends Component {
   constructor(props) {
     super(props);
+    this.videoRef = React.createRef();
     this.state = {
       step: 'overview',
       selectedType: null,
@@ -139,7 +222,7 @@ export default class AddOverlay extends Component {
 
   buildOverlay = () => {
     const {selectedType, text, emphasize, side, animation,
-      logo, vertical, horizontal, inpoint, outpoint, lowerThirdFile} = this.state;
+      logo, vertical, horizontal, inpoint, outpoint, style} = this.state;
 
     switch (selectedType) {
       case 'lowerThird':
@@ -152,7 +235,7 @@ export default class AddOverlay extends Component {
           logo,
           inpoint,
           outpoint,
-          file: lowerThirdFile
+          style
         };
 
       case 'text':
@@ -162,7 +245,8 @@ export default class AddOverlay extends Component {
           emphasize,
           vertical,
           inpoint,
-          outpoint
+          outpoint,
+          style
         };
 
       case 'custom':
@@ -231,33 +315,6 @@ export default class AddOverlay extends Component {
       <Icon className={styles.icon} name="trash" onClick={this.deleteOverlay(i)} />
     </div>
   )
-
-  generateOverlay = () => {
-    const {selectedType, vertical, emphasize, text, lowerThird, side} = this.state;
-    const {video} = this.props;
-    const textLines = text.split(/\r?\n/);
-    switch (selectedType) {
-      case 'lowerThird':
-        return <img className={styles.lowerThirdOverlay} style={{[side]: 0}} src={lowerThird}/>;
-
-      case 'text':
-        return (
-          <div className={styles.textPreview} style={{bottom: `${vertical}%`}}>
-            {textLines.map((line, i) =>
-              <div key={line} className={classNames(styles.textLine,
-                (emphasize && i === 0) && styles.bold)}>
-                {line}
-              </div>)}
-          </div>
-        );
-
-      case 'custom':
-        break;
-
-      default: throw new Error('Blaarb');
-
-    }
-  }
 
   generateStyles = () => this.state.style ? {
     color: this.state.style.textcolor,
@@ -355,21 +412,7 @@ export default class AddOverlay extends Component {
         </div>;
 
       case 'preview':
-        return (
-          <div className={styles.preview}>
-            <Trimmer
-              video={isNumber(editing)
-                ? {
-                  ...this.props.video,
-                  inpoint: this.props.video.overlay[editing].inpoint,
-                  outpoint: this.props.video.overlay[editing].outpoint
-                }
-                : this.props.video}
-              onChange={this.handleTrimmer}
-              overlay={this.generateOverlay()}
-            />
-          </div>
-        );
+        return <Preview video={this.props.video} handleTrimmer={this.handleTrimmer} upperState={this.state}/>;
 
       default: throw new Error(`No content found for ${step}`);
     }
