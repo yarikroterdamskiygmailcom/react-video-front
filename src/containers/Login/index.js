@@ -44,7 +44,7 @@ export default class Login extends Component {
   }
 
   formatError = e => {
-    const error = e.response.data.error;
+    const error = e.response ? e.response.data.error : ['Something went wrong.'];
     return first(Object.values(error));
   }
 
