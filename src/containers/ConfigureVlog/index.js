@@ -233,7 +233,7 @@ export default class ConfigureVlog extends Component {
         </Segment>
         <Segment title="Finalize">
           <div className={styles.finalize}>
-            <div className={styles.button} onClick={saveProject}>Save</div>
+            <div className={styles.button} onClick={this.goHome}>Home</div>
             <div
               className={classNames(styles.button,
                 !renderUrl && styles.disabled)}
