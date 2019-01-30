@@ -22,7 +22,14 @@ export default class Share extends Component {
     .then(({links}) => this.setState({links, pending: false}));
   }
 
-  share = platform => () => php.get(`/share/${platform}/${this.props.project.projectId}`)
+  share = platform => () => {
+    this.setState({[`${platform}Pending`]: true});
+    php.get(`/share/${platform}/${this.props.project.projectId}`)
+    .then(({link}) => {
+      this.setState({[`${platform}Pending`]: false});
+      window.open(link);
+    });
+  }
 
   options = [
     {
@@ -40,14 +47,14 @@ export default class Share extends Component {
   ]
 
   renderOption = ({name, key, icon, func}) => (
-    <div className={classNames(styles.option, this.state.links[key] && styles.active)} onClick={func}>
+    <div key={key} className={classNames(styles.option, this.state.links[key] && styles.active)} onClick={func}>
       <FontAwesome className={styles.icon} name={icon}/>
       <div>{this.state.links[key] ? `Share on ${name}` : `${name} not linked`}</div>
+      {this.state[`${key}Pending`] && <FontAwesome className={styles.spinner} name="spinner"/>}
     </div>
   )
 
   render() {
-    const {pending} = this.state;
     return (
       <div className={styles.container}>
         <Segment title="Share">
