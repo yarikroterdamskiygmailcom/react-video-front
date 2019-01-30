@@ -175,7 +175,7 @@ export default class ConfigureVlog extends Component {
   }
 
   render() {
-    const {title, description, setProperty, toggleOption, saveProject} = this.props.project;
+    const {title, description, setProperty, toggleOption, setOption, saveProject} = this.props.project;
     const {userType} = this.props.session;
     const {logo_overlay, filter} = this.props.project.options;
     const {orientation, renderUrl, rendering, pending} = this.state;
@@ -207,7 +207,7 @@ export default class ConfigureVlog extends Component {
           <Toggle
             label="Use Filter"
             value={filter}
-            onChange={toggleOption('filter')}
+            onChange={filter ? toggleOption('filter') : setOption('filter', head(this.filters).name)}
           />
           {userType !== 'regularUser' && <Toggle
             label="Logo Overlay"
