@@ -7,7 +7,6 @@ import styles from './styles.scss';
 import {ProgressBar, Icon, Toggle, Segment, Spinner} from '../../atoms';
 import {isEmpty, noop} from 'lodash-es';
 import FontAwesome from 'react-fontawesome';
-import queryString from 'query-string';
 
 @withRouter
 @inject('overlay')
@@ -27,7 +26,7 @@ export default class VlogEditor extends Component {
 
   componentWillMount() {
     const {id} = this.props.match.params;
-    const {professional} = queryString.parse(this.props.location.search);
+    const professional = this.props.location.search.includes('professional=true');
     if (!id) {
       this.props.project.createProject(professional)
       .then(id => this.props.history.replace(`/edit-vlog/${id}`));
@@ -52,7 +51,7 @@ export default class VlogEditor extends Component {
   }
 
   toggleCustomEdit = () => {
-    this.props.project.toggleOption('customEdit')();
+    this.props.project.toggleOption('custom_edit')();
     this.props.project.updateProject({options: JSON.stringify(this.props.project.options)});
   }
 
@@ -109,7 +108,7 @@ export default class VlogEditor extends Component {
   render() {
     const {uploading, progress, media, syncing, cancelUpload} = this.props.vlogEditor;
     const {projectId, options} = this.props.project;
-    const {customEdit} = options;
+    const {custom_edit} = options;
     const {hamburgerActive, pending} = this.state;
     const {className} = this.props;
     return pending ? <Spinner /> : (
@@ -140,8 +139,8 @@ export default class VlogEditor extends Component {
               <div>Professional Vlog</div>
               <Toggle
                 className={styles.customToggle}
-                value={customEdit}
-                onChange={customEdit ? this.toggleCustomEdit : this.confirmProfessional}
+                value={custom_edit}
+                onChange={custom_edit ? this.toggleCustomEdit : this.confirmProfessional}
               />
             </div>
           </Segment>

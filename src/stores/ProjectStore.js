@@ -46,7 +46,7 @@ export class ProjectStore {
       editor.setProjectId(this.projectId);
     });
 
-  createProject = professional => php.get(`/vlog/new${professional === 'true' ? '?professional=true' : ''}`)
+  createProject = professional => php.get(`/vlog/new${professional ? '?professional=true' : ''}`)
   .then(res => res.project_id)
 
   reduceMediaObj = mediaObj => mediaObj.mediatype === 'video'
