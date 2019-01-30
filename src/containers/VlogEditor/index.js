@@ -48,7 +48,12 @@ export default class VlogEditor extends Component {
   }
 
   confirmProfessional = () => {
-    this.props.overlay.openOverlay(ConfirmProfessional)({onSelect: () => this.props.project.toggleProperty('customEdit')})();
+    this.props.overlay.openOverlay(ConfirmProfessional)({onSelect: this.toggleCustomEdit})();
+  }
+
+  toggleCustomEdit = () => {
+    this.props.project.toggleOption('customEdit')();
+    this.props.project.updateProject({options: JSON.stringify(this.props.project.options)});
   }
 
   toggleHamburger = () => this.setState({hamburgerActive: !this.state.hamburgerActive})
@@ -103,7 +108,8 @@ export default class VlogEditor extends Component {
 
   render() {
     const {uploading, progress, media, syncing, cancelUpload} = this.props.vlogEditor;
-    const {projectId, customEdit, toggleProperty} = this.props.project;
+    const {projectId, options} = this.props.project;
+    const {customEdit} = options;
     const {hamburgerActive, pending} = this.state;
     const {className} = this.props;
     return pending ? <Spinner /> : (
@@ -135,7 +141,7 @@ export default class VlogEditor extends Component {
               <Toggle
                 className={styles.customToggle}
                 value={customEdit}
-                onChange={customEdit ? () => toggleProperty('customEdit') : this.confirmProfessional}
+                onChange={customEdit ? this.toggleCustomEdit : this.confirmProfessional}
               />
             </div>
           </Segment>
