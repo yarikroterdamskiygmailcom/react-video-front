@@ -1,6 +1,6 @@
 import {observable, action} from 'mobx';
 import {php} from '.';
-import {isEmpty, flatten, flattenDeep} from 'lodash-es';
+import {isEmpty, flatten} from 'lodash-es';
 import {vlogEditorStore as editor} from '../';
 import {history} from '../constants/routes';
 
@@ -71,7 +71,7 @@ export class TemplateStore {
   isValid = () => this.fields.every(field => !isEmpty(field.contents))
 
   next = () => {
-    const flatMedia = this.fields.toJS().map(field => field.contents.toJS());
+    const flatMedia = flatten(this.fields.toJS().map(field => field.contents.toJS()));
     php.post(`/vlog/${this.projectId}`, {
       media: JSON.stringify(flatMedia)
     })
