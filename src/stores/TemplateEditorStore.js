@@ -5,7 +5,7 @@ import {php, userDB} from '.';
 export class TemplateEditorStore {
   @observable template = []
 
-  @action addField = field => this.template = [...this.template, {...field, name: ''}]
+  @action addField = field => this.template = [...this.template.toJS(), {...field, name: ''}]
 
   @action updateField = (index, changes) => {
     this.template = this.template.map((field, i) => i === index ? {...field, ...changes} : field);
@@ -15,7 +15,7 @@ export class TemplateEditorStore {
 
   @action addContent = (fieldIndex, content) => this.updateField(fieldIndex, {
     contents: [
-      ...this.template[fieldIndex].contents,
+      ...this.template[fieldIndex].contents.toJS(),
       content
     ]
   })
@@ -40,13 +40,13 @@ export class TemplateEditorStore {
     const template = {
       title,
       owner: JSON.stringify(me),
-      fields: JSON.stringify(this.template.map(field => omit(field, ['icon']))),
+      fields: JSON.stringify(this.template.toJS().map(field => omit(field, ['icon']))),
     };
     return php.post('/templates', template).then(res => res.template_id);
   }
 
   getErrors = () => {
-    const template = this.template;
+    const template = this.template.toJS();
 
     if (template.some(field => !field.name)) {
       return 'All fields should have a name.';

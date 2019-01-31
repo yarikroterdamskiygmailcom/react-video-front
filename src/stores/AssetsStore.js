@@ -18,8 +18,6 @@ export class AssetsStore {
 
   uploadStyle = (access, style) => php.post('/styles', {...style, access})
 
-  updateStyle = (id, style) => php.put(`/styles/${id}`, style)
-
   deleteStyle = id => php.delete(`/styles/${id}`)
 
   loadAssets = () => php.get('/assets')

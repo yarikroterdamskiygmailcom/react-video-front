@@ -16,7 +16,7 @@ export class VlogEditorStore {
 
   syncMedia = () => {
     this.syncing = true;
-    return php.post(`/vlog/${this.projectId}`, {media: JSON.stringify(this.media)})
+    return php.post(`/vlog/${this.projectId}`, {media: JSON.stringify(this.media.toJS())})
     .then(() => this.syncing = false);
   }
 
@@ -27,7 +27,7 @@ export class VlogEditorStore {
   }
 
   @action addMedia = mediaObj => {
-    this.media = [...this.media, mediaObj];
+    this.media = [...this.media.toJS(), mediaObj];
     this.syncMedia();
   }
 
@@ -60,7 +60,7 @@ export class VlogEditorStore {
   }
 
   getErrors = () => {
-    const media = this.media;
+    const media = this.media.toJS();
 
     const fades = ['fadein', 'fadeout', 'fadeoutin', 'crossfade'];
     const interFades = ['crossfade', 'fadeoutin'];
@@ -147,7 +147,7 @@ export class VlogEditorStore {
   }
 
   getChronoIndex = targetVideo => {
-    const videos = this.media.filter(mediaObj => mediaObj.mediatype === 'video');
+    const videos = this.media.toJS().filter(mediaObj => mediaObj.mediatype === 'video');
     const equalVideos = videos.filter(video => video.video_id === targetVideo.video_id);
     const sorted = sortBy(equalVideos, 'inpoint');
     const chronoIndex = findIndex(sorted, targetVideo);

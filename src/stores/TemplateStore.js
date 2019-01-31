@@ -33,7 +33,7 @@ export class TemplateStore {
 
   @action addContent = (fieldIndex, content) => this.updateField(fieldIndex, {
     contents: [
-      ...this.fields[fieldIndex].contents,
+      ...this.fields[fieldIndex].contents.toJS(),
       content
     ]
   })
@@ -71,7 +71,7 @@ export class TemplateStore {
   isValid = () => this.fields.every(field => !isEmpty(field.contents))
 
   next = () => {
-    const flatMedia = flatten(this.fields.map(field => field.contents));
+    const flatMedia = flatten(this.fields.toJS().map(field => field.contents));
     php.post(`/vlog/${this.projectId}`, {
       media: JSON.stringify(flatMedia)
     })

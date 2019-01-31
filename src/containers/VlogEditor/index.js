@@ -42,7 +42,7 @@ export default class VlogEditor extends Component {
 
   componentWillUnmount() {
     this.props.match.params.id && this.props.project.updateProject({
-      media: JSON.stringify(this.props.vlogEditor.media.map(this.props.project.reduceMediaObj))
+      media: JSON.stringify(this.props.vlogEditor.media.toJS().map(this.props.project.reduceMediaObj))
     });
   }
 
