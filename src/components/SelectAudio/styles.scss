@@ -1,0 +1,112 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow-y: hidden;
+}
+
+.listToggle {
+    display: grid;
+    grid-template-columns: 25px auto 25px 25px;
+
+    border: 1px solid $grey;
+    padding: 5px;
+    background: white;
+    transition: opacity 0.2s;
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    > * {
+        flex: 1;
+    }
+
+    .label {
+        overflow: hidden;
+    }
+}
+
+.musicList {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    border: 1px solid $grey;
+    border-top: none;
+    flex: 1;
+    transition: flex 0.2s;
+
+    &.closed {
+        flex: 0;
+        border-bottom: none;
+    }
+}
+
+.song {
+    padding: 5px;
+    background: white;
+}
+
+.modeSelector { 
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+    transition: flex 0.2s;
+
+    &.closed {
+        flex: 0;
+    }
+}
+
+.playMode {
+    padding: 5px;
+    border: 1px solid $grey;
+    border-bottom: none;
+    background: white;
+    transition: background 0.2s;
+
+    &.active {
+        background: $pink;
+    }
+
+    &:last-child {
+        border-bottom: 1px solid $grey;
+    }
+
+    .name {
+        color: $purple;
+        text-transform: capitalize;
+    }
+
+    .description {
+
+    }
+}
+
+.icon {
+    color: $purple;
+    align-self: center;
+    justify-self: center;
+
+    &.expand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 25px;
+        border: 1px solid $grey;
+        border-radius: 50%;
+    }
+}
+
+.label {
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+    padding: 5px;
+
+    &.active {
+        color: $purple; 
+    }
+}

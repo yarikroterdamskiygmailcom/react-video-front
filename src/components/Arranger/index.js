@@ -35,7 +35,7 @@ export default class Arranger extends Component {
         func: this.props.overlay.openOverlay(TrimmerSplitter)({...partialProps, onTrim: saveMedia(i), onSplit: splitVideo(i)})
       },
       configure: {
-        label: this.renderActionLabel('Overlay', 'fade'),
+        label: this.renderActionLabel('More...', 'fade'),
         func: this.props.overlay.openOverlay(Configure)({...partialProps, onSave: saveMedia(i)})
       },
       delete: {

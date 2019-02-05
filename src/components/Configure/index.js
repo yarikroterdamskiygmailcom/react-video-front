@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, Blurring, AddOverlay} from '../';
+import {Modal, AddOverlay, SelectAudio} from '../';
 import {pick} from 'lodash-es';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
@@ -25,10 +25,15 @@ export default class Configure extends Component {
       desc: '',
       func: this.props.overlay.openOverlay(AddOverlay)({...this.props, onClose: this.props.overlay.destroyOverlay})
     },
+    {
+      name: 'Music',
+      desc: '',
+      func: this.props.overlay.openOverlay(SelectAudio)({...this.props, onClose: this.props.overlay.destroyOverlay})
+    },
   ]
 
   renderOption = ({name, desc, func}) => (
-    <div className={styles.option} onClick={func}>
+    <div key={name} className={styles.option} onClick={func}>
       <div className={styles.name}>{name}</div>
       <div className={styles.desc}>{desc}</div>
     </div>

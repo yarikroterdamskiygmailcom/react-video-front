@@ -16,6 +16,7 @@ export {default as Overlay} from './Overlay';
 export {default as Preview} from './Preview';
 export {default as SaveTemplate} from './SaveTemplate';
 export {default as SelectAsset} from './SelectAsset';
+export {default as SelectAudio} from './SelectAudio';
 export {default as Splitter} from './Splitter';
 export {default as StyleEditor} from './StyleEditor';
 export {default as StylePicker} from './StylePicker';
