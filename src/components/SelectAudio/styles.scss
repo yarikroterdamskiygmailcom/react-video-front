@@ -45,43 +45,85 @@
 
 .song {
     padding: 5px;
+    border-bottom: 1px solid $grey;
     background: white;
+    transition: background 0.2s;
+
+    &.selected {
+        background: $pink;
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
 }
 
 .modeSelector { 
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    margin: 5px 0;
     flex: 1;
     transition: flex 0.2s;
 
     &.closed {
+        border: none;
         flex: 0;
+    }
+
+    .playMode {
+        padding: 5px;
+        border: 1px solid $grey;
+        border-bottom: none;
+        background: white;
+        transition: background 0.2s;
+
+        &:last-child {
+            border-bottom: 1px solid $grey;
+        }
+    
+        &.active {
+            background: $pink;
+        }
+    
+        .name {
+            color: $purple;
+            text-transform: capitalize;
+        }
     }
 }
 
-.playMode {
-    padding: 5px;
+.mixSelector {
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+    flex: 1;
+    max-height: fit-content;
     border: 1px solid $grey;
-    border-bottom: none;
-    background: white;
-    transition: background 0.2s;
+    transition: flex 0.2s, border 0.2s;
 
-    &.active {
-        background: $pink;
+    &.closed {
+        flex: 0;
+        border: none;
     }
 
-    &:last-child {
-        border-bottom: 1px solid $grey;
-    }
-
-    .name {
-        color: $purple;
+    .mix {
+        flex: 1;
+        padding: 5px;
+        border-right: 1px solid $grey;
         text-transform: capitalize;
-    }
+        background: white;
+        transition: background 0.2s;
 
-    .description {
+        &:last-child {
+            border-right: none;
+        }
 
+        &.selected {
+            background: $pink;
+        }
     }
 }
 
@@ -105,8 +147,16 @@
     white-space: nowrap; 
     text-overflow: ellipsis;
     padding: 5px;
+    flex: 1;
+    max-height: fit-content;
+    transform: flex 0.2s;
 
     &.active {
         color: $purple; 
+    }
+
+    &.hidden {
+        flex: 0;
+        overflow: hidden;
     }
 }
