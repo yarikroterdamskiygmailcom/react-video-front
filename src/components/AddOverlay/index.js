@@ -8,13 +8,14 @@ import classNames from 'classnames';
 import {php} from '../../stores';
 import {inject, observer} from 'mobx-react';
 
-const getLowerThird = ({video, text, logo, side, style}) => php.post('/lowerthird', {
+const getLowerThird = ({video, text, logo, side, style, emphasize}) => php.post('/lowerthird', {
   type: 'lowerthird',
   video_id: video.video_id,
   text,
   logo,
   placement: side,
-  style
+  style,
+  emphasize
 });
 
 @inject('session')
@@ -35,14 +36,17 @@ class LowerThird extends Component {
     if (!isEqual(prevProps.text, this.props.text)) {
       return;
     }
-    prevProps.logo !== this.props.logo && this.updateLowerThird();
+    (prevProps.logo !== this.props.logo
+      || prevProps.emphasize !== this.props.emphasize
+      || !isEqual(prevProps.style, this.props.style)
+    ) && this.updateLowerThird();
   }
 
   componentWillUnmount() {
     this.props.onExit(this.state.lowerThird);
   }
 
-  updateLowerThird = () => getLowerThird(pick(this.props, ['video', 'text', 'logo', 'side', 'style']))
+  updateLowerThird = () => getLowerThird(pick(this.props, ['video', 'text', 'logo', 'side', 'style', 'emphasize']))
   .then(res => this.setState({lowerThird: `${res.srcbase64}`}));
 
   onChange = changes => this.props.onChange(changes);
@@ -157,7 +161,7 @@ class Preview extends Component {
   getInnerSize = () => {
     const videoRef = this.videoRef.current;
     const thumbRef = this.thumbRef.current;
-    if(videoRef && thumbRef) {
+    if (videoRef && thumbRef) {
       const factor = videoRef.clientHeight / this.props.video.height;
       this.setState({
         thumbWidth: thumbRef.clientWidth * factor,
@@ -416,7 +420,7 @@ export default class AddOverlay extends Component {
         </div>;
 
       case 'preview':
-        return <Preview video={this.props.video} handleTrimmer={this.handleTrimmer} upperState={this.state}/>;
+        return <Preview video={this.props.video} handleTrimmer={this.handleTrimmer} upperState={this.state} />;
 
       default: throw new Error(`No content found for ${step}`);
     }
