@@ -36,7 +36,6 @@ export default class SelectAudio extends Component {
   constructor(props) {
     super(props);
     this.audioRef = React.createRef();
-    console.log(props.video.audio);
     this.state = {
       musicList: [],
       listOpen: false,
