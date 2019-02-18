@@ -108,7 +108,7 @@ export default class VlogEditor extends Component {
   render() {
     const {uploading, progress, media, syncing, cancelUpload} = this.props.vlogEditor;
     const {projectId, options} = this.props.project;
-    const {custom_edit} = options;
+    const custom_edit = options ? options.custom_edit : false;
     const {hamburgerActive, pending} = this.state;
     const {className} = this.props;
     return pending ? <Spinner /> : (
