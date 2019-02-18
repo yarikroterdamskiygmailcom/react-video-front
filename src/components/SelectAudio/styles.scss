@@ -64,11 +64,16 @@
     overflow-y: auto;
     margin: 5px 0;
     flex: 1;
-    transition: flex 0.2s;
+    transition: flex 0.2s, opacity 0.2s;
 
     &.closed {
         border: none;
         flex: 0;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
     }
 
     .playmode {
@@ -154,10 +159,24 @@
     padding: 5px;
     flex: 1;
     max-height: fit-content;
+    transition: flex 0.2s;
 
     &.active {
         color: $purple; 
     }
+
+    &.hidden {
+        flex: 0;
+        overflow: hidden;
+        padding: 0;
+        margin-bottom: 10px;
+    }
+}
+
+.toggle {
+    max-height: fit-content;
+    flex: 1;
+    transition: flex 0.2s;
 
     &.hidden {
         flex: 0;
