@@ -9,12 +9,16 @@ import styles from './styles.scss';
 const modes = [
   {
     name: 'clip',
-    description: 'Keep playing the selected song until this video ends.'
+    description: 'Keep playing the selected song until this clip ends.'
   },
   {
-    name: 'vlog',
-    description: 'Keep playing the selected song until the end of your vlog.'
+    name: 'continuous',
+    description: 'Keep playing the selected song until you specify otherwise.'
   },
+  {
+    name: 'mute',
+    description: 'Remove all audio from this clip.'
+  }
 ];
 
 const mixes = [
@@ -39,11 +43,11 @@ export default class SelectAudio extends Component {
     this.state = {
       musicList: [],
       listOpen: false,
-      selected: this.props.video.audio
-        ? pick(this.props.video.audio, ['title', 'artist', 'duration', 'src'])
+      selected: props.video.audio
+        ? props.video.audio.song || null
         : null,
-      playMode: this.props.video.audio ? this.props.video.audio.playMode : 'clip',
-      mix: this.props.video.audio ? this.props.video.audio.mix : 'clip'
+      playmode: props.video.audio ? props.video.audio.playmode : 'clip',
+      mix: props.video.audio ? props.video.audio.mix : 'clip'
     };
   }
 
@@ -56,13 +60,22 @@ export default class SelectAudio extends Component {
     this.state.selected && this.audioRef.current.play();
   }
 
+  componentDidUpdate() {
+    const {playmode, mix} = this.state;
+    (playmode === 'mute' || mix === 'clip') && this.audioRef.current.pause();
+  }
+
   onSave = () => {
-    const changes = {
-      clip: undefined,
-      mixed: {...this.state.selected, playMode: this.state.playMode, mix: this.state.mix},
-      music: {...this.state.selected, playMode: this.state.playMode, mix: this.state.mix},
-    }[this.state.mix];
-    this.props.onSave({audio: changes});
+    const {mix, playmode, selected} = this.state;
+    if (playmode === 'clip') {
+      this.props.onSave({audio: undefined});
+    } else {
+      this.props.onSave({
+        audio: {
+          playmode, mix, song: selected
+        }
+      });
+    }
     this.props.onClose();
   }
 
@@ -74,13 +87,13 @@ export default class SelectAudio extends Component {
     {
       label: 'Save',
       func: this.onSave,
-      disable: this.state.mix !== 'clip' && !this.state.selected
+      disable: this.state.playmode !== 'mute' && !this.state.selected
     }
   ]
 
   toggleList = () => this.setState(({listOpen: !this.state.listOpen}))
 
-  setPlayMode = playMode => () => this.setState({playMode});
+  setplaymode = playmode => () => this.setState({playmode});
 
   setMix = mixName => () => this.setState({mix: mixName})
 
@@ -100,19 +113,19 @@ export default class SelectAudio extends Component {
   }
 
   renderSong = song => {
-    const {id, title, artist, duration} = song;
+    const {id, title, artist, duration, style} = song;
     const selected = this.state.selected && (this.state.selected.id === id);
     return (
       <div className={classNames(styles.song, selected && styles.selected)} onClick={this.setSelected(song)}>
         <div className={styles.title}>{title}</div>
         <div className={styles.artist}>{artist}</div>
-        <div className={styles.duration}>{duration}</div>
+        <div className={styles.duration}>{`${duration} - ${style}`}</div>
       </div>
     );
   }
 
   renderMode = ({name, description}) => (
-    <div className={classNames(styles.playMode, name === this.state.playMode && styles.active)} onClick={this.setPlayMode(name)}>
+    <div className={classNames(styles.playmode, name === this.state.playmode && styles.active)} onClick={this.setplaymode(name)}>
       <div className={styles.name}>{name}</div>
       <div className={styles.description}>{description}</div>
     </div>
@@ -125,12 +138,13 @@ export default class SelectAudio extends Component {
   )
 
   render() {
-    const {musicList, selected, mix, listOpen} = this.state;
+    const {musicList, selected, mix, listOpen, playmode} = this.state;
     const musicListDisabled = mix === 'clip';
+    const muted = playmode === 'mute';
     return (
       <Modal actions={this.getModalActions()} contentClassName={styles.container}>
         <audio src={selected && selected.src} ref={this.audioRef} />
-        <div className={classNames(styles.listToggle, musicListDisabled && styles.disabled)} onClick={this.toggleList}>
+        <div className={classNames(styles.listToggle, (musicListDisabled || muted) && styles.disabled)} onClick={this.toggleList}>
           <FontAwesome className={classNames(styles.icon, styles.expand)} name={listOpen ? 'minus' : 'plus'} />
           <div className={classNames(styles.label, selected && styles.active)}>{selected ? selected.title : 'Select Music...'}</div>
           <FontAwesome className={styles.icon} name="pause" onClick={this.pause} />
@@ -139,13 +153,13 @@ export default class SelectAudio extends Component {
         <div className={classNames(styles.musicList, !listOpen && styles.closed)}>
           {musicList.map(this.renderSong)}
         </div>
-        <div className={classNames(styles.modeSelector, (listOpen || musicListDisabled) && styles.closed)}>
+        <div className={classNames(styles.modeSelector, listOpen && styles.closed)}>
           {modes.map(this.renderMode)}
         </div>
-        <div className={classNames(styles.mixSelector, listOpen && styles.closed)}>
+        <div className={classNames(styles.mixSelector, listOpen && styles.closed, muted && styles.disabled)}>
           {mixes.map(this.renderMix)}
         </div>
-        <div className={classNames(styles.label, listOpen && styles.hidden)}>{mixes.find(x => x.name === mix).description}</div>
+        <div className={classNames(styles.label, (listOpen || muted) && styles.hidden)}>{mixes.find(x => x.name === mix).description}</div>
       </Modal>
     );
   }

@@ -49,9 +49,14 @@ export class ProjectStore {
   createProject = professional => php.get(`/vlog/new${professional ? '?professional=true' : ''}`)
   .then(res => res.project_id)
 
-  reduceMediaObj = mediaObj => mediaObj.mediatype === 'video'
-    ? pick(mediaObj, ['mediatype', 'video_id', 'overlay', 'inpoint', 'outpoint'])
-    : mediaObj
+  reduceMediaObj = mediaObj => {
+    if (mediaObj.mediatype === 'video') {
+      const properties = ['duration', 'inpoint', 'outpoint', 'mediatype',
+        'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname', 'audio'];
+      return pick(mediaObj, properties);
+    }
+    return mediaObj;
+  }
 
   saveProject = () => php.post(`/vlog/${this.projectId}`, {
     title: this.title,

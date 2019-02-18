@@ -12,7 +12,7 @@ import {isEmpty, isNumber} from 'lodash-es';
 const formatTime = number => {
   const minutes = Math.floor(number / 60);
   const seconds = Math.floor(number % 60);
-  if(minutes === 0 && seconds === 0 && number > 0) {
+  if (minutes === 0 && seconds === 0 && number > 0) {
     return `< 0:01`;
   }
   return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
@@ -59,21 +59,21 @@ export default class MediaObject extends Component {
     const onClick = openOverlay(props);
 
     if (['video', 'asset'].includes(mediaObj.mediatype)) {
-      return <img className={styles.thumb} src={mediaObj.thumb} onError={e => e.target.src = fallback} onClick={onClick}/>;
+      return <img className={styles.thumb} src={mediaObj.thumb} onError={e => e.target.src = fallback} onClick={onClick} />;
     }
 
-    if(isFade(mediaObj.mediatype)) {
-      return <Icon className={styles.icon} name="fade" onClick={onClick}/>;
+    if (isFade(mediaObj.mediatype)) {
+      return <Icon className={styles.icon} name="fade" onClick={onClick} />;
     }
 
-    return <Icon className={styles.icon} name={mediaObj.mediatype} onClick={onClick}/>;
+    return <Icon className={styles.icon} name={mediaObj.mediatype} onClick={onClick} />;
   }
 
   renderVideoDesc = video => (
     <div className={styles.videoDesc}>
       <div className={styles.oldDuration}>{video.duration}</div>
       <div className={styles.newDuration}>
-        <Icon className={styles.icon} name="trim"/>
+        <Icon className={styles.icon} name="trim" />
         <div>{formatTime(video.outpoint - video.inpoint)}</div>
       </div>
       {this.props.chronoIndex && <div className={styles.chronoIndex}>{this.props.chronoIndex}</div>}
@@ -104,7 +104,8 @@ export default class MediaObject extends Component {
 
     const chosenDesc = {
       video: <React.Fragment>
-        {!isEmpty(mediaObj.overlay) && <Icon className={styles.icon} name="lowerThird"/>}
+        {!isEmpty(mediaObj.overlay) && <Icon className={styles.icon} name="lowerThird" />}
+        {mediaObj.audio && <FontAwesome className={styles.icon} name="music" />}
         {seconds > outpoint - inpoint ? this.renderVideoDesc(mediaObj) : duration}
       </React.Fragment>,
       asset: isNumber(duration) ? formatTime(duration) : duration,
@@ -118,7 +119,7 @@ export default class MediaObject extends Component {
     return (
       <div className={styles.meta}>
         <div className={styles.title}>
-          <Icon className={classNames(styles.icon, styles.tiny)} name={chosenIcon}/>
+          <Icon className={classNames(styles.icon, styles.tiny)} name={chosenIcon} />
           <div>{chosenTitle}</div>
         </div>
         <div className={styles.desc}>{chosenDesc}</div>

@@ -71,7 +71,7 @@
         flex: 0;
     }
 
-    .playMode {
+    .playmode {
         padding: 5px;
         border: 1px solid $grey;
         border-bottom: none;
@@ -102,11 +102,16 @@
     flex: 1;
     max-height: fit-content;
     border: 1px solid $grey;
-    transition: flex 0.2s, border 0.2s;
+    transition: flex 0.2s, border 0.2s, opacity 0.2s;
 
     &.closed {
         flex: 0;
         border: none;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
     }
 
     .mix {
@@ -149,7 +154,6 @@
     padding: 5px;
     flex: 1;
     max-height: fit-content;
-    transform: flex 0.2s;
 
     &.active {
         color: $purple; 

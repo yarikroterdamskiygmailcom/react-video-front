@@ -74,10 +74,10 @@ export class VlogEditorStore {
     }
 
     if (media.some((mediaObj, i) => {
-      if(fades.includes(mediaObj.mediatype)) {
+      if (fades.includes(mediaObj.mediatype)) {
         const previous = i > 0 && media[i - 1];
         const next = i + 1 < media.length && media[i + 1];
-        if(next && previous) {
+        if (next && previous) {
           const previousDuration = previous.mediatype === 'video' ? previous.outpoint - previous.inpoint : previous.duration;
           const nextDuration = next.mediatype === 'video' ? next.outpoint - next.inpoint : next.duration;
           return (previousDuration < mediaObj.duration / 2) || (nextDuration < mediaObj.duration / 2);
@@ -124,7 +124,7 @@ export class VlogEditorStore {
 
     this.resumable.on('fileSuccess', (resumableFile, response) => {
       const properties = ['duration', 'inpoint', 'outpoint', 'mediatype',
-        'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname'];
+        'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname', 'audio'];
       this.addMedia(pick(JSON.parse(response), properties));
     });
 
