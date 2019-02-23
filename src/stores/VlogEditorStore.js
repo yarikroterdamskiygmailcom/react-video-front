@@ -47,6 +47,8 @@ export class VlogEditorStore {
 
   @action saveMedia = index => changes => this.updateMedia(index, changes)
 
+  @action saveAllMedia = changes => this.media.toJS().map((mediaObj, i) => this.updateMedia(i, changes))
+
   @action splitVideo = index => splitPoint => {
     const video = this.media[index];
     const newVideos = [
@@ -124,7 +126,7 @@ export class VlogEditorStore {
 
     this.resumable.on('fileSuccess', (resumableFile, response) => {
       const properties = ['duration', 'inpoint', 'outpoint', 'mediatype',
-        'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname', 'audio'];
+        'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname', 'sound'];
       this.addMedia(pick(JSON.parse(response), properties));
     });
 

@@ -105,12 +105,17 @@ export default class MediaObject extends Component {
     const chosenDesc = {
       video: <React.Fragment>
         {!isEmpty(mediaObj.overlay) && <Icon className={styles.icon} name="lowerThird" />}
-        {mediaObj.audio && <FontAwesome className={styles.icon} name="music" />}
+        {mediaObj.sound && mediaObj.sound.music && <FontAwesome className={styles.icon} name="music" />}
         {seconds > outpoint - inpoint ? this.renderVideoDesc(mediaObj) : duration}
       </React.Fragment>,
-      asset: isNumber(duration) ? formatTime(duration) : duration,
-      title: isNumber(duration) ? formatTime(duration) : duration,
-      fadein: isNumber(duration) ? formatTime(duration) : duration,
+      asset: <React.Fragment>
+        {mediaObj.sound && mediaObj.sound.music && <FontAwesome className={styles.icon} name="music" />}
+        {isNumber(duration) ? formatTime(duration) : duration}
+      </React.Fragment>,
+      title: <React.Fragment>
+      {mediaObj.sound && mediaObj.sound.music && <FontAwesome className={styles.icon} name="music" />}
+      {isNumber(duration) ? formatTime(duration) : duration}
+    </React.Fragment>,      fadein: isNumber(duration) ? formatTime(duration) : duration,
       fadeout: isNumber(duration) ? formatTime(duration) : duration,
       fadeoutin: isNumber(duration) ? formatTime(duration) : duration,
       crossfade: isNumber(duration) ? formatTime(duration) : duration,

@@ -4,7 +4,7 @@ import FontAwesome from 'react-fontawesome';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styles from './styles.scss';
 import {observer, inject} from 'mobx-react';
-import {MediaObject, TrimmerSplitter, Configure} from '../';
+import {MediaObject, TrimmerSplitter, Configure, EditSound} from '../';
 
 @inject('overlay')
 @inject('vlogEditor')
@@ -19,16 +19,16 @@ export default class Arranger extends Component {
     };
   }
 
-  renderActionLabel = (label, icon) => (
+  renderActionLabel = (label, icon, fa) => (
     <div className={styles.action}>
-      <Icon name={icon} />
+      {fa ? <FontAwesome name={icon} /> : <Icon name={icon} />}
       <div>{label}</div>
     </div>
   )
 
   getAction = (mediaObj, i) => actionKey => {
     const partialProps = {video: mediaObj};
-    const {saveMedia, deleteMedia, splitVideo} = this.props.vlogEditor;
+    const {saveMedia, saveAllMedia, deleteMedia, splitVideo} = this.props.vlogEditor;
     return {
       trimSplit: {
         label: this.renderActionLabel('Trim / Split', 'trim'),
@@ -37,6 +37,10 @@ export default class Arranger extends Component {
       configure: {
         label: this.renderActionLabel('More...', 'fade'),
         func: this.props.overlay.openOverlay(Configure)({...partialProps, onSave: saveMedia(i)})
+      },
+      sound: {
+        label: this.renderActionLabel('Sound', 'music', true),
+        func: this.props.overlay.openOverlay(EditSound)({...partialProps, onSave: saveMedia(i), onSaveAll: saveAllMedia})
       },
       delete: {
         label: this.renderActionLabel('Delete', 'trash'),
@@ -58,8 +62,8 @@ export default class Arranger extends Component {
       fadeout: [],
       fadeoutin: [],
       crossfade: [],
-      title: [],
-      asset: []
+      title: [action('sound')],
+      asset: [action('sound')]
     }[mediaObj.mediatype];
     if (actions) {
       return actions;

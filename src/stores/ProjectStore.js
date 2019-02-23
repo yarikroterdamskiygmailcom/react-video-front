@@ -12,6 +12,7 @@ export class ProjectStore {
   @observable status = null;
   @observable renders = null;
   @observable options = {};
+  @observable song = null;
 
   setProperty = (property, value) => this[property] = value;
 
@@ -26,6 +27,7 @@ export class ProjectStore {
     this.access = null;
     this.status = null;
     this.renders = null;
+    this.song = null;
     this.options = null;
 
     editor.setMedia([]);
@@ -40,6 +42,7 @@ export class ProjectStore {
       this.access = project.access;
       this.status = project.status;
       this.renders = project.renders;
+      this.song = project.song;
       this.options = project.options;
 
       editor.setMedia(project.video);
@@ -52,7 +55,7 @@ export class ProjectStore {
   reduceMediaObj = mediaObj => {
     if (mediaObj.mediatype === 'video') {
       const properties = ['duration', 'inpoint', 'outpoint', 'mediatype',
-        'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname', 'audio'];
+        'overlay', 'seconds', 'src', 'thumb', 'video_id', 'videoname', 'sound'];
       return pick(mediaObj, properties);
     }
     return mediaObj;
@@ -63,6 +66,7 @@ export class ProjectStore {
     description: this.description,
     access: this.access,
     options: JSON.stringify(this.options),
+    song: this.song,
     media: JSON.stringify(editor.media.toJS().map(this.reduceMediaObj))
   })
 
@@ -83,6 +87,8 @@ export class ProjectStore {
   download = () => window.open(`https://vdb.vlogahead.cloud/vlog/download/${this.projectId}`)
 
   sendDownload = () => php.get(`/vlog/mail/${this.projectId}`)
+
+  setSong = song => this.song = song;
 
 }
 

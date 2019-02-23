@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
 import {withRouter} from 'react-router';
-import {Arranger, Toolbar, Hamburger, ConfirmProfessional, EditTitle, EditFade, SelectAsset} from '../../components';
+import {Arranger, Toolbar, Hamburger, ConfirmProfessional, EditTitle, EditFade, SelectAsset, SelectSong} from '../../components';
 import classNames from 'classnames';
 import styles from './styles.scss';
 import {ProgressBar, Icon, Toggle, Segment, Spinner} from '../../atoms';
@@ -107,7 +107,7 @@ export default class VlogEditor extends Component {
 
   render() {
     const {uploading, progress, media, syncing, cancelUpload} = this.props.vlogEditor;
-    const {projectId, options} = this.props.project;
+    const {projectId, options, song, setSong} = this.props.project;
     const custom_edit = options ? options.custom_edit : false;
     const {hamburgerActive, pending} = this.state;
     const {className} = this.props;
@@ -143,6 +143,9 @@ export default class VlogEditor extends Component {
                 onChange={custom_edit ? this.toggleCustomEdit : this.confirmProfessional}
               />
             </div>
+          </Segment>
+          <Segment title="Music">
+            <SelectSong selected={song} onChange={setSong} />
           </Segment>
         </Hamburger>
       </div>
