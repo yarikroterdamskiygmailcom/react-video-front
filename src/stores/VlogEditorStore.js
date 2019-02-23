@@ -47,7 +47,9 @@ export class VlogEditorStore {
 
   @action saveMedia = index => changes => this.updateMedia(index, changes)
 
-  @action saveAllMedia = changes => this.media.toJS().map((mediaObj, i) => this.updateMedia(i, changes))
+  @action saveAllMedia = changes => this.media.toJS().map((mediaObj, i) =>
+    ['video', 'title', 'asset'].includes(mediaObj.mediatype) && this.updateMedia(i, changes)
+  )
 
   @action splitVideo = index => splitPoint => {
     const video = this.media[index];
