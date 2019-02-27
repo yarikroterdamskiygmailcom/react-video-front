@@ -36,7 +36,7 @@ export default class Arranger extends Component {
       },
       configure: {
         label: this.renderActionLabel('More...', 'fade'),
-        func: this.props.overlay.openOverlay(Configure)({...partialProps, onSave: saveMedia(i)})
+        func: this.props.overlay.openOverlay(Configure)({...partialProps, onSave: saveMedia(i), onSaveAll: saveAllMedia})
       },
       sound: {
         label: this.renderActionLabel('Sound', 'music', true),

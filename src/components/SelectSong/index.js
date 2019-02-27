@@ -22,7 +22,11 @@ export default class SelectSong extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    !isEqual(prevProps.selected, this.props.selected) && this.play();
+    if (this.props.shouldPlay) {
+      !isEqual(prevProps.selected, this.props.selected) && this.play();
+    } else {
+      this.pause();
+    }
   }
 
   pause = e => {

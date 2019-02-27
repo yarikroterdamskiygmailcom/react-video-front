@@ -88,7 +88,7 @@ export class ProjectStore {
 
   sendDownload = () => php.get(`/vlog/mail/${this.projectId}`)
 
-  setSong = song => this.song = song;
+  setSong = song => this.updateProject({song: JSON.stringify(song)}).then(() => this.song = song);
 
 }
 

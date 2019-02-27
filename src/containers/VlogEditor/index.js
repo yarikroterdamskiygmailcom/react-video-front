@@ -145,7 +145,7 @@ export default class VlogEditor extends Component {
             </div>
           </Segment>
           <Segment title="Music">
-            <SelectSong selected={song} onChange={setSong} />
+            <SelectSong selected={song} onChange={setSong} shouldPlay={hamburgerActive} />
           </Segment>
         </Hamburger>
       </div>

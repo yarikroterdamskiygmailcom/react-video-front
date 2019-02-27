@@ -80,8 +80,38 @@ export default class MediaObject extends Component {
     </div>
   )
 
+  getDesc = mediaObj => {
+    const {mediatype, inpoint, outpoint, seconds, overlay, sound} = mediaObj;
+    const duration = isNumber(mediaObj.duration) ? formatTime(mediaObj.duration) : mediaObj.duration;
+    const maybeMusic = (sound && sound.music) ? <FontAwesome className={styles.icon} name="music" /> : null;
+    const maybeMicrophone = (sound && !sound.clipaudio) ? <FontAwesome className={styles.icon} name="microphone-slash" /> : null;
+
+    return {
+      video: <React.Fragment>
+        {!isEmpty(overlay) && <Icon className={styles.icon} name="lowerThird" />}
+        {maybeMusic}
+        {maybeMicrophone}
+        {seconds > outpoint - inpoint ? this.renderVideoDesc(mediaObj) : duration}
+      </React.Fragment>,
+      asset: <React.Fragment>
+        {maybeMusic}
+        {maybeMicrophone}
+        {duration}
+      </React.Fragment>,
+      title: <React.Fragment>
+        {maybeMusic}
+        {maybeMicrophone}
+        {duration}
+      </React.Fragment>,
+      fadein: duration,
+      fadeout: duration,
+      fadeoutin: duration,
+      crossfade: duration,
+    }[mediatype];
+  }
+
   renderMeta = mediaObj => {
-    const {mediatype, videoname, title, text, inpoint, outpoint, duration, seconds} = mediaObj;
+    const {mediatype, videoname, title, text} = mediaObj;
     const chosenIcon = {
       video: 'camcorder',
       asset: 'asset',
@@ -102,24 +132,7 @@ export default class MediaObject extends Component {
       crossfade: 'Crossfade'
     }[mediatype];
 
-    const chosenDesc = {
-      video: <React.Fragment>
-        {!isEmpty(mediaObj.overlay) && <Icon className={styles.icon} name="lowerThird" />}
-        {mediaObj.sound && mediaObj.sound.music && <FontAwesome className={styles.icon} name="music" />}
-        {seconds > outpoint - inpoint ? this.renderVideoDesc(mediaObj) : duration}
-      </React.Fragment>,
-      asset: <React.Fragment>
-        {mediaObj.sound && mediaObj.sound.music && <FontAwesome className={styles.icon} name="music" />}
-        {isNumber(duration) ? formatTime(duration) : duration}
-      </React.Fragment>,
-      title: <React.Fragment>
-      {mediaObj.sound && mediaObj.sound.music && <FontAwesome className={styles.icon} name="music" />}
-      {isNumber(duration) ? formatTime(duration) : duration}
-    </React.Fragment>,      fadein: isNumber(duration) ? formatTime(duration) : duration,
-      fadeout: isNumber(duration) ? formatTime(duration) : duration,
-      fadeoutin: isNumber(duration) ? formatTime(duration) : duration,
-      crossfade: isNumber(duration) ? formatTime(duration) : duration,
-    }[mediatype];
+    const chosenDesc = this.getDesc(mediaObj);
 
     return (
       <div className={styles.meta}>
