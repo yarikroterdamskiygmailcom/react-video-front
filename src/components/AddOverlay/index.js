@@ -73,19 +73,16 @@ class LowerThird extends Component {
   )
 
   render() {
-    const {side, animation, text, style, emphasize, logo, thumb} = this.props;
+    const {side, animation, text, style, emphasize, logo} = this.props;
     const {userType} = this.props.session;
     const {lowerThird} = this.state;
     return (
       <div className={styles.lowerThird}>
-        <div className={styles.lowerThirdBox}>
-          {thumb}
-          <img
-            className={styles.lowerThirdOverlay}
-            style={{[side]: 0}}
-            src={lowerThird}
-          />
-        </div>
+        <img
+          className={styles.lowerThirdThumb}
+          style={{[side]: 0}}
+          src={lowerThird}
+        />
         <div className={styles.label}>Text</div>
         <textarea className={styles.textarea} value={text} onChange={this.setText} onBlur={this.updateLowerThird} />
         <div className={styles.label}>Style</div>
